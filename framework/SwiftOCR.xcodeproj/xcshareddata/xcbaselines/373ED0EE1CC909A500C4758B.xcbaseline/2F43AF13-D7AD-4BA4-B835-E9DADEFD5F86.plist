@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>classNames</key>
+	<dict>
+		<key>SwiftOCRTests</key>
+		<dict>
+			<key>testBigImageSwiftOCR()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>1.143</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>Local Baseline</string>
+					<key>maxPercentRelativeStandardDeviation</key>
+					<real>20</real>
+				</dict>
+			</dict>
+			<key>testConvertImageToFloatArray()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0020227</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>08.05.2016, 18:22:18</string>
+				</dict>
+			</dict>
+			<key>testConvertImageToFloatArrayWithResize()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0042573</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>08.05.2016, 18:22:18</string>
+				</dict>
+			</dict>
+			<key>testExtractBlobs()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.010946</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>08.05.2016, 18:22:18</string>
+				</dict>
+			</dict>
+			<key>testFFNNCopy()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict/>
+			</dict>
+			<key>testMultipleSwiftOCR()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.24113</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>08.05.2016, 18:22:18</string>
+				</dict>
+			</dict>
+			<key>testPreprocessImageForOCR()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.11529</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>08.05.2016, 18:22:18</string>
+				</dict>
+			</dict>
+			<key>testSingleSwiftOCR()</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.11893</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>08.05.2016, 18:22:18</string>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>
