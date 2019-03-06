@@ -7,6 +7,7 @@
 //
 
 import UIKit
+let iDtableFoodCell = "tableFoodCell"
 
 class FoodDetailVC: UIViewController {
     @IBOutlet var tableDetails: UITableView!

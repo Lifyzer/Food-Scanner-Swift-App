@@ -42,8 +42,8 @@ class ProfileVC: UIViewController {
             objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
             userEmail.text = objUser?.email
             userName.text = objUser?.firstName
-            refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
-            tableProfile.refreshControl = refresher
+//            refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
+//            tableProfile.refreshControl = refresher
             if arrayFavFood.count == 0{
                 getFavFood(isLoader: true)
             }
@@ -142,11 +142,12 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
 
     //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
             return arrayFavFood.count;
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 130;
+            return 120;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -177,7 +178,10 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        pushViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC, animation: true)
+        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
+        vc.objProduct = arrayFavFood[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
+//        pushViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC, animation: true)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView : UIScrollView) {
@@ -185,14 +189,14 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
         
         // Change 10.0 to adjust the distance from bottom
-        if maximumOffset - currentOffset <= 10.0{
-            if !isLoadMore{
-                indicatorView.isHidden = false
-                activityIndicator.startAnimating()
-                loadMoreRequest()
-                isLoadMore = true
-            }
-        }
+//        if maximumOffset - currentOffset <= 10.0{
+//            if !isLoadMore{
+//                indicatorView.isHidden = false
+//                activityIndicator.startAnimating()
+//                loadMoreRequest()
+//                isLoadMore = true
+//            }
+//        }
         
     }
 }

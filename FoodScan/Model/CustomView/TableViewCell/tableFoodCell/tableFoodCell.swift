@@ -18,6 +18,7 @@ class tableFoodCell: UITableViewCell{
     @IBOutlet weak var productCategory: UILabel!
     @IBOutlet weak var labelDate: UILabel!
  
+    @IBOutlet weak var tableProducts: UITableView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
