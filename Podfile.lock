@@ -1,0 +1,50 @@
+PODS:
+  - ABMenuTableViewCell (2.0.2)
+  - Alamofire (4.7.3)
+  - IQKeyboardManagerSwift (6.2.0)
+  - MarqueeLabel/Swift (3.2.0)
+  - NotificationBannerSwift (1.7.3):
+    - MarqueeLabel/Swift (~> 3.2.0)
+    - SnapKit (~> 4.0.1)
+  - Realm (3.11.1):
+    - Realm/Headers (= 3.11.1)
+  - Realm/Headers (3.11.1)
+  - RealmSwift (3.11.1):
+    - Realm (= 3.11.1)
+  - SnapKit (4.0.1)
+  - SwiftyJSON (4.2.0)
+
+DEPENDENCIES:
+  - ABMenuTableViewCell (~> 2.0)
+  - Alamofire
+  - IQKeyboardManagerSwift
+  - NotificationBannerSwift
+  - RealmSwift
+  - SwiftyJSON
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - ABMenuTableViewCell
+    - Alamofire
+    - IQKeyboardManagerSwift
+    - MarqueeLabel
+    - NotificationBannerSwift
+    - Realm
+    - RealmSwift
+    - SnapKit
+    - SwiftyJSON
+
+SPEC CHECKSUMS:
+  ABMenuTableViewCell: 931797cc144de2ef0ff56d1fe30ef42dcb26e2dc
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
+  MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
+  NotificationBannerSwift: c9f4bc868d78df975ed59c0b2fccdbbe0e863efe
+  Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
+  RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
+
+PODFILE CHECKSUM: 00b5dca31892d71f043a797c70afeb0ec7b5fe06
+
+COCOAPODS: 1.5.0
