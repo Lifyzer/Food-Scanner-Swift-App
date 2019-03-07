@@ -176,6 +176,7 @@ class HistoryVC: UIViewController {
                 let objData = JSON(response!)[WS_KProduct]
                 let tempArray  = objData.to(type: WSProduct.self) as! [WSProduct]
                 if tempArray.count > 0{
+                    
                     self.arrayFavFood.append(contentsOf: tempArray)
                     self.tableFav.reloadData()
                 }
@@ -334,7 +335,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
     //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFav{
-            return arrayFavFood.count;
+            return arrayFavouriteProducts.count;
         }else {
             return arrayHistoryFood.count;
         }
@@ -351,7 +352,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
          let objProduct: WSProduct
         var createdDate : String = ""
         if isFav{
-            objProduct = arrayFavFood[indexPath.row]
+            objProduct = arrayFavouriteProducts[indexPath.row]
             createdDate = "\(objProduct.favouriteCreatedDate ?? "")"
         }else {
             objProduct = arrayHistoryFood[indexPath.row]
@@ -385,7 +386,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: idFoodDetailVC) as! FoodDetailVC
         if isFav{
-            vc.objProduct = arrayFavFood[indexPath.row]
+            vc.objProduct = arrayFavouriteProducts[indexPath.row]
         }else {
             vc.objProduct = arrayHistoryFood[indexPath.row]
         }
@@ -396,7 +397,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         
 //        let whitespace = whitespaceString(width:CGFloat(kCellActionWidth) )
         if isFav{
-             let objProduct: WSProduct =  arrayFavFood[indexPath.row]
+             let objProduct: WSProduct =  arrayFavouriteProducts[indexPath.row]
             let fav = TableViewRowAction(style: UITableViewRowAction.Style.default, title: "Fav") { action, indexPath in
                 self.addRemoveFav(productId: objProduct.productId!, rowId: indexPath.row, favStatus: "0")
             }

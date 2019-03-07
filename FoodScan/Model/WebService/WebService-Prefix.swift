@@ -63,4 +63,5 @@ let WS_KGuid = "guid"
 let WS_KProduct = "product"
 let WS_KHistory = "history"
 
+var arrayFavouriteProducts:[WSProduct] = [WSProduct]()
 

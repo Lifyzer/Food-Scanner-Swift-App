@@ -60,6 +60,30 @@ extension UIViewController
             view.viewWithTag(555)?.removeFromSuperview()
         }
     }
+    
+    
+    //Add/Remove product to favourite
+    func AddRemoveFromFavouriteAPI(isFavourite : String,product_id: String)
+    {
+        let userToken = UserDefaults.standard.string(forKey: kTempToken)
+        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+        let param:NSMutableDictionary = [
+            WS_KProduct_id:product_id,
+            WS_KIs_favourite:isFavourite,
+            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+            WS_KAccess_key:DEFAULT_ACCESS_KEY,
+            WS_KSecret_key:userToken ?? ""]
+        showIndicator(view: self.view)
+        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddToFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+            self.hideIndicator(view: self.view)
+            if response != nil
+            {
+                showBanner(title: "", subTitle: message!, bannerStyle:.danger)
+            }else {
+                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+            }
+        })
+    }
 }
 
 public func loadViewController(Storyboard:String,ViewController:String) -> UIViewController

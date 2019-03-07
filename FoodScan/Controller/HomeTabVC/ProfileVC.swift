@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import SDWebImage
 
 class ProfileVC: UIViewController {
     
@@ -34,7 +35,7 @@ class ProfileVC: UIViewController {
         super.viewDidLoad()
         self.tableProfile.tableFooterView = UIView()
         
-        getFavFood(isLoader: true)
+//        getFavFood(isLoader: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,11 +43,12 @@ class ProfileVC: UIViewController {
             objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
             userEmail.text = objUser?.email
             userName.text = objUser?.firstName
-//            refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
-//            tableProfile.refreshControl = refresher
+            refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
+            tableProfile.refreshControl = refresher
             if arrayFavFood.count == 0{
                 getFavFood(isLoader: true)
             }
+            getFavFood(isLoader: true)
         }
         if arrayFavFood.count > 0{
             self.tableProfile.isHidden = false
@@ -59,7 +61,7 @@ class ProfileVC: UIViewController {
     
     @objc private func initialRequest(_ sender: Any) {
         self.offSet = 0
-        getFavFood(isLoader: true)
+        getFavFood(isLoader: false)
     }
 
     
@@ -160,6 +162,16 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
             cell.labelDate.text =  dateFormatter.string(from: stringToDate(createdDate))
         }
         cell.productName.text = objProduct.productName ?? ""
+        let imageURL = URL(string: objProduct.productImage ?? "")
+        if imageURL != nil
+        {
+            cell.imgFavouriteFood!.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "food_place_holder"))
+        }
+        else
+        {
+            cell.imgFavouriteFood.image = UIImage(named: "food_place_holder")
+        }
+       
         let isHealthy : String = objProduct.isHealthy ?? ""
         if isHealthy != "" && isHealthy.count > 0{
             if isHealthy == "0" {
@@ -180,6 +192,7 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
         vc.objProduct = arrayFavFood[indexPath.row]
+      
         self.navigationController?.pushViewController(vc, animated: true)
 //        pushViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC, animation: true)
     }

@@ -10,8 +10,11 @@ import UIKit
 
 class tableFoodCell: UITableViewCell{
     
+    @IBOutlet weak var tableDetailsHeight: NSLayoutConstraint!
+    @IBOutlet weak var imgFavouriteFood: UIImageView!
     @IBOutlet weak var imgFood: UIButton!
     @IBOutlet weak var btnFav: UIButton!
+    @IBOutlet weak var lblDetailsHeight: NSLayoutConstraint!
     @IBOutlet weak var productType: UIButton!
     
     @IBOutlet weak var productName: UILabel!

@@ -11,6 +11,9 @@ PODS:
   - Realm/Headers (3.11.1)
   - RealmSwift (3.11.1):
     - Realm (= 3.11.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
   - SnapKit (4.0.1)
   - SwiftyJSON (4.2.0)
 
@@ -20,10 +23,11 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - NotificationBannerSwift
   - RealmSwift
+  - SDWebImage (~> 4.2)
   - SwiftyJSON
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - ABMenuTableViewCell
     - Alamofire
     - IQKeyboardManagerSwift
@@ -31,6 +35,7 @@ SPEC REPOS:
     - NotificationBannerSwift
     - Realm
     - RealmSwift
+    - SDWebImage
     - SnapKit
     - SwiftyJSON
 
@@ -42,9 +47,10 @@ SPEC CHECKSUMS:
   NotificationBannerSwift: c9f4bc868d78df975ed59c0b2fccdbbe0e863efe
   Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
   RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: 00b5dca31892d71f043a797c70afeb0ec7b5fe06
+PODFILE CHECKSUM: ba4fa4084e0d347f082cd2e32b3e976496b3a666
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

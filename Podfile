@@ -10,6 +10,7 @@ target 'FoodScan' do
     pod 'NotificationBannerSwift'
     pod 'IQKeyboardManagerSwift'
     pod 'RealmSwift'
+    pod 'SDWebImage', '~> 4.2'
   
   target 'FoodScanTests' do
     inherit! :search_paths
