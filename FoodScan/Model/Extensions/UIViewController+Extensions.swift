@@ -7,6 +7,7 @@
 //
 
 import UIKit
+var isCallAPI = false
 
 extension UIViewController
 {
@@ -63,8 +64,10 @@ extension UIViewController
     
     
     //Add/Remove product to favourite
-    func AddRemoveFromFavouriteAPI(isFavourite : String,product_id: String)
+    typealias MethodHandler1 = () -> Void
+    func AddRemoveFromFavouriteAPI(isFavourite : String,product_id: String,fn:@escaping MethodHandler1)
     {
+        
         let userToken = UserDefaults.standard.string(forKey: kTempToken)
         let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
         let param:NSMutableDictionary = [
@@ -74,10 +77,16 @@ extension UIViewController
             WS_KAccess_key:DEFAULT_ACCESS_KEY,
             WS_KSecret_key:userToken ?? ""]
         showIndicator(view: self.view)
+        
         HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddToFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
             self.hideIndicator(view: self.view)
+            
             if response != nil
             {
+                if fn != nil
+                {
+                    fn()
+                }
                 showBanner(title: "", subTitle: message!, bannerStyle:.danger)
             }else {
                 showBanner(title: "", subTitle: message!, bannerStyle: .danger)

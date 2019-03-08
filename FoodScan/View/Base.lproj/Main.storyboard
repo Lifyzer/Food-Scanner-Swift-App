@@ -303,9 +303,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g1j-1A-kTN" userLabel="ContentView">
                                 <rect key="frame" x="0.0" y="94" width="414" height="719"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3kl-eY-jAx" userLabel="Favourite Table View">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3kl-eY-jAx" userLabel="Favourite Table View">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="719"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="food_cell" rowHeight="130" id="Ihz-hZ-jtv" userLabel="FavouriteFoodCell" customClass="tableFoodCell" customModule="FoodScan" customModuleProvider="target">
@@ -416,6 +415,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <outlet property="btnFav" destination="j9F-zd-wbD" id="hPi-z1-xlv"/>
+                                                    <outlet property="imgFavouriteFood" destination="bTd-YE-AU4" id="6ep-k8-avK"/>
                                                     <outlet property="labelDate" destination="hkC-In-Dh7" id="VMh-Y1-6UI"/>
                                                     <outlet property="productCategory" destination="ZSS-a6-3eC" id="bjD-Qf-1TW"/>
                                                     <outlet property="productName" destination="FEX-0N-g5Q" id="7o7-LC-A4a"/>
@@ -545,6 +545,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <outlet property="btnFav" destination="ull-6r-omd" id="o40-Ls-vwR"/>
+                                                    <outlet property="imgFavouriteFood" destination="Kfb-ZM-ijm" id="2Sp-s7-WTN"/>
                                                     <outlet property="labelDate" destination="UgO-db-sTu" id="EPT-P8-zke"/>
                                                     <outlet property="productCategory" destination="Q48-uy-Znu" id="vp0-k7-enw"/>
                                                     <outlet property="productName" destination="Atj-CZ-SbG" id="ueD-8u-qS4"/>
@@ -629,13 +630,17 @@
                                     <constraint firstAttribute="bottom" secondItem="Rhx-2L-iQe" secondAttribute="bottom" id="7LZ-lu-kzn"/>
                                     <constraint firstItem="lOb-F7-FEt" firstAttribute="top" secondItem="g1j-1A-kTN" secondAttribute="top" id="7ZI-NO-RWx"/>
                                     <constraint firstAttribute="trailing" secondItem="Rhx-2L-iQe" secondAttribute="trailing" id="CqV-0b-SdJ"/>
+                                    <constraint firstItem="3kl-eY-jAx" firstAttribute="leading" secondItem="g1j-1A-kTN" secondAttribute="leading" id="NX7-Dw-1rh"/>
                                     <constraint firstItem="ejl-HP-x9w" firstAttribute="leading" secondItem="g1j-1A-kTN" secondAttribute="leading" id="O6N-Cm-acK"/>
                                     <constraint firstAttribute="trailing" secondItem="lOb-F7-FEt" secondAttribute="trailing" id="OVL-AQ-iBL"/>
+                                    <constraint firstAttribute="bottom" secondItem="3kl-eY-jAx" secondAttribute="bottom" id="RTK-Z6-H3f"/>
                                     <constraint firstAttribute="bottom" secondItem="lOb-F7-FEt" secondAttribute="bottom" id="Sx7-8u-XOJ"/>
                                     <constraint firstItem="Rhx-2L-iQe" firstAttribute="leading" secondItem="g1j-1A-kTN" secondAttribute="leading" id="aqX-5y-9lT"/>
+                                    <constraint firstItem="3kl-eY-jAx" firstAttribute="top" secondItem="g1j-1A-kTN" secondAttribute="top" id="elH-ZR-cGW"/>
                                     <constraint firstAttribute="trailing" secondItem="ejl-HP-x9w" secondAttribute="trailing" id="hvS-1M-goU"/>
                                     <constraint firstItem="ejl-HP-x9w" firstAttribute="top" secondItem="g1j-1A-kTN" secondAttribute="top" id="jQQ-Lw-MQE"/>
                                     <constraint firstItem="lOb-F7-FEt" firstAttribute="leading" secondItem="g1j-1A-kTN" secondAttribute="leading" id="rzP-Va-OX0"/>
+                                    <constraint firstAttribute="trailing" secondItem="3kl-eY-jAx" secondAttribute="trailing" id="uXK-K8-ztf"/>
                                 </constraints>
                             </view>
                         </subviews>

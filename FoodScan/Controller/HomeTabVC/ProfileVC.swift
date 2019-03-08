@@ -30,12 +30,11 @@ class ProfileVC: UIViewController {
       var offSet : Int = 0
       var noOfRecords  = REQ_NO_OF_RECORD
       private let refresher = UIRefreshControl()
+    var RemoveIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableProfile.tableFooterView = UIView()
-        
-//        getFavFood(isLoader: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +56,32 @@ class ProfileVC: UIViewController {
             self.vwNoData.isHidden = false
             self.tableProfile.isHidden = true
         }       
+    }
+    
+    
+    @IBAction func buttonSettingsClicked(_ sender: Any) {
+        if checkLoginAlert(){
+            self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idSettingsVC, animation: true)
+        }
+    }
+    
+    //MARK: Functions
+    @objc func btnFavourite(_ sender: UIButton) {
+        let objProduct  = arrayFavFood[sender.tag]
+        RemoveIndex = sender.tag
+        if objProduct.isFavourite.asStringOrEmpty() == "0"
+        {
+            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
+        }
+        else
+        {
+            AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
+        }
+    }
+    func AfterAPICall(){
+        
+        arrayFavFood.remove(at:RemoveIndex)
+        tableProfile.reloadData()
     }
     
     @objc private func initialRequest(_ sender: Any) {
@@ -112,13 +137,6 @@ class ProfileVC: UIViewController {
     
  
     
-
-    @IBAction func buttonSettingsClicked(_ sender: Any) {
-        if checkLoginAlert(){
-            self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idSettingsVC, animation: true)
-        }
-    }
-    
     func checkLoginAlert() -> Bool{
         if !UserDefaults.standard.bool(forKey: kLogIn){
             let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
@@ -162,6 +180,8 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
             cell.labelDate.text =  dateFormatter.string(from: stringToDate(createdDate))
         }
         cell.productName.text = objProduct.productName ?? ""
+        cell.btnFav.tag = indexPath.row
+        cell.btnFav.addTarget(self, action: #selector(btnFavourite(_:)), for:.touchUpInside)
         let imageURL = URL(string: objProduct.productImage ?? "")
         if imageURL != nil
         {
