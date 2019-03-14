@@ -8,8 +8,9 @@
 
 
 import UIKit
-import SwiftOCR
+//import SwiftOCR
 import AVFoundation
+//import TesseractOCR
 
 extension UIImage {
     func detectOrientationDegree () -> CGFloat {
@@ -33,7 +34,7 @@ class ScanFoodVC: UIViewController {
     fileprivate var stillImageOutput: AVCaptureStillImageOutput!
     fileprivate let captureSession = AVCaptureSession()
     fileprivate let device  = AVCaptureDevice.default(for: AVMediaType.video)
-    private let ocrInstance = SwiftOCR()
+//    private let ocrInstance = SwiftOCR()
 
     // MARK: - View LifeCycle
     override func viewDidLoad() {
@@ -62,12 +63,12 @@ class ScanFoodVC: UIViewController {
                 let image = UIImage(data: imageData!)
                 
                 let croppedImage = self?.prepareImageForCrop(using: image!)
-                self?.ocrInstance.recognize(croppedImage!) { [weak self] recognizedString in
-                    DispatchQueue.main.async {
-                        self?.label.text = recognizedString
-                        print(self?.ocrInstance.currentOCRRecognizedBlobs ?? "Recoginzed Blob is empty")
-                    }
-                }
+//                self?.ocrInstance.recognize(croppedImage!) { [weak self] recognizedString in
+//                    DispatchQueue.main.async {
+//                        self?.label.text = recognizedString
+//                        print(self?.ocrInstance.currentOCRRecognizedBlobs ?? "Recoginzed Blob is empty")
+//                    }
+//                }
                 
             }
         }

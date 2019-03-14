@@ -11,7 +11,9 @@ target 'FoodScan' do
     pod 'IQKeyboardManagerSwift'
     pod 'RealmSwift'
     pod 'SDWebImage', '~> 4.2'
-  
+    pod 'TesseractOCRiOS'
+#pod 'TesseractOCRSDKiOS', '4.0.1'
+
   target 'FoodScanTests' do
     inherit! :search_paths
     # Pods for testing

@@ -105,19 +105,35 @@ class FoodDetailVC: UIViewController {
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
-    
+    func apicall(){
+        if objProduct.isFavourite.asStringOrEmpty() == "0"
+        {
+            objProduct.isFavourite = "1"
+        }
+        else
+        {
+            objProduct.isFavourite = "0"
+        }
+    }
     
     @IBAction func btnFavourite(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected
         {
             btnFav.setImage(IMG_FAV, for: .normal)
-            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id: objProduct.id.asStringOrEmpty())
         }
         else
         {
             btnFav.setImage(IMG_UNFAV, for: .normal)
-            AddRemoveFromFavouriteAPI(isFavourite : "0", product_id: objProduct.id.asStringOrEmpty())
+        }
+        
+        if objProduct.isFavourite.asStringOrEmpty() == "0"
+        {
+            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
+        }
+        else
+        {
+            AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
         }
         
     }
@@ -138,9 +154,24 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == tableProductDetails
         {
-            return CGFloat(75 * arrDetails.count + 40)
+            let ingreText = objProduct.ingredients.asStringOrEmpty()
+            var height:CGFloat = 0.0
+            if ingreText != ""
+            {
+                let lbl = UILabel()
+                lbl.text = ingreText
+//                lbl.sizeToFit()
+                height = CGFloat(lbl.frame.height) + 50.0
+            }
+            let tableheight  = CGFloat(75 * (arrDetails.count - 1) + 40)
+            return CGFloat(tableheight + height)
         }
-        return 75
+        let objTitle = arrTitle[indexPath.row]
+        if "\(objTitle)" == "Ingredients"
+        {
+            return UITableView.automaticDimension
+        }
+        return 75.0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -176,6 +207,12 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
             cell.productCategory.isHidden = false
             cell.productCategory.text = "\(objDetails)"
             cell.productType.setTitle("", for: .normal)
+            
+             let ingreText = objProduct.ingredients.asStringOrEmpty()
+            let lbl = UILabel()
+            lbl.text = ingreText
+//            lbl.sizeToFit()
+            cell.lblDetailsHeight.constant = lbl.frame.height
 //            cell.productCategory.numberOfLines = 1
 //            cell.lblDetailsHeight.constant = 15
            

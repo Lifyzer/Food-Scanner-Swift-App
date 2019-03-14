@@ -16,6 +16,7 @@ PODS:
   - SDWebImage/Core (4.4.2)
   - SnapKit (4.0.1)
   - SwiftyJSON (4.2.0)
+  - TesseractOCRiOS (5.0.1)
 
 DEPENDENCIES:
   - ABMenuTableViewCell (~> 2.0)
@@ -25,6 +26,7 @@ DEPENDENCIES:
   - RealmSwift
   - SDWebImage (~> 4.2)
   - SwiftyJSON
+  - TesseractOCRiOS
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -38,6 +40,7 @@ SPEC REPOS:
     - SDWebImage
     - SnapKit
     - SwiftyJSON
+    - TesseractOCRiOS
 
 SPEC CHECKSUMS:
   ABMenuTableViewCell: 931797cc144de2ef0ff56d1fe30ef42dcb26e2dc
@@ -50,7 +53,8 @@ SPEC CHECKSUMS:
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
+  TesseractOCRiOS: 2c189465f86abb030d0c5141c90da9705b647854
 
-PODFILE CHECKSUM: ba4fa4084e0d347f082cd2e32b3e976496b3a666
+PODFILE CHECKSUM: 93f9d61d31013e6bc21a8ebe3027ba9c8022bb03
 
 COCOAPODS: 1.5.3

@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+//import TesseractOCR
 
 
 
@@ -36,6 +37,7 @@ class HistoryVC: UIViewController {
     let refresher = UIRefreshControl()
     var offSet : Int = 0
     var noOfRecords  = REQ_NO_OF_RECORD
+    var RemoveIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,7 +100,25 @@ class HistoryVC: UIViewController {
         })
     }
     
+    //MARK: Functions
+    @objc func btnFavourite(_ sender: UIButton) {
+        let objProduct  = arrayFavFood[sender.tag]
+        RemoveIndex = sender.tag
+        if objProduct.isFavourite.asStringOrEmpty() == "0"
+        {
+            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
+        }
+        else
+        {
+            AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
+        }
+    }
     
+    func AfterAPICall(){
+        
+        arrayFavFood.remove(at:RemoveIndex)
+        tableFav.reloadData()
+    }
     
      //MARK:- Button click
     @IBAction func buttonHistoryClicked(_ sender: Any) {
@@ -335,7 +355,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
     //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFav{
-            return arrayFavouriteProducts.count;
+            return arrayFavFood.count;
         }else {
             return arrayHistoryFood.count;
         }
@@ -352,7 +372,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
          let objProduct: WSProduct
         var createdDate : String = ""
         if isFav{
-            objProduct = arrayFavouriteProducts[indexPath.row]
+            objProduct = arrayFavFood[indexPath.row]
             createdDate = "\(objProduct.favouriteCreatedDate ?? "")"
         }else {
             objProduct = arrayHistoryFood[indexPath.row]
@@ -363,6 +383,15 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yyyy"
             cell.labelDate.text =  dateFormatter.string(from: stringToDate(createdDate))
+        }
+        let imageURL = URL(string: objProduct.productImage ?? "")
+        if imageURL != nil
+        {
+            cell.imgFavouriteFood!.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "food_place_holder"))
+        }
+        else
+        {
+            cell.imgFavouriteFood.image = UIImage(named: "food_place_holder")
         }
         cell.productName.text = objProduct.productName ?? ""
         let isHealthy : String = objProduct.isHealthy ?? ""
@@ -377,6 +406,8 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
                  cell.productType.setImage(UIImage(named: "dot_green_small"), for: .normal)
             }
         }
+        cell.btnFav.tag = indexPath.row
+        cell.btnFav.addTarget(self, action: #selector(btnFavourite(_:)), for:.touchUpInside)
         cell.selectionStyle = .none
         return cell
         
@@ -386,7 +417,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: idFoodDetailVC) as! FoodDetailVC
         if isFav{
-            vc.objProduct = arrayFavouriteProducts[indexPath.row]
+            vc.objProduct = arrayFavFood[indexPath.row]
         }else {
             vc.objProduct = arrayHistoryFood[indexPath.row]
         }
@@ -397,7 +428,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         
 //        let whitespace = whitespaceString(width:CGFloat(kCellActionWidth) )
         if isFav{
-             let objProduct: WSProduct =  arrayFavouriteProducts[indexPath.row]
+             let objProduct: WSProduct =  arrayFavFood[indexPath.row]
             let fav = TableViewRowAction(style: UITableViewRowAction.Style.default, title: "Fav") { action, indexPath in
                 self.addRemoveFav(productId: objProduct.productId!, rowId: indexPath.row, favStatus: "0")
             }
