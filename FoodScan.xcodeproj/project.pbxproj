@@ -70,6 +70,7 @@
 		5B31570C2236395600EC0674 /* ScanProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3157062236395600EC0674 /* ScanProductVC.swift */; };
 		5B4EC0C82239369D0036F2F9 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00EF9BB7220DB1FE009434D3 /* CoreImage.framework */; };
 		5B4EC0DC223939E90036F2F9 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4EC0DB223939E90036F2F9 /* Preview.swift */; };
+		5BC8819B223B782A009CB316 /* ViewProductPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8819A223B782A009CB316 /* ViewProductPopUpVC.swift */; };
 		5BD70CF5223A2954006A2FED /* Pods_FoodScan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DC2638BAE3C9295B5EE7F9 /* Pods_FoodScan.framework */; };
 		5BD70D2A223A34CE006A2FED /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BD70D29223A34CE006A2FED /* libz.tbd */; };
 		5BD70D90223A5AE4006A2FED /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 5BD70D8F223A5AE4006A2FED /* tessdata */; };
@@ -183,6 +184,7 @@
 		26790217F0ED89AE686C1045 /* Pods-FoodScanTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodScanTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FoodScanTests/Pods-FoodScanTests.release.xcconfig"; sourceTree = "<group>"; };
 		5B3157062236395600EC0674 /* ScanProductVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanProductVC.swift; sourceTree = "<group>"; };
 		5B4EC0DB223939E90036F2F9 /* Preview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
+		5BC8819A223B782A009CB316 /* ViewProductPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProductPopUpVC.swift; sourceTree = "<group>"; };
 		5BD70D29223A34CE006A2FED /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		5BD70D8F223A5AE4006A2FED /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = SOURCE_ROOT; };
 		7DB3CAEA3AC246C91EACCAE3 /* Pods_FoodScanTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FoodScanTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -461,6 +463,7 @@
 				00F49E8B220C3CE20053829D /* ScanFoodVC.swift */,
 				00F49E8D220C3CF80053829D /* ProfileVC.swift */,
 				003777852217EAA1003D233A /* FoodDetailVC.swift */,
+				5BC8819A223B782A009CB316 /* ViewProductPopUpVC.swift */,
 			);
 			path = HomeTabVC;
 			sourceTree = "<group>";
@@ -765,6 +768,7 @@
 				00447406221296E8004C98C9 /* UIButton+Extensions.swift in Sources */,
 				00447403221296E8004C98C9 /* Optional+Extensions.swift in Sources */,
 				004473DB22129448004C98C9 /* SettingsVC.swift in Sources */,
+				5BC8819B223B782A009CB316 /* ViewProductPopUpVC.swift in Sources */,
 				009DF4422215762000472450 /* JSON+Extensions.swift in Sources */,
 				0044740E221296E8004C98C9 /* UIView+Extensions.swift in Sources */,
 				00F49E88220C295A0053829D /* WelComeVC.swift in Sources */,

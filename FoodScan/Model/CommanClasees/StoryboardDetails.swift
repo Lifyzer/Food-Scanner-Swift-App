@@ -16,6 +16,7 @@ let idHistoryVC = "idHistoryVC"
 let idScanFoodVC = "idScanFoodVC"
 let idProfileVC = "idProfileVC"
 let idFoodDetailVC = "idFoodDetailVC"
+let idViewProductPopUpVC = "idViewProductPopUpVC"
 //==============================================================================================================================
 
 //====================================================  Storyboards - Login  ===================================================

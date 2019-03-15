@@ -11,7 +11,6 @@ import AVFoundation
 import Vision
 import TesseractOCR
 
-//import TesseractOCR
 
 
 class ScanProductVC: UIViewController {
@@ -35,13 +34,16 @@ class ScanProductVC: UIViewController {
     var session = AVCaptureSession()
     var requests = [VNRequest]()
     var req = [VNDetectTextRectanglesRequest] ()
-    
     var arrLayer : [CALayer] = [CALayer]()
-    
+    var flag = 0
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         // Do any additional setup after loading the view, typically from a nib.
-        tesseract?.pageSegmentationMode = .sparseText
+        tesseract?.pageSegmentationMode = .singleLine
         // Recognize only these characters
         tesseract?.charWhitelist = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890()-+*!/?.,@#$%&"
         
@@ -50,12 +52,6 @@ class ScanProductVC: UIViewController {
             configureCamera()
             startTextDetection()
         }
-        
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-      
     }
     
     private func isAuthorized() -> Bool {
@@ -105,23 +101,33 @@ class ScanProductVC: UIViewController {
     private var cameraView1: CameraView {
         return cameraView as! CameraView
     }
+    @objc func btnAction(_ sender : UIButton)
+    {
+        print(sender.currentTitle)
+    }
     @objc func tapHandle(_ gesture  :UITapGestureRecognizer)
     {
         if gesture.view!.isKind(of: UILabel.classForCoder())
         {
+            flag = 1
             session.stopRunning()
             let txt = (gesture.view as! UILabel).text!
-            generateAlertWithOkButton(text: txt)
-        
+            print(txt)
+            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idViewProductPopUpVC) as! ViewProductPopUpVC
+            vc.productName = txt
+            vc.modalPresentationStyle = .overCurrentContext
+            vc.delegate = self
+//            DispatchQueue.main.async {
+            
+                self.tabBarController?.present(vc, animated: false, completion: nil)
+//            }
+            
         }
+      
     }
     private func configureCamera() {
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandle(_:)))
-//        tap.numberOfTapsRequired = 1
-//        self.cameraView.addGestureRecognizer(tap)
-//
+
         cameraView1.session = session
-        
         let cameraDevices = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back)
         var cameraDevice: AVCaptureDevice?
         for device in cameraDevices.devices {
@@ -143,7 +149,7 @@ class ScanProductVC: UIViewController {
         session.sessionPreset = .high
         let videoDataOutput = AVCaptureVideoDataOutput()
 //        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default))
-        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "Buffer Queue", qos:.userInitiated, attributes: .concurrent, autoreleaseFrequency:.inherit, target: nil))
+        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)//(self, queue: DispatchQueue(label: "Buffer Queue", qos:.userInitiated, attributes: .concurrent, autoreleaseFrequency:.inherit, target: nil))
         if session.canAddOutput(videoDataOutput) {
             session.addOutput(videoDataOutput)
         }
@@ -168,8 +174,8 @@ class ScanProductVC: UIViewController {
             return
         }
         textObservations = textResults as! [VNTextObservation]
-        DispatchQueue.main.async {
-            
+//        DispatchQueue.main.async {
+        
 //            guard let sublayers = self.view.layer.sublayers else {
 //                return
 //            }
@@ -181,7 +187,7 @@ class ScanProductVC: UIViewController {
 //            let viewWidth = self.view.frame.size.width
 //            let viewHeight = self.view.frame.size.height
 //            for result in textResults {
-            
+//
 //                if let textResult = result {
 //
 //                    let layer = CALayer()
@@ -193,82 +199,32 @@ class ScanProductVC: UIViewController {
 //
 //                    layer.frame = rect
 //                    layer.borderWidth = 2
-//                    layer.borderColor = UIColor.red.cgColor
+//                    layer.borderColor = UIColor.white.cgColor
 //                    self.view.layer.addSublayer(layer)
 //                }
 //            }
-        }
+//        }
     }
     
-    func highlightWord(box: VNTextObservation) {
-        
-        guard let boxes = box.characterBoxes else {
-            return
-        }
-        
-        var maxX: CGFloat = 9999.0
-        var minX: CGFloat = 0.0
-        var maxY: CGFloat = 9999.0
-        var minY: CGFloat = 0.0
-        
-       
-        
-        for char in boxes {
-            if char.bottomLeft.x < maxX {
-                maxX = char.bottomLeft.x
-            }
-            if char.bottomRight.x > minX {
-                minX = char.bottomRight.x
-            }
-            if char.bottomRight.y < maxY {
-                maxY = char.bottomRight.y
-            }
-            if char.topRight.y > minY {
-                minY = char.topRight.y
-            }
-        }
-        
-        let xCord = maxX * imageView.frame.size.width
-        let yCord = (1 - minY) * imageView.frame.size.height
-        let width = (minX - maxX) * imageView.frame.size.width
-        let height = (minY - maxY) * imageView.frame.size.height
-        
-        //        let outline = CALayer()
-        //        outline.frame = CGRect(x: xCord, y: yCord, width: width, height: height)
-        //        outline.borderWidth = 2.0
-        //        outline.borderColor = UIColor.red.cgColor
-        //
-        
-        let txt = UIView()
-        txt.frame = CGRect(x: xCord, y: yCord, width: width, height: height)
-        txt.borderWidth = 2.0
-        txt.borderColor = UIColor.white
-        txt.backgroundColor = UIColor.clear
-        imageView.addSubview(txt)
-        //        imageView.layer.addSublayer(outline)
-    }
-    
-    func highlightLetters(box: VNRectangleObservation) {
-        let xCord = box.topLeft.x * imageView.frame.size.width
-        let yCord = (1 - box.topLeft.y) * imageView.frame.size.height
-        let width = (box.topRight.x - box.bottomLeft.x) * imageView.frame.size.width
-        let height = (box.topLeft.y - box.bottomLeft.y) * imageView.frame.size.height
-        
-        let outline = CALayer()
-        outline.frame = CGRect(x: xCord, y: yCord, width: width, height: height)
-        outline.borderWidth = 1.0
-        outline.borderColor = UIColor.blue.cgColor
-        
-        imageView.layer.addSublayer(outline)
+
+}
+//MARK: Scan Flag delegate
+extension ScanProductVC: SelectTextDelegate
+{
+    func scanFlag(flag: Int) {
+        session.startRunning()
+        self.flag = flag
     }
 }
-
-
+//MARK: AVCaptureVideoDataOutputSampleBufferDelegate
 extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate {
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            
+        
+    DispatchQueue.main.asyncAfter(deadline: .now()) {
+           
+    if self.flag == 0
+    {
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             return
         }
@@ -324,7 +280,6 @@ extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate {
             }
         }
             self.textObservations.removeAll()
-        
             let viewWidth = self.cameraView.frame.size.width
             let viewHeight = self.cameraView.frame.size.height
             
@@ -336,23 +291,12 @@ extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate {
                     if i != self.cameraView
                     {
                         i.removeFromSuperview()
+                        
                     }
                 }
             }
-            
-//            guard let sublayers = self.cameraView.layer.sublayers else {
-//                return
-//            }
-//            for layer in sublayers[1...] {
-//
-//                if let _ = layer as? CATextLayer {
-//                    layer.removeFromSuperlayer()
-//                }
-//            }
-            
             for tuple in recognizedTextPositionTuples {
                 var rect = tuple.rect
-                
                 rect.origin.x *= viewWidth
                 rect.size.width *= viewWidth
                 rect.origin.y *= viewHeight
@@ -360,24 +304,25 @@ extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate {
                 
                 // Increase the size of text layer to show text of large lengths
                 rect.size.width += 100
-                rect.size.height += 20
+                rect.size.height += 30
                 
-                var labl = UILabel()
+                let labl = UILabel()
                 labl.frame = rect
                 labl.textColor = UIColor.white
                 labl.text = tuple.text
                 labl.isUserInteractionEnabled = true
                 labl.layer.borderColor = UIColor.white.cgColor
                 labl.layer.borderWidth = 2.0
-                labl.font = UIFont(name: "arial", size: 17.0)
-     
+                labl.backgroundColor = UIColor.clear
+                labl.font = UIFont(name: "arial", size: 16.0)
+               
+                self.cameraView.addSubview(labl)
                 let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapHandle(_:)))
                 tap.numberOfTapsRequired = 1
                 labl.addGestureRecognizer(tap)
-
-                self.cameraView.addSubview(labl)
-
+                
             }
+        }
         }
     }
 
