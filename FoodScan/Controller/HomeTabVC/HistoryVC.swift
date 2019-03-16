@@ -35,12 +35,14 @@ class HistoryVC: UIViewController {
     var objUser: WSUser?
     var isLoadMore:Bool = false
     let refresher = UIRefreshControl()
+    var refresh:UIRefreshControl! = UIRefreshControl()
     var offSet : Int = 0
     var noOfRecords  = REQ_NO_OF_RECORD
     var RemoveIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupRefreshData()
         self.tableHistory.tableFooterView = UIView()
         self.tableFav.tableFooterView = UIView()
         
@@ -70,6 +72,22 @@ class HistoryVC: UIViewController {
         APP_DELEGATE.objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
     }
     
+    //MARK:- Refresh Table
+    func setupRefreshData() {
+        self.refresh.backgroundColor = UIColor.white
+        self.refresh.tintColor = UIColor.black
+        self.refresh.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        self.tableHistory!.addSubview(refresh)
+    }
+    
+    @objc func refreshData() {
+        self.refresh.beginRefreshing()
+        getHistory(isLoader: false)
+    }
+    
+    func stopRefresh() {
+        self.refresh.endRefreshing()
+    }
     func ShowNoDataMessage() {
         if isFav{
             lblNoDataTitle.text = "No Favourite Yet!"
@@ -226,7 +244,7 @@ class HistoryVC: UIViewController {
     func getHistory(isLoader : Bool){
         if isLoader{
             showIndicator(view: self.view)}
-        let userToken = UserDefaults.standard.string(forKey: kUserToken)
+        let userToken = UserDefaults.standard.string(forKey: kTempToken)
         let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
         
         print("encode string : \(encodeString!)")
@@ -262,10 +280,11 @@ class HistoryVC: UIViewController {
                     self.indicatorView.isHidden = true
                     self.activityIndicator.stopAnimating()
                 }
-                self.refresher.endRefreshing()
+                
             }else {
                 showBanner(title: "", subTitle: message!, bannerStyle: .danger)
             }
+            self.stopRefresh()
         })
     }
     
@@ -467,16 +486,24 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
     func scrollViewDidEndDecelerating(_ scrollView : UIScrollView) {
         let currentOffset = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-        
+      
         // Change 10.0 to adjust the distance from bottom
-        if maximumOffset - currentOffset <= 10.0{
+//        if maximumOffset - currentOffset <= 10.0{
+        if maximumOffset <= 10.0{
             if !isLoadMore{
-                indicatorView.isHidden = false
-                activityIndicator.startAnimating()
-                loadMoreRequest()
-                isLoadMore = true
+                if !isFav
+                {
+                    if !refresh.isRefreshing
+                    {
+                        indicatorView.isHidden = false
+                        activityIndicator.startAnimating()
+                        loadMoreRequest()
+                        isLoadMore = true
+                    }
+                }
+                
             }
         }
-        
+      
     }
 }

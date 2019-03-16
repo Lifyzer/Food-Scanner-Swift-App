@@ -73,6 +73,8 @@ let OK = "OK"
 let Thank_You = "Thank You!"
 let You_have_successfully_login = "You have successfully registered"
 
+let please_enter_product_name = "Please enter product name"
+
 //let kLogIn = "Login"
 let kUserId = "UserId"
 let kUserName = "UserName"

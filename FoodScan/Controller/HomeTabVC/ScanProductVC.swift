@@ -22,20 +22,12 @@ class ScanProductVC: UIViewController {
     private var textDetectionRequest: VNDetectTextRectanglesRequest?
     private var textObservations = [VNTextObservation]()
     private var tesseract = G8Tesseract(language: "eng", engineMode:.tesseractOnly)
-    private var font = CTFontCreateWithName("ArialMT" as CFString, 17, nil)
+//    private var font = CTFontCreateWithName("ArialMT" as CFString, 17, nil)
     
     var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
-    
-    let operationQueue = OperationQueue()
-    var imageLayer : AVCaptureVideoPreviewLayer?
-    
-    var activityIndicator = UIActivityIndicatorView()
-    
     var session = AVCaptureSession()
-    var requests = [VNRequest]()
-    var req = [VNDetectTextRectanglesRequest] ()
-    var arrLayer : [CALayer] = [CALayer]()
     var flag = 0
+   
     override func viewDidLoad() {
         super.viewDidLoad()
        
@@ -43,10 +35,10 @@ class ScanProductVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         // Do any additional setup after loading the view, typically from a nib.
-        tesseract?.pageSegmentationMode = .singleLine
+        tesseract?.pageSegmentationMode = .auto
         // Recognize only these characters
         tesseract?.charWhitelist = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890()-+*!/?.,@#$%&"
-        
+//        flag = 0
         if isAuthorized()
         {
             configureCamera()
@@ -109,19 +101,17 @@ class ScanProductVC: UIViewController {
     {
         if gesture.view!.isKind(of: UILabel.classForCoder())
         {
-            flag = 1
-            session.stopRunning()
             let txt = (gesture.view as! UILabel).text!
-            print(txt)
-            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idViewProductPopUpVC) as! ViewProductPopUpVC
-            vc.productName = txt
-            vc.modalPresentationStyle = .overCurrentContext
-            vc.delegate = self
-//            DispatchQueue.main.async {
-            
+            if txt != ""
+            {
+                flag = 1
+                session.stopRunning()
+                let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idViewProductPopUpVC) as! ViewProductPopUpVC
+                vc.productName = txt
+                vc.modalPresentationStyle = .overCurrentContext
+                vc.delegate = self
                 self.tabBarController?.present(vc, animated: false, completion: nil)
-//            }
-            
+            }
         }
       
     }
@@ -174,40 +164,11 @@ class ScanProductVC: UIViewController {
             return
         }
         textObservations = textResults as! [VNTextObservation]
-//        DispatchQueue.main.async {
-        
-//            guard let sublayers = self.view.layer.sublayers else {
-//                return
-//            }
-//            for layer in sublayers[1...] {
-//                if (layer as? CATextLayer) == nil {
-//                    layer.removeFromSuperlayer()
-//                }
-//            }
-//            let viewWidth = self.view.frame.size.width
-//            let viewHeight = self.view.frame.size.height
-//            for result in textResults {
-//
-//                if let textResult = result {
-//
-//                    let layer = CALayer()
-//                    var rect = textResult.boundingBox
-//                    rect.origin.x *= viewWidth
-//                    rect.size.height *= viewHeight
-//                    rect.origin.y = ((1 - rect.origin.y) * viewHeight) - rect.size.height
-//                    rect.size.width *= viewWidth
-//
-//                    layer.frame = rect
-//                    layer.borderWidth = 2
-//                    layer.borderColor = UIColor.white.cgColor
-//                    self.view.layer.addSublayer(layer)
-//                }
-//            }
-//        }
     }
-    
-
 }
+
+
+
 //MARK: Scan Flag delegate
 extension ScanProductVC: SelectTextDelegate
 {
