@@ -45,6 +45,9 @@ class ScanProductVC: UIViewController {
             startTextDetection()
         }
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        session.stopRunning()
+    }
     
     private func isAuthorized() -> Bool {
         let authorizationStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)

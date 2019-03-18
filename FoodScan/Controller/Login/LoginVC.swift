@@ -40,6 +40,7 @@ class LoginVC: UIViewController {
                 WS_KDevice_type:DEVICE_TYPE,
                 WS_KAccess_key:DEFAULT_ACCESS_KEY,
                 WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
+            
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APILogin, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 self.hideIndicator(view: self.view)
                 if response != nil
@@ -50,8 +51,8 @@ class LoginVC: UIViewController {
                     if JSON(response!)[WSKUser].array? .count != 0 {
                         APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
                         UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.guid, forKey: kUserGUID)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId, forKey: kUserId)
+                        UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
+                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
                     }
                 }else {
                     showBanner(title: "", subTitle: message!, bannerStyle: .danger)

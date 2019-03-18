@@ -153,7 +153,7 @@ func getTempToken() {
                 let dicConfig:NSDictionary = dicTemp.object(forKey: kAdminConfig) as! NSDictionary
                 UserDefaults.standard.set(dicConfig.value(forKey: kGlobalPassword), forKey: kGlobalPassword)
                 UserDefaults.standard.set(dicTemp.value(forKey: kTempToken), forKey: kTempToken)
-                UserDefaults.standard.set(dicTemp.value(forKey: KKey_iv), forKey: KKey_iv)
+                UserDefaults.standard.set(dicConfig.value(forKey: KKey_iv), forKey: KKey_iv)
             }
         }else {
            // showBanner(title: "", subTitle: message!, bannerStyle: .danger)

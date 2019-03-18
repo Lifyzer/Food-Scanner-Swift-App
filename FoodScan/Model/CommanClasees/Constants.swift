@@ -23,7 +23,7 @@ let APP_FONT_LIGHT = "Roboto-Light"
 
 
 //String Constant
-let DEFAULT_ACCESS_KEY = "nousername"
+var DEFAULT_ACCESS_KEY = "nousername"
 let DEVICE_TYPE = "1"
 let REQ_NO_OF_RECORD = "5"
 let NO_OF_RECORD = 5

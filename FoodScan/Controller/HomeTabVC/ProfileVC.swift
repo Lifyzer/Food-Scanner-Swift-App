@@ -69,14 +69,14 @@ class ProfileVC: UIViewController {
     @objc func btnFavourite(_ sender: UIButton) {
         let objProduct  = arrayFavFood[sender.tag]
         RemoveIndex = sender.tag
-        if objProduct.isFavourite.asStringOrEmpty() == "0"
-        {
-            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
-        }
-        else
-        {
+//        if objProduct.isFavourite.asStringOrEmpty() == "0"
+//        {
+//            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
+//        }
+//        else
+//        {
             AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
-        }
+//        }
     }
     func AfterAPICall(){
         

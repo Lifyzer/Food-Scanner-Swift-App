@@ -11,7 +11,7 @@ import SwiftyJSON
 //import TesseractOCR
 
 
-
+let History_Action_color = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1.0)
 class HistoryVC: UIViewController {
 
     @IBOutlet var lblNoDataTitle: UILabel!
@@ -39,7 +39,7 @@ class HistoryVC: UIViewController {
     var offSet : Int = 0
     var noOfRecords  = REQ_NO_OF_RECORD
     var RemoveIndex = -1
-    
+    var EditIndex = -1
     override func viewDidLoad() {
         super.viewDidLoad()
         setupRefreshData()
@@ -59,12 +59,13 @@ class HistoryVC: UIViewController {
                 getFavFood(isLoader: true)
             }
         }else {
-            tableHistory.isHidden = false
-            tableFav.isHidden = true
-            if arrayHistoryFood.count == 0{
-                ShowNoDataMessage()
-                getHistory(isLoader: true)
-            }
+            btnHistotyClicked()
+//            tableHistory.isHidden = false
+//            tableFav.isHidden = true
+//            if arrayHistoryFood.count == 0{
+//                ShowNoDataMessage()
+//                getHistory(isLoader: true)
+//            }
         }
     }
     
@@ -119,6 +120,54 @@ class HistoryVC: UIViewController {
     }
     
     //MARK: Functions
+    func AfterAddRemoveFavAPI()
+    {
+        if isFav
+        {
+            let objProduct = arrayFavFood[RemoveIndex]
+            arrayFavFood.remove(at:RemoveIndex)
+            tableFav.reloadData()
+            if(self.arrayFavFood.count == 0){
+                self.ShowNoDataMessage()
+            }else {
+                self.HideNoDataMessage()
+            }
+        }
+        else
+        {
+            let objProduct = arrayHistoryFood[EditIndex]
+            if objProduct.isFavourite == "1"
+            {
+                objProduct.isFavourite = "0"
+            }
+            else
+            {
+                objProduct.isFavourite = "1"
+            }
+            tableHistory.reloadData()
+        }
+    }
+    func SetImageInEditAction(indexPath : IndexPath,tableview:UITableView,imageName:String) -> UIImage
+    {
+        let backView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: tableview.frame.size.height))
+        backView.backgroundColor = History_Action_color//UIColor(red: 239/255.0, green: 34/255.0, blue: 91/255.0, alpha: 1.0)
+        
+        let frame = tableview.rectForRow(at: indexPath)
+        
+        
+        let myImage = UIImageView(frame: CGRect(x: 20, y: frame.size.height/2-20, width: 30, height: 30))
+        myImage.image = UIImage(named: imageName)!
+        backView.addSubview(myImage)
+        
+        let imgSize: CGSize = frame.size
+        UIGraphicsBeginImageContextWithOptions(imgSize, false, UIScreen.main.scale)//(imgSize, false, UIScreen.main.scale)
+        let context = UIGraphicsGetCurrentContext()
+        backView.layer.render(in: context!)
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
+        
+    }
     @objc func btnFavourite(_ sender: UIButton) {
         let objProduct  = arrayFavFood[sender.tag]
         RemoveIndex = sender.tag
@@ -131,15 +180,17 @@ class HistoryVC: UIViewController {
             AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
         }
     }
-    
     func AfterAPICall(){
         
         arrayFavFood.remove(at:RemoveIndex)
-        tableFav.reloadData()
+        if(self.arrayFavFood.count == 0){
+            self.ShowNoDataMessage()
+        }else {
+            self.HideNoDataMessage()
+        }
+            
     }
-    
-     //MARK:- Button click
-    @IBAction func buttonHistoryClicked(_ sender: Any) {
+    func btnHistotyClicked() {
         self.setView(view: tableHistory , hidden: false)
         self.setView(view: tableFav , hidden: true)
         isFav = false
@@ -156,6 +207,11 @@ class HistoryVC: UIViewController {
         }
     }
     
+     //MARK:- Button click
+    @IBAction func buttonHistoryClicked(_ sender: Any) {
+        btnHistotyClicked()
+    }
+    
     @IBAction func buttonFavClicked(_ sender: Any) {
         self.setView(view: tableHistory , hidden: true)
         self.setView(view: tableFav , hidden: false)
@@ -164,13 +220,15 @@ class HistoryVC: UIViewController {
         vwFav.isHidden = false
         tableFav.isHidden = false
         tableHistory.isHidden = true
-        if arrayFavFood.count == 0{
-            ShowNoDataMessage()
+        offSet = 0
+        arrayFavFood.removeAll()
+//        if arrayFavFood.count == 0{
+//            ShowNoDataMessage()
             self.getFavFood(isLoader: true)
-        }else {
-            HideNoDataMessage()
-            tableHistory.reloadData()
-        }
+//        }else {
+//            HideNoDataMessage()
+//            tableHistory.reloadData()
+//        }
         
     }
     
@@ -199,13 +257,17 @@ class HistoryVC: UIViewController {
         if isLoader{
             showIndicator(view: self.view)}
         let userToken = UserDefaults.standard.string(forKey: kTempToken)
-        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+        let encodeString = FBEncryptorAES.encryptBase64String(UserDefaults.standard.string(forKey: kUserGUID), keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+        print("encode string : \(encodeString!)")
+        
         let param:NSMutableDictionary = [
             WS_KTo_index:noOfRecords,
             WS_KFrom_index:offSet,
             WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
             WS_KAccess_key:DEFAULT_ACCESS_KEY,
             WS_KSecret_key:userToken ?? ""]
+        print(param)
+        
         HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetAllUserFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
             if(isLoader){
                 self.hideIndicator(view: self.view)}
@@ -245,8 +307,9 @@ class HistoryVC: UIViewController {
         if isLoader{
             showIndicator(view: self.view)}
         let userToken = UserDefaults.standard.string(forKey: kTempToken)
-        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+        let encodeString = FBEncryptorAES.encryptBase64String(UserDefaults.standard.string(forKey: kUserGUID).asStringOrEmpty(), keyString: UserDefaults.standard.string(forKey: kGlobalPassword).asStringOrEmpty(), keyIv: UserDefaults.standard.string(forKey: KKey_iv).asStringOrEmpty(), separateLines: false)
         
+//        DEFAULT_ACCESS_KEY = encodeString!
         print("encode string : \(encodeString!)")
         
         let param:NSMutableDictionary = [
@@ -289,6 +352,7 @@ class HistoryVC: UIViewController {
     }
     
     func removeHistory(historyId : String, rowId :Int){
+        
         let userToken = UserDefaults.standard.string(forKey: kTempToken)
         let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
         let param:NSMutableDictionary = [
@@ -328,12 +392,17 @@ class HistoryVC: UIViewController {
                     if favStatus == "1"{
                         showBanner(title: "", subTitle:"Product is successfully added to favourite" , bannerStyle: .success)
                     }
+                    else
+                    {
+                        showBanner(title: "", subTitle:"Product is successfully removed from favourite" , bannerStyle: .success)
+                    }
                      self.arrayHistoryFood[rowId].isFavourite = favStatus
                      self.tableHistory.reloadData()
                 }else {
                     self.arrayFavFood.remove(at: rowId)
                     self.tableFav.reloadData()
                     showBanner(title: "", subTitle:"Product is successfully removed from favourite" , bannerStyle: .success)
+                    
                     if(self.arrayFavFood.count == 0){
                         self.ShowNoDataMessage()
                     }else {
@@ -388,13 +457,22 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "food_cell", for: indexPath) as! tableFoodCell
-         let objProduct: WSProduct
+        var objProduct: WSProduct
         var createdDate : String = ""
+        
         if isFav{
             objProduct = arrayFavFood[indexPath.row]
             createdDate = "\(objProduct.favouriteCreatedDate ?? "")"
         }else {
             objProduct = arrayHistoryFood[indexPath.row]
+            if objProduct.id.asStringOrEmpty() == arrayHistoryFood.last?.id.asStringOrEmpty()
+            {
+                
+                indicatorView.isHidden = false
+                activityIndicator.startAnimating()
+                loadMoreRequest()
+                isLoadMore = true
+            }
             createdDate = "\(objProduct.historyCreatedDate ?? "")"
         }      
  
@@ -403,7 +481,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             dateFormatter.dateFormat = "dd/MM/yyyy"
             cell.labelDate.text =  dateFormatter.string(from: stringToDate(createdDate))
         }
-        let imageURL = URL(string: objProduct.productImage ?? "")
+        let imageURL = URL(string: objProduct.productImage.asStringOrEmpty())
         if imageURL != nil
         {
             cell.imgFavouriteFood!.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "food_place_holder"))
@@ -412,8 +490,8 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         {
             cell.imgFavouriteFood.image = UIImage(named: "food_place_holder")
         }
-        cell.productName.text = objProduct.productName ?? ""
-        let isHealthy : String = objProduct.isHealthy ?? ""
+        cell.productName.text = objProduct.productName.asStringOrEmpty()
+        let isHealthy : String = objProduct.isHealthy.asStringOrEmpty()
         if isHealthy != "" && isHealthy.count > 0{
             if isHealthy == "0" {
                  cell.productType.setTitle("\(Poor)", for: .normal)
@@ -426,7 +504,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             }
         }
         cell.btnFav.tag = indexPath.row
-        cell.btnFav.addTarget(self, action: #selector(btnFavourite(_:)), for:.touchUpInside)
+//        cell.btnFav.addTarget(self, action: #selector(btnFavourite(_:)), for:.touchUpInside)
         cell.selectionStyle = .none
         return cell
         
@@ -443,67 +521,121 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         APP_DELEGATE.mainNavigationController?.pushViewController(vc, animated: true)
     }
     
+//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//
+//        if isFav{
+//            let objProduct: WSProduct =  arrayFavFood[indexPath.row]
+//            let fav =  UIContextualAction(style: .normal, title: "", handler: { (action,view,completionHandler ) in
+//                self.RemoveIndex = indexPath.row
+//                self.AddRemoveFromFavouriteAPI(isFavourite: "0", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
+//
+//            })
+//            let imgFav = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: "fav_icon")
+//            fav.backgroundColor = UIColor(patternImage: imgFav)
+//            let configuration = UISwipeActionsConfiguration(actions: [fav])
+//             configuration.performsFirstActionWithFullSwipe = false
+//            return configuration
+//        }
+//        else {
+//            let objProduct: WSProduct =  arrayHistoryFood[indexPath.row]
+//            let delete =  UIContextualAction(style: .destructive, title: "", handler: { (action,view,completionHandler ) in
+//                self.removeHistory(historyId: objProduct.historyId!,rowId: indexPath.row)
+//            })
+//            let img = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: "delete_icon")
+//            delete.backgroundColor = UIColor(patternImage: img)
+//            var favStatus : String
+//            if objProduct.isFavourite == "1"{
+//                favStatus = "fav_icon"
+//            }else {
+//                favStatus = "unfav_icon"
+//            }
+//            let fav =  UIContextualAction(style: . normal, title: "", handler: { (action,view,completionHandler ) in
+//                self.EditIndex = indexPath.row
+//                if objProduct.isFavourite == "1" {
+//                    self.AddRemoveFromFavouriteAPI(isFavourite: "0", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
+//
+//                }else{
+//                    self.AddRemoveFromFavouriteAPI(isFavourite: "1", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
+//
+//                }
+//
+//            })
+//            let imgFav = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: favStatus)
+//            fav.backgroundColor = UIColor(patternImage: imgFav)
+//
+//            let configuration = UISwipeActionsConfiguration(actions: [fav,delete])
+//            configuration.performsFirstActionWithFullSwipe = false
+//            return configuration
+//        }
+//    }
+    
+
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
+
 //        let whitespace = whitespaceString(width:CGFloat(kCellActionWidth) )
         if isFav{
              let objProduct: WSProduct =  arrayFavFood[indexPath.row]
-            let fav = TableViewRowAction(style: UITableViewRowAction.Style.default, title: "Fav") { action, indexPath in
-                self.addRemoveFav(productId: objProduct.productId!, rowId: indexPath.row, favStatus: "0")
+            let fav = TableViewRowAction(style: UITableViewRowAction.Style.default, title: "") { action, indexPath in
+               
+                self.RemoveIndex = indexPath.row
+                self.AddRemoveFromFavouriteAPI(isFavourite: "0", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
             }
-            fav.backgroundColor = UIColor.lightGray
-            fav.image = UIImage(named: "unfav_icon")
+            let imgFav = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: "fav_icon")
+            fav.backgroundColor = UIColor(patternImage: imgFav)
             return [fav]
         }else {
             let objProduct: WSProduct =  arrayHistoryFood[indexPath.row]
-            let delete = TableViewRowAction(style: UITableViewRowAction.Style.default, title: "Delete") {action, indexPath in
+            let delete = TableViewRowAction(style: UITableViewRowAction.Style.default, title: "") {action, indexPath in
                 self.removeHistory(historyId: objProduct.historyId!,rowId: indexPath.row)
             }
-            delete.image = UIImage(named: "delete_icon")
-
+            let img = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: "delete_icon")
+            delete.backgroundColor = UIColor(patternImage: img)
             var favStatus : String
-            if objProduct.isFavourite == "0"{
-                favStatus = "UnFav Food,Do Fav"
+            if objProduct.isFavourite == "1"{
+                favStatus = "fav_icon"
             }else {
-                favStatus = "Fav Food,Make Unfav"
+                favStatus = "unfav_icon"
             }
-            let fav = TableViewRowAction(style: UITableViewRowAction.Style.default, title: favStatus) { action, indexPath in
-                if objProduct.isFavourite == "0" {
-                    self.addRemoveFav(productId: objProduct.productId!, rowId: indexPath.row, favStatus: "1")
+            let fav = TableViewRowAction(style: UITableViewRowAction.Style.default, title: "") { action, indexPath in
+                self.EditIndex = indexPath.row
+                if objProduct.isFavourite == "1" {
+                    self.AddRemoveFromFavouriteAPI(isFavourite: "0", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
+
                 }else{
-                    self.addRemoveFav(productId: objProduct.productId!, rowId: indexPath.row, favStatus: "0")
+                    self.AddRemoveFromFavouriteAPI(isFavourite: "1", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
                 }
-//                 showBanner(title: "", subTitle:"Product is successfully added to favourite" , bannerStyle: .success)
             }
-            fav.backgroundColor = UIColor.lightGray
-            fav.image = UIImage(named: "unfav_icon")
+            let imgFav = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: favStatus)
+            fav.backgroundColor = UIColor(patternImage: imgFav)
+
+
             return [delete,fav]
         }
-    
+
     }
 
     
-    func scrollViewDidEndDecelerating(_ scrollView : UIScrollView) {
-        let currentOffset = scrollView.contentOffset.y
-        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-      
-        // Change 10.0 to adjust the distance from bottom
-//        if maximumOffset - currentOffset <= 10.0{
-        if maximumOffset <= 10.0{
-            if !isLoadMore{
-                if !isFav
-                {
-                    if !refresh.isRefreshing
-                    {
-                        indicatorView.isHidden = false
-                        activityIndicator.startAnimating()
-                        loadMoreRequest()
-                        isLoadMore = true
-                    }
-                }
-                
-            }
-        }
-      
-    }
+//    func scrollViewDidEndDecelerating(_ scrollView : UIScrollView) {
+//        let currentOffset = scrollView.contentOffset.y
+//        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+//
+//        // Change 10.0 to adjust the distance from bottom
+////        if maximumOffset - currentOffset <= 10.0{
+//        if maximumOffset <= 10.0{
+//            if !isLoadMore{
+//                if !isFav
+//                {
+//                    if !refresh.isRefreshing
+//                    {
+//                        indicatorView.isHidden = false
+//                        activityIndicator.startAnimating()
+//                        loadMoreRequest()
+//                        isLoadMore = true
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//    }
 }

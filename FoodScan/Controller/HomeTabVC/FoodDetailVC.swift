@@ -45,8 +45,12 @@ class FoodDetailVC: UIViewController {
         let isFav : String = objProduct.isFavourite ?? ""
         if isFav == "0"{
              btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
-        }else {
+        }else if isFav == "1"{
              btnFav.setImage(UIImage(named: "fav_white_icon"), for: .normal)
+        }
+        else
+        {
+            btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
         }
         setupUI()
        
@@ -131,9 +135,13 @@ class FoodDetailVC: UIViewController {
         {
             AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
         }
-        else
+        else if objProduct.isFavourite.asStringOrEmpty() == "1"
         {
             AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
+        }
+        else
+        {
+            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
         }
         
     }
