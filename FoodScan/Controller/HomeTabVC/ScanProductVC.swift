@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import Vision
 import TesseractOCR
-
+import SwiftyJSON
 
 
 class ScanProductVC: UIViewController {
@@ -18,6 +18,8 @@ class ScanProductVC: UIViewController {
     
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var btnProduct: UIButton!
+    @IBOutlet weak var btnBarcode: UIButton!
     
     private var textDetectionRequest: VNDetectTextRectanglesRequest?
     private var textObservations = [VNTextObservation]()
@@ -26,10 +28,15 @@ class ScanProductVC: UIViewController {
     
     var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
     var session = AVCaptureSession()
+    let videoDataOutput = AVCaptureVideoDataOutput()
+    let metadataOutput = AVCaptureMetadataOutput()
     var flag = 0
-   
+    var scanOptions = -1
+   var productCode = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        scanOptions = 0
        
     }
     
@@ -39,14 +46,22 @@ class ScanProductVC: UIViewController {
         // Recognize only these characters
         tesseract?.charWhitelist = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890()-+*!/?.,@#$%&"
 //        flag = 0
+        scanOptions = 0
         if isAuthorized()
         {
+                if session.outputs.contains(metadataOutput)
+                {
+                    session.removeOutput(metadataOutput)
+                }
+                startTextDetection()
+            
             configureCamera()
-            startTextDetection()
         }
     }
     override func viewWillDisappear(_ animated: Bool) {
-        session.stopRunning()
+        if (session.isRunning == true) {
+            session.stopRunning()
+        }
     }
     
     private func isAuthorized() -> Bool {
@@ -68,6 +83,40 @@ class ScanProductVC: UIViewController {
         case .denied, .restricted: return false
         }
     }
+    
+    @IBAction func btnScanOptionActions(_ sender: UIButton) {
+        scanOptions = sender.tag
+        if scanOptions == 0
+        {
+            if session.outputs.contains(metadataOutput)
+            {
+                session.removeOutput(metadataOutput)
+            }
+            startTextDetection()
+        }
+        else
+        {
+            let subviews = self.cameraView.subviews
+            if subviews.count > 1
+            {
+                for i in subviews
+                {
+                    if i != self.cameraView
+                    {
+                        i.removeFromSuperview()
+                        
+                    }
+                }
+            }
+            if session.outputs.contains(videoDataOutput)
+            {
+                session.removeOutput(videoDataOutput)
+            }
+        }
+        configureCamera()
+        print(scanOptions)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -96,6 +145,7 @@ class ScanProductVC: UIViewController {
     private var cameraView1: CameraView {
         return cameraView as! CameraView
     }
+    
     @objc func btnAction(_ sender : UIButton)
     {
         print(sender.currentTitle)
@@ -140,12 +190,29 @@ class ScanProductVC: UIViewController {
             return                  
         }
         session.sessionPreset = .high
-        let videoDataOutput = AVCaptureVideoDataOutput()
-//        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default))
-        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)//(self, queue: DispatchQueue(label: "Buffer Queue", qos:.userInitiated, attributes: .concurrent, autoreleaseFrequency:.inherit, target: nil))
-        if session.canAddOutput(videoDataOutput) {
-            session.addOutput(videoDataOutput)
+        
+        if scanOptions == 0
+        {
+            
+            //        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default))
+            
+            videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)//(self, queue: DispatchQueue(label: "Buffer Queue", qos:.userInitiated, attributes: .concurrent, autoreleaseFrequency:.inherit, target: nil))
+            if session.canAddOutput(videoDataOutput) {
+                session.addOutput(videoDataOutput)
+            }
         }
+        else if scanOptions == 1
+        {
+            
+            
+            if (session.canAddOutput(metadataOutput)) {
+                session.addOutput(metadataOutput)
+                
+                metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+                metadataOutput.metadataObjectTypes = [.ean8, .ean13, .pdf417]
+            }
+        }
+      
         cameraView1.videoPreviewLayer.videoGravity = .resize
         session.startRunning()
     }
@@ -180,116 +247,180 @@ extension ScanProductVC: SelectTextDelegate
         self.flag = flag
     }
 }
+//MARK: AVCaptureMetadataOutputObjectsDelegate
+extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
+    
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        if self.flag == 0 && self.scanOptions == 1
+        {
+            self.session.stopRunning()
+            if let metadataObject = metadataObjects.first {
+                guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+                guard let stringValue = readableObject.stringValue else { return }
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                print(stringValue)
+                self.productCode = stringValue
+                self.productCode = "00449458"
+                GetProductDetailsAPI()
+                //                found(code: stringValue)
+            }
+        }
+    }
+}
+
 //MARK: AVCaptureVideoDataOutputSampleBufferDelegate
-extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate {
+extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate{
+    
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection){
         
-    DispatchQueue.main.asyncAfter(deadline: .now()) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
            
-    if self.flag == 0
-    {
-        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-            return
-        }
-        var imageRequestOptions = [VNImageOption: Any]()
-        if let cameraData = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
-            imageRequestOptions[.cameraIntrinsics] = cameraData
-        }
-        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: CGImagePropertyOrientation(rawValue: 6)!, options: imageRequestOptions)
-        do {
-            try imageRequestHandler.perform([self.textDetectionRequest!])
-        }
-        catch {
-            print("Error occured \(error)")
-        }
-        var ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-        let transform = ciImage.orientationTransform(for: CGImagePropertyOrientation(rawValue: 6)!)
-        ciImage = ciImage.transformed(by: transform)
-        let size = ciImage.extent.size
-        var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
-            for textObservation in self.textObservations {
-            guard let rects = textObservation.characterBoxes else {
-                continue
+        if self.flag == 0 && self.scanOptions == 0
+        {
+            guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+                return
             }
-            var xMin = CGFloat.greatestFiniteMagnitude
-            var xMax: CGFloat = 0
-            var yMin = CGFloat.greatestFiniteMagnitude
-            var yMax: CGFloat = 0
-            for rect in rects {
-                
-                xMin = min(xMin, rect.bottomLeft.x)
-                xMax = max(xMax, rect.bottomRight.x)
-                yMin = min(yMin, rect.bottomRight.y)
-                yMax = max(yMax, rect.topRight.y)
+            var imageRequestOptions = [VNImageOption: Any]()
+            if let cameraData = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
+                imageRequestOptions[.cameraIntrinsics] = cameraData
             }
-            let imageRect = CGRect(x: xMin * size.width, y: yMin * size.height, width: (xMax - xMin) * size.width, height: (yMax - yMin) * size.height)
-            let context = CIContext(options: nil)
-            guard let cgImage = context.createCGImage(ciImage, from: imageRect) else {
-                continue
+            let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: CGImagePropertyOrientation(rawValue: 6)!, options: imageRequestOptions)
+            do {
+                try imageRequestHandler.perform([self.textDetectionRequest!])
             }
-            let uiImage = UIImage(cgImage: cgImage)
-                self.tesseract?.image = uiImage
-                self.tesseract?.recognize()
-                guard var text = self.tesseract?.recognizedText else {
-                continue
+            catch {
+                print("Error occured \(error)")
             }
-            text = text.trimmingCharacters(in: CharacterSet.newlines)
-            if !text.isEmpty {
-                let x = xMin
-                let y = 1 - yMax
-                let width = xMax - xMin
-                let height = yMax - yMin
-                recognizedTextPositionTuples.append((rect: CGRect(x: x, y: y, width: width, height: height), text: text))
-            }
-        }
-            self.textObservations.removeAll()
-            let viewWidth = self.cameraView.frame.size.width
-            let viewHeight = self.cameraView.frame.size.height
-            
-            let subviews = self.cameraView.subviews
-            if subviews.count > 1
-            {
-                for i in subviews
-                {
-                    if i != self.cameraView
-                    {
-                        i.removeFromSuperview()
-                        
-                    }
+            var ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+            let transform = ciImage.orientationTransform(for: CGImagePropertyOrientation(rawValue: 6)!)
+            ciImage = ciImage.transformed(by: transform)
+            let size = ciImage.extent.size
+            var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
+                for textObservation in self.textObservations {
+                guard let rects = textObservation.characterBoxes else {
+                    continue
+                }
+                var xMin = CGFloat.greatestFiniteMagnitude
+                var xMax: CGFloat = 0
+                var yMin = CGFloat.greatestFiniteMagnitude
+                var yMax: CGFloat = 0
+                for rect in rects {
+                    
+                    xMin = min(xMin, rect.bottomLeft.x)
+                    xMax = max(xMax, rect.bottomRight.x)
+                    yMin = min(yMin, rect.bottomRight.y)
+                    yMax = max(yMax, rect.topRight.y)
+                }
+                let imageRect = CGRect(x: xMin * size.width, y: yMin * size.height, width: (xMax - xMin) * size.width, height: (yMax - yMin) * size.height)
+                let context = CIContext(options: nil)
+                guard let cgImage = context.createCGImage(ciImage, from: imageRect) else {
+                    continue
+                }
+                let uiImage = UIImage(cgImage: cgImage)
+                    self.tesseract?.image = uiImage
+                    self.tesseract?.recognize()
+                    guard var text = self.tesseract?.recognizedText else {
+                    continue
+                }
+                text = text.trimmingCharacters(in: CharacterSet.newlines)
+                if !text.isEmpty {
+                    let x = xMin
+                    let y = 1 - yMax
+                    let width = xMax - xMin
+                    let height = yMax - yMin
+                    recognizedTextPositionTuples.append((rect: CGRect(x: x, y: y, width: width, height: height), text: text))
                 }
             }
-            for tuple in recognizedTextPositionTuples {
-                var rect = tuple.rect
-                rect.origin.x *= viewWidth
-                rect.size.width *= viewWidth
-                rect.origin.y *= viewHeight
-                rect.size.height *= viewHeight
-                
-                // Increase the size of text layer to show text of large lengths
-                rect.size.width += 100
-                rect.size.height += 30
-                
-                let labl = UILabel()
-                labl.frame = rect
-                labl.textColor = UIColor.white
-                labl.text = tuple.text
-                labl.isUserInteractionEnabled = true
-                labl.layer.borderColor = UIColor.white.cgColor
-                labl.layer.borderWidth = 2.0
-                labl.backgroundColor = UIColor.clear
-                labl.font = UIFont(name: "arial", size: 16.0)
-               
-                self.cameraView.addSubview(labl)
-                let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapHandle(_:)))
-                tap.numberOfTapsRequired = 1
-                labl.addGestureRecognizer(tap)
-                
+                self.textObservations.removeAll()
+                let viewWidth = self.cameraView.frame.size.width
+                let viewHeight = self.cameraView.frame.size.height
+            
+                let subviews = self.cameraView.subviews
+                if subviews.count > 1
+                {
+                    for i in subviews
+                    {
+                        if i != self.cameraView
+                        {
+                            i.removeFromSuperview()
+                            
+                        }
+                    }
+                }
+                for tuple in recognizedTextPositionTuples {
+                    var rect = tuple.rect
+                    rect.origin.x *= viewWidth
+                    rect.size.width *= viewWidth
+                    rect.origin.y *= viewHeight
+                    rect.size.height *= viewHeight
+                    
+                    // Increase the size of text layer to show text of large lengths
+                    rect.size.width += 100
+                    rect.size.height += 30
+                    
+                    let labl = UILabel()
+                    labl.frame = rect
+                    labl.textColor = UIColor.white
+                    labl.text = tuple.text
+                    labl.isUserInteractionEnabled = true
+                    labl.layer.borderColor = UIColor.white.cgColor
+                    labl.layer.borderWidth = 2.0
+                    labl.backgroundColor = UIColor.clear
+                    labl.font = UIFont(name: "arial", size: 16.0)
+                   
+                    self.cameraView.addSubview(labl)
+                    let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapHandle(_:)))
+                    tap.numberOfTapsRequired = 1
+                    labl.addGestureRecognizer(tap)
+                    
+                }
             }
-        }
         }
     }
 
+}
+extension ScanProductVC
+{
+    func GetProductDetailsAPI()
+    {
+        
+        let userToken = UserDefaults.standard.string(forKey: kTempToken)
+        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+        //        DEFAULT_ACCESS_KEY = encodeString
+        let param:NSMutableDictionary = [
+            WS_KProduct_name:productCode,
+            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+        //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
+        //            WS_KSecret_key:userToken ?? ""]
+        
+        includeSecurityCredentials {(data) in
+            let data1 = data as! [AnyHashable : Any]
+            param.addEntries(from: data1)
+        }
+        
+        showIndicator(view: self.view)
+        
+        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+            self.hideIndicator(view: self.view)
+            if response != nil
+            {
+                let objData = JSON(response!)[WS_KProduct]
+                let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
+               
+                    self.flag = 0
+                    HomeTabVC.sharedHomeTabVC?.selectedIndex = 0
+                    let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
+                    vc.objProduct = objProduct[0]
+                    HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
+            
+            }
+            else
+            {
+                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+            }
+        })
+    }
 }
 
 extension UIView {

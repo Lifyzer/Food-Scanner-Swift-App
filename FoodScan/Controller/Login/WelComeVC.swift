@@ -17,6 +17,9 @@ class WelComeVC: UIViewController {
     }
     
 
+    @IBAction func btnBackClicked(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     //MARK: - Buttons
     @IBAction func buttonSignInClicked(_ sender: Any) {
         pushViewController(Storyboard: StoryBoardLogin, ViewController: idLoginVC, animation: true)

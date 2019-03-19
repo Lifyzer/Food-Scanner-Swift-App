@@ -41,24 +41,20 @@ class ProfileVC: UIViewController {
         if checkLoginAlert(){
             objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
             userEmail.text = objUser?.email
-            userName.text = objUser?.firstName
+            userName.text = objUser?.firstName?.capitalized
             refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
             tableProfile.refreshControl = refresher
-            if arrayFavFood.count == 0{
-                getFavFood(isLoader: true)
-            }
-            getFavFood(isLoader: true)
+           getFavFood(isLoader: true)
         }
-        if arrayFavFood.count > 0{
-            self.tableProfile.isHidden = false
-            self.vwNoData.isHidden = true
-        }else {
+        else
+        {
+            userEmail.text = "User Email"
+            userName.text = "User Name"
             self.vwNoData.isHidden = false
             self.tableProfile.isHidden = true
-        }       
+        }
     }
-    
-    
+   
     @IBAction func buttonSettingsClicked(_ sender: Any) {
         if checkLoginAlert(){
             self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idSettingsVC, animation: true)
@@ -66,20 +62,30 @@ class ProfileVC: UIViewController {
     }
     
     //MARK: Functions
+    func checkLoginAlert() -> Bool{
+        if !UserDefaults.standard.bool(forKey: kLogIn){
+            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "LOGIN",
+                                          style: .default,
+                                          handler: {(_: UIAlertAction!) in
+                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+            }))
+            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
+                
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }else {
+            return true
+        }
+        return false
+    }
+    
     @objc func btnFavourite(_ sender: UIButton) {
         let objProduct  = arrayFavFood[sender.tag]
         RemoveIndex = sender.tag
-//        if objProduct.isFavourite.asStringOrEmpty() == "0"
-//        {
-//            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
-//        }
-//        else
-//        {
-            AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
-//        }
+        AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
     }
     func AfterAPICall(){
-        
         arrayFavFood.remove(at:RemoveIndex)
         tableProfile.reloadData()
     }
@@ -89,7 +95,6 @@ class ProfileVC: UIViewController {
         getFavFood(isLoader: false)
     }
 
-    
     func loadMoreRequest() {
         self.offSet = arrayFavFood.count
         getFavFood(isLoader: false)
@@ -101,9 +106,14 @@ class ProfileVC: UIViewController {
             let param:NSMutableDictionary = [
                 WS_KTo_index:noOfRecords,
                 WS_KFrom_index:offSet,
-                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-                WS_KAccess_key:DEFAULT_ACCESS_KEY,
-                WS_KSecret_key:userToken ?? ""]
+                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+//                WS_KAccess_key:DEFAULT_ACCESS_KEY,
+//                WS_KSecret_key:userToken ?? ""]
+                includeSecurityCredentials {(data) in
+                    let data1 = data as! [AnyHashable : Any]
+                    param.addEntries(from: data1)
+                }
+        
             if(isLoader){
                 showIndicator(view: self.view)
             }
@@ -137,23 +147,7 @@ class ProfileVC: UIViewController {
     
  
     
-    func checkLoginAlert() -> Bool{
-        if !UserDefaults.standard.bool(forKey: kLogIn){
-            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "LOGIN",
-                                          style: .default,
-                                          handler: {(_: UIAlertAction!) in
-                   self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
-            }))
-            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
-                
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }else {
-            return true
-        }
-        return false
-    }
+   
 
 }
 

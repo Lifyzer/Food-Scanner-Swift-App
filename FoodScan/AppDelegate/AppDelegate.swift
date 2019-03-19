@@ -20,11 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//        let mainViewController   = loadViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC)
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        window?.rootViewController = mainViewController
-//        window?.makeKeyAndVisible()
-//
+
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC)
         mainNavigationController = UINavigationController.init(rootViewController: vc)

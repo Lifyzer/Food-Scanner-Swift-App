@@ -113,6 +113,52 @@ class HttpRequestManager
             }
         }
     }
+    func postJSONRequestSecurity(endpointurl:String, parameters:NSDictionary, encodingType:ParameterEncoding = JSONEncoding.default, responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
+    {
+        ShowNetworkIndicator(xx: true)
+        alamoFireManager.request(endpointurl, method: .post, parameters: parameters as? Parameters, encoding: encodingType, headers: additionalHeader)
+            
+            .responseJSON { (response:DataResponse<Any>) in
+                
+                ShowNetworkIndicator(xx: false)
+                
+                if let _ = response.result.error
+                {
+                    responseData(nil, response.result.error as NSError?,MESSAGE)
+                }
+                else
+                {
+                    switch(response.result)
+                    {
+                    case .success(_):
+                        if let data = response.result.value
+                        {
+                            self.Message = (data as! NSDictionary)[WSMESSAGE].asStringOrEmpty()
+//                            let responseStatus = Int((data as! NSDictionary)[WSSTATUS].asStringOrEmpty())
+//                            switch (responseStatus) {
+//
+//                            case RESPONSE_STATUS.VALID.rawValue :
+//                                self.resObjects = (data as! NSDictionary) as AnyObject
+//                                break
+//
+//                            case RESPONSE_STATUS.INVALID.rawValue :
+//                                self.resObjects = nil
+//                                break
+//
+//                            default :
+//                                self.resObjects = (data as! NSDictionary) as AnyObject
+//                                break
+//                            }
+                            responseData((data as! NSDictionary) as AnyObject, nil, self.Message)
+                        }
+                        break
+                    case .failure(_):
+                        responseData(nil, response.result.error as NSError?, MESSAGE)
+                        break
+                    }
+                }
+        }
+    }
     
     //MARK:- GET Request
     func getRequestWithoutParams(endpointurl:String,responseData:@escaping (_ data:AnyObject?, _ error: NSError?, _ message: String?) -> Void)

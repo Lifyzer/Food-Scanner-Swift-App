@@ -42,10 +42,10 @@ class FoodDetailVC: UIViewController {
                 btnCategory.setImage(UIImage(named: "dot_green_small"), for: .normal)
             }
         }
-        let isFav : String = objProduct.isFavourite ?? ""
-        if isFav == "0"{
+        let isFav = objProduct?.isFavourite.aIntOrEmpty()
+        if isFav == 0{
              btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
-        }else if isFav == "1"{
+        }else if isFav == 1{
              btnFav.setImage(UIImage(named: "fav_white_icon"), for: .normal)
         }
         else
@@ -110,13 +110,13 @@ class FoodDetailVC: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     func apicall(){
-        if objProduct.isFavourite.asStringOrEmpty() == "0"
+        if objProduct.isFavourite.aIntOrEmpty() == 0
         {
-            objProduct.isFavourite = "1"
+            objProduct.isFavourite = 1
         }
         else
         {
-            objProduct.isFavourite = "0"
+            objProduct.isFavourite = 0
         }
     }
     

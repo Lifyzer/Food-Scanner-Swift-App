@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,6 +37,7 @@
                                         </constraints>
                                         <state key="normal" image="back_icon_black"/>
                                         <connections>
+                                            <action selector="btnBackClicked:" destination="zSu-Mx-k0Z" eventType="touchUpInside" id="JO0-uZ-bzO"/>
                                             <action selector="buttonBackClicked:" destination="uoD-lV-qIA" eventType="touchUpInside" id="ubj-Mf-Dyy"/>
                                         </connections>
                                     </button>
@@ -171,7 +172,7 @@
                                         </constraints>
                                         <state key="normal" image="back_icon_black"/>
                                         <connections>
-                                            <action selector="buttonBackClicked:" destination="9Pe-lD-hxU" eventType="touchUpInside" id="xcf-CZ-vL1"/>
+                                            <action selector="buttonBackClicked:" destination="9Pe-lD-hxU" eventType="touchUpInside" id="3sT-s7-ndB"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -623,16 +624,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uAp-Y3-XDr" userLabel="NavView">
-                                <rect key="frame" x="0.0" y="44" width="380.33333333333331" height="60"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mBX-XH-JkY">
-                                        <rect key="frame" x="0.0" y="0.0" width="380.33333333333331" height="60"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="20"/>
                                         <color key="textColor" red="0.3411764706" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2J-vp-tYV">
-                                        <rect key="frame" x="0.0" y="0.0" width="60.333333333333336" height="60"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="mrE-ZE-TOb"/>
                                         </constraints>
@@ -655,20 +656,20 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IoW-gZ-cSp" userLabel="TopView">
-                                <rect key="frame" x="0.0" y="0.0" width="380.33333333333331" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <color key="backgroundColor" red="0.33333333333333331" green="0.6470588235294118" blue="0.27450980392156865" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZC-pX-9bW" userLabel="ContentView">
-                                <rect key="frame" x="0.0" y="104" width="380.33333333333331" height="674"/>
+                                <rect key="frame" x="0.0" y="104" width="375" height="674"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Problem! Just give in your Email ID and We will send you a link to reset your Password" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Xs-Vn-EJS">
-                                        <rect key="frame" x="40.333333333333314" y="60.000000000000007" width="300" height="31.333333333333336"/>
+                                        <rect key="frame" x="40" y="60.000000000000007" width="295" height="31.333333333333336"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="14"/>
                                         <color key="textColor" red="0.3411764706" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x0j-5p-2DI">
-                                        <rect key="frame" x="40.333333333333314" y="271.33333333333331" width="300" height="50"/>
+                                        <rect key="frame" x="40" y="271.33333333333331" width="300" height="50"/>
                                         <color key="backgroundColor" red="0.33333333329999998" green="0.64313725489999995" blue="0.27450980390000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="300" id="S0g-qP-9m6"/>
@@ -689,7 +690,7 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email ID" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Wn-eD-Emg" userLabel="email">
-                                        <rect key="frame" x="40.333333333333314" y="181.33333333333331" width="300" height="50"/>
+                                        <rect key="frame" x="40" y="181.33333333333331" width="300" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="Rjf-Ur-huJ"/>
                                             <constraint firstAttribute="width" constant="300" id="TU5-Ty-u2p"/>
@@ -724,7 +725,7 @@
                                     <constraint firstItem="6Wn-eD-Emg" firstAttribute="top" secondItem="1Xs-Vn-EJS" secondAttribute="bottom" constant="90" id="yop-4F-eq5"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PgT-31-Tyf" userLabel="BottomView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PgT-31-Tyf" userLabel="BottomView">
                                 <rect key="frame" x="0.0" y="778" width="375" height="34"/>
                                 <color key="backgroundColor" red="0.33333333333333331" green="0.6470588235294118" blue="0.27450980392156865" alpha="1" colorSpace="calibratedRGB"/>
                             </view>

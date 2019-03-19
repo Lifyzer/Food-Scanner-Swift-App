@@ -25,6 +25,7 @@ class SettingsVC: UIViewController {
 
     @IBAction func buttonSignOutClicked(_ sender: Any) {
             UserDefaults.standard.set(false, forKey: kLogIn)
+        UserDefaults.standard.removeObject(forKey: KUser)
             self.navigationController?.popViewController(animated: true)
     }
     

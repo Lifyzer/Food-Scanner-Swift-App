@@ -42,23 +42,45 @@ class LoginVC: UIViewController {
                 WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
             
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APILogin, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-                self.hideIndicator(view: self.view)
+               
                 if response != nil
                 {
                     UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
-                    UserDefaults.standard.set(true, forKey: kLogIn)
-                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: true)
+//                    UserDefaults.standard.set(true, forKey: kLogIn)
+                    
                     if JSON(response!)[WSKUser].array? .count != 0 {
                         APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
                         UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
                         UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
                         UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
+                        
+                        self.getGUID ()
                     }
                 }else {
                     showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
             })
         }
+    }
+    func getGUID(){
+        
+        let GUID = UserDefaults.standard.value(forKey: kUserGUID)
+        let param : NSDictionary = ["guid": GUID.asStringOrEmpty()]
+        
+        HttpRequestManager.sharedInstance.postJSONRequestSecurity(endpointurl: APItestEncryption, parameters: param as NSDictionary) { (response, error, message) in
+            if (error == nil)
+            {
+                if (response != nil && response is NSDictionary)
+                {
+                    let dicResp = response as! NSDictionary
+                    UserDefaults.standard.set(dicResp.value(forKey: kEncrypted), forKey: kEncrypted)
+                    self.hideIndicator(view: self.view)
+                    UserDefaults.standard.set(true, forKey: kLogIn)
+                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: true)
+                }
+            }
+        }
+        
     }
     
     func ValidateField() -> Bool {

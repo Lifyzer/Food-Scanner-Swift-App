@@ -73,9 +73,15 @@ extension ViewProductPopUpVC
 //        DEFAULT_ACCESS_KEY = encodeString
         let param:NSMutableDictionary = [
             WS_KProduct_name:productName,
-            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-            WS_KSecret_key:userToken ?? ""]
+            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+//            WS_KAccess_key:DEFAULT_ACCESS_KEY,
+//            WS_KSecret_key:userToken ?? ""]
+        
+        includeSecurityCredentials {(data) in
+            let data1 = data as! [AnyHashable : Any]
+            param.addEntries(from: data1)
+        }
+        
         showIndicator(view: self.view)
         
         HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in

@@ -20,29 +20,38 @@ let kUserToken = "userToken"
 let kAdminConfig = "adminConfig"
 let KKey_iv = "key_iv"
 let KGUID = "GUID"
+let kEncrypted = "encrypted_value"
 
 
-//func includeSecurityCredentials() -> NSDictionary {
-//    
-//    let accessKey : String
-//    let secretKey : String
-//    
-//    if UserDefaults.standard.bool(forKey: kLogIn) && (UserDefaults.standard.value(forKey: kGlobalPassword) != nil) {
-//        accessKey = FBEncryptorAES.encryptBase64String(UserDefaults.standard.value(forKey: kUserGUID) as! String, keyString: UserDefaults.standard.value(forKey: kGlobalPassword) as! String, separateLines: false)
-//    }else {
-//        accessKey = kNoUsername
-//    }
-//    
-//    if UserDefaults.standard.bool(forKey: kLogIn) && (UserDefaults.standard.value(forKey: kUserToken) != nil) {
-//        secretKey = UserDefaults.standard.value(forKey: kUserToken) as! String
-//    }else if UserDefaults.standard.value(forKey: kTempToken) != nil {
-//        secretKey = UserDefaults.standard.value(forKey: kTempToken) as! String
-//    }else {
-//        secretKey =  ""
-//        //getTempToken()
-//    }
-//    return [kAccessKey:accessKey, kSecretKey:secretKey, WS_KDevice_type:DEVICE_TYPE] as NSDictionary
-//}
+func includeSecurityCredentials(processedData:@escaping (_ data: NSDictionary?) -> Void){
+    
+    let accessKey : String
+    let secretKey : String
+    
+    if UserDefaults.standard.bool(forKey: kLogIn) && (UserDefaults.standard.value(forKey: kEncrypted) != nil)
+    {
+        accessKey = UserDefaults.standard.value(forKey: kEncrypted) as! String
+    }
+    else
+    {
+        accessKey = kNoUsername
+    }
+    
+    if UserDefaults.standard.bool(forKey: kLogIn) && (UserDefaults.standard.value(forKey: kUserToken) != nil) {
+        secretKey = UserDefaults.standard.value(forKey: kUserToken) as! String
+        
+        processedData( [kAccessKey:accessKey, kSecretKey:  secretKey /*,"device_type":DEVICE_TYPE , kIsdelete : "0"*/] as NSDictionary)
+        
+    }else if UserDefaults.standard.value(forKey: kTempToken) != nil {
+        secretKey = UserDefaults.standard.value(forKey: kTempToken) as! String
+        processedData( [kAccessKey:accessKey, kSecretKey:  secretKey /*, "device_type":DEVICE_TYPE , kIsdelete : "0"*/] as NSDictionary)
+    }else {
+        //secretKey =  ""
+        getTempToken {
+            processedData( [kAccessKey:accessKey, kSecretKey:  UserDefaults.standard.value(forKey: kTempToken)! , "device_type":DEVICE_TYPE /*, kIsdelete : "0"*/] as NSDictionary)
+        }
+    }
+}
 
 func checkSecurity() {
     
@@ -53,7 +62,8 @@ func checkSecurity() {
         }
     }
     else if (UserDefaults.standard.value(forKey: kTempToken) == nil) {
-        getTempToken()
+        getTempToken {
+        }
     }
 }
 
@@ -142,21 +152,74 @@ func callUpdateTokenWS() {
 }
 
 //MARK:- TempToken
-func getTempToken() {
+func getTempToken(processedData:@escaping () -> Void) {
     let param:NSDictionary = [kAccessKey:kNoUsername]
-    HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRefreshToken, parameters: param, responseData: { (response, error, message) in
-        
-        if response != nil
+    
+    HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRefreshToken, parameters: param as NSDictionary) { (response, error, message) in
+        if (error == nil)
         {
-            let dicTemp:NSDictionary = (response as! NSDictionary).object(forKey: WSDATA) as! NSDictionary
-            if dicTemp.value(forKey: kTempToken) != nil && dicTemp.object(forKey: kAdminConfig) != nil {
-                let dicConfig:NSDictionary = dicTemp.object(forKey: kAdminConfig) as! NSDictionary
-                UserDefaults.standard.set(dicConfig.value(forKey: kGlobalPassword), forKey: kGlobalPassword)
-                UserDefaults.standard.set(dicTemp.value(forKey: kTempToken), forKey: kTempToken)
-                UserDefaults.standard.set(dicConfig.value(forKey: KKey_iv), forKey: KKey_iv)
+            if (response != nil && response is NSDictionary)
+            {
+                let dicTemp:NSDictionary = (response as! NSDictionary).object(forKey: WSDATA) as! NSDictionary
+                if dicTemp.value(forKey: kTempToken) != nil && dicTemp.object(forKey: kAdminConfig) != nil {
+                    let dicConfig:NSDictionary = dicTemp.object(forKey: kAdminConfig) as! NSDictionary
+                    UserDefaults.standard.set(dicConfig.value(forKey: kGlobalPassword), forKey: kGlobalPassword)
+                    UserDefaults.standard.set(dicTemp.value(forKey: kTempToken), forKey: kTempToken)
+                    UserDefaults.standard.set(dicConfig.value(forKey: KKey_iv), forKey: KKey_iv)
+                }
+                processedData()
             }
-        }else {
-           // showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+            else
+            {
+                processedData()
+            }
         }
-    })
+        else
+        {
+            processedData()
+        }
+    }
 }
+
+//func getGUID(processedData:@escaping (_ error: NSError?) -> Void) {
+//
+//    let GUID = UserDefaults.standard.value(forKey: kUserGUID)
+//    let param : NSDictionary = ["guid": GUID.asStringOrEmpty()]
+//
+//    HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APItestEncryption, parameters: param as NSDictionary) { (response, error, message) in
+//        if (error == nil)
+//        {
+//            if (response != nil && response is NSDictionary)
+//            {
+//                let dicResp = response as! NSDictionary
+//                UserDefaults.standard.set(dicResp.value(forKey: kEncrypted), forKey: kEncrypted)
+//                processedData(error)
+//            }
+//            processedData(error)
+//        }
+//        else
+//        {
+//            processedData(error)
+//        }
+//    }
+//
+//}
+
+//func getTempToken() {
+//    let param:NSDictionary = [kAccessKey:kNoUsername]
+//    HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRefreshToken, parameters: param, responseData: { (response, error, message) in
+//
+//        if response != nil
+//        {
+//            let dicTemp:NSDictionary = (response as! NSDictionary).object(forKey: WSDATA) as! NSDictionary
+//            if dicTemp.value(forKey: kTempToken) != nil && dicTemp.object(forKey: kAdminConfig) != nil {
+//                let dicConfig:NSDictionary = dicTemp.object(forKey: kAdminConfig) as! NSDictionary
+//                UserDefaults.standard.set(dicConfig.value(forKey: kGlobalPassword), forKey: kGlobalPassword)
+//                UserDefaults.standard.set(dicTemp.value(forKey: kTempToken), forKey: kTempToken)
+//                UserDefaults.standard.set(dicConfig.value(forKey: KKey_iv), forKey: KKey_iv)
+//            }
+//        }else {
+//           // showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+//        }
+//    })
+//}
