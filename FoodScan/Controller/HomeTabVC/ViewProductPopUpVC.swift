@@ -13,6 +13,7 @@ import SwiftyJSON
 @objc protocol SelectTextDelegate {
     func scanFlag(flag:Int)
 }
+
 class ViewProductPopUpVC: UIViewController {
 
     @IBOutlet weak var viewPopup: UIView!
@@ -23,7 +24,9 @@ class ViewProductPopUpVC: UIViewController {
     @IBOutlet weak var btnViewProduct: UIButton!
     var productName = ""
     var delegate:SelectTextDelegate?
+    var objUser: WSUser?
 //    var productName = ""
+    var param : NSMutableDictionary?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,12 +42,50 @@ class ViewProductPopUpVC: UIViewController {
 //            self.dismiss(animated: true, completion: nil)
         }
     }
+    func checkLoginAlert(){
+        if !UserDefaults.standard.bool(forKey: kLogIn){
+            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "LOGIN",
+                                          style: .default,
+                                          handler: {(_: UIAlertAction!) in
+                                            
+                                            IsScanWithLogin = true
+                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+            }))
+            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
+                
+            }))
+            
+            param = [
+                WS_KProduct_name:productName,
+                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+            //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
+            //            WS_KSecret_key:userToken ?? ""]
+            
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                self.param!.addEntries(from: data1)
+            }
+            UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: param!, forKey: SCANNED_DETAILS)
+            self.dismiss(animated: false) {
+                self.delegate?.scanFlag(flag: 0)
+                HomeTabVC.sharedHomeTabVC?.present(alert, animated: true, completion: nil)
+            }
+            
+        }else {
+            objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
+            GetProductDetailsAPI()
+           
+        }
+    }
     
     @IBAction func btnViewProduct(_ sender: Any) {
         if txtProductName.text != ""
         {
             productName = txtProductName.text!
-            GetProductDetailsAPI()
+//            GetProductDetailsAPI()
+            
+            checkLoginAlert()
             print(txtProductName.text)
         }
         else

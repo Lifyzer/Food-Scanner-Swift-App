@@ -22,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC)
+        let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC) as! HomeTabVC
+        vc.selectedIndex = 1
         mainNavigationController = UINavigationController.init(rootViewController: vc)
         mainNavigationController?.isNavigationBarHidden = true
         window?.rootViewController = mainNavigationController

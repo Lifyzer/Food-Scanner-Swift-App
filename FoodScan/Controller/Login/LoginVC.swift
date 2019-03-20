@@ -76,7 +76,16 @@ class LoginVC: UIViewController {
                     UserDefaults.standard.set(dicResp.value(forKey: kEncrypted), forKey: kEncrypted)
                     self.hideIndicator(view: self.view)
                     UserDefaults.standard.set(true, forKey: kLogIn)
-                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: true)
+                    
+//                    let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
+//                    let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC) as! HomeTabVC
+//                    vc.selectedIndex = 1
+//                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+//                    HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
+                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
+                     HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
+                    
                 }
             }
         }

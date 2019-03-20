@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodScan/Controller/HomeTabVC/HistoryVC.swift"
-            timestampString = "574693129.19519"
+            filePath = "FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
+            timestampString = "574778484.577096"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "btnHistotyClicked()"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "btnViewProduct(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodScan/Controller/HomeTabVC/HistoryVC.swift"
-            timestampString = "574693129.195798"
+            filePath = "FoodScan/Controller/HomeTabVC/ScanProductVC.swift"
+            timestampString = "574778484.57765"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
-            landmarkName = "btnHistotyClicked()"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodScan/Controller/HomeTabVC/HistoryVC.swift"
-            timestampString = "574693129.196383"
+            filePath = "FoodScan/Controller/HomeTabVC/ScanProductVC.swift"
+            timestampString = "574778484.578074"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "checkLoginAlert()"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

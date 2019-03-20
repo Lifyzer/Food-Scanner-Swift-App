@@ -23,12 +23,28 @@ class FoodDetailVC: UIViewController {
     var arrDetails : NSMutableArray = NSMutableArray()
     var arrTitle : NSMutableArray = NSMutableArray()
     var arrImages : [UIImage] = [UIImage]()
+    @IBOutlet weak var scrollView: UIScrollView!
     
+    @IBOutlet weak var scrollWidth: NSLayoutConstraint!
+    
+    @IBOutlet weak var contentHeight: NSLayoutConstraint!
+    @IBOutlet weak var tableContentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableProductDetails: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        SetFoodDetails()
+        setupUI()
+       
+    }
+    enum SubDetailsItems: Int {
+        case Protein=0 , Sugar, Salt, Ingredients, Fat, Calories, SaturatedFats, Carbohydrate, DietaryFiber
+        case totalCount = 9
+    }
+    //MARK: Functions
+    func SetFoodDetails() {
         btnFav.layer.cornerRadius = btnFav.frame.height / 2
-        tableDetails.tableHeaderView = vwHeader
+//        tableDetails.tableHeaderView = vwHeader
         lblProduct.text = objProduct.productName
         let isHealthy : String = objProduct.isHealthy ?? ""
         if isHealthy != "" && isHealthy.count > 0{
@@ -44,24 +60,16 @@ class FoodDetailVC: UIViewController {
         }
         let isFav = objProduct?.isFavourite.aIntOrEmpty()
         if isFav == 0{
-             btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
+            btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
         }else if isFav == 1{
-             btnFav.setImage(UIImage(named: "fav_white_icon"), for: .normal)
+            btnFav.setImage(UIImage(named: "fav_white_icon"), for: .normal)
         }
         else
         {
             btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
         }
-        setupUI()
-       
-        // Do any additional setup after loading the view.
-    }
-    enum SubDetailsItems: Int {
-        case Protein=0 , Sugar, Salt, Ingredients, Fat, Calories, SaturatedFats, Carbohydrate, DietaryFiber
-        case totalCount = 9
     }
     
-    //MARK: Functions
     func setupUI(){
         btnFav.setImage(IMG_UNFAV, for: .normal)
         btnFav.setImage(IMG_FAV, for: .selected)
@@ -93,9 +101,15 @@ class FoodDetailVC: UIViewController {
         CheckDetails(string: objFood?.saturatedFats, key: "Saturated Fats",img: "SaturatedFats")
         CheckDetails(string: objFood?.carbohydrate, key: "Carbohydrate",img: "Carbohydrate")
         CheckDetails(string: objFood?.dietaryFiber, key: "Dietary Fiber",img: "DietaryFiber")
-
+        
+        // Set scrollview
+        scrollWidth.constant = self.view.frame.width
+        self.tableProductDetails.layoutIfNeeded()
+        self.vwHeader.layoutIfNeeded()
+        contentHeight.constant = self.tableProductDetails.contentSize.height + vwHeader.frame.height + 40
+        tableProductDetails.tableFooterView = UIView()
+        self.view.layoutIfNeeded()
     }
-    
     
     func CheckDetails(string:String?,key:String,img:String){
         if (string.asStringOrEmpty() != "" && (string.asStringOrEmpty()) != "0")
@@ -152,82 +166,65 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
     
     //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == tableProductDetails
-        {
-            return 1
-        }
+//        if tableView == tableProductDetails
+//        {
+//            return 1
+//        }
         return arrDetails.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView == tableProductDetails
-        {
-            let ingreText = objProduct.ingredients.asStringOrEmpty()
-            var height:CGFloat = 0.0
-            if ingreText != ""
-            {
-                let lbl = UILabel()
-                lbl.text = ingreText
-//                lbl.sizeToFit()
-                height = CGFloat(lbl.frame.height) + 50.0
-            }
-            let tableheight  = CGFloat(75 * (arrDetails.count - 1) + 40)
-            return CGFloat(tableheight + height)
-        }
+//        if tableView == tableProductDetails
+//        {
+//            let ingreText = objProduct.ingredients.asStringOrEmpty()
+//            var height:CGFloat = 0.0
+//            if ingreText != ""
+//            {
+//                let lbl = UILabel()
+//                lbl.text = ingreText
+////                lbl.sizeToFit()
+//                height = CGFloat(lbl.frame.height) + 50.0
+//            }
+//            let tableheight  = CGFloat(75 * (arrDetails.count - 1) + 40)
+//            return CGFloat(tableheight + height)
+//        }
         let objTitle = arrTitle[indexPath.row]
         if "\(objTitle)" == "Ingredients"
         {
             return UITableView.automaticDimension
         }
-        return 75.0
+        return 60.0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if tableView == tableProductDetails
-        {
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "tableFoodCell", for: indexPath) as! tableFoodCell
-            cell.tableProducts.delegate = self
-            cell.tableProducts.dataSource = self
-//            cell.tableDetailsHeight.constant = CGFloat(60 * arrDetails.count + 40)
-            return cell
-        }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "food_details_cell", for: indexPath) as! tableFoodCell
-        cell.selectionStyle = .none
         
         let objTitle = arrTitle[indexPath.row]
         let objDetails = arrDetails[indexPath.row]
         let objImg = arrImages[indexPath.row]
         
-        cell.productName.text = "\(objTitle)"
        
-        cell.imgFood.setImage(objImg, for: .normal)
         if "\(objTitle)" != "Ingredients"
         {
-            cell.productCategory.isHidden = true
+            let cell = tableView.dequeueReusableCell(withIdentifier: "food_details_cell1", for: indexPath) as! tableFoodCell
+            cell.selectionStyle = .none
+             cell.imgFood.setImage(objImg, for: .normal)
+            cell.productName.text = "\(objTitle)"
             cell.productType.setTitle("\(objDetails)", for: .normal)
-            cell.productCategory.numberOfLines = 0
-            cell.lblDetailsHeight.constant = 0
-           
+            
+            return cell
         }
         else
         {
-            cell.productCategory.isHidden = false
-            cell.productCategory.text = "\(objDetails)"
+            let cell = tableView.dequeueReusableCell(withIdentifier: "food_details_cell", for: indexPath) as! tableFoodCell
+            cell.selectionStyle = .none
+             cell.imgFood.setImage(objImg, for: .normal)
+            cell.productName.text = "\(objTitle)"
             cell.productType.setTitle("", for: .normal)
-            
-             let ingreText = objProduct.ingredients.asStringOrEmpty()
-            let lbl = UILabel()
-            lbl.text = ingreText
-//            lbl.sizeToFit()
-            cell.lblDetailsHeight.constant = lbl.frame.height
-//            cell.productCategory.numberOfLines = 1
-//            cell.lblDetailsHeight.constant = 15
-           
+             cell.productCategory.text = "\(objDetails)"
+            return cell
         }
-        cell.productCategory.sizeToFit()
+
         
-        return cell
        
     }
 }

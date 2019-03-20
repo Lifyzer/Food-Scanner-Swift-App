@@ -40,6 +40,7 @@ class HistoryVC: UIViewController {
     var noOfRecords  = REQ_NO_OF_RECORD
     var RemoveIndex = -1
     var EditIndex = -1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupRefreshData()
@@ -102,6 +103,7 @@ class HistoryVC: UIViewController {
     
     @objc func refreshData() {
         self.refresh.beginRefreshing()
+        arrayHistoryFood.removeAll()
         getHistory(isLoader: false)
     }
     
@@ -260,7 +262,7 @@ class HistoryVC: UIViewController {
     
     func loadMoreRequest() {
         if isFav{
-            self.offSet = offSet + arrayFavFood.count
+//            self.offSet = offSet + arrayFavFood.count
             getFavFood(isLoader: false)
         }else {
             self.offSet = offSet + arrayHistoryFood.count
@@ -371,8 +373,8 @@ class HistoryVC: UIViewController {
                 
                 if self.isLoadMore{
                     self.isLoadMore = false
-                    self.indicatorView.isHidden = true
-                    self.activityIndicator.stopAnimating()
+//                    self.indicatorView.isHidden = true
+//                    self.activityIndicator.stopAnimating()
                 }
                 
             }else {
@@ -499,7 +501,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             objProduct = arrayHistoryFood[indexPath.row]
 //            if objProduct.id.asStringOrEmpty() == arrayHistoryFood.last?.id.asStringOrEmpty()
 //            {
-//                
+//
 //                indicatorView.isHidden = false
 //                activityIndicator.startAnimating()
 //                loadMoreRequest()
@@ -672,8 +674,8 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         let height: CGFloat = scrollView.contentSize.height
         
         if bottomEdge >= height-5 {
-            indicatorView.isHidden = false
-            activityIndicator.startAnimating()
+//            indicatorView.isHidden = false
+//            activityIndicator.startAnimating()
             loadMoreRequest()
             isLoadMore = true
         }

@@ -12,6 +12,10 @@ import Vision
 import TesseractOCR
 import SwiftyJSON
 
+var selectedScanColor = UIColor(red: 68/255, green: 176/255, blue: 91/255, alpha: 1.0)//(red: 68/255, green: 176/255, blue: 91/255)
+var IsScanWithLogin = false
+var ScanParam = NSMutableDictionary()
+var SCANNED_DETAILS = "scanned_product"
 
 class ScanProductVC: UIViewController {
     
@@ -23,7 +27,7 @@ class ScanProductVC: UIViewController {
     
     private var textDetectionRequest: VNDetectTextRectanglesRequest?
     private var textObservations = [VNTextObservation]()
-    private var tesseract = G8Tesseract(language: "eng", engineMode:.tesseractOnly)
+    private var tesseract = G8Tesseract(language: "eng", engineMode:.tesseractCubeCombined)
 //    private var font = CTFontCreateWithName("ArialMT" as CFString, 17, nil)
     
     var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
@@ -32,7 +36,9 @@ class ScanProductVC: UIViewController {
     let metadataOutput = AVCaptureMetadataOutput()
     var flag = 0
     var scanOptions = -1
-   var productCode = ""
+    var productCode = ""
+    var param : NSMutableDictionary?
+    var objUser: WSUser?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,22 +47,35 @@ class ScanProductVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // Do any additional setup after loading the view, typically from a nib.
-        tesseract?.pageSegmentationMode = .auto
-        // Recognize only these characters
-        tesseract?.charWhitelist = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890()-+*!/?.,@#$%&"
-//        flag = 0
-        scanOptions = 0
-        if isAuthorized()
+        
+        if IsScanWithLogin
         {
-                if session.outputs.contains(metadataOutput)
-                {
-                    session.removeOutput(metadataOutput)
-                }
-                startTextDetection()
+            IsScanWithLogin = false
+            ScanParam = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: SCANNED_DETAILS) as! NSMutableDictionary
+            self.param = ScanParam
+            GetProductDetailsAPI()
             
-            configureCamera()
         }
+        
+            // Do any additional setup after loading the view, typically from a nib.
+            tesseract?.pageSegmentationMode = .autoOnly
+            // Recognize only these characters
+            tesseract?.charWhitelist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789()-+*!/?.,@#$%&"
+
+            scanOptions = 0
+            btnBarcode.setTitleColor(UIColor.white, for: .normal)
+            btnProduct.setTitleColor(selectedScanColor, for: .normal)
+            if isAuthorized()
+            {
+                    if session.outputs.contains(metadataOutput)
+                    {
+                        session.removeOutput(metadataOutput)
+                    }
+                    startTextDetection()
+                
+                configureCamera()
+            }
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
         if (session.isRunning == true) {
@@ -85,6 +104,16 @@ class ScanProductVC: UIViewController {
     }
     
     @IBAction func btnScanOptionActions(_ sender: UIButton) {
+        if sender == btnBarcode
+        {
+            btnBarcode.setTitleColor(selectedScanColor, for: .normal)
+            btnProduct.setTitleColor(UIColor.white, for: .normal)
+        }
+        else
+        {
+            btnBarcode.setTitleColor(UIColor.white, for: .normal)
+            btnProduct.setTitleColor(selectedScanColor, for: .normal)
+        }
         scanOptions = sender.tag
         if scanOptions == 0
         {
@@ -122,26 +151,6 @@ class ScanProductVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    //    override func viewDidLayoutSubviews() {
-    //        imageView.layer.sublayers?[0].frame = imageView.bounds
-    //    }
-    
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if touches.first != nil
-//        {
-//            let point:CGPoint = (touches.first as AnyObject).location(in: cameraView)
-//            let vw = cameraView.hitTest(point, with: nil)
-//            if vw != nil
-//            {
-//                if vw!.isKind(of: CATextLayer.classForCoder())
-//                {
-//                    print((vw as! CATextLayer).string)
-//                }
-//            }
-//        }
-//    }
     private var cameraView1: CameraView {
         return cameraView as! CameraView
     }
@@ -235,6 +244,51 @@ class ScanProductVC: UIViewController {
         }
         textObservations = textResults as! [VNTextObservation]
     }
+    func checkLoginAlert(){
+        if !UserDefaults.standard.bool(forKey: kLogIn){
+            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "LOGIN",
+                                          style: .default,
+                                          handler: {(_: UIAlertAction!) in
+                                            
+                                            IsScanWithLogin = true
+                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+            }))
+            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
+                
+            }))
+            
+            let userToken = UserDefaults.standard.string(forKey: kTempToken)
+            let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+            //        DEFAULT_ACCESS_KEY = encodeString
+            self.param = [
+                WS_KProduct_name:productCode,
+                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+           
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                self.param!.addEntries(from: data1)
+            }
+            UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: param!, forKey: SCANNED_DETAILS)
+            self.present(alert, animated: true, completion: nil)
+            
+        }else {
+            let userToken = UserDefaults.standard.string(forKey: kTempToken)
+            let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+            //        DEFAULT_ACCESS_KEY = encodeString
+            self.param = [
+                WS_KProduct_name:productCode,
+                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+           
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                self.param!.addEntries(from: data1)
+            }
+            objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
+            GetProductDetailsAPI()
+            
+        }
+    }
 }
 
 
@@ -261,8 +315,8 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
                 print(stringValue)
                 self.productCode = stringValue
                 self.productCode = "00449458"
-                GetProductDetailsAPI()
-                //                found(code: stringValue)
+                checkLoginAlert()
+
             }
         }
     }
@@ -274,7 +328,7 @@ extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate{
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection){
         
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+    DispatchQueue.main.asyncAfter(deadline: .now()) {
            
         if self.flag == 0 && self.scanOptions == 0
         {
@@ -318,7 +372,7 @@ extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate{
                     continue
                 }
                 let uiImage = UIImage(cgImage: cgImage)
-                    self.tesseract?.image = uiImage
+                    self.tesseract?.image = uiImage//.g8_blackAndWhite()
                     self.tesseract?.recognize()
                     guard var text = self.tesseract?.recognizedText else {
                     continue
@@ -385,23 +439,10 @@ extension ScanProductVC
     func GetProductDetailsAPI()
     {
         
-        let userToken = UserDefaults.standard.string(forKey: kTempToken)
-        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-        //        DEFAULT_ACCESS_KEY = encodeString
-        let param:NSMutableDictionary = [
-            WS_KProduct_name:productCode,
-            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-        //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-        //            WS_KSecret_key:userToken ?? ""]
-        
-        includeSecurityCredentials {(data) in
-            let data1 = data as! [AnyHashable : Any]
-            param.addEntries(from: data1)
-        }
         
         showIndicator(view: self.view)
         
-        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param!, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
             self.hideIndicator(view: self.view)
             if response != nil
             {
@@ -421,6 +462,8 @@ extension ScanProductVC
             }
         })
     }
+    
+    
 }
 
 extension UIView {
