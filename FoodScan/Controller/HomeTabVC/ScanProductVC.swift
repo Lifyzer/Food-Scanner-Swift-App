@@ -17,7 +17,7 @@ var IsScanWithLogin = false
 var ScanParam = NSMutableDictionary()
 var SCANNED_DETAILS = "scanned_product"
 
-class ScanProductVC: UIViewController {
+class ScanProductVC: UIViewController,G8TesseractDelegate {
     
     
     @IBOutlet weak var cameraView: UIView!
@@ -54,14 +54,14 @@ class ScanProductVC: UIViewController {
             ScanParam = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: SCANNED_DETAILS) as! NSMutableDictionary
             self.param = ScanParam
             GetProductDetailsAPI()
-            
         }
         
             // Do any additional setup after loading the view, typically from a nib.
-            tesseract?.pageSegmentationMode = .autoOnly
+            tesseract?.pageSegmentationMode = .sparseText//.auto
             // Recognize only these characters
-            tesseract?.charWhitelist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789()-+*!/?.,@#$%&"
-
+            tesseract?.charWhitelist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"//0123456789()-+*!/?.,@#$%&"
+            tesseract?.delegate = self
+        
             scanOptions = 0
             btnBarcode.setTitleColor(UIColor.white, for: .normal)
             btnProduct.setTitleColor(selectedScanColor, for: .normal)
@@ -240,6 +240,7 @@ class ScanProductVC: UIViewController {
             return $0 as? VNTextObservation
         }
         if textResults.isEmpty {
+            textObservations.removeAll()
             return
         }
         textObservations = textResults as! [VNTextObservation]
@@ -314,7 +315,7 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 print(stringValue)
                 self.productCode = stringValue
-                self.productCode = "00449458"
+//                self.productCode = "00449458"
                 checkLoginAlert()
 
             }
@@ -328,8 +329,8 @@ extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate{
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection){
         
-    DispatchQueue.main.asyncAfter(deadline: .now()) {
-           
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+        
         if self.flag == 0 && self.scanOptions == 0
         {
             guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
@@ -372,7 +373,7 @@ extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate{
                     continue
                 }
                 let uiImage = UIImage(cgImage: cgImage)
-                    self.tesseract?.image = uiImage//.g8_blackAndWhite()
+                    self.tesseract?.image = uiImage.g8_blackAndWhitemap()!
                     self.tesseract?.recognize()
                     guard var text = self.tesseract?.recognizedText else {
                     continue
@@ -395,10 +396,13 @@ extension ScanProductVC: AVCaptureVideoDataOutputSampleBufferDelegate{
                 {
                     for i in subviews
                     {
-                        if i != self.cameraView
+                        if i is UILabel
                         {
-                            i.removeFromSuperview()
-                            
+//                            if i != self.cameraView
+//                            {
+                                i.removeFromSuperview()
+                                
+//                            }
                         }
                     }
                 }
@@ -464,6 +468,7 @@ extension ScanProductVC
     }
     
     
+    
 }
 
 extension UIView {
@@ -476,6 +481,53 @@ extension UIView {
 }
 // MARK: - UIImage extension
 extension UIImage {
+    
+    func invertedImage() -> UIImage? {
+        guard let cgImage = self.cgImage else { return nil }
+        let ciImage = CoreImage.CIImage(cgImage: cgImage)
+        guard let filter = CIFilter(name: "CIColorInvert") else { return nil }
+        filter.setDefaults()
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        let context = CIContext(options: nil)
+        guard let outputImage = filter.outputImage else { return nil }
+        guard let outputImageCopy = context.createCGImage(outputImage, from: outputImage.extent) else { return nil }
+        return UIImage(cgImage: outputImageCopy)
+    }
+    
+    func g8_blackAndWhitemap() -> UIImage? {
+        var beginImage: CIImage? = nil
+        if let anImage = cgImage {
+            beginImage = CIImage(cgImage: anImage)
+        }
+        
+        var blackDict : [String : Any] = [kCIInputImageKey : beginImage,
+                                         "inputBrightness" : 0.0,
+                                         "inputContrast" : 1.1,
+                                         "inputSaturation" : 0.0]
+        var blackAndWhite: CIImage? = CIFilter(name: "CIColorControls", parameters: blackDict)?.outputImage
+        
+        var opDict : [String : Any] = [kCIInputImageKey : blackAndWhite,
+                                       "inputEV" : 0.7]
+        
+        let output: CIImage? = CIFilter(name: "CIExposureAdjust", parameters: opDict)?.outputImage
+        
+        let context = CIContext(options: nil)
+        var cgiimage: CGImage? = nil
+        if let anOutput = output {
+            cgiimage = context.createCGImage(anOutput, from: output?.extent ?? CGRect.zero)
+        }
+        var newImage: UIImage? = nil
+        if let aCgiimage = cgiimage {
+            newImage = UIImage(cgImage: aCgiimage, scale: 0, orientation: imageOrientation)
+        }
+        
+//        CGImageRelease(cgiimage!)
+        return newImage
+    }
+
+    
+   
+    
     func scaleImage(_ maxDimension: CGFloat) -> UIImage? {
         
         var scaledSize = CGSize(width: maxDimension, height: maxDimension)

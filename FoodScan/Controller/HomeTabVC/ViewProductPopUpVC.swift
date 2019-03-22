@@ -59,8 +59,6 @@ class ViewProductPopUpVC: UIViewController {
             param = [
                 WS_KProduct_name:productName,
                 WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-            //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-            //            WS_KSecret_key:userToken ?? ""]
             
             includeSecurityCredentials {(data) in
                 let data1 = data as! [AnyHashable : Any]
@@ -142,7 +140,10 @@ extension ViewProductPopUpVC
             }
             else
             {
-                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                self.dismiss(animated: false) {
+                    self.delegate?.scanFlag(flag: 0)
+                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                }
             }
         })
     }

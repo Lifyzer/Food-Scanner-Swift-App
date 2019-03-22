@@ -49,19 +49,15 @@ class HistoryVC: UIViewController {
         
         refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
         tableFav.refreshControl = refresher
-        refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
-        tableHistory.refreshControl = refresher
+//        refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
+//        tableHistory.refreshControl = refresher
         isFav = false
         self.setView(view: tableHistory , hidden: false)
         self.setView(view: tableFav, hidden: true)
         vwHistory.isHidden = false
         vwFav.isHidden = true
         tableFav.isHidden = true
-        tableHistory.isHidden = false
-//        ShowNoDataMessage()
-//        buttonHistoryClicked(buttonHistory)
-        
-   
+        tableHistory.isHidden = false   
     }
     
     
@@ -103,7 +99,8 @@ class HistoryVC: UIViewController {
     
     @objc func refreshData() {
         self.refresh.beginRefreshing()
-        arrayHistoryFood.removeAll()
+        
+        offSet = 0
         getHistory(isLoader: false)
     }
     
@@ -352,9 +349,18 @@ class HistoryVC: UIViewController {
                 let objData = JSON(response!)[WS_KHistory]
                 let tempArray  = objData.to(type: WSProduct.self) as! [WSProduct]
                 
-                if tempArray.count > 0 && self.offSet == 0{
+                
+                if tempArray.count > 0{
 
-                    self.arrayHistoryFood.append(contentsOf: tempArray)
+                    if self.offSet == 0
+                    {
+                        self.arrayHistoryFood.removeAll()
+                        self.arrayHistoryFood = tempArray
+                    }
+                    else
+                    {
+                        self.arrayHistoryFood.append(contentsOf: tempArray)
+                    }
                     self.tableHistory.reloadData()
                 }
                 else
