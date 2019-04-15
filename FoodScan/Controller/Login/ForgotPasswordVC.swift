@@ -29,6 +29,9 @@ class ForgotPasswordVC: UIViewController {
     @IBAction func buttonSendClicked(_ sender: Any) {
         
         if ValidateField() {
+            if Connectivity.isConnectedToInternet
+            {
+            
             showIndicator(view: view)
             let param:NSMutableDictionary = [
                 WS_KEmail_id:self.txtEmail.text!,
@@ -50,6 +53,11 @@ class ForgotPasswordVC: UIViewController {
                     showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
             })
+            }
+        }
+        else
+        {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
     

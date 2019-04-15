@@ -39,6 +39,9 @@ class RegistrationVC: UIViewController {
     @IBAction func buttonSignUpClicked(_ sender: Any) {
       
         if ValidateField(){
+            
+            if Connectivity.isConnectedToInternet
+            {
               showIndicator(view: view)
             let param:NSMutableDictionary = [
                 WS_KEmail_id:self.txtEmail.text!,
@@ -53,23 +56,74 @@ class RegistrationVC: UIViewController {
                 if response != nil
                 {
                     UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
-                    UserDefaults.standard.set(true, forKey: kLogIn)
-                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: true)
+                    //                    UserDefaults.standard.set(true, forKey: kLogIn)
+                    
                     if JSON(response!)[WSKUser].array? .count != 0 {
                         APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
-                        UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: WSUSER)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.guid, forKey: kUserGUID)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId, forKey: kUserId)
+                        UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
+                        UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
+                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
+                        
+                        self.getGUID ()
                     }
+                    
+//                    UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
+//                    UserDefaults.standard.set(true, forKey: kLogIn)
+//                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: true)
+//                    if JSON(response!)[WSKUser].array? .count != 0 {
+//                        APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
+//                        UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: WSUSER)
+//                        UserDefaults.standard.set(APP_DELEGATE.objUser?.guid, forKey: kUserGUID)
+//                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId, forKey: kUserId)
+//                    }
                 }else {
                     showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
-                
            
             })
+            }
+        }
+        else
+        {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
-    
+    func getGUID(){
+        
+        let GUID = UserDefaults.standard.value(forKey: kUserGUID)
+        let param : NSDictionary = ["guid": GUID.asStringOrEmpty()]
+        if Connectivity.isConnectedToInternet
+        {
+            HttpRequestManager.sharedInstance.postJSONRequestSecurity(endpointurl: APItestEncryption, parameters: param as NSDictionary) { (response, error, message) in
+                if (error == nil)
+                {
+                    if (response != nil && response is NSDictionary)
+                    {
+                        let dicResp = response as! NSDictionary
+                        UserDefaults.standard.set(dicResp.value(forKey: kEncrypted), forKey: kEncrypted)
+                        self.hideIndicator(view: self.view)
+                        UserDefaults.standard.set(true, forKey: kLogIn)
+                        
+                        //                    let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
+                        //                    let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC) as! HomeTabVC
+                        //                    vc.selectedIndex = 1
+                        //                    self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        //                    HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
+                        self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
+                        HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
+                        
+                    }
+                }
+                self.hideIndicator(view: self.view)
+            }
+        }
+        else
+        {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+        }
+        
+    }
     func ValidateField() -> Bool {
         if !txtFullName.text!.isValid(){
             showBanner(title: "", subTitle: please_enter_full_name, bannerStyle: .danger)

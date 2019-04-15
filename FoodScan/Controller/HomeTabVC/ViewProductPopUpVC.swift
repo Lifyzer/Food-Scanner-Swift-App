@@ -106,45 +106,50 @@ extension ViewProductPopUpVC
 {
     func GetProductDetailsAPI()
     {
-        
-        let userToken = UserDefaults.standard.string(forKey: kTempToken)
-        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-//        DEFAULT_ACCESS_KEY = encodeString
-        let param:NSMutableDictionary = [
-            WS_KProduct_name:productName,
-            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-//            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-//            WS_KSecret_key:userToken ?? ""]
-        
-        includeSecurityCredentials {(data) in
-            let data1 = data as! [AnyHashable : Any]
-            param.addEntries(from: data1)
+        if Connectivity.isConnectedToInternet
+        {
+            let userToken = UserDefaults.standard.string(forKey: kTempToken)
+            let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+    //        DEFAULT_ACCESS_KEY = encodeString
+            let param:NSMutableDictionary = [
+                WS_KProduct_name:productName,
+                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+    //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
+    //            WS_KSecret_key:userToken ?? ""]
+            
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                param.addEntries(from: data1)
+            }
+            
+            showIndicator(view: self.view)
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                self.hideIndicator(view: self.view)
+                if response != nil
+                {
+                    let objData = JSON(response!)[WS_KProduct]
+                   let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
+                    
+                    self.dismiss(animated: false) {
+                        self.delegate?.scanFlag(flag: 0)
+                        HomeTabVC.sharedHomeTabVC?.selectedIndex = 0
+                        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
+                        vc.objProduct = objProduct[0]
+                        HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
+                    }
+                }
+                else
+                {
+                    self.dismiss(animated: false) {
+                        self.delegate?.scanFlag(flag: 0)
+                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                    }
+                }
+            })
         }
-        
-        showIndicator(view: self.view)
-        
-        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-            self.hideIndicator(view: self.view)
-            if response != nil
-            {
-                let objData = JSON(response!)[WS_KProduct]
-               let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
-                
-                self.dismiss(animated: false) {
-                    self.delegate?.scanFlag(flag: 0)
-                    HomeTabVC.sharedHomeTabVC?.selectedIndex = 0
-                    let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
-                    vc.objProduct = objProduct[0]
-                    HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-            else
-            {
-                self.dismiss(animated: false) {
-                    self.delegate?.scanFlag(flag: 0)
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-                }
-            }
-        })
+        else
+        {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+        }
     }
 }

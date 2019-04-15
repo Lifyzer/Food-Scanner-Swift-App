@@ -267,152 +267,174 @@ class HistoryVC: UIViewController {
         }
     }
     
-    func getFavFood(isLoader : Bool){
-        if isLoader{
-            showIndicator(view: self.view)}
-        let userToken = UserDefaults.standard.string(forKey: kTempToken)
-        let encodeString = FBEncryptorAES.encryptBase64String(UserDefaults.standard.string(forKey: kUserGUID), keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-        print("encode string : \(encodeString!)")
-        
-        let param:NSMutableDictionary = [
-            WS_KTo_index:noOfRecords,
-            WS_KFrom_index:offSet,
-            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-//            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-//            WS_KSecret_key:userToken ?? ""]
-        print(param)
-        
-        includeSecurityCredentials {(data) in
-            let data1 = data as! [AnyHashable : Any]
-            param.addEntries(from: data1)
-        }
-        
-        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetAllUserFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-            if(isLoader){
-                self.hideIndicator(view: self.view)}
-            if response != nil
-            {
-                let objData = JSON(response!)[WS_KProduct]
-                let tempArray  = objData.to(type: WSProduct.self) as! [WSProduct]
-                if tempArray.count > 0{
-                    
-                    self.arrayFavFood.append(contentsOf: tempArray)
-                    self.tableFav.reloadData()
-                }
-                
-                if(self.arrayFavFood.count == 0){
-                    self.ShowNoDataMessage()
-                }else {
-                    self.HideNoDataMessage()
-                    if isLoader {
+    func getFavFood(isLoader : Bool)
+    {
+        if Connectivity.isConnectedToInternet
+        {
+            if isLoader{
+                showIndicator(view: self.view)
+            }
+            let userToken = UserDefaults.standard.string(forKey: kTempToken)
+            let encodeString = FBEncryptorAES.encryptBase64String(UserDefaults.standard.string(forKey: kUserGUID), keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+            print("encode string : \(encodeString!)")
+            
+            let param:NSMutableDictionary = [
+                WS_KTo_index:noOfRecords,
+                WS_KFrom_index:offSet,
+                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+            //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
+            //            WS_KSecret_key:userToken ?? ""]
+            print(param)
+            
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                param.addEntries(from: data1)
+            }
+            
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetAllUserFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                if(isLoader){
+                    self.hideIndicator(view: self.view)}
+                if response != nil
+                {
+                    let objData = JSON(response!)[WS_KProduct]
+                    let tempArray  = objData.to(type: WSProduct.self) as! [WSProduct]
+                    if tempArray.count > 0{
+                        
+                        self.arrayFavFood.append(contentsOf: tempArray)
                         self.tableFav.reloadData()
                     }
+                    
+                    if(self.arrayFavFood.count == 0){
+                        self.ShowNoDataMessage()
+                    }else {
+                        self.HideNoDataMessage()
+                        if isLoader {
+                            self.tableFav.reloadData()
+                        }
+                    }
+                    
+                    if self.isLoadMore{
+                        self.isLoadMore = false
+                        self.indicatorView.isHidden = true
+                        self.activityIndicator.stopAnimating()
+                    }
+                    self.refresher.endRefreshing()
+                }else {
+                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
-                
-                if self.isLoadMore{
-                    self.isLoadMore = false
-                    self.indicatorView.isHidden = true
-                    self.activityIndicator.stopAnimating()
-                }
-                self.refresher.endRefreshing()
-            }else {
-                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-            }
-        })
-        
+            })
+        }
+        else
+        {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+        }
+
     }
     
     func getHistory(isLoader : Bool){
-        if isLoader{
-            showIndicator(view: self.view)}
-        let userToken = UserDefaults.standard.string(forKey: kTempToken)
-        let encodeString = FBEncryptorAES.encryptBase64String(UserDefaults.standard.string(forKey: kUserGUID).asStringOrEmpty(), keyString: UserDefaults.standard.string(forKey: kGlobalPassword).asStringOrEmpty(), keyIv: UserDefaults.standard.string(forKey: KKey_iv).asStringOrEmpty(), separateLines: false)
-        
-//        DEFAULT_ACCESS_KEY = encodeString!
-        print("encode string : \(encodeString!)")
-        
-        let param:NSMutableDictionary = [
-            WS_KTo_index:noOfRecords,
-            WS_KFrom_index:offSet,
-            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-        
-        includeSecurityCredentials {(data) in
-            let data1 = data as! [AnyHashable : Any]
-            param.addEntries(from: data1)
-        }
-        
-        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetUserHistory, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-            if(isLoader){
-                self.hideIndicator(view: self.view)}
-            if response != nil
-            {
-                let objData = JSON(response!)[WS_KHistory]
-                let tempArray  = objData.to(type: WSProduct.self) as! [WSProduct]
-                
-                
-                if tempArray.count > 0{
+        if Connectivity.isConnectedToInternet
+        {
+            if isLoader{
+                showIndicator(view: self.view)}
+            let userToken = UserDefaults.standard.string(forKey: kTempToken)
+            let encodeString = FBEncryptorAES.encryptBase64String(UserDefaults.standard.string(forKey: kUserGUID).asStringOrEmpty(), keyString: UserDefaults.standard.string(forKey: kGlobalPassword).asStringOrEmpty(), keyIv: UserDefaults.standard.string(forKey: KKey_iv).asStringOrEmpty(), separateLines: false)
+            
+    //        DEFAULT_ACCESS_KEY = encodeString!
+            print("encode string : \(encodeString!)")
+            
+            let param:NSMutableDictionary = [
+                WS_KTo_index:noOfRecords,
+                WS_KFrom_index:offSet,
+                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+            
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                param.addEntries(from: data1)
+            }
+            
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetUserHistory, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                if(isLoader){
+                    self.hideIndicator(view: self.view)}
+                if response != nil
+                {
+                    let objData = JSON(response!)[WS_KHistory]
+                    let tempArray  = objData.to(type: WSProduct.self) as! [WSProduct]
+                    
+                    
+                    if tempArray.count > 0{
 
-                    if self.offSet == 0
-                    {
-                        self.arrayHistoryFood.removeAll()
-                        self.arrayHistoryFood = tempArray
+                        if self.offSet == 0
+                        {
+                            self.arrayHistoryFood.removeAll()
+                            self.arrayHistoryFood = tempArray
+                        }
+                        else
+                        {
+                            self.arrayHistoryFood.append(contentsOf: tempArray)
+                        }
+                        self.tableHistory.reloadData()
                     }
                     else
                     {
                         self.arrayHistoryFood.append(contentsOf: tempArray)
-                    }
-                    self.tableHistory.reloadData()
-                }
-                else
-                {
-                    self.arrayHistoryFood.append(contentsOf: tempArray)
-                    self.tableHistory.reloadData()
-                }
-                if(self.arrayHistoryFood.count == 0){
-                    self.ShowNoDataMessage()
-                }else {
-                    self.HideNoDataMessage()
-                    if isLoader {
                         self.tableHistory.reloadData()
                     }
+                    if(self.arrayHistoryFood.count == 0){
+                        self.ShowNoDataMessage()
+                    }else {
+                        self.HideNoDataMessage()
+                        if isLoader {
+                            self.tableHistory.reloadData()
+                        }
+                    }
+                    
+                    if self.isLoadMore{
+                        self.isLoadMore = false
+    //                    self.indicatorView.isHidden = true
+    //                    self.activityIndicator.stopAnimating()
+                    }
+                    
+                }else {
+                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
-                
-                if self.isLoadMore{
-                    self.isLoadMore = false
-//                    self.indicatorView.isHidden = true
-//                    self.activityIndicator.stopAnimating()
-                }
-                
-            }else {
-                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-            }
-            self.stopRefresh()
-        })
+                self.stopRefresh()
+            })
+        }
+        else
+        {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+        }
     }
     
     func removeHistory(historyId : String, rowId :Int){
-        
-        let userToken = UserDefaults.standard.string(forKey: kTempToken)
-        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-        let param:NSMutableDictionary = [
-            WS_KHistory_id:historyId,
-            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-            WS_KSecret_key:userToken ?? ""]
-        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRemoveProductFromHistory, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-            if response != nil
-            {
-                showBanner(title: "", subTitle:"Product is successfully removed from History" , bannerStyle: .success)
-                self.arrayHistoryFood.remove(at: rowId)
-                if(self.arrayHistoryFood.count == 0){
-                    self.ShowNoDataMessage()
+        if Connectivity.isConnectedToInternet
+        {
+            let userToken = UserDefaults.standard.string(forKey: kTempToken)
+            let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+            let param:NSMutableDictionary = [
+                WS_KHistory_id:historyId,
+                WS_KAccess_key:DEFAULT_ACCESS_KEY,
+                WS_KSecret_key:userToken ?? ""]
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRemoveProductFromHistory, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                if response != nil
+                {
+                    showBanner(title: "", subTitle:"Product is successfully removed from History" , bannerStyle: .success)
+                    self.arrayHistoryFood.remove(at: rowId)
+                    if(self.arrayHistoryFood.count == 0){
+                        self.ShowNoDataMessage()
+                    }else {
+                        self.HideNoDataMessage()
+                    }
+                    self.tableHistory.reloadData()
                 }else {
-                    self.HideNoDataMessage()
+                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
-                self.tableHistory.reloadData()
-            }else {
-                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-            }
-        })
+            })
+        }
+        else
+        {
+        showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+        }
     }
  
 //    func addRemoveFav(productId : String, rowId :Int, favStatus : Int){

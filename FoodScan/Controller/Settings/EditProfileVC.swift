@@ -32,35 +32,43 @@ class EditProfileVC: UIViewController {
 
     @IBAction func buttonSaveClicked(_ sender: Any) {
         if ValidateField(){
-            showIndicator(view: view)
-            let userToken = UserDefaults.standard.string(forKey: kTempToken)
-            let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-            let param:NSMutableDictionary = [
-                WS_KFirst_name:self.txtFullName.text!,
-                WS_KEmail_id:self.txtEmailId.text!,
-                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-                WS_KAccess_key:DEFAULT_ACCESS_KEY,
-                WS_KSecret_key:userToken ?? ""]
-            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIEditProfile, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-                self.hideIndicator(view: self.view)
-                if response != nil
-                {
-                    if JSON(response!)[WSKUser].array? .count != 0 {
-                        APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
-                        UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId, forKey: kUserId)
+            
+            if Connectivity.isConnectedToInternet
+            {
+                showIndicator(view: view)
+                let userToken = UserDefaults.standard.string(forKey: kTempToken)
+                let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+                let param:NSMutableDictionary = [
+                    WS_KFirst_name:self.txtFullName.text!,
+                    WS_KEmail_id:self.txtEmailId.text!,
+                    WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+                    WS_KAccess_key:DEFAULT_ACCESS_KEY,
+                    WS_KSecret_key:userToken ?? ""]
+                HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIEditProfile, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                    self.hideIndicator(view: self.view)
+                    if response != nil
+                    {
+                        if JSON(response!)[WSKUser].array? .count != 0 {
+                            APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
+                            UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
+                            UserDefaults.standard.set(APP_DELEGATE.objUser?.userId, forKey: kUserId)
+                        }
+                        let alert = UIAlertController(title: APPNAME, message: profile_change_success,preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK",
+                                                      style: .default,
+                                                      handler: {(_: UIAlertAction!) in
+                                                        self.navigationController?.popViewController(animated: true)
+                        }))
+                        self.present(alert, animated: true, completion: nil)
+                    }else {
+                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
-                    let alert = UIAlertController(title: APPNAME, message: profile_change_success,preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK",
-                                                  style: .default,
-                                                  handler: {(_: UIAlertAction!) in
-                                                    self.navigationController?.popViewController(animated: true)
-                    }))
-                    self.present(alert, animated: true, completion: nil)
-                }else {
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-                }
-            })
+                })
+            }
+            else
+            {
+                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            }
         }
     }
 

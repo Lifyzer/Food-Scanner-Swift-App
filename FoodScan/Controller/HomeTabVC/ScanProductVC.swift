@@ -39,10 +39,22 @@ class ScanProductVC: UIViewController,G8TesseractDelegate {
     var productCode = ""
     var param : NSMutableDictionary?
     var objUser: WSUser?
-    
+    private let supportedCodeTypes = [AVMetadataObject.ObjectType.upce,
+                                      AVMetadataObject.ObjectType.code39,
+                                      AVMetadataObject.ObjectType.code39Mod43,
+                                      AVMetadataObject.ObjectType.code93,
+                                      AVMetadataObject.ObjectType.code128,
+                                      AVMetadataObject.ObjectType.ean8,
+                                      AVMetadataObject.ObjectType.ean13,
+                                      AVMetadataObject.ObjectType.aztec,
+                                      AVMetadataObject.ObjectType.pdf417,
+                                      AVMetadataObject.ObjectType.itf14,
+                                      AVMetadataObject.ObjectType.dataMatrix,
+                                      AVMetadataObject.ObjectType.interleaved2of5,
+                                      AVMetadataObject.ObjectType.qr]
     override func viewDidLoad() {
         super.viewDidLoad()
-        scanOptions = 0
+        scanOptions = 1
        
     }
     
@@ -62,16 +74,16 @@ class ScanProductVC: UIViewController,G8TesseractDelegate {
             tesseract?.charWhitelist = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"//0123456789()-+*!/?.,@#$%&"
             tesseract?.delegate = self
         
-            scanOptions = 0
-            btnBarcode.setTitleColor(UIColor.white, for: .normal)
-            btnProduct.setTitleColor(selectedScanColor, for: .normal)
+            scanOptions = 1
+            btnBarcode.setTitleColor(selectedScanColor, for: .normal)
+            btnProduct.setTitleColor(UIColor.white, for: .normal)
             if isAuthorized()
             {
                     if session.outputs.contains(metadataOutput)
                     {
                         session.removeOutput(metadataOutput)
                     }
-                    startTextDetection()
+//                    startTextDetection()
                 
                 configureCamera()
             }
@@ -218,11 +230,11 @@ class ScanProductVC: UIViewController,G8TesseractDelegate {
                 session.addOutput(metadataOutput)
                 
                 metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                metadataOutput.metadataObjectTypes = [.ean8, .ean13, .pdf417]
+                metadataOutput.metadataObjectTypes = supportedCodeTypes
             }
         }
       
-        cameraView1.videoPreviewLayer.videoGravity = .resize
+        cameraView1.videoPreviewLayer.videoGravity = .resizeAspectFill
         session.startRunning()
     }
     
@@ -256,7 +268,9 @@ class ScanProductVC: UIViewController,G8TesseractDelegate {
                                             self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
             }))
             alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
-                
+                if (self.session.isRunning == false) {
+                    self.session.startRunning()
+                }
             }))
             
             let userToken = UserDefaults.standard.string(forKey: kTempToken)
@@ -308,16 +322,28 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if self.flag == 0 && self.scanOptions == 1
         {
-            self.session.stopRunning()
-            if let metadataObject = metadataObjects.first {
-                guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-                guard let stringValue = readableObject.stringValue else { return }
-                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-                print(stringValue)
-                self.productCode = stringValue
-//                self.productCode = "00449458"
-                checkLoginAlert()
-
+//            self.session.stopRunning()
+//            if let metadataObject = metadataObjects.first {
+//                guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+//                guard let stringValue = readableObject.stringValue else { return }
+//                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+//                print(stringValue)
+//                self.productCode = stringValue
+////                self.productCode = "00449458"
+//                checkLoginAlert()
+//
+//            }
+            
+            if metadataObjects.count == 0 {
+                print("No Code deteected")
+                return
+            }
+            
+            // Get the metadata object.
+            let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+            
+            if supportedCodeTypes.contains(metadataObj.type) {
+                print("Detected Code",metadataObj.stringValue)
             }
         }
     }
@@ -442,10 +468,9 @@ extension ScanProductVC
 {
     func GetProductDetailsAPI()
     {
-        
-        
+        if Connectivity.isConnectedToInternet
+        {
         showIndicator(view: self.view)
-        
         HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param!, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
             self.hideIndicator(view: self.view)
             if response != nil
@@ -457,6 +482,7 @@ extension ScanProductVC
                     HomeTabVC.sharedHomeTabVC?.selectedIndex = 0
                     let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
                     vc.objProduct = objProduct[0]
+                    HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
                     HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
             
             }
@@ -464,7 +490,13 @@ extension ScanProductVC
             {
                 showBanner(title: "", subTitle: message!, bannerStyle: .danger)
             }
+
         })
+        }
+        else
+        {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+        }
     }
     
     

@@ -15,6 +15,7 @@ class HomeTabVC: UITabBarController {
         super.viewDidLoad()
         delegate = self
          HomeTabVC.sharedHomeTabVC = self
+        HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
         // Do any additional setup after loading the view, typically from a nib.
         
     }
@@ -33,6 +34,6 @@ extension HomeTabVC: UITabBarControllerDelegate {
         else if tabBar.items?[2] == item {
             self.selectedIndex = 2 // setSelectedIndex(indexValue: 2)
         }
-        
+
     }
 }

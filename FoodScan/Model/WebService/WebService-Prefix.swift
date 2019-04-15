@@ -65,3 +65,10 @@ let WS_KHistory = "history"
 
 var arrayFavouriteProducts:[WSProduct] = [WSProduct]()
 
+//MARK:- Connectivity
+import Alamofire
+class Connectivity {
+    class var isConnectedToInternet:Bool {
+        return NetworkReachabilityManager()!.isReachable
+    }
+}

@@ -101,6 +101,9 @@ class ProfileVC: UIViewController {
     }
     
     func getFavFood(isLoader : Bool){
+        
+        if Connectivity.isConnectedToInternet
+        {
             let userToken = UserDefaults.standard.string(forKey: kTempToken)
             let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
             let param:NSMutableDictionary = [
@@ -142,12 +145,13 @@ class ProfileVC: UIViewController {
                 }else {
                     showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
-            })
+                })
+            }
+            else
+            {
+                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            }
         }
-    
- 
-    
-   
 
 }
 

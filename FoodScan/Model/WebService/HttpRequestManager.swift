@@ -61,7 +61,7 @@ class HttpRequestManager
     // METHODS
     init()
     {
-        alamoFireManager.session.configuration.timeoutIntervalForRequest = 120 //seconds
+        alamoFireManager.session.configuration.timeoutIntervalForRequest = 20 //seconds
         alamoFireManager.session.configuration.httpAdditionalHeaders = additionalHeader
     }
     
@@ -78,7 +78,7 @@ class HttpRequestManager
                 
             if let _ = response.result.error
             {
-                responseData(nil, response.result.error as NSError?,MESSAGE)
+                responseData(nil, response.result.error as NSError?,response.result.error?.localizedDescription/*MESSAGE*/)
             }
             else
             {

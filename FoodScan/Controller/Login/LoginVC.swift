@@ -33,41 +33,52 @@ class LoginVC: UIViewController {
     @IBAction func buttonSignInClicked(_ sender: Any) {
        
         if ValidateField(){
-             showIndicator(view: view)
-            let param:NSMutableDictionary = [
-                WS_KEmail_id:self.txtEmail.text!,
-                WS_KPassword:self.txtPassword.text!,
-                WS_KDevice_type:DEVICE_TYPE,
-                WS_KAccess_key:DEFAULT_ACCESS_KEY,
-                WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
-            
-            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APILogin, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-               
-                if response != nil
-                {
-                    UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
-//                    UserDefaults.standard.set(true, forKey: kLogIn)
+            if Connectivity.isConnectedToInternet
+            {
+                showIndicator(view: view)
+                let param:NSMutableDictionary = [
+                    WS_KEmail_id:self.txtEmail.text!,
+                    WS_KPassword:self.txtPassword.text!,
+                    WS_KDevice_type:DEVICE_TYPE,
+                    WS_KAccess_key:DEFAULT_ACCESS_KEY,
+                    WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
+                
+                HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APILogin, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                     
-                    if JSON(response!)[WSKUser].array? .count != 0 {
-                        APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
-                        UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
+                    if response != nil
+                    {
+                        UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
+                        //                    UserDefaults.standard.set(true, forKey: kLogIn)
                         
-                        self.getGUID ()
+                        if JSON(response!)[WSKUser].array? .count != 0 {
+                            APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
+                            UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
+                            UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
+                            UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
+                            
+                            self.getGUID ()
+                        }
+                    }else {
+                        self.hideIndicator(view: self.view)
+                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
-                }else {
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-                }
-            })
+                    
+                })
+            }
+            else
+            {
+                 showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            }
+            
         }
     }
     func getGUID(){
         
         let GUID = UserDefaults.standard.value(forKey: kUserGUID)
         let param : NSDictionary = ["guid": GUID.asStringOrEmpty()]
-        
-        HttpRequestManager.sharedInstance.postJSONRequestSecurity(endpointurl: APItestEncryption, parameters: param as NSDictionary) { (response, error, message) in
+        if Connectivity.isConnectedToInternet
+        {
+            HttpRequestManager.sharedInstance.postJSONRequestSecurity(endpointurl: APItestEncryption, parameters: param as NSDictionary) { (response, error, message) in
             if (error == nil)
             {
                 if (response != nil && response is NSDictionary)
@@ -83,11 +94,18 @@ class LoginVC: UIViewController {
 //                    self.navigationController?.pushViewController(vc, animated: true)
                     
 //                    HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
-                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
                      HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
+                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
+                   
                     
                 }
             }
+                self.hideIndicator(view: self.view)
+        }
+        }
+        else
+        {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
         
     }

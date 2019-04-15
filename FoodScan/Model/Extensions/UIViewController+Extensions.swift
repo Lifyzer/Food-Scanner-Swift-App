@@ -72,36 +72,42 @@ extension UIViewController
     typealias MethodHandler1 = () -> Void
     func AddRemoveFromFavouriteAPI(isFavourite : String,product_id: String,fn:@escaping MethodHandler1)
     {
-        
-        let userToken = UserDefaults.standard.string(forKey: kTempToken)
-        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-        let param:NSMutableDictionary = [
-            WS_KProduct_id:product_id,
-            WS_KIs_favourite:isFavourite,
-            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-//            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-//            WS_KSecret_key:userToken ?? ""]
-        includeSecurityCredentials {(data) in
-            let data1 = data as! [AnyHashable : Any]
-            param.addEntries(from: data1)
-        }
-        
-        showIndicator(view: self.view)
-        
-        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddToFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-            self.hideIndicator(view: self.view)
-            
-            if response != nil
-            {
-                if fn != nil
-                {
-                    fn()
+        if Connectivity.isConnectedToInternet
+        {
+                let userToken = UserDefaults.standard.string(forKey: kTempToken)
+                let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+                let param:NSMutableDictionary = [
+                    WS_KProduct_id:product_id,
+                    WS_KIs_favourite:isFavourite,
+                    WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+        //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
+        //            WS_KSecret_key:userToken ?? ""]
+                includeSecurityCredentials {(data) in
+                    let data1 = data as! [AnyHashable : Any]
+                    param.addEntries(from: data1)
                 }
-                showBanner(title: "", subTitle: message!, bannerStyle:.danger)
-            }else {
-                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-            }
-        })
+        
+                showIndicator(view: self.view)
+        
+                HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddToFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                    self.hideIndicator(view: self.view)
+                    
+                    if response != nil
+                    {
+                        if fn != nil
+                        {
+                            fn()
+                        }
+                        showBanner(title: "", subTitle: message!, bannerStyle:.danger)
+                    }else {
+                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                    }
+                })
+        }
+        else
+        {
+        showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+        }
     }
 }
 
