@@ -112,6 +112,10 @@ class HttpRequestManager
                 }
             }
         }
+        
+            .responseString { (response) in
+                print("Response String",response)
+        }
     }
     func postJSONRequestSecurity(endpointurl:String, parameters:NSDictionary, encodingType:ParameterEncoding = JSONEncoding.default, responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
     {

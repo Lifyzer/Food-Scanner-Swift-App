@@ -322,29 +322,29 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if self.flag == 0 && self.scanOptions == 1
         {
-//            self.session.stopRunning()
-//            if let metadataObject = metadataObjects.first {
-//                guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-//                guard let stringValue = readableObject.stringValue else { return }
-//                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-//                print(stringValue)
-//                self.productCode = stringValue
-////                self.productCode = "00449458"
-//                checkLoginAlert()
-//
+            self.session.stopRunning()
+            if let metadataObject = metadataObjects.first {
+                guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+                guard let stringValue = readableObject.stringValue else { return }
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                print(stringValue)
+                self.productCode = stringValue
+//                self.productCode = "00449458"
+                checkLoginAlert()
+
+            }
+            
+//            if metadataObjects.count == 0 {
+//                print("No Code deteected")
+//                return
 //            }
-            
-            if metadataObjects.count == 0 {
-                print("No Code deteected")
-                return
-            }
-            
-            // Get the metadata object.
-            let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-            
-            if supportedCodeTypes.contains(metadataObj.type) {
-                print("Detected Code",metadataObj.stringValue)
-            }
+//
+//            // Get the metadata object.
+//            let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+//
+//            if supportedCodeTypes.contains(metadataObj.type) {
+//                print("Detected Code",metadataObj.stringValue)
+//            }
         }
     }
 }

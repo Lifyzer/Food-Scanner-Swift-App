@@ -36,14 +36,20 @@ class EditProfileVC: UIViewController {
             if Connectivity.isConnectedToInternet
             {
                 showIndicator(view: view)
-                let userToken = UserDefaults.standard.string(forKey: kTempToken)
-                let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
+//                let userToken = UserDefaults.standard.string(forKey: kTempToken)
+//                let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
                 let param:NSMutableDictionary = [
                     WS_KFirst_name:self.txtFullName.text!,
                     WS_KEmail_id:self.txtEmailId.text!,
-                    WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-                    WS_KAccess_key:DEFAULT_ACCESS_KEY,
-                    WS_KSecret_key:userToken ?? ""]
+                    WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+//                    WS_KAccess_key:DEFAULT_ACCESS_KEY,
+//                    WS_KSecret_key:userToken ?? ""]
+                
+                includeSecurityCredentials {(data) in
+                    let data1 = data as! [AnyHashable : Any]
+                    param.addEntries(from: data1)
+                }
+                
                 HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIEditProfile, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                     self.hideIndicator(view: self.view)
                     if response != nil
