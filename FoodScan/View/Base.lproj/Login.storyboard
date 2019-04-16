@@ -498,30 +498,30 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9PC-MY-iMk">
-                                                <rect key="frame" x="37.666666666666657" y="330" width="300" height="33.666666666666686"/>
+                                                <rect key="frame" x="59.666666666666657" y="330" width="300" height="33.666666666666686"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="300" id="hMg-kN-Fx7"/>
                                                 </constraints>
                                                 <attributedString key="attributedText">
-                                                    <fragment content="By Creating Account, you are automatically accepting all the ">
+                                                    <fragment content="By Creating Account, you agree for accepting all the ">
                                                         <attributes>
                                                             <color key="NSColor" red="0.3411764706" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <font key="NSFont" size="15" name="ArialMT"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                     <fragment content="Terms &amp; Conditions">
                                                         <attributes>
                                                             <color key="NSColor" red="0.29411764705882354" green="0.60784313725490191" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <font key="NSFont" size="15" name="ArialMT"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
                                                 </attributedString>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZO-9t-hPi">
-                                                <rect key="frame" x="37.666666666666657" y="330" width="300" height="33.666666666666686"/>
+                                                <rect key="frame" x="59.666666666666657" y="330" width="300" height="33.666666666666686"/>
                                                 <connections>
                                                     <action selector="buttonPrivacyLinkClicked:" destination="uoD-lV-qIA" eventType="touchUpInside" id="gcc-oC-EA4"/>
                                                 </connections>
@@ -547,25 +547,38 @@
                                                     <action selector="buttonSignUpClicked:" destination="uoD-lV-qIA" eventType="touchUpInside" id="PHL-14-E1N"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWm-MV-lIw">
+                                                <rect key="frame" x="19.666666666666671" y="330" width="40" height="33.666666666666686"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="40" id="7UT-cT-UaV"/>
+                                                </constraints>
+                                                <state key="normal" image="Selected"/>
+                                                <connections>
+                                                    <action selector="btnAcceptTC:" destination="uoD-lV-qIA" eventType="touchUpInside" id="UXa-5k-m3G"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="fZO-9t-hPi" firstAttribute="centerX" secondItem="4SQ-lb-1gf" secondAttribute="centerX" id="01O-S4-cGf"/>
                                             <constraint firstItem="W7J-Yf-7zM" firstAttribute="top" secondItem="mb4-9x-EAD" secondAttribute="bottom" constant="20" id="0Bk-mH-cap"/>
                                             <constraint firstItem="KHY-4N-jRZ" firstAttribute="top" secondItem="9PC-MY-iMk" secondAttribute="bottom" constant="50" id="0vn-mf-ZPI"/>
-                                            <constraint firstItem="9PC-MY-iMk" firstAttribute="centerX" secondItem="4SQ-lb-1gf" secondAttribute="centerX" id="4QY-Pt-G9B"/>
                                             <constraint firstAttribute="bottom" secondItem="KHY-4N-jRZ" secondAttribute="bottom" constant="85" id="54c-cI-3Y7"/>
                                             <constraint firstAttribute="trailing" secondItem="UxA-UK-b30" secondAttribute="trailing" constant="37" id="Eq7-aA-jOW"/>
+                                            <constraint firstAttribute="trailing" secondItem="9PC-MY-iMk" secondAttribute="trailing" constant="15" id="G5Y-JV-afM"/>
                                             <constraint firstItem="9PC-MY-iMk" firstAttribute="top" secondItem="Sq1-6v-cvk" secondAttribute="bottom" constant="30" id="HxI-VD-9bZ"/>
-                                            <constraint firstItem="fZO-9t-hPi" firstAttribute="height" secondItem="9PC-MY-iMk" secondAttribute="height" id="LqR-Mn-fgV"/>
+                                            <constraint firstItem="fZO-9t-hPi" firstAttribute="leading" secondItem="9PC-MY-iMk" secondAttribute="leading" id="IO4-tF-wsG"/>
+                                            <constraint firstItem="fZO-9t-hPi" firstAttribute="top" secondItem="9PC-MY-iMk" secondAttribute="top" id="Jto-4s-hma"/>
                                             <constraint firstItem="mb4-9x-EAD" firstAttribute="top" secondItem="UxA-UK-b30" secondAttribute="bottom" constant="20" id="MNC-Ew-509"/>
+                                            <constraint firstItem="fZO-9t-hPi" firstAttribute="bottom" secondItem="9PC-MY-iMk" secondAttribute="bottom" id="WNf-Rw-TVQ"/>
                                             <constraint firstItem="UxA-UK-b30" firstAttribute="centerX" secondItem="4SQ-lb-1gf" secondAttribute="centerX" id="Znh-w4-P9p"/>
                                             <constraint firstItem="KHY-4N-jRZ" firstAttribute="centerX" secondItem="4SQ-lb-1gf" secondAttribute="centerX" id="aPd-sQ-SXg"/>
+                                            <constraint firstItem="9PC-MY-iMk" firstAttribute="leading" secondItem="sWm-MV-lIw" secondAttribute="trailing" id="bg3-3e-QgU"/>
                                             <constraint firstItem="W7J-Yf-7zM" firstAttribute="centerX" secondItem="4SQ-lb-1gf" secondAttribute="centerX" id="cFG-bY-4dy"/>
                                             <constraint firstItem="Sq1-6v-cvk" firstAttribute="top" secondItem="W7J-Yf-7zM" secondAttribute="bottom" constant="20" id="e3Y-By-jPu"/>
-                                            <constraint firstItem="fZO-9t-hPi" firstAttribute="top" secondItem="9PC-MY-iMk" secondAttribute="top" id="ggI-iK-AoM"/>
-                                            <constraint firstItem="fZO-9t-hPi" firstAttribute="width" secondItem="9PC-MY-iMk" secondAttribute="width" id="q4y-M7-ANj"/>
+                                            <constraint firstItem="sWm-MV-lIw" firstAttribute="bottom" secondItem="fZO-9t-hPi" secondAttribute="bottom" id="k6G-l6-UZa"/>
+                                            <constraint firstItem="fZO-9t-hPi" firstAttribute="trailing" secondItem="9PC-MY-iMk" secondAttribute="trailing" id="pzr-cK-kd4"/>
                                             <constraint firstItem="mb4-9x-EAD" firstAttribute="centerX" secondItem="4SQ-lb-1gf" secondAttribute="centerX" id="uch-ht-7WO"/>
+                                            <constraint firstItem="sWm-MV-lIw" firstAttribute="top" secondItem="fZO-9t-hPi" secondAttribute="top" id="xtB-5v-0JX"/>
                                             <constraint firstItem="UxA-UK-b30" firstAttribute="top" secondItem="4SQ-lb-1gf" secondAttribute="top" constant="40" id="y9t-8N-kV5"/>
                                             <constraint firstItem="Sq1-6v-cvk" firstAttribute="centerX" secondItem="4SQ-lb-1gf" secondAttribute="centerX" id="yX1-ec-tKh"/>
                                         </constraints>
@@ -605,6 +618,7 @@
                         <viewLayoutGuide key="safeArea" id="Eww-a4-Tbj"/>
                     </view>
                     <connections>
+                        <outlet property="btnAcceptTOS" destination="sWm-MV-lIw" id="vIw-Cf-edY"/>
                         <outlet property="txtCmfPassword" destination="Sq1-6v-cvk" id="aso-ax-MVl"/>
                         <outlet property="txtEmail" destination="mb4-9x-EAD" id="4y4-mI-IaQ"/>
                         <outlet property="txtFullName" destination="UxA-UK-b30" id="zal-G9-cDq"/>
@@ -858,6 +872,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Selected" width="15" height="15"/>
         <image name="back_icon_black" width="9" height="17"/>
         <image name="back_icon_white" width="10" height="19"/>
         <image name="scan_food_logo" width="193" height="147"/>

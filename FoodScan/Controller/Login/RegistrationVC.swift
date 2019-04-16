@@ -9,16 +9,28 @@
 import UIKit
 import SwiftyJSON
 
+
+var deselected = UIImage(named: "Deselected")
+var selected = UIImage(named: "Selected")
+
+
 class RegistrationVC: UIViewController {
     @IBOutlet var txtFullName: UITextField!
     @IBOutlet var txtEmail: UITextField!
     @IBOutlet var txtPassword: UITextField!
     @IBOutlet var txtCmfPassword: UITextField!
     @IBOutlet var buttonCreateAccount: UIButton!
+    @IBOutlet weak var imgTOS: UIImageView!
+    @IBOutlet weak var lblTOS: UILabel!
+    
+    @IBOutlet weak var btnAcceptTOS: UIButton!
+    var isAcceptTOS = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
        
+        btnAcceptTOS.setImage(selected, for: .selected)
+        btnAcceptTOS.setImage(deselected, for: .normal)
         txtFullName.setLeftPaddingPoints(10)
         txtEmail.setLeftPaddingPoints(10)
         txtPassword.setLeftPaddingPoints(10)
@@ -26,7 +38,18 @@ class RegistrationVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
+    @IBAction func btnAcceptTC(_ sender: Any) {
+        btnAcceptTOS.isSelected = !btnAcceptTOS.isSelected
+        if btnAcceptTOS.isSelected
+        {
+            isAcceptTOS = true
+        }
+        else
+        {
+            isAcceptTOS = false
+        }
+    }
+    
     //MARK: - Buttons
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -138,7 +161,9 @@ class RegistrationVC: UIViewController {
              showBanner(title: "", subTitle: please_enter_confirm_password, bannerStyle: .danger)
         }else if txtPassword.text != txtCmfPassword.text{
             showBanner(title: "", subTitle: password_and_confirmpass_is_different, bannerStyle: .danger)
-        }else {
+        }else if isAcceptTOS == false{
+            showBanner(title: "", subTitle: Accept_Terms_conditions, bannerStyle: .danger)
+        } else {
             return true
         
         }
