@@ -61,7 +61,7 @@ class HttpRequestManager
     // METHODS
     init()
     {
-        alamoFireManager.session.configuration.timeoutIntervalForRequest = 20 //seconds
+        alamoFireManager.session.configuration.timeoutIntervalForRequest = 15 //seconds
         alamoFireManager.session.configuration.httpAdditionalHeaders = additionalHeader
     }
     
@@ -78,7 +78,22 @@ class HttpRequestManager
                 
             if let _ = response.result.error
             {
-                responseData(nil, response.result.error as NSError?,response.result.error?.localizedDescription/*MESSAGE*/)
+                let code = (response.result.error as? NSError)!.code
+                switch code
+                {
+                    case -1001 :
+                         responseData(nil, response.result.error as NSError?,MESSAGE)
+                        break
+                    case -1005 :
+                        responseData(nil, response.result.error as NSError?,MESSAGE)
+                        break
+                    default:
+                   //  responseData(nil, response.result.error as NSError?,response.result.error?.localizedDescription)//MESSAGE)
+                     responseData(nil, response.result.error as NSError?,MESSAGE)
+
+                        break
+                }
+//                responseData(nil, response.result.error as NSError?,response.result.error?.localizedDescription/*MESSAGE*/)
             }
             else
             {
@@ -113,9 +128,9 @@ class HttpRequestManager
             }
         }
         
-            .responseString { (response) in
-                print("Response String",response)
-        }
+//            .responseString { (response) in
+//                print("Response String",response)
+//        }
     }
     func postJSONRequestSecurity(endpointurl:String, parameters:NSDictionary, encodingType:ParameterEncoding = JSONEncoding.default, responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
     {

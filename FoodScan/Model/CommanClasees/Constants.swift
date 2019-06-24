@@ -60,7 +60,7 @@ let please_enter_valid_email = "Please enter valid email address"
 let forget_password_success = "Please check your email to get password"
 let password_change_success = "Your Password has been changed successfully"
 let profile_change_success = "Your Profile is updated successfully"
-let please_login = "To perform any action please login to FoodScan app"
+let please_login = "To perform any action please login to Lifyzer app"
 let logout_conformation = "Are you sure you want to logout from FoodScan app?"
 
 let password_and_confirmpass_is_different = "Password and Confirm password do not match"
@@ -80,5 +80,6 @@ let please_enter_product_name = "Please enter product name"
 let kUserId = "UserId"
 let kUserName = "UserName"
 let KUser = "User"
+let KScanOption = "ScanOption"
 
 

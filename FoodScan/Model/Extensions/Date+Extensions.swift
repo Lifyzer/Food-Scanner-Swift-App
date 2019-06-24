@@ -55,10 +55,20 @@ public extension Date {
 }
 
 public func stringToDate(_ str: String)->Date{
-    let formatter = DateFormatter()
-    formatter.dateFormat="yyyy-MM-dd HH:mm:ss"
-    print(str)
-    return formatter.date(from: str)!
+    
+//    let formatter = DateFormatter()
+//    formatter.timeZone = TimeZone.current
+//    formatter.dateFormat="yyyy-MM-dd HH:mm:ss"
+//    print(str)
+//    return formatter.date(from: str)!
+    
+    ///====Changed by Map : on 13/5/2019
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    dateFormatter.locale = Locale(identifier: "en_us")
+    dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+    let dt = dateFormatter.date(from: str)
+    return dt!
 }
 
 func convertDateFormater(_ date: String, currentFormate: String, newFormate: String) -> String

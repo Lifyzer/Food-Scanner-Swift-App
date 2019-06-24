@@ -31,13 +31,18 @@ class ForgotPasswordVC: UIViewController {
         if ValidateField() {
             if Connectivity.isConnectedToInternet
             {
-            
             showIndicator(view: view)
             let param:NSMutableDictionary = [
-                WS_KEmail_id:self.txtEmail.text!,
-                WS_KDevice_type:DEVICE_TYPE,
-                WS_KAccess_key:DEFAULT_ACCESS_KEY,
-                WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
+                WS_KEmail_id:self.txtEmail.text!]
+//                WS_KDevice_type:DEVICE_TYPE,
+//                WS_KAccess_key:DEFAULT_ACCESS_KEY,
+//                WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
+//
+                includeSecurityCredentials {(data) in
+                    let data1 = data as! [AnyHashable : Any]
+                    param.addEntries(from: data1)
+                }
+                
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIForgotPassword, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                self.hideIndicator(view: self.view)
                 if response != nil
@@ -50,27 +55,30 @@ class ForgotPasswordVC: UIViewController {
                     }))
                     self.present(alert, animated: true, completion: nil)
                 }else {
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                    self.generateAlertWithOkButton(text: message!)
+//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
             })
             }
         }
         else
         {
-            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: no_internet_connection)
+//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
-    
-    
-    
+   
     func ValidateField() -> Bool {
         if !txtEmail.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: please_enter_email)
+//            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
         }else if !txtEmail.text!.isValidEmail(){
-            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: please_enter_valid_email)
+//            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
         }else {
             return true
         }
         return false
     }
+    
 }

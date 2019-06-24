@@ -44,30 +44,32 @@ class ViewProductPopUpVC: UIViewController {
     }
     func checkLoginAlert(){
         if !UserDefaults.standard.bool(forKey: kLogIn){
-            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "LOGIN",
-                                          style: .default,
-                                          handler: {(_: UIAlertAction!) in
-                                            
-                                            IsScanWithLogin = true
-                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
-            }))
-            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
-                
-            }))
-            
+//            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "LOGIN",
+//                                          style: .default,
+//                                          handler: {(_: UIAlertAction!) in
+//
+//                                            IsScanWithLogin = true
+//                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+//            }))
+//            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
+//
+//            }))
+//
             param = [
-                WS_KProduct_name:productName,
-                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+                WS_KProduct_name:productName]//,
+//                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
             
-            includeSecurityCredentials {(data) in
-                let data1 = data as! [AnyHashable : Any]
-                self.param!.addEntries(from: data1)
-            }
+//            includeSecurityCredentials {(data) in
+//                let data1 = data as! [AnyHashable : Any]
+//                self.param!.addEntries(from: data1)
+//            }
+            UserDefaults.standard.set(0, forKey: KScanOption)
             UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: param!, forKey: SCANNED_DETAILS)
             self.dismiss(animated: false) {
                 self.delegate?.scanFlag(flag: 0)
-                HomeTabVC.sharedHomeTabVC?.present(alert, animated: true, completion: nil)
+                IsScanWithLogin = true
+                self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
             }
             
         }else {
@@ -80,7 +82,9 @@ class ViewProductPopUpVC: UIViewController {
     @IBAction func btnViewProduct(_ sender: Any) {
         if txtProductName.text != ""
         {
+            
             productName = txtProductName.text!
+            productName = productName.trimmingCharacters(in: .whitespaces)
 //            GetProductDetailsAPI()
             
             checkLoginAlert()
@@ -88,7 +92,8 @@ class ViewProductPopUpVC: UIViewController {
         }
         else
         {
-            showBanner(title: "", subTitle: please_enter_product_name, bannerStyle: .danger)
+            generateAlertWithOkButton(text: please_enter_product_name)
+//            showBanner(title: "", subTitle: please_enter_product_name, bannerStyle: .danger)
         }
        
     }
@@ -123,6 +128,7 @@ extension ViewProductPopUpVC
             }
             
             showIndicator(view: self.view)
+            print("===== Scan Param ========",param)
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 self.hideIndicator(view: self.view)
                 if response != nil
@@ -142,14 +148,17 @@ extension ViewProductPopUpVC
                 {
                     self.dismiss(animated: false) {
                         self.delegate?.scanFlag(flag: 0)
-                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                        HomeTabVC.sharedHomeTabVC?.navigationController?.generateAlertWithOkButton(text: message!)
+//                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
                 }
             })
         }
         else
         {
-            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: no_internet_connection)
+
+//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
 }

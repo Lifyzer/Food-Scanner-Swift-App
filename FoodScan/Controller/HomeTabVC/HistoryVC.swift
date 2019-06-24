@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import UILoadControl
 //import TesseractOCR
 
 
@@ -34,7 +35,7 @@ class HistoryVC: UIViewController {
     var arrayHistoryFood = [WSProduct]()
     var objUser: WSUser?
     var isLoadMore:Bool = false
-    let refresher = UIRefreshControl()
+    let refresher:UIRefreshControl! = UIRefreshControl()
     var refresh:UIRefreshControl! = UIRefreshControl()
     var offSet : Int = 0
     var noOfRecords  = REQ_NO_OF_RECORD
@@ -44,26 +45,32 @@ class HistoryVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupRefreshData()
+        
+        tableHistory.loadControl = UILoadControl(target: self, action: #selector(loadMore(sender:)))
+        tableHistory.loadControl?.heightLimit = 0.0//100.0
+        tableHistory.loadControl?.isHidden = true
+        
+        tableFav.loadControl = UILoadControl(target: self, action: #selector(loadMore(sender:)))
+        tableFav.loadControl?.heightLimit = 0.0//100.0
+        tableFav.loadControl?.isHidden = true
+        
         self.tableHistory.tableFooterView = UIView()
         self.tableFav.tableFooterView = UIView()
         
-        refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
-        tableFav.refreshControl = refresher
-//        refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
-//        tableHistory.refreshControl = refresher
         isFav = false
         self.setView(view: tableHistory , hidden: false)
         self.setView(view: tableFav, hidden: true)
         vwHistory.isHidden = false
         vwFav.isHidden = true
         tableFav.isHidden = true
-        tableHistory.isHidden = false   
+        tableHistory.isHidden = false
+        checkLoginAlert()
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         
-       checkLoginAlert()
+       
 //        APP_DELEGATE.objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
     }
     func checkLoginAlert(){
@@ -81,6 +88,9 @@ class HistoryVC: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }else {
             objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
+            stopRefresh()
+            tableFav.reloadData()
+            tableHistory.reloadData()
             if isFav{
                 btnFavClicked()
             }else {
@@ -95,17 +105,35 @@ class HistoryVC: UIViewController {
         self.refresh.tintColor = UIColor.black
         self.refresh.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         self.tableHistory!.addSubview(refresh)
+        
+        self.refresher.backgroundColor = UIColor.white
+        self.refresher.tintColor = UIColor.black
+        self.refresher.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        self.tableFav!.addSubview(refresher)
     }
     
     @objc func refreshData() {
         self.refresh.beginRefreshing()
-        
         offSet = 0
-        getHistory(isLoader: false)
+        if isFav
+        {
+            getFavFood(isLoader: false)
+        }
+        else
+        {
+            getHistory(isLoader: false)
+        }
     }
     
     func stopRefresh() {
-        self.refresh.endRefreshing()
+        if isFav
+        {
+            self.refresher.endRefreshing()
+        }
+        else
+        {
+            self.refresh.endRefreshing()
+        }
     }
     func ShowNoDataMessage() {
         if isFav{
@@ -190,13 +218,17 @@ class HistoryVC: UIViewController {
     @objc func btnFavourite(_ sender: UIButton) {
         let objProduct  = arrayFavFood[sender.tag]
         RemoveIndex = sender.tag
-        if objProduct.isFavourite.asStringOrEmpty() == "0"
+        if objProduct.isFavourite.aIntOrEmpty() == 0
         {
             AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
         }
-        else
+        else if objProduct.isFavourite.aIntOrEmpty() == 1
         {
             AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
+        }
+        else
+        {
+            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
         }
     }
     func AfterAPICall(){
@@ -211,38 +243,62 @@ class HistoryVC: UIViewController {
     }
     func btnFavClicked()
     {
-        offSet = 0
-        arrayFavFood.removeAll()
-        self.getFavFood(isLoader: true)
+//        stopRefresh()
+        if arrayFavFood.count == 0
+        {
+            offSet = 0
+            self.getFavFood(isLoader: true)
+        }
+        else
+        {
+            vwNoData.isHidden = true
+            self.tableHistory.isHidden = true
+            self.tableFav.isHidden = false
+        }
+        
+       
     }
     func btnHistotyClicked() {
+//        stopRefresh()
+        if arrayHistoryFood.count == 0
+        {
             offSet = 0
             self.getHistory(isLoader: true)
+        }
+        else
+        {
+        
+            vwNoData.isHidden = true
+            self.tableHistory.isHidden = false
+            self.tableFav.isHidden = true
+        }
     }
     
      //MARK:- Button click
     @IBAction func buttonHistoryClicked(_ sender: Any) {
+//        offSet = 0
         isFav = false
-        self.setView(view: tableHistory , hidden: false)
-        self.setView(view: tableFav, hidden: true)
+//        self.setView(view: tableHistory , hidden: false)
+//        self.setView(view: tableFav, hidden: true)
         vwHistory.isHidden = false
         vwFav.isHidden = true
         tableFav.isHidden = true
         tableHistory.isHidden = false
-        ShowNoDataMessage()
+//        ShowNoDataMessage()
         checkLoginAlert()
     }
     
     @IBAction func buttonFavClicked(_ sender: Any) {
 //        tableFav.reloadData()
+//        offSet = 0
         isFav = true
-        self.setView(view: tableHistory , hidden: true)
-        self.setView(view: tableFav , hidden: false)
+//        self.setView(view: tableHistory , hidden: true)
+//        self.setView(view: tableFav , hidden: false)
         vwHistory.isHidden = true
         vwFav.isHidden = false
         tableFav.isHidden = false
         tableHistory.isHidden = true
-        ShowNoDataMessage()
+//        ShowNoDataMessage()
         checkLoginAlert()
     }
     
@@ -259,10 +315,10 @@ class HistoryVC: UIViewController {
     
     func loadMoreRequest() {
         if isFav{
-//            self.offSet = offSet + arrayFavFood.count
+            self.offSet = arrayFavFood.count //offSet +
             getFavFood(isLoader: false)
         }else {
-            self.offSet = offSet + arrayHistoryFood.count
+            self.offSet = arrayHistoryFood.count //offSet +
             getHistory(isLoader: false)
         }
     }
@@ -298,35 +354,56 @@ class HistoryVC: UIViewController {
                 {
                     let objData = JSON(response!)[WS_KProduct]
                     let tempArray  = objData.to(type: WSProduct.self) as! [WSProduct]
+                    
+                    
                     if tempArray.count > 0{
                         
-                        self.arrayFavFood.append(contentsOf: tempArray)
+                        if self.offSet == 0
+                        {
+                            self.arrayFavFood.removeAll()
+                            self.arrayFavFood = tempArray
+                        }
+                        else
+                        {
+                            self.arrayFavFood.append(contentsOf: tempArray)
+                        }
+                        self.tableFav.loadControl?.endLoading()
                         self.tableFav.reloadData()
                     }
-                    
+                    else
+                    {
+                        if self.offSet == 0
+                        {
+                            self.arrayFavFood.removeAll()
+                            self.tableFav.reloadData()
+                        }
+                    }
                     if(self.arrayFavFood.count == 0){
                         self.ShowNoDataMessage()
                     }else {
                         self.HideNoDataMessage()
                         if isLoader {
-                            self.tableFav.reloadData()
                         }
                     }
                     
                     if self.isLoadMore{
                         self.isLoadMore = false
-                        self.indicatorView.isHidden = true
-                        self.activityIndicator.stopAnimating()
                     }
-                    self.refresher.endRefreshing()
+//                    self.refresher.endRefreshing()
                 }else {
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+//                     self.generateAlertWithOkButton(text: message!)
                 }
+                self.stopRefresh()
             })
         }
         else
         {
-            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+             self.stopRefresh()
+            SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
+//             self.generateAlertWithOkButton(text: no_internet_connection)
+//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
 
     }
@@ -351,6 +428,7 @@ class HistoryVC: UIViewController {
                 let data1 = data as! [AnyHashable : Any]
                 param.addEntries(from: data1)
             }
+            print("===== Hisroty Param =======",param)
             
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetUserHistory, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 if(isLoader){
@@ -372,12 +450,14 @@ class HistoryVC: UIViewController {
                         {
                             self.arrayHistoryFood.append(contentsOf: tempArray)
                         }
+                        self.tableHistory.loadControl?.endLoading()
                         self.tableHistory.reloadData()
                     }
                     else
                     {
-                        self.arrayHistoryFood.append(contentsOf: tempArray)
-                        self.tableHistory.reloadData()
+//                        self.arrayHistoryFood.append(contentsOf: tempArray)
+//                         self.tableHistory.loadControl?.endLoading()
+//                        self.tableHistory.reloadData()
                     }
                     if(self.arrayHistoryFood.count == 0){
                         self.ShowNoDataMessage()
@@ -395,14 +475,22 @@ class HistoryVC: UIViewController {
                     }
                     
                 }else {
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+//                    self.generateAlertWithOkButton(text: message!)
+//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
+//                self.tableHistory.loadControl?.endLoading()
+//                self.tableHistory.reloadData()
                 self.stopRefresh()
+               
             })
         }
         else
         {
-            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+             self.stopRefresh()
+            SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
+//             self.generateAlertWithOkButton(text:no_internet_connection)
+//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
     
@@ -412,13 +500,20 @@ class HistoryVC: UIViewController {
             let userToken = UserDefaults.standard.string(forKey: kTempToken)
             let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
             let param:NSMutableDictionary = [
-                WS_KHistory_id:historyId,
-                WS_KAccess_key:DEFAULT_ACCESS_KEY,
-                WS_KSecret_key:userToken ?? ""]
+                WS_KHistory_id:historyId]
+//                WS_KAccess_key:DEFAULT_ACCESS_KEY,
+//                WS_KSecret_key:userToken ?? ""]
+//
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                param.addEntries(from: data1)
+            }
+            
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRemoveProductFromHistory, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 if response != nil
                 {
-                    showBanner(title: "", subTitle:"Product is successfully removed from History" , bannerStyle: .success)
+                   
+//                    showBanner(title: "", subTitle: message!, bannerStyle: .success)
                     self.arrayHistoryFood.remove(at: rowId)
                     if(self.arrayHistoryFood.count == 0){
                         self.ShowNoDataMessage()
@@ -426,14 +521,21 @@ class HistoryVC: UIViewController {
                         self.HideNoDataMessage()
                     }
                     self.tableHistory.reloadData()
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+//                    self.generateAlertWithOkButton(text:message!)
                 }else {
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+//                    self.generateAlertWithOkButton(text:message!)
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+
                 }
             })
         }
         else
         {
-        showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
+//            self.generateAlertWithOkButton(text:no_internet_connection)
+//        showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
  
@@ -539,9 +641,20 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         }      
  
         if createdDate != "" && createdDate.count > 0{
+            //Chnaged on 13/5/2019
+            let StrAfterConvert = ConvertDate(format: "yyyy-MM-dd HH:mm:ss", str: createdDate)
+//            print(dt)
+//            let df = DateFormatter()
+//            df.dateFormat = "dd/MM/yyyy"
+//            let str = df.string(from: dt!)
+//            print(dt,str)
+//
+            
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yyyy"
-            cell.labelDate.text =  dateFormatter.string(from: stringToDate(createdDate))
+            cell.labelDate.text = dateFormatter.string(from: stringToDate(createdDate))//StrAfterConvert
+            
+           
         }
         let imageURL = URL(string: objProduct.productImage.asStringOrEmpty())
         if imageURL != nil
@@ -571,7 +684,20 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         return cell
         
     }
-    
+    func ConvertDate(format: String,str:String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        let dt = dateFormatter.date(from: str)
+        
+//        let dt = dateFormatter.date(from: self.toString(format: format))
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let strAfterConvert = dateFormatter.string(from: dt!)
+        
+        return strAfterConvert//dateFormatter.string(from: dt!)
+    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { 
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: idFoodDetailVC) as! FoodDetailVC
@@ -678,6 +804,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
 
     
     func scrollViewDidEndDecelerating(_ scrollView : UIScrollView) {
+//        scrollView.loadControl?.update()
 //        let currentOffset = scrollView.contentOffset.y
 //        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
 //
@@ -698,16 +825,31 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
 //
 //            }
 //        }
-        let bottomEdge: CGFloat = scrollView.contentOffset.y + scrollView.frame.size.height
-        let height: CGFloat = scrollView.contentSize.height
         
-        if bottomEdge >= height-5 {
+//        Original code
+        
+//        let bottomEdge: CGFloat = scrollView.contentOffset.y + scrollView.frame.size.height
+//        let height: CGFloat = scrollView.contentSize.height
+//
+//        if bottomEdge >= height-5 {
 //            indicatorView.isHidden = false
 //            activityIndicator.startAnimating()
-            loadMoreRequest()
-            isLoadMore = true
-        }
+//            loadMoreRequest()
+//            isLoadMore = true
+//        }
         
         
+    }
+}
+extension HistoryVC : UIScrollViewDelegate
+{
+    
+    //update loadControl when user scrolls de tableView
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.loadControl?.update()
+    }
+    //load more tableView data
+    @objc func loadMore(sender: AnyObject?) {
+        loadMoreRequest()
     }
 }

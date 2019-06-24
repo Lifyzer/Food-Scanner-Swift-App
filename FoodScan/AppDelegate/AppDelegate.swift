@@ -9,6 +9,9 @@
 import UIKit
 import CoreData
 import IQKeyboardManagerSwift
+import Firebase
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,7 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+       
+        FirebaseApp.configure()
+        Fabric.with([Crashlytics.self])
+        
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC) as! HomeTabVC
         vc.selectedIndex = 1
@@ -30,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         setupIQKeyboard()
         checkSecurity()
+        
         
         return true
     }

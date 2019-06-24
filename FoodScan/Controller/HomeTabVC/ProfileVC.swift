@@ -9,6 +9,8 @@
 import UIKit
 import SwiftyJSON
 import SDWebImage
+//import Crashlytics
+
 
 class ProfileVC: UIViewController {
     
@@ -35,16 +37,20 @@ class ProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableProfile.tableFooterView = UIView()
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+           // Crashlytics.sharedInstance().crash()
+        
         if checkLoginAlert(){
             objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
             userEmail.text = objUser?.email
             userName.text = objUser?.firstName?.capitalized
             refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
             tableProfile.refreshControl = refresher
-           getFavFood(isLoader: true)
+            getFavFood(isLoader: true)
         }
         else
         {
@@ -56,6 +62,7 @@ class ProfileVC: UIViewController {
     }
    
     @IBAction func buttonSettingsClicked(_ sender: Any) {
+        
         if checkLoginAlert(){
             self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idSettingsVC, animation: true)
         }
@@ -143,13 +150,18 @@ class ProfileVC: UIViewController {
                     }
                     self.refresher.endRefreshing()
                 }else {
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+//                    self.generateAlertWithOkButton(text:message!)
+
+//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
                 })
             }
             else
             {
-                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+                self.generateAlertWithOkButton(text:no_internet_connection)
+
+//                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
             }
         }
 
@@ -165,7 +177,7 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 120;
+            return 130//UITableView.automaticDimension//120;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -181,6 +193,7 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
         cell.btnFav.tag = indexPath.row
         cell.btnFav.addTarget(self, action: #selector(btnFavourite(_:)), for:.touchUpInside)
         let imageURL = URL(string: objProduct.productImage ?? "")
+        cell.imgFavouriteFood.contentMode = .scaleAspectFill
         if imageURL != nil
         {
             cell.imgFavouriteFood!.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "food_place_holder"))
@@ -210,6 +223,7 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
         vc.objProduct = arrayFavFood[indexPath.row]
+        vc.objProduct.isFavourite = 1
       
         self.navigationController?.pushViewController(vc, animated: true)
 //        pushViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC, animation: true)

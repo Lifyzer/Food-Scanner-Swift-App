@@ -24,6 +24,8 @@ class RegistrationVC: UIViewController {
     @IBOutlet weak var lblTOS: UILabel!
     
     @IBOutlet weak var btnAcceptTOS: UIButton!
+    
+    @IBOutlet weak var btnRegister: UIButton!
     var isAcceptTOS = false
     
     override func viewDidLoad() {
@@ -35,6 +37,8 @@ class RegistrationVC: UIViewController {
         txtEmail.setLeftPaddingPoints(10)
         txtPassword.setLeftPaddingPoints(10)
         txtCmfPassword.setLeftPaddingPoints(10)
+        btnRegister.isEnabled = false
+        btnRegister.backgroundColor = UIColor(red: 85/255, green: 165/255, blue: 70/255, alpha: 1.0).withAlphaComponent(0.5)
         // Do any additional setup after loading the view.
     }
     
@@ -43,10 +47,14 @@ class RegistrationVC: UIViewController {
         if btnAcceptTOS.isSelected
         {
             isAcceptTOS = true
+            btnRegister.isEnabled = true
+            btnRegister.backgroundColor = UIColor(red: 85/255, green: 165/255, blue: 70/255, alpha: 1.0)
         }
         else
         {
             isAcceptTOS = false
+            btnRegister.isEnabled = false
+            btnRegister.backgroundColor = UIColor(red: 85/255, green: 165/255, blue: 70/255, alpha: 1.0).withAlphaComponent(0.5)
         }
     }
     
@@ -89,18 +97,10 @@ class RegistrationVC: UIViewController {
                         
                         self.getGUID ()
                     }
-                    
-//                    UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
-//                    UserDefaults.standard.set(true, forKey: kLogIn)
-//                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: true)
-//                    if JSON(response!)[WSKUser].array? .count != 0 {
-//                        APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
-//                        UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: WSUSER)
-//                        UserDefaults.standard.set(APP_DELEGATE.objUser?.guid, forKey: kUserGUID)
-//                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId, forKey: kUserId)
-//                    }
+ 
                 }else {
-                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                    self.generateAlertWithOkButton(text: message!)
+//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
            
             })
@@ -108,7 +108,8 @@ class RegistrationVC: UIViewController {
         }
         else
         {
-            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: no_internet_connection)
+//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
     func getGUID(){
@@ -127,12 +128,6 @@ class RegistrationVC: UIViewController {
                         self.hideIndicator(view: self.view)
                         UserDefaults.standard.set(true, forKey: kLogIn)
                         
-                        //                    let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
-                        //                    let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC) as! HomeTabVC
-                        //                    vc.selectedIndex = 1
-                        //                    self.navigationController?.pushViewController(vc, animated: true)
-                        
-                        //                    HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
                         self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
                         HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
                         
@@ -143,29 +138,37 @@ class RegistrationVC: UIViewController {
         }
         else
         {
-            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: no_internet_connection)
+//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
         
     }
     func ValidateField() -> Bool {
         if !txtFullName.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_full_name, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: no_internet_connection)
+//            showBanner(title: "", subTitle: please_enter_full_name, bannerStyle: .danger)
         }
         if !txtEmail.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: please_enter_email)
+//            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
         }else if !txtEmail.text!.isValidEmail()  {
-             showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: please_enter_valid_email)
+//             showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
         }else if !txtPassword.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_password, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: please_enter_password)
+//            showBanner(title: "", subTitle: please_enter_password, bannerStyle: .danger)
         }else if !txtCmfPassword.text!.isValid(){
-             showBanner(title: "", subTitle: please_enter_confirm_password, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: please_enter_confirm_password)
+//             showBanner(title: "", subTitle: please_enter_confirm_password, bannerStyle: .danger)
         }else if txtPassword.text != txtCmfPassword.text{
-            showBanner(title: "", subTitle: password_and_confirmpass_is_different, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: password_and_confirmpass_is_different)
+//            showBanner(title: "", subTitle: password_and_confirmpass_is_different, bannerStyle: .danger)
         }else if isAcceptTOS == false{
-            showBanner(title: "", subTitle: Accept_Terms_conditions, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: Accept_Terms_conditions)
+//            showBanner(title: "", subTitle: Accept_Terms_conditions, bannerStyle: .danger)
         } else {
             return true
-        
+            
         }
         return false
     }

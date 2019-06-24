@@ -52,13 +52,15 @@ class ChangePasswordVC: UIViewController {
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }else {
-                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                        self.generateAlertWithOkButton(text: message!)
+//                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
                 })
             }
             else
             {
-                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+                self.generateAlertWithOkButton(text: no_internet_connection)
+//                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
             }
         }
     }
@@ -66,13 +68,17 @@ class ChangePasswordVC: UIViewController {
     func ValidateField() -> Bool {
         
         if !txtCurrentPwd.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_current_password, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: please_enter_current_password)
+//            showBanner(title: "", subTitle: please_enter_current_password, bannerStyle: .danger)
         }else if !txtNewPwd.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_new_password, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: please_enter_new_password)
+//            showBanner(title: "", subTitle: please_enter_new_password, bannerStyle: .danger)
         }else if !txtConfirmPwd.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_confirm_password, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: please_enter_confirm_password)
+//            showBanner(title: "", subTitle: please_enter_confirm_password, bannerStyle: .danger)
         }else if txtNewPwd.text != txtConfirmPwd.text{
-            showBanner(title: "", subTitle: password_and_confirmpass_is_different, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: password_and_confirmpass_is_different)
+//            showBanner(title: "", subTitle: password_and_confirmpass_is_different, bannerStyle: .danger)
         }else {
             return true
         }

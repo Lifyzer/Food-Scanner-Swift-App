@@ -73,9 +73,13 @@ class FoodDetailVC: UIViewController {
     func setupUI(){
         btnFav.setImage(IMG_UNFAV, for: .normal)
         btnFav.setImage(IMG_FAV, for: .selected)
-        if objProduct.isFavourite.asStringOrEmpty() == "1"
+        if objProduct.isFavourite.asStringOrEmpty() == "0"
         {
-            btnFav.isSelected = true
+            btnFav.isSelected = false //0
+        }
+        else if objProduct.isFavourite.asStringOrEmpty() == "1"
+        {
+            btnFav.isSelected = true//1
         }
         else
         {
@@ -128,9 +132,13 @@ class FoodDetailVC: UIViewController {
         {
             objProduct.isFavourite = 1
         }
-        else
+        else if objProduct.isFavourite.aIntOrEmpty() == 1
         {
             objProduct.isFavourite = 0
+        }
+        else
+        {
+            objProduct.isFavourite = 1
         }
     }
     

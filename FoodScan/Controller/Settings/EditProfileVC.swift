@@ -67,13 +67,15 @@ class EditProfileVC: UIViewController {
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }else {
-                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                        self.generateAlertWithOkButton(text: message!)
+//                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
                 })
             }
             else
             {
-                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+                self.generateAlertWithOkButton(text: no_internet_connection)
+//                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
             }
         }
     }
@@ -81,11 +83,14 @@ class EditProfileVC: UIViewController {
     func ValidateField() -> Bool {
 
         if !txtFullName.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_full_name, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: please_enter_full_name)
+//            showBanner(title: "", subTitle: please_enter_full_name, bannerStyle: .danger)
         }else if !txtEmailId.text!.isValidEmail(){
-            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: please_enter_email)
+//            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
         }else if !txtEmailId.text!.isValidEmail(){
-            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: please_enter_valid_email)
+//            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
         }else {
             return true
         }

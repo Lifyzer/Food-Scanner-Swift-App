@@ -60,14 +60,16 @@ class LoginVC: UIViewController {
                         }
                     }else {
                         self.hideIndicator(view: self.view)
-                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                        self.generateAlertWithOkButton(text: message!)
+//                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
                     
                 })
             }
             else
             {
-                 showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+                self.generateAlertWithOkButton(text: no_internet_connection)
+//                 showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
             }
             
         }
@@ -105,18 +107,22 @@ class LoginVC: UIViewController {
         }
         else
         {
-            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: no_internet_connection)
+//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
         
     }
     
     func ValidateField() -> Bool {
         if !txtEmail.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: please_enter_email)
+//            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
         }else if !txtEmail.text!.isValidEmail(){
-            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: please_enter_valid_email)
+//            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
         }else if !txtPassword.text!.isValid(){
-            showBanner(title: "", subTitle: please_enter_password, bannerStyle: .danger)
+             self.generateAlertWithOkButton(text: please_enter_password)
+//            showBanner(title: "", subTitle: please_enter_password, bannerStyle: .danger)
         }else {
             return true
         }
