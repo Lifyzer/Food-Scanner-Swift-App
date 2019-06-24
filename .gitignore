@@ -46,9 +46,6 @@ playground.xcworkspace
 #
 # Pods/
 #
-# Large file; Over 267.62MB
-Pods/GoogleMobileVision/TextDetector/Frameworks/TextDetector.framework/TextDetector
-#
 # Add this line if you want to avoid checking in source code from the Xcode workspace
 # *.xcworkspace
 
