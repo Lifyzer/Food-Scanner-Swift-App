@@ -5,15 +5,25 @@ target 'FoodScan' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 	pod 'Alamofire'
-    pod 'ABMenuTableViewCell', '~> 2.0'
+#    pod 'ABMenuTableViewCell', '~> 2.0'
     pod 'SwiftyJSON'
     pod 'NotificationBannerSwift'
     pod 'IQKeyboardManagerSwift'
-    pod 'RealmSwift'
+#    pod 'RealmSwift'
     pod 'SDWebImage', '~> 4.2'
-    pod 'TesseractOCRiOS'
-#pod 'TesseractOCRSDKiOS', '4.0.1'
+#    pod 'TesseractOCRiOS'
 
+#    Text Recognization
+    pod 'Firebase/Core'
+    pod 'Firebase/MLVision'
+    pod 'Firebase/MLVisionTextModel'
+    pod 'UILoadControl'
+   
+    pod 'Fabric'
+    pod 'Crashlytics'
+
+    
+#pod 'TesseractOCRSDKiOS', '4.0.1'
   target 'FoodScanTests' do
     inherit! :search_paths
     # Pods for testing
