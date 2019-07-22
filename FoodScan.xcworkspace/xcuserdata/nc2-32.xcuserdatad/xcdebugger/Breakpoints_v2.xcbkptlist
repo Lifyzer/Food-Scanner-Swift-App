@@ -9,46 +9,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodScan/Controller/Login/ForgotPasswordVC.swift"
-            timestampString = "580280792.9412169"
+            filePath = "FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
+            timestampString = "584615241.426886"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
-            landmarkName = "buttonSendClicked(_:)"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "GetProductDetailsAPI()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FoodScan.ForgotPasswordVC.buttonSendClicked(Any) -&gt; ()"
-                  moduleName = "FoodScan"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Controller/Login/ForgotPasswordVC.swift"
-                  timestampString = "580730076.1388741"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "46"
-                  endingLineNumber = "46"
-                  offsetFromSymbolStart = "1116">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Optional&lt;Swift.AnyObject&gt;, Swift.Optional&lt;__C.NSError&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; () in FoodScan.ForgotPasswordVC.buttonSendClicked(Any) -&gt; ()"
-                  moduleName = "FoodScan"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Controller/Login/ForgotPasswordVC.swift"
-                  timestampString = "580730076.141868"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "47"
-                  endingLineNumber = "47"
-                  offsetFromSymbolStart = "52">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -58,45 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
-            timestampString = "580390319.4237"
+            timestampString = "584615241.427009"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "GetProductDetailsAPI()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FoodScan.ViewProductPopUpVC.GetProductDetailsAPI() -&gt; ()"
-                  moduleName = "FoodScan"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
-                  timestampString = "580730076.271695"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "132"
-                  endingLineNumber = "132"
-                  offsetFromSymbolStart = "3044">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Optional&lt;Swift.AnyObject&gt;, Swift.Optional&lt;__C.NSError&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; () in FoodScan.ViewProductPopUpVC.GetProductDetailsAPI() -&gt; ()"
-                  moduleName = "FoodScan"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
-                  timestampString = "580730076.2739739"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "133"
-                  endingLineNumber = "133"
-                  offsetFromSymbolStart = "52">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -105,125 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodScan/Model/Extensions/UIViewController+Extensions.swift"
-            timestampString = "580391810.3977129"
+            filePath = "FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
+            timestampString = "584615241.427108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "AddRemoveFromFavouriteAPI(isFavourite:product_id:fn:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(extension in FoodScan):__C.UIViewController.AddRemoveFromFavouriteAPI(isFavourite: Swift.String, product_id: Swift.String, fn: () -&gt; ()) -&gt; ()"
-                  moduleName = "FoodScan"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Model/Extensions/UIViewController+Extensions.swift"
-                  timestampString = "580730076.279392"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "92"
-                  endingLineNumber = "92"
-                  offsetFromSymbolStart = "2940">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Optional&lt;Swift.AnyObject&gt;, Swift.Optional&lt;__C.NSError&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; () in (extension in FoodScan):__C.UIViewController.AddRemoveFromFavouriteAPI(isFavourite: Swift.String, product_id: Swift.String, fn: () -&gt; ()) -&gt; ()"
-                  moduleName = "FoodScan"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Model/Extensions/UIViewController+Extensions.swift"
-                  timestampString = "580730076.281992"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "93"
-                  endingLineNumber = "93"
-                  offsetFromSymbolStart = "68">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FoodScan/Controller/HomeTabVC/HistoryVC.swift"
-            timestampString = "580730242.749889"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
-            landmarkName = "getFavFood(isLoader:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FoodScan.HistoryVC.getFavFood(isLoader: Swift.Bool) -&gt; ()"
-                  moduleName = "FoodScan"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Controller/HomeTabVC/HistoryVC.swift"
-                  timestampString = "580730076.297503"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "350"
-                  endingLineNumber = "350"
-                  offsetFromSymbolStart = "3700">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Optional&lt;Swift.AnyObject&gt;, Swift.Optional&lt;__C.NSError&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; () in FoodScan.HistoryVC.getFavFood(isLoader: Swift.Bool) -&gt; ()"
-                  moduleName = "FoodScan"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Controller/HomeTabVC/HistoryVC.swift"
-                  timestampString = "580730076.299703"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "351"
-                  endingLineNumber = "351"
-                  offsetFromSymbolStart = "60">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FoodScan/Controller/HomeTabVC/ProfileVC.swift"
-            timestampString = "580980528.352132"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "loadMoreRequest()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FoodScan/Controller/HomeTabVC/HistoryVC.swift"
-            timestampString = "580730242.75069"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "353"
-            endingLineNumber = "353"
-            landmarkName = "getFavFood(isLoader:)"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
+            landmarkName = "GetProductDetailsAPI()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
