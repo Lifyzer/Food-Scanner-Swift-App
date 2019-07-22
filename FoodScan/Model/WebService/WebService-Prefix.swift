@@ -62,6 +62,7 @@ let WS_KNew_password = "new_password"
 let WS_KGuid = "guid"
 let WS_KProduct = "product"
 let WS_KHistory = "history"
+let WS_FLAG = "flag"
 
 var arrayFavouriteProducts:[WSProduct] = [WSProduct]()
 
