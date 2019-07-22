@@ -761,15 +761,25 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T8P-7I-GBp">
+                                                <rect key="frame" x="10" y="50" width="394" height="60"/>
+                                                <connections>
+                                                    <action selector="btnRedirectToEditProfile:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4dz-vg-Yb2"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="T8P-7I-GBp" firstAttribute="bottom" secondItem="BrH-3h-jkP" secondAttribute="bottom" id="7I4-WH-xow"/>
                                             <constraint firstItem="nJU-2S-Tbm" firstAttribute="leading" secondItem="UPU-vn-LCh" secondAttribute="leading" constant="10" id="JvW-BX-zZM"/>
+                                            <constraint firstItem="T8P-7I-GBp" firstAttribute="leading" secondItem="nJU-2S-Tbm" secondAttribute="leading" id="L26-NV-BJz"/>
                                             <constraint firstAttribute="trailing" secondItem="nJU-2S-Tbm" secondAttribute="trailing" constant="10" id="OEM-kx-geH"/>
                                             <constraint firstAttribute="trailing" secondItem="Wgg-BB-rnd" secondAttribute="trailing" id="XNr-f8-z1U"/>
                                             <constraint firstAttribute="trailing" secondItem="BrH-3h-jkP" secondAttribute="trailing" constant="10" id="Xmk-dY-uSD"/>
                                             <constraint firstItem="nJU-2S-Tbm" firstAttribute="top" secondItem="Wgg-BB-rnd" secondAttribute="bottom" id="f1h-n0-bpu"/>
+                                            <constraint firstItem="T8P-7I-GBp" firstAttribute="trailing" secondItem="nJU-2S-Tbm" secondAttribute="trailing" id="hHD-zr-dXd"/>
                                             <constraint firstItem="BrH-3h-jkP" firstAttribute="leading" secondItem="UPU-vn-LCh" secondAttribute="leading" constant="10" id="lye-KV-KQs"/>
+                                            <constraint firstItem="T8P-7I-GBp" firstAttribute="top" secondItem="nJU-2S-Tbm" secondAttribute="top" id="piG-bs-bDQ"/>
                                             <constraint firstAttribute="height" constant="120" id="rxG-wU-JVx"/>
                                             <constraint firstItem="BrH-3h-jkP" firstAttribute="top" secondItem="nJU-2S-Tbm" secondAttribute="bottom" id="vlu-6P-nvm"/>
                                             <constraint firstItem="Wgg-BB-rnd" firstAttribute="top" secondItem="UPU-vn-LCh" secondAttribute="top" id="xal-wR-WhN"/>
