@@ -86,7 +86,6 @@ class FoodDetailVC: UIViewController {
             btnFav.isSelected = false
         }
         let imageURL = URL(string: objProduct.productImage ?? "")
-        //        cell.imgFood.sd_setImage(with: imageURL,for:.normal)
         if imageURL != nil
         {
             imgProduct.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "food_place_holder"))
