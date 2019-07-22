@@ -61,6 +61,9 @@ class ProfileVC: UIViewController {
         }
     }
    
+    @IBAction func btnRedirectToEditProfile(_ sender: Any) {
+         self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idEditProfileVC, animation: true)
+    }
     @IBAction func buttonSettingsClicked(_ sender: Any) {
         
         if checkLoginAlert(){

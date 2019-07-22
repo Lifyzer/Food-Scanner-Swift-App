@@ -29,10 +29,10 @@ class ScanProductVC: UIViewController/*,G8TesseractDelegate*/ {
     @IBOutlet weak var btnProduct: UIButton!
     @IBOutlet weak var btnBarcode: UIButton!
     
-//    private var textDetectionRequest: VNDetectTextRectanglesRequest?
-//    private var textObservations = [VNTextObservation]()
-//    private var tesseract = G8Tesseract(language: "eng", engineMode:.tesseractCubeCombined)
-////    private var font = CTFontCreateWithName("ArialMT" as CFString, 17, nil)
+    //    private var textDetectionRequest: VNDetectTextRectanglesRequest?
+    //    private var textObservations = [VNTextObservation]()
+    //    private var tesseract = G8Tesseract(language: "eng", engineMode:.tesseractCubeCombined)
+    ////    private var font = CTFontCreateWithName("ArialMT" as CFString, 17, nil)
     
     var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
     var session = AVCaptureSession()
@@ -66,36 +66,37 @@ class ScanProductVC: UIViewController/*,G8TesseractDelegate*/ {
     var isInference = false
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        scanOptions = 1
-//        scanOptions = 1
-//        self.videoPreview.isHidden = true
-//        self.drawingView.isHidden = true
-//        self.cameraView.isHidden = false
-//        btnBarcode.setTitleColor(selectedScanColor, for: .normal)
-//        btnProduct.setTitleColor(UIColor.white, for: .normal)
-//        let scanValue = GetScanOption()
-//        if scanValue != nil
-//        {
-//            scanOptions = scanValue!
-//        }
-//        else
-//        {
-//            scanOptions = 0
-//            SetScanOption(value: scanOptions)
-//        }
-//        if isAuthorized()
-//        {
-//            if session.outputs.contains(metadataOutput)
-//            {
-//                session.removeOutput(metadataOutput)
-//            }
-//            configureCamera()
-//        }
-//        self.setUpCamera()
+        //        scanOptions = 1
+        //        scanOptions = 1
+        //        self.videoPreview.isHidden = true
+        //        self.drawingView.isHidden = true
+        //        self.cameraView.isHidden = false
+        //        btnBarcode.setTitleColor(selectedScanColor, for: .normal)
+        //        btnProduct.setTitleColor(UIColor.white, for: .normal)
+        //        let scanValue = GetScanOption()
+        //        if scanValue != nil
+        //        {
+        //            scanOptions = scanValue!
+        //        }
+        //        else
+        //        {
+        //            scanOptions = 0
+        //            SetScanOption(value: scanOptions)
+        //        }
+        //        if isAuthorized()
+        //        {
+        //            if session.outputs.contains(metadataOutput)
+        //            {
+        //                session.removeOutput(metadataOutput)
+        //            }
+        //            configureCamera()
+        //        }
+        //        self.setUpCamera()
         self.setUpCamera()
-       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,13 +105,13 @@ class ScanProductVC: UIViewController/*,G8TesseractDelegate*/ {
         {
             IsScanWithLogin = false
             let scanValue = GetScanOption()
-             scanOptions = scanValue!
+            scanOptions = scanValue!
             if UserDefaults.standard.bool(forKey: kLogIn) ==  true {
                 ScanParam = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: SCANNED_DETAILS) as! NSMutableDictionary
                 self.param = ScanParam
                 
                 let user_id = UserDefaults.standard.string(forKey: kUserId) ?? ""
-
+                
                 includeSecurityCredentials {(data) in
                     let data1 = data as! [AnyHashable : Any]
                     self.param!.addEntries(from: data1)
@@ -135,28 +136,28 @@ class ScanProductVC: UIViewController/*,G8TesseractDelegate*/ {
         
         RefreshScan()
         
-//        if scanOptions == 1
-//        {
-//            if (session.isRunning == false) {
-//                session.startRunning()
-//            }
-//            self.videoPreview.isHidden = true
-//            self.drawingView.isHidden = true
-//            self.cameraView.isHidden = false
-//            btnBarcode.setTitleColor(selectedScanColor, for: .normal)
-//            btnProduct.setTitleColor(UIColor.white, for: .normal)
-//        }
-//        else
-//        {
-//            btnBarcode.setTitleColor(UIColor.white, for: .normal)
-//            btnProduct.setTitleColor(selectedScanColor, for: .normal)
-//            self.videoPreview.isHidden = false
-//            self.drawingView.isHidden = false
-//            self.cameraView.isHidden = true
-//            videoCapture.start()
-//        }
-       
-  
+        //        if scanOptions == 1
+        //        {
+        //            if (session.isRunning == false) {
+        //                session.startRunning()
+        //            }
+        //            self.videoPreview.isHidden = true
+        //            self.drawingView.isHidden = true
+        //            self.cameraView.isHidden = false
+        //            btnBarcode.setTitleColor(selectedScanColor, for: .normal)
+        //            btnProduct.setTitleColor(UIColor.white, for: .normal)
+        //        }
+        //        else
+        //        {
+        //            btnBarcode.setTitleColor(UIColor.white, for: .normal)
+        //            btnProduct.setTitleColor(selectedScanColor, for: .normal)
+        //            self.videoPreview.isHidden = false
+        //            self.drawingView.isHidden = false
+        //            self.cameraView.isHidden = true
+        //            videoCapture.start()
+        //        }
+        
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
         if scanOptions == 1
@@ -184,12 +185,12 @@ class ScanProductVC: UIViewController/*,G8TesseractDelegate*/ {
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: AVMediaType.video,
                                           completionHandler: { (granted:Bool) -> Void in
-                if granted {
-                    DispatchQueue.main.async {
-                        self.configureCamera()
-//                        self.startTextDetection()
-                    }
-                }
+                                            if granted {
+                                                DispatchQueue.main.async {
+                                                    self.configureCamera()
+                                                    //                        self.startTextDetection()
+                                                }
+                                            }
             })
             return true
         case .authorized:
@@ -212,7 +213,7 @@ class ScanProductVC: UIViewController/*,G8TesseractDelegate*/ {
         scanOptions = sender.tag
         SetScanOption(value: scanOptions)
         RefreshScan()
-       
+        
         
     }
     
@@ -283,95 +284,97 @@ class ScanProductVC: UIViewController/*,G8TesseractDelegate*/ {
                 self.tabBarController?.present(vc, animated: false, completion: nil)
             }
         }
-      
+        
     }
     private func configureCamera() {
         //1
-//        session.sessionPreset = AVCaptureSession.Preset.photo
-//        let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
+        //        session.sessionPreset = AVCaptureSession.Preset.photo
+        //        let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
         
         guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
-                                                            
-                                                            print("Error: no video devices available")
-                                                            return
+            
+            print("Error: no video devices available")
+            return
         }
-    
-            cameraView1.session = session
+        
+        cameraView1.session = session
+        
+        let cameraDevices = AVCaptureDevice.DiscoverySession(deviceTypes:[.builtInWideAngleCamera,.builtInTelephotoCamera,.builtInDualCamera],mediaType: AVMediaType.video,position: .back)
+        var cameraDevice: AVCaptureDevice?
+        for device in cameraDevices.devices {
+            if device.position == .back {
+                cameraDevice = device
+                break
+            }
+        }
+        
+        do {
+            let captureDeviceInput = try AVCaptureDeviceInput(device:cameraDevice!)
+            if session.canAddInput(captureDeviceInput) {
+                session.addInput(captureDeviceInput)
+            }
+        }
+        catch {
+            print("Error occured \(error)")
+            return
+        }
+        session.sessionPreset = .high
+        if scanOptions == 1
+        {
             
-            let cameraDevices = AVCaptureDevice.DiscoverySession(deviceTypes:[.builtInWideAngleCamera,.builtInTelephotoCamera,.builtInDualCamera],mediaType: AVMediaType.video,position: .back)
-            var cameraDevice: AVCaptureDevice?
-            for device in cameraDevices.devices {
-                if device.position == .back {
-                    cameraDevice = device
-                    break
-                }
-            }
-            
-            do {
-                let captureDeviceInput = try AVCaptureDeviceInput(device:cameraDevice!)
-                if session.canAddInput(captureDeviceInput) {
-                    session.addInput(captureDeviceInput)
-                }
-            }
-            catch {
-                print("Error occured \(error)")
-                return
-            }
-            session.sessionPreset = .high
-            if scanOptions == 1
-            {
+            if (session.canAddOutput(metadataOutput)) {
+                session.addOutput(metadataOutput)
                 
-                if (session.canAddOutput(metadataOutput)) {
-                    session.addOutput(metadataOutput)
-                    
-                    metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                    metadataOutput.metadataObjectTypes = supportedCodeTypes
-                }
+                metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+                metadataOutput.metadataObjectTypes = supportedCodeTypes
             }
-            
-            cameraView1.videoPreviewLayer.videoGravity = .resizeAspectFill
-            session.startRunning()
+        }
+        
+        cameraView1.videoPreviewLayer.videoGravity = .resizeAspectFill
+        session.startRunning()
         
     }
     
     
     func checkLoginAlert(){
         if !UserDefaults.standard.bool(forKey: kLogIn){
-//            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "LOGIN",
-//                                          style: .default,
-//                                          handler: {(_: UIAlertAction!) in
-//
-//                                            IsScanWithLogin = true
-//                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
-//            }))
-//            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
-//                if (self.session.isRunning == false) {
-//                    self.session.startRunning()
-//                }
-//            }))
+            //            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
+            //            alert.addAction(UIAlertAction(title: "LOGIN",
+            //                                          style: .default,
+            //                                          handler: {(_: UIAlertAction!) in
+            //
+            //                                            IsScanWithLogin = true
+            //                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+            //            }))
+            //            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
+            //                if (self.session.isRunning == false) {
+            //                    self.session.startRunning()
+            //                }
+            //            }))
             
-
+            
             self.param = [
-                WS_KProduct_name:productCode]//,
-//                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-           
-//            includeSecurityCredentials {(data) in
-//                let data1 = data as! [AnyHashable : Any]
-//                self.param!.addEntries(from: data1)
-//            }
+                WS_KProduct_name:productCode,
+                WS_FLAG : 1]//,
+            //                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
+            
+            //            includeSecurityCredentials {(data) in
+            //                let data1 = data as! [AnyHashable : Any]
+            //                self.param!.addEntries(from: data1)
+            //            }
             UserDefaults.standard.set(1, forKey: KScanOption)
             UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: param!, forKey: SCANNED_DETAILS)
             IsScanWithLogin = true
             self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
-//            self.present(alert, animated: true, completion: nil)
+            //            self.present(alert, animated: true, completion: nil)
             
         }else {
-
+            
             self.param = [
                 WS_KProduct_name:productCode,
-                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-           
+                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+                WS_FLAG : 1]
+            
             includeSecurityCredentials {(data) in
                 let data1 = data as! [AnyHashable : Any]
                 self.param!.addEntries(from: data1)
@@ -403,14 +406,14 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
                 print("No Code deteected")
                 return
             }
-
+            
             // Get the metadata object.
             let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-
+            
             if supportedCodeTypes.contains(metadataObj.type) {
                 print("Detected Code",metadataObj.stringValue)
             }
-
+            
             self.session.stopRunning()
             if let metadataObject = metadataObjects.first {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
@@ -418,12 +421,12 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 print(stringValue)
                 self.productCode = stringValue
-//                self.productCode = "00449458"
+                //                self.productCode = "00449458"
                 checkLoginAlert()
-
+                
             }
             
-
+            
         }
     }
 }
@@ -435,42 +438,43 @@ extension ScanProductVC
     {
         if Connectivity.isConnectedToInternet
         {
-        showIndicator(view: self.view)
-        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param!, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-            self.hideIndicator(view: self.view)
-            if response != nil
-            {
-                let objData = JSON(response!)[WS_KProduct]
-                let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
-               
+            showIndicator(view: self.view)
+            //        param?.setValue(self.flag, forKey: WS_FLAG)
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param!, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                self.hideIndicator(view: self.view)
+                if response != nil
+                {
+                    let objData = JSON(response!)[WS_KProduct]
+                    let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
+                    
                     self.flag = 0
                     HomeTabVC.sharedHomeTabVC?.selectedIndex = 0
                     let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
                     vc.objProduct = objProduct[0]
                     HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
                     HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
-            
-            }
-            else
-            {
-//                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-                self.generateAlertWithOkButton(text: message!)
-                if self.scanOptions == 1
-                {
-                    self.session.startRunning()
+                    
                 }
                 else
                 {
-                    self.videoCapture.start()
+                    //                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                    self.generateAlertWithOkButton(text: message!)
+                    if self.scanOptions == 1
+                    {
+                        self.session.startRunning()
+                    }
+                    else
+                    {
+                        self.videoCapture.start()
+                    }
                 }
-            }
-
-        })
+                
+            })
         }
         else
         {
-//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
-              self.generateAlertWithOkButton(text: no_internet_connection)
+            //            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+            self.generateAlertWithOkButton(text: no_internet_connection)
         }
     }
     
@@ -508,9 +512,9 @@ extension UIImage {
         }
         
         var blackDict : [String : Any] = [kCIInputImageKey : beginImage,
-                                         "inputBrightness" : 0.0,
-                                         "inputContrast" : 1.1,
-                                         "inputSaturation" : 0.0]
+                                          "inputBrightness" : 0.0,
+                                          "inputContrast" : 1.1,
+                                          "inputSaturation" : 0.0]
         var blackAndWhite: CIImage? = CIFilter(name: "CIColorControls", parameters: blackDict)?.outputImage
         
         var opDict : [String : Any] = [kCIInputImageKey : blackAndWhite,
@@ -529,9 +533,9 @@ extension UIImage {
         }
         return newImage
     }
-
     
-   
+    
+    
     
     func scaleImage(_ maxDimension: CGFloat) -> UIImage? {
         
@@ -558,7 +562,7 @@ extension ScanProductVC: VideoCaptureDelegate {
     func videoCapture(_ capture: VideoCapture, didCaptureVideoFrame pixelBuffer: CVPixelBuffer?, timestamp: CMTime) {
         // the captured image from camera is contained on pixelBuffer
         if !self.isInference, let pixelBuffer = pixelBuffer {
-           
+            
             self.isInference = true
             
             // predict!
@@ -581,14 +585,14 @@ extension ScanProductVC
             if success {
                 // add preview view on the layer
                 if let previewLayer = self.videoCapture.previewLayer {
-                   
+                    
                     self.videoPreview.layer.addSublayer(previewLayer)
-                     self.resizePreviewLayer()
+                    self.resizePreviewLayer()
                     
                 }
                 
                 // start video preview when setup is done
-//                self.videoCapture.start()
+                //                self.videoCapture.start()
             }
             
         }
