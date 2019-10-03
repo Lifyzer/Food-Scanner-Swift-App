@@ -17,13 +17,13 @@ class HomeTabVC: UITabBarController {
          HomeTabVC.sharedHomeTabVC = self
         HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
         // Do any additional setup after loading the view, typically from a nib.
-        
+
     }
 
 
 }
 extension HomeTabVC: UITabBarControllerDelegate {
-    
+
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         if tabBar.items?[0] == item {
             self.selectedIndex = 0 //setSelectedIndex(indexValue: 0)

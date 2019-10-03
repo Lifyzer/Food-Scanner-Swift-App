@@ -11,7 +11,7 @@ import UIKit
 extension String: Error {}
 
 extension String {
-    
+
     var htmlToAttributedString: NSAttributedString? {
         guard let data = data(using: .utf8) else { return NSAttributedString() }
         do {
@@ -23,64 +23,63 @@ extension String {
     var htmlToString: String {
         return htmlToAttributedString?.string ?? ""
     }
-    
-    
-    
+
+
     func fromBase64() -> String? {
         guard let data = Data(base64Encoded: self) else {
             return ""
         }
-        
+
         return String(data: data, encoding: .utf8)
     }
-    
+
     func toBase64() -> String {
         return Data(self.utf8).base64EncodedString()
     }
-    
+
     func isValid() -> Bool {
         return (self.isEmpty || self == "" || self == nil || self == "(null)") ? false : true
-        
+
     }
-    
+
     func isBegin(with string:NSString) -> Bool {
         return self.hasPrefix(string as String) ? true : false
     }
-    
+
     func isEnd(With string : NSString) -> Bool {
         return self.hasSuffix(string as String) ? true : false
     }
-    
+
     /**
      Check email
      */
     func isValidEmail() -> Bool {
         let regex : NSString = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        
+
         return predicate.evaluate(with: self)
     }
-    
+
     /**
      phone number
      */
     func isValidPhoneNumber() -> Bool {
         let regex : NSString = "[235689][0-9]{6}([0-9]{3})?"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        
+
         return predicate.evaluate(with: self)
     }
-    
+
     /**
      url
      */
     func isValidUrl() -> Bool {
         let regex : NSString = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        
+
         return predicate.evaluate(with: self)
     }
-    
+
     func substring(_ startIndex: Int, length: Int) -> String {
         let start = self.characters.index(self.startIndex, offsetBy: startIndex)
         let end = self.characters.index(self.startIndex, offsetBy: startIndex + length)
@@ -95,13 +94,13 @@ public func stringToNumber(string: String) -> NSNumber{
     }else {
         return NumberFormatter().number(from: string)!.decimalValue as NSNumber
     }
-    
+
 }
 /*
  Will generate radom string based on length
  */
 public func randomString(length: Int) -> String {
-    
+
     let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let len = UInt32(letters.length)
     var randomString = ""

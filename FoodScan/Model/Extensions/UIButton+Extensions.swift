@@ -11,7 +11,7 @@ import Foundation
 import AudioToolbox
 
 extension UIButton {
-    
+
     func shakeUIButton()
     {
         let animation = CABasicAnimation(keyPath: "position")
@@ -23,7 +23,7 @@ extension UIButton {
         self.layer.add(animation, forKey: "position")
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
-    
+
     func addTextSpacing(spacing: CGFloat) {
         guard let text = self.titleLabel?.text else { return }
         let attributedString = NSMutableAttributedString(string: text)

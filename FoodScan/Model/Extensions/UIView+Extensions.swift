@@ -15,7 +15,7 @@ extension UIView
     {
         self.backgroundColor = UIColor.clear
         let width = 1.0
-        
+
         let borderLine = UIView()
         borderLine.removeFromSuperview()
         borderLine.frame = CGRect(x: 0, y: Double(self.frame.height) - width, width: Double(self.frame.width), height: width)
@@ -29,7 +29,7 @@ extension UIView
         }
         self.addSubview(borderLine)
     }
-    
+
     func addTopBorder(_ color: UIColor, height: CGFloat) {
         let border = UIView()
         border.backgroundColor = color
@@ -60,8 +60,8 @@ extension UIView
                                               attribute: NSLayoutConstraint.Attribute.trailing,
                                               multiplier: 1, constant: 0))
     }
-    
-    
+
+
     func addBottomBorder(_ color: UIColor, height: CGFloat) {
         let border = UIView()
         border.backgroundColor = color
@@ -92,8 +92,8 @@ extension UIView
                                               attribute: NSLayoutConstraint.Attribute.trailing,
                                               multiplier: 1, constant: 0))
     }
-    
-    
+
+
     func addLeftBorder(_ color: UIColor, width: CGFloat) {
         let border = UIView()
         border.backgroundColor = color
@@ -124,8 +124,8 @@ extension UIView
                                               attribute: NSLayoutConstraint.Attribute.top,
                                               multiplier: 1, constant: 0))
     }
-    
-    
+
+
     func addRightBorder(_ color: UIColor, width: CGFloat) {
         let border = UIView()
         border.backgroundColor = color
@@ -156,7 +156,7 @@ extension UIView
                                               attribute: NSLayoutConstraint.Attribute.top,
                                               multiplier: 1, constant: 0))
     }
-    
+
     func zoomInOutAnimation () {
         UIView.animate(withDuration: 0,
                        animations: {
@@ -176,7 +176,7 @@ extension UIView
                         }
         })
     }
-    
+
     func roundCorners(_ corners:UIRectCorner, radius: CGFloat) {
         let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         let mask = CAShapeLayer()

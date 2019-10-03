@@ -22,15 +22,15 @@ class RegistrationVC: UIViewController {
     @IBOutlet var buttonCreateAccount: UIButton!
     @IBOutlet weak var imgTOS: UIImageView!
     @IBOutlet weak var lblTOS: UILabel!
-    
+
     @IBOutlet weak var btnAcceptTOS: UIButton!
-    
+
     @IBOutlet weak var btnRegister: UIButton!
     var isAcceptTOS = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+
         btnAcceptTOS.setImage(selected, for: .selected)
         btnAcceptTOS.setImage(deselected, for: .normal)
         txtFullName.setLeftPaddingPoints(10)
@@ -41,7 +41,7 @@ class RegistrationVC: UIViewController {
         btnRegister.backgroundColor = UIColor(red: 85/255, green: 165/255, blue: 70/255, alpha: 1.0).withAlphaComponent(0.5)
         // Do any additional setup after loading the view.
     }
-    
+
     @IBAction func btnAcceptTC(_ sender: Any) {
         btnAcceptTOS.isSelected = !btnAcceptTOS.isSelected
         if btnAcceptTOS.isSelected
@@ -57,20 +57,20 @@ class RegistrationVC: UIViewController {
             btnRegister.backgroundColor = UIColor(red: 85/255, green: 165/255, blue: 70/255, alpha: 1.0).withAlphaComponent(0.5)
         }
     }
-    
+
     //MARK: - Buttons
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
-    
+
     @IBAction func buttonPrivacyLinkClicked(_ sender: Any) {
         self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idPrivacyPolicyVC, animation: true)
     }
-       
+
     @IBAction func buttonSignUpClicked(_ sender: Any) {
-      
+
         if ValidateField(){
-            
+
             if Connectivity.isConnectedToInternet
             {
               showIndicator(view: view)
@@ -88,21 +88,21 @@ class RegistrationVC: UIViewController {
                 {
                     UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
                     //                    UserDefaults.standard.set(true, forKey: kLogIn)
-                    
+
                     if JSON(response!)[WSKUser].array? .count != 0 {
                         APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
                         UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
                         UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
                         UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
-                        
+
                         self.getGUID ()
                     }
- 
+
                 }else {
                     self.generateAlertWithOkButton(text: message!)
 //                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
-           
+
             })
             }
         }
@@ -113,7 +113,7 @@ class RegistrationVC: UIViewController {
         }
     }
     func getGUID(){
-        
+
         let GUID = UserDefaults.standard.value(forKey: kUserGUID)
         let param : NSDictionary = ["guid": GUID.asStringOrEmpty()]
         if Connectivity.isConnectedToInternet
@@ -127,10 +127,10 @@ class RegistrationVC: UIViewController {
                         UserDefaults.standard.set(dicResp.value(forKey: kEncrypted), forKey: kEncrypted)
                         self.hideIndicator(view: self.view)
                         UserDefaults.standard.set(true, forKey: kLogIn)
-                        
+
                         self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
                         HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
-                        
+
                     }
                 }
                 self.hideIndicator(view: self.view)
@@ -141,7 +141,7 @@ class RegistrationVC: UIViewController {
             self.generateAlertWithOkButton(text: no_internet_connection)
 //            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
-        
+
     }
     func ValidateField() -> Bool {
         if !txtFullName.text!.isValid(){
@@ -168,11 +168,11 @@ class RegistrationVC: UIViewController {
 //            showBanner(title: "", subTitle: Accept_Terms_conditions, bannerStyle: .danger)
         } else {
             return true
-            
+
         }
         return false
     }
-        
-    
+
+
 
 }

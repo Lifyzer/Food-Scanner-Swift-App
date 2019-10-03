@@ -13,19 +13,19 @@ class ChangePasswordVC: UIViewController {
     @IBOutlet var txtCurrentPwd: UITextField!
     @IBOutlet var txtNewPwd: UITextField!
     @IBOutlet var txtConfirmPwd: UITextField!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         txtCurrentPwd.setLeftPaddingPoints(10)
         txtNewPwd.setLeftPaddingPoints(10)
         txtConfirmPwd.setLeftPaddingPoints(10)
     }
-    
-    
+
+
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
-    
+
     @IBAction func buttonChangeClicked(_ sender: Any) {
         if ValidateField(){
             if Connectivity.isConnectedToInternet
@@ -33,7 +33,7 @@ class ChangePasswordVC: UIViewController {
                 showIndicator(view: view)
                 let userToken = UserDefaults.standard.string(forKey: kTempToken)
                 let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-            
+
                 let param:NSMutableDictionary = [
                     WS_KPassword:self.txtCurrentPwd.text!,
                     WS_KNew_password:self.txtNewPwd.text!,
@@ -64,9 +64,9 @@ class ChangePasswordVC: UIViewController {
             }
         }
     }
-    
+
     func ValidateField() -> Bool {
-        
+
         if !txtCurrentPwd.text!.isValid(){
             self.generateAlertWithOkButton(text: please_enter_current_password)
 //            showBanner(title: "", subTitle: please_enter_current_password, bannerStyle: .danger)

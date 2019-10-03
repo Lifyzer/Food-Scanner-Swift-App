@@ -11,5 +11,5 @@ import AudioToolbox
 
 public func playNewMessageSound() {
     AudioServicesPlaySystemSoundWithCompletion(1307){}
-    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate)) 
+    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
 }

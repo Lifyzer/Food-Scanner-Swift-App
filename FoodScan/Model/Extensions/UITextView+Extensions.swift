@@ -11,47 +11,47 @@ import Foundation
 
 extension UITextView: UITextViewDelegate
 {
-    
+
 }
 
 open class NISLTextView : UITextView {
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         NotificationCenter.default.addObserver(self, selector: #selector(self.refreshPlaceholder), name: Notification.Name.UITextView.textDidChangeNotification, object: self)
     }
-    
+
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         NotificationCenter.default.addObserver(self, selector: #selector(self.refreshPlaceholder), name: Notification.Name.UITextView.textDidChangeNotification, object: self)
     }
-    
+
     override open func awakeFromNib() {
         super.awakeFromNib()
         NotificationCenter.default.addObserver(self, selector: #selector(self.refreshPlaceholder), name: Notification.Name.UITextView.textDidChangeNotification, object: self)
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     fileprivate var placeholderLabel: UILabel?
-    
+
     /** @abstract To set textView's placeholder text. Default is ni.    */
     @IBInspectable open var placeholder : String? {
-        
+
         get {
             return placeholderLabel?.text
         }
-        
+
         set {
-            
+
             if placeholderLabel == nil {
-                
+
                 placeholderLabel = UILabel()
-                
+
                 if let unwrappedPlaceholderLabel = placeholderLabel {
-                    
+
                     unwrappedPlaceholderLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                     unwrappedPlaceholderLabel.lineBreakMode = .byWordWrapping
                     unwrappedPlaceholderLabel.numberOfLines = 0
@@ -63,50 +63,50 @@ open class NISLTextView : UITextView {
                     addSubview(unwrappedPlaceholderLabel)
                 }
             }
-            
+
             placeholderLabel?.text = newValue
             refreshPlaceholder()
         }
     }
-    
+
     open override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         if let unwrappedPlaceholderLabel = placeholderLabel {
-            
+
             let offsetLeft = textContainerInset.left + textContainer.lineFragmentPadding
             let offsetRight = textContainerInset.right + textContainer.lineFragmentPadding
             let offsetTop = textContainerInset.top
             let offsetBottom = textContainerInset.top
-            
+
             let expectedSize = unwrappedPlaceholderLabel.sizeThatFits(CGSize(width: self.frame.width-offsetLeft-offsetRight, height: self.frame.height-offsetTop-offsetBottom))
-            
+
             unwrappedPlaceholderLabel.frame = CGRect(x: offsetLeft, y: offsetTop, width: expectedSize.width, height: expectedSize.height)
         }
     }
-    
+
     @objc open func refreshPlaceholder() {
-        
+
         if text.count != 0 {
             placeholderLabel?.alpha = 0
         } else {
             placeholderLabel?.alpha = 1
         }
     }
-    
+
     override open var text: String! {
-        
+
         didSet {
-            
+
             refreshPlaceholder()
-            
+
         }
     }
-    
+
     override open var font : UIFont? {
-        
+
         didSet {
-            
+
             if let unwrappedFont = font {
                 placeholderLabel?.font = unwrappedFont
             } else {
@@ -114,21 +114,21 @@ open class NISLTextView : UITextView {
             }
         }
     }
-    
+
     override open var textAlignment: NSTextAlignment
         {
         didSet {
             placeholderLabel?.textAlignment = textAlignment
         }
     }
-    
+
     override open var delegate : UITextViewDelegate? {
-        
+
         get {
             refreshPlaceholder()
             return super.delegate
         }
-        
+
         set {
             super.delegate = newValue
         }

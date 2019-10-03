@@ -15,7 +15,7 @@ class WelComeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
 
     @IBAction func btnBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -24,7 +24,7 @@ class WelComeVC: UIViewController {
     @IBAction func buttonSignInClicked(_ sender: Any) {
         pushViewController(Storyboard: StoryBoardLogin, ViewController: idLoginVC, animation: true)
     }
-    
+
     @IBAction func buttonSignUpClicked(_ sender: Any) {
         pushViewController(Storyboard: StoryBoardLogin, ViewController: idRegistrationVC, animation: true)
     }

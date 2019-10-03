@@ -14,7 +14,7 @@ class EdgeInsetLabel: UILabel {
     var textInsets = UIEdgeInsets.zero {
         didSet { invalidateIntrinsicContentSize() }
     }
-    
+
 //    override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
 //        let insetRect = CGRect.inset(bounds)
 //        let textRect = super.textRect(forBounds: insetRect, limitedToNumberOfLines: numberOfLines)
@@ -24,12 +24,12 @@ class EdgeInsetLabel: UILabel {
 //                                          right: -textInsets.right)
 //        return UIEdgeInsetsInsetRect(textRect, invertedInsets)
 //    }
-//    
+//
 //    override func drawText(in rect: CGRect) {
 //        super.drawText(in: CGRect.inset(by: rect))
 //    }
-    
-    
+
+
 }
 
 extension EdgeInsetLabel {
@@ -38,19 +38,19 @@ extension EdgeInsetLabel {
         set { textInsets.left = newValue }
         get { return textInsets.left }
     }
-    
+
     @IBInspectable
     var rightTextInset: CGFloat {
         set { textInsets.right = newValue }
         get { return textInsets.right }
     }
-    
+
     @IBInspectable
     var topTextInset: CGFloat {
         set { textInsets.top = newValue }
         get { return textInsets.top }
     }
-    
+
     @IBInspectable
     var bottomTextInset: CGFloat {
         set { textInsets.bottom = newValue }
@@ -59,28 +59,28 @@ extension EdgeInsetLabel {
 }
 
 extension UILabel {
-    
+
     func setLineSpacing(lineSpacing: CGFloat = 0.0, lineHeightMultiple: CGFloat = 0.0) {
-        
+
         guard let labelText = self.text else { return }
-        
+
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = lineSpacing
         paragraphStyle.lineHeightMultiple = lineHeightMultiple
-        
+
         let attributedString:NSMutableAttributedString
         if let labelattributedText = self.attributedText {
             attributedString = NSMutableAttributedString(attributedString: labelattributedText)
         } else {
             attributedString = NSMutableAttributedString(string: labelText)
         }
-        
+
         // Line spacing attribute
         attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
-        
+
         self.attributedText = attributedString
     }
-    
+
     func addCharactersSpacing(_ value: CGFloat = 2) {
         if let textString = text {
             let attrs: [NSAttributedString.Key : Any] = [.kern: value]

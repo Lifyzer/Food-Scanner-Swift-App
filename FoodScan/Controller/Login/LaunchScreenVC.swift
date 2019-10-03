@@ -16,17 +16,17 @@ class LaunchScreenVC: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
 
-    
+
+
 //    func refreshTokenCall(){
 //        let param:NSMutableDictionary = [
 //            WS_KAccess_key:KNousername,
 //           ]
 //        param .addEntries(from: includeSecurityCredentials() as! [AnyHashable : Any])
-//        
+//
 //        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRefreshToken, parameters: param, encodingType:URL_ENCODING, responseData: { (response, error, message) in
-//            
+//
 //            if response != nil
 //            {
 //                let objData = JSON(response!)[WSDATA].dictionary
@@ -45,8 +45,8 @@ class LaunchScreenVC: UIViewController {
 //            }else {
 //                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
 //            }
-//            
-//            
+//
+//
 //        })
 //    }
 }

@@ -17,7 +17,7 @@ class WebServicesCollection
 
     // METHODS
     init() {}
-    
+
     //MARK:- Login/Register Method
     func loginUser(userName:String, password: String, responseData:@escaping (_ userObj:WSUser?,_ error:Error?,_ message:String?) -> Void) {
         let ParametersDict: NSDictionary = [
@@ -36,9 +36,9 @@ class WebServicesCollection
             }
         }
     }
-    
+
     func RegisterUser(ParametersDict:NSDictionary, responseData:@escaping (_ userObj:WSUser?,_ error:Error?,_ message:String?) -> Void) {
-        
+
         HttpRequestManager.sharedInstance.postJSONRequest(endpointurl:APIRegistration, parameters: ParametersDict) { (response, error, message) in
             if response != nil {
                 if(error == nil) {
@@ -51,10 +51,10 @@ class WebServicesCollection
             }
         }
     }
-    
+
     func forgotPassword(userName:String, responseData:@escaping (_ error:Error?,_ message:String?) -> Void) {
         let ParametersDict: NSDictionary = [
-            "username" : userName]        
+            "username" : userName]
         HttpRequestManager.sharedInstance.postJSONRequest(endpointurl:APIForgotPassword, parameters: ParametersDict) { (response, error, message) in
             if(error == nil) {
                 responseData(nil, message)
@@ -129,7 +129,7 @@ class WebServicesCollection
 //            }
 //        }
 //    }
- 
+
 
 }
 

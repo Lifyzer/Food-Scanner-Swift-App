@@ -21,7 +21,7 @@ extension UITextField
         self.leftView = imageView
         self.addSubview(imageView)
     }
-    
+
     func shakeTextField()
     {
         let animation = CABasicAnimation(keyPath: "position")
@@ -31,9 +31,9 @@ extension UITextField
         animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 10, y: self.center.y))
         animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 10, y: self.center.y))
         self.layer.add(animation, forKey: "position")
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))  
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
-    
+
     @IBInspectable var placeHolderColor: UIColor? {
         get {
             return self.placeHolderColor
@@ -42,19 +42,19 @@ extension UITextField
             self.attributedPlaceholder = NSAttributedString(string:self.placeholder != nil ? self.placeholder! : "", attributes:[NSAttributedString.Key.foregroundColor: newValue!])
         }
     }
-    
+
 
     func setLeftPaddingPoints(_ amount:CGFloat){
             let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
             self.leftView = paddingView
             self.leftViewMode = .always
     }
-    
+
     func setRightPaddingPoints(_ amount:CGFloat) {
             let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
             self.rightView = paddingView
             self.rightViewMode = .always
-    }   
-    
-    
+    }
+
+
 }

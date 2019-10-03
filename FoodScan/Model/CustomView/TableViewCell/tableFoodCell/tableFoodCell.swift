@@ -9,29 +9,29 @@
 import UIKit
 
 class tableFoodCell: UITableViewCell{
-    
+
     @IBOutlet weak var tableDetailsHeight: NSLayoutConstraint!
     @IBOutlet weak var imgFavouriteFood: UIImageView!
     @IBOutlet weak var imgFood: UIButton!
     @IBOutlet weak var btnFav: UIButton!
     @IBOutlet weak var lblDetailsHeight: NSLayoutConstraint!
     @IBOutlet weak var productType: UIButton!
-    
+
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var productCategory: UILabel!
     @IBOutlet weak var labelDate: UILabel!
- 
+
     @IBOutlet weak var tableProducts: UITableView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-      
+
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
-    
-   
+
+
 }

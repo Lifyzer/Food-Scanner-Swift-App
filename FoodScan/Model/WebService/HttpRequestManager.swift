@@ -13,7 +13,7 @@ import Alamofire
 let URL_ENCODING = URLEncoding.default
 let JSON_ENCODING = JSONEncoding.default
 
-//Web Service Result 
+//Web Service Result
 let WSSUCCESS = "success"
 let WSMESSAGE = "message"
 let WSDATA = "data"
@@ -56,26 +56,29 @@ class HttpRequestManager
     var alamoFireManager = Alamofire.SessionManager.default
     var delegate : UploadProgressDelegate?
     var downloadDelegate : DownloadProgressDelegate?
-    
-    
+
+
     // METHODS
     init()
     {
         alamoFireManager.session.configuration.timeoutIntervalForRequest = 15 //seconds
         alamoFireManager.session.configuration.httpAdditionalHeaders = additionalHeader
     }
-    
+
     //MARK:- POST Request
     func postJSONRequest(endpointurl:String, parameters:NSDictionary, encodingType:ParameterEncoding = JSONEncoding.default, responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
     {
         ShowNetworkIndicator(xx: true)
-        
+
         alamoFireManager.request(endpointurl, method: .post, parameters: parameters as? Parameters, encoding: encodingType, headers: additionalHeader)
-            
+            .responseString(completionHandler: { (response) in
+                print(response)
+            })
+
             .responseJSON { (response:DataResponse<Any>) in
-                
+
             ShowNetworkIndicator(xx: false)
-                
+
             if let _ = response.result.error
             {
                 let code = (response.result.error as? NSError)!.code
@@ -105,15 +108,15 @@ class HttpRequestManager
                         self.Message = (data as! NSDictionary)[WSMESSAGE].asStringOrEmpty()
                         let responseStatus = (data as! NSDictionary)[WSSTATUS].asStringOrEmpty()
                         switch (responseStatus) {
-                            
+
                         case RESPONSE_STATUS.SUCCESS.rawValue :
                             self.resObjects = (data as! NSDictionary) as AnyObject
                             break
-                            
+
                         case RESPONSE_STATUS.FAILED.rawValue :
                             self.resObjects = nil
                             break
-                            
+
                         default :
                             break
                         }
@@ -123,11 +126,11 @@ class HttpRequestManager
                 case .failure(_):
                     responseData(nil, response.result.error as NSError?,MESSAGE)
                     break
-                    
+
                 }
             }
         }
-        
+
 //            .responseString { (response) in
 //                print("Response String",response)
 //        }
@@ -136,11 +139,11 @@ class HttpRequestManager
     {
         ShowNetworkIndicator(xx: true)
         alamoFireManager.request(endpointurl, method: .post, parameters: parameters as? Parameters, encoding: encodingType, headers: additionalHeader)
-            
+
             .responseJSON { (response:DataResponse<Any>) in
-                
+
                 ShowNetworkIndicator(xx: false)
-                
+
                 if let _ = response.result.error
                 {
                     responseData(nil, response.result.error as NSError?,MESSAGE)
@@ -178,14 +181,14 @@ class HttpRequestManager
                 }
         }
     }
-    
+
     //MARK:- GET Request
     func getRequestWithoutParams(endpointurl:String,responseData:@escaping (_ data:AnyObject?, _ error: NSError?, _ message: String?) -> Void)
     {
-        ShowNetworkIndicator(xx: true)        
+        ShowNetworkIndicator(xx: true)
         alamoFireManager.request(endpointurl, method: .get).responseJSON { (response:DataResponse<Any>) in
             ShowNetworkIndicator(xx: false)
-            
+
             if let _ = response.result.error
             {
                 responseData(nil, response.result.error as NSError?,MESSAGE)
@@ -195,44 +198,44 @@ class HttpRequestManager
                 switch(response.result)
                 {
                 case .success(_):
-                    
+
                     if let data = response.result.value
                     {
                         self.Message = (data as! NSDictionary)[WSMESSAGE].asStringOrEmpty()
                         let responseStatus = (data as! NSDictionary)[WSSTATUS].asStringOrEmpty()
                         switch (responseStatus) {
-                            
+
                         case RESPONSE_STATUS.SUCCESS.rawValue :
                             self.resObjects = (data as! NSDictionary) as AnyObject
                             break
-                            
+
                         case RESPONSE_STATUS.FAILED.rawValue :
                             self.resObjects = nil
                             break
-                            
+
                         default :
                             break
                         }
                         responseData(self.resObjects, nil, self.Message)
                     }
                     break
-                    
+
                 case .failure(_):
                     responseData(nil, response.result.error as NSError?,MESSAGE)
                     break
-                    
+
                 }
             }
         }
     }
-    
+
     func getRequest(endpointurl:String,parameters:NSDictionary,responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
     {
         ShowNetworkIndicator(xx: true)
-      
+
         alamoFireManager.request(endpointurl, method: .get, parameters: parameters as? [String : AnyObject]).responseJSON { (response:DataResponse<Any>) in
             ShowNetworkIndicator(xx: false)
-            
+
             if let _ = response.result.error
             {
                 responseData(nil, response.result.error as NSError?, MESSAGE)
@@ -246,38 +249,38 @@ class HttpRequestManager
                         self.Message = (data as! NSDictionary)[WSMESSAGE].asStringOrEmpty()
                         let responseStatus = (data as! NSDictionary)[WSSUCCESS].asStringOrEmpty()
                         switch (responseStatus) {
-                            
+
                         case RESPONSE_STATUS.SUCCESS.rawValue :
                             self.resObjects = (data as! NSDictionary) as AnyObject
                             break
-                            
+
                         case RESPONSE_STATUS.FAILED.rawValue :
                             self.resObjects = nil
                             break
-                            
+
                         default :
                             break
                         }
                         responseData(self.resObjects, nil, self.Message)
                     }
                     break
-                    
+
                 case .failure(_):
                     responseData(nil, response.result.error as NSError?, MESSAGE)
                     break
-                    
+
                 }
             }
         }
-        
+
     }
-    
-    
+
+
     //MARK:- PUT Request
     func putRequest(endpointurl:String,parameters:NSDictionary,responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
     {
         ShowNetworkIndicator(xx: true)
-        
+
         alamoFireManager.request(endpointurl, method: .post, parameters: parameters as? Parameters).responseJSON { (response:DataResponse<Any>) in
             ShowNetworkIndicator(xx: false)
             if let _ = response.result.error
@@ -293,26 +296,26 @@ class HttpRequestManager
                         self.Message = (data as! NSDictionary)[WSMESSAGE].asStringOrEmpty()
                         let responseStatus = (data as! NSDictionary)[WSSUCCESS].asStringOrEmpty()
                         switch (responseStatus) {
-                            
+
                         case RESPONSE_STATUS.SUCCESS.rawValue :
                             self.resObjects = (data as! NSDictionary) as AnyObject
                             break
-                            
+
                         case RESPONSE_STATUS.FAILED.rawValue :
                             self.resObjects = nil
                             break
-                            
+
                         default :
                             break
                         }
                         responseData(self.resObjects, nil, self.Message)
                     }
                     break
-                    
+
                 case .failure(_):
                     responseData(nil, response.result.error as NSError?, MESSAGE)
                     break
-                    
+
                 }
             }
         }
@@ -330,7 +333,7 @@ class HttpRequestManager
                 responseData(true)
         }
     }
-    
+
 //    func postMultipartJSONRequest(endpointurl:String, parameters:NSDictionary, encodingType:ParameterEncoding = JSONEncoding.default, responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
 //    {
 //        ShowNetworkIndicator(xx: true)

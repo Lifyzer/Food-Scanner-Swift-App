@@ -17,7 +17,7 @@ extension UIViewController
         let vc = storyBoard.instantiateViewController(withIdentifier: ViewController)
         APP_DELEGATE.mainNavigationController?.pushViewController(vc, animated: animation)
     }
-    
+
     func topViewController(base: UIViewController? = (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topViewController(base: nav.visibleViewController)
@@ -33,29 +33,29 @@ extension UIViewController
         }
         return base
     }
-    
+
     //MARK:- Activity
     func showIndicator(view: UIView) {
         let container: UIView = UIView()
         container.tag = 555
         let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
-        
+
         container.frame = view.frame
         container.center = view.center
         container.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3022527825)
-        
+
         activityIndicator.frame = CGRect (x: 0, y: 0, width: 80, height: 80)
         activityIndicator.style = .whiteLarge
         activityIndicator.center = container.center
         activityIndicator.hidesWhenStopped = true
-        
+
         DispatchQueue.main.async {
             container.addSubview(activityIndicator)
             activityIndicator.startAnimating()
             view.addSubview(container)
         }
     }
-    
+
     func hideIndicator(view: UIView) {
         DispatchQueue.main.async {
             view.viewWithTag(555)?.removeFromSuperview()
@@ -67,7 +67,7 @@ extension UIViewController
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     //Add/Remove product to favourite
     typealias MethodHandler1 = () -> Void
     func AddRemoveFromFavouriteAPI(isFavourite : String,product_id: String,fn:@escaping MethodHandler1)
@@ -86,12 +86,12 @@ extension UIViewController
                     let data1 = data as! [AnyHashable : Any]
                     param.addEntries(from: data1)
                 }
-        
+
                 showIndicator(view: self.view)
-        
+
                 HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddToFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                     self.hideIndicator(view: self.view)
-                    
+
                     if response != nil
                     {
                         if fn != nil

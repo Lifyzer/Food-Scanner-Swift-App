@@ -9,7 +9,7 @@
 import UIKit
 
 class tableMenuHeaderView: UITableViewHeaderFooterView {
-    
+
     //MARK:- Property
     @IBOutlet var userName: UILabel!
     @IBOutlet var buttonLogout: UIButton!

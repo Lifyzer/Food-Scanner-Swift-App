@@ -10,24 +10,24 @@ import UIKit
 import WebKit
 
 class PrivacyPolicyVC: UIViewController, WKUIDelegate {
-    
+
      @IBOutlet var webView: WKWebView!
-    
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         let myURL = URL(string:PRIVACY_POLICY_URL)
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
-        
+
     }
-    
+
     //MARK: - Buttons
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
-    
 
- 
+
+
 
 }

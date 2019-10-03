@@ -10,25 +10,25 @@ import Foundation
 import UIKit
 
 extension UIView {
-    
+
     // Example use: myView.addBorder(toSide: .Left, withColor: UIColor.redColor().CGColor, andThickness: 1.0)
-    
+
     enum ViewSide {
         case Left, Right, Top, Bottom
     }
-    
+
     func addBorder(toSide side: ViewSide, withColor color: CGColor, andThickness thickness: CGFloat) {
-        
+
         let border = CALayer()
         border.backgroundColor = color
-        
+
         switch side {
         case .Left: border.frame = CGRect(x: frame.minX, y: frame.minY, width: thickness, height: frame.height); break
         case .Right: border.frame = CGRect(x: frame.maxX, y: frame.minY, width: thickness, height: frame.height); break
         case .Top: border.frame = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: thickness); break
         case .Bottom: border.frame = CGRect(x: frame.minX, y: frame.maxY, width: frame.width, height: thickness); break
         }
-        
+
         layer.addSublayer(border)
     }
 }
@@ -38,7 +38,7 @@ extension UIView {
 //
 //// MARK: - Properties
 //public extension UIButton {
-//    
+//
 //    /// SwifterSwift: Image of disabled state for button; also inspectable from Storyboard.
 //    @IBInspectable public var imageForDisabled: UIImage? {
 //        get {
@@ -48,7 +48,7 @@ extension UIView {
 //            setImage(newValue, for: .disabled)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Image of highlighted state for button; also inspectable from Storyboard.
 //    @IBInspectable public var imageForHighlighted: UIImage? {
 //        get {
@@ -58,7 +58,7 @@ extension UIView {
 //            setImage(newValue, for: .highlighted)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Image of normal state for button; also inspectable from Storyboard.
 //    @IBInspectable public var imageForNormal: UIImage? {
 //        get {
@@ -68,7 +68,7 @@ extension UIView {
 //            setImage(newValue, for: .normal)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Image of selected state for button; also inspectable from Storyboard.
 //    @IBInspectable public var imageForSelected: UIImage? {
 //        get {
@@ -78,7 +78,7 @@ extension UIView {
 //            setImage(newValue, for: .selected)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Title color of disabled state for button; also inspectable from Storyboard.
 //    @IBInspectable public var titleColorForDisabled: UIColor? {
 //        get {
@@ -88,7 +88,7 @@ extension UIView {
 //            setTitleColor(newValue, for: .disabled)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Title color of highlighted state for button; also inspectable from Storyboard.
 //    @IBInspectable public var titleColorForHighlighted: UIColor? {
 //        get {
@@ -98,7 +98,7 @@ extension UIView {
 //            setTitleColor(newValue, for: .highlighted)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Title color of normal state for button; also inspectable from Storyboard.
 //    @IBInspectable public var titleColorForNormal: UIColor? {
 //        get {
@@ -108,7 +108,7 @@ extension UIView {
 //            setTitleColor(newValue, for: .normal)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Title color of selected state for button; also inspectable from Storyboard.
 //    @IBInspectable public var titleColorForSelected: UIColor? {
 //        get {
@@ -118,7 +118,7 @@ extension UIView {
 //            setTitleColor(newValue, for: .selected)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Title of disabled state for button; also inspectable from Storyboard.
 //    @IBInspectable public var titleForDisabled: String? {
 //        get {
@@ -128,7 +128,7 @@ extension UIView {
 //            setTitle(newValue, for: .disabled)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Title of highlighted state for button; also inspectable from Storyboard.
 //    @IBInspectable public var titleForHighlighted: String? {
 //        get {
@@ -138,7 +138,7 @@ extension UIView {
 //            setTitle(newValue, for: .highlighted)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Title of normal state for button; also inspectable from Storyboard.
 //    @IBInspectable public var titleForNormal: String? {
 //        get {
@@ -148,7 +148,7 @@ extension UIView {
 //            setTitle(newValue, for: .normal)
 //        }
 //    }
-//    
+//
 //    /// SwifterSwift: Title of selected state for button; also inspectable from Storyboard.
 //    @IBInspectable public var titleForSelected: String? {
 //        get {
@@ -158,37 +158,37 @@ extension UIView {
 //            setTitle(newValue, for: .selected)
 //        }
 //    }
-//    
+//
 //}
 //
 //// MARK: - Methods
 //public extension UIButton {
-//    
+//
 //    private var states: [UIControlState] {
 //        return [.normal, .selected, .highlighted, .disabled]
 //    }
-//    
+//
 //    /// SwifterSwift: Set image for all states.
 //    ///
 //    /// - Parameter image: UIImage.
 //    public func setImageForAllStates(_ image: UIImage) {
 //        states.forEach { self.setImage(image, for: $0) }
 //    }
-//    
+//
 //    /// SwifterSwift: Set title color for all states.
 //    ///
 //    /// - Parameter color: UIColor.
 //    public func setTitleColorForAllStates(_ color: UIColor) {
 //        states.forEach { self.setTitleColor(color, for: $0) }
 //    }
-//    
+//
 //    /// SwifterSwift: Set title for all states.
 //    ///
 //    /// - Parameter title: title string.
 //    public func setTitleForAllStates(_ title: String) {
 //        states.forEach { self.setTitle(title, for: $0) }
 //    }
-//    
+//
 //    /// SwifterSwift: Center align title text and image on UIButton
 //    ///
 //    /// - Parameter spacing: spacing between UIButton title text and UIButton Image.
@@ -198,13 +198,13 @@ extension UIView {
 //        titleEdgeInsets = UIEdgeInsets(top: 0, left: insetAmount, bottom: 0, right: -insetAmount)
 //        contentEdgeInsets = UIEdgeInsets(top: 0, left: insetAmount, bottom: 0, right: insetAmount)
 //    }
-//    
+//
 //}
 //#endif
 
 extension UIButton {
     func selectedButton(title:String, iconName: String, widthConstraints: NSLayoutConstraint){
-        
+
         self.backgroundColor = UIColor(red: 0, green: 118/255, blue: 254/255, alpha: 1)
         self.setTitle(title, for: .normal)
         self.setTitle(title, for: .highlighted)
@@ -214,10 +214,10 @@ extension UIButton {
         self.setImage(UIImage(named: iconName), for: .highlighted)
         let imageWidth = self.imageView!.frame.width
        // let textWidth = (title as NSString).size(attributes:[NSFontAttributeName:self.titleLabel!.font!]).width
-        
+
         let textWidth = (title as NSString).size(withAttributes: [NSAttributedString.Key.font: self.titleLabel!.font!]).width
         let width = textWidth + imageWidth + 24
-        
+
         //24 - the sum of your insets from left and right
         widthConstraints.constant = width
         self.layoutIfNeeded()

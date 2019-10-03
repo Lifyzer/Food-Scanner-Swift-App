@@ -32,7 +32,7 @@ extension UITableView {
     func restore() {
         self.backgroundView = nil
     }
-    
+
     func addLoaderView() {
         let frame = self.frame
         let loader = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
@@ -42,7 +42,7 @@ extension UITableView {
         self.backgroundView = loader;
         self.frame = frame
     }
-    
+
     func registerForLoadMore() {
         let headerNib = UINib(nibName: "LoadMoreCell", bundle: nil)
         self.register(headerNib, forCellReuseIdentifier: "LoadMoreCell")

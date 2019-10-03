@@ -15,7 +15,7 @@ import SwiftyJSON
 }
 
 class ViewProductPopUpVC: UIViewController {
-    
+
     @IBOutlet weak var viewPopup: UIView!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var viewTextfield: UIView!
@@ -27,11 +27,11 @@ class ViewProductPopUpVC: UIViewController {
     var objUser: WSUser?
     //    var productName = ""
     var param : NSMutableDictionary?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         txtProductName.text = productName
-        
+
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if touches.first != nil
@@ -44,59 +44,39 @@ class ViewProductPopUpVC: UIViewController {
     }
     func checkLoginAlert(){
         if !UserDefaults.standard.bool(forKey: kLogIn){
-            //            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
-            //            alert.addAction(UIAlertAction(title: "LOGIN",
-            //                                          style: .default,
-            //                                          handler: {(_: UIAlertAction!) in
-            //
-            //                                            IsScanWithLogin = true
-            //                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
-            //            }))
-            //            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
-            //
-            //            }))
-            //
+
             param = [
                 WS_KProduct_name:productName,
-                WS_FLAG : 0]//,
-            //                WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-            
-            //            includeSecurityCredentials {(data) in
-            //                let data1 = data as! [AnyHashable : Any]
-            //                self.param!.addEntries(from: data1)
-            //            }
+                WS_FLAG : 0]
             UserDefaults.standard.set(0, forKey: KScanOption)
             UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: param!, forKey: SCANNED_DETAILS)
-            self.dismiss(animated: false) {
+//            self.dismiss(animated: false) {
                 self.delegate?.scanFlag(flag: 0)
                 IsScanWithLogin = true
-                self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
-            }
-            
+//                self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+//            }
+
         }else {
             objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
-            GetProductDetailsAPI()
-            
+//            GetProductDetailsAPI()
         }
+        GetProductDetailsAPI()
     }
-    
+
     @IBAction func btnViewProduct(_ sender: Any) {
         if txtProductName.text != ""
         {
-            
+
             productName = txtProductName.text!
             productName = productName.trimmingCharacters(in: .whitespaces)
-            //            GetProductDetailsAPI()
-            
             checkLoginAlert()
-            print(txtProductName.text)
+
         }
         else
         {
             generateAlertWithOkButton(text: please_enter_product_name)
-            //            showBanner(title: "", subTitle: please_enter_product_name, bannerStyle: .danger)
         }
-        
+
     }
 }
 //MARK: Textfiled Method
@@ -123,13 +103,13 @@ extension ViewProductPopUpVC
                 WS_FLAG : 0]
             //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
             //            WS_KSecret_key:userToken ?? ""]
-            
+
             includeSecurityCredentials {(data) in
                 let data1 = data as! [AnyHashable : Any]
                 param.addEntries(from: data1)
             }
-            
-            
+
+
             showIndicator(view: self.view)
             print("===== Scan Param ========",param)
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
@@ -138,10 +118,10 @@ extension ViewProductPopUpVC
                 {
                     let objData = JSON(response!)[WS_KProduct]
                     let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
-                    
+
                     self.dismiss(animated: false) {
                         self.delegate?.scanFlag(flag: 0)
-                        HomeTabVC.sharedHomeTabVC?.selectedIndex = 0
+//                        HomeTabVC.sharedHomeTabVC?.selectedIndex = 0
                         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
                         vc.objProduct = objProduct[0]
                         HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)

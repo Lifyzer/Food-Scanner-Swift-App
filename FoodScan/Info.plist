@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1</string>
+	<string>1.3</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>2</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -39,11 +39,8 @@
 		<string>aribl_bold.ttf</string>
 		<string>arial.ttf</string>
 	</array>
-
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-
-
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -52,7 +49,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>for text detection</string>
+	<string> Lifyzer would like to access camera to capture text on products and to capture barcode </string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

@@ -17,16 +17,16 @@ class tableNewsDetailCell: UITableViewCell {
             self.pagerView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
         }
     }
-    
+
     @IBOutlet weak var pageControl: FSPageControl! {
         didSet {
-           
+
             self.pageControl.contentHorizontalAlignment = .right
             self.pageControl.contentInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             self.pageControl.hidesForSinglePage = true
         }
     }
-    
+
     fileprivate var styleIndex = 0 {
         didSet {
             // Clean up
@@ -51,7 +51,7 @@ class tableNewsDetailCell: UITableViewCell {
                 // Image
                 self.pageControl.setImage(UIImage(named:"icon_footprint"), for: .normal)
                 self.pageControl.setImage(UIImage(named:"icon_cat"), for: .selected)
-            
+
             default:
                 break
             }
@@ -62,34 +62,34 @@ class tableNewsDetailCell: UITableViewCell {
             self.pageControl.contentHorizontalAlignment = [.right,.center,.left][self.alignmentIndex]
         }
     }
-    
+
     @IBOutlet weak var labelTitle: UILabel!
     @IBOutlet weak var cvTagView: UICollectionView!
-   
+
     @IBOutlet weak var buttonAddToFav: UIButton!
     @IBOutlet weak var buttonLike: UIButton!
     @IBOutlet weak var buttonComment: UIButton!
     @IBOutlet weak var lblDate: UILabel!
-    
+
     @IBOutlet weak var labledContent: UILabel!
-    
+
     @IBOutlet weak var txtMessage: UITextView!
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtEmailAddress: UITextField!
     @IBOutlet weak var buttonSubmit: UIButton!
-    
+
     @IBOutlet weak var lblUserName: UILabel!
     @IBOutlet weak var lblComments: UILabel!
     @IBOutlet weak var lblTime: UILabel!
     @IBOutlet weak var imgUser: UIImageView!
-   
+
      @IBOutlet weak var buttonFb: UIButton!
      @IBOutlet weak var buttonTwitter: UIButton!
      @IBOutlet weak var buttonInsta: UIButton!
      @IBOutlet weak var buttonLinkedin: UIButton!
      @IBOutlet weak var buttonWhatsapp: UIButton!
-     @IBOutlet weak var buttonGplus: UIButton!    
-    
+     @IBOutlet weak var buttonGplus: UIButton!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -101,7 +101,7 @@ class tableNewsDetailCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-   
+
+
 
 }

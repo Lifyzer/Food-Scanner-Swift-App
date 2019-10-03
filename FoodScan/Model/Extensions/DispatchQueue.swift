@@ -21,14 +21,14 @@ private func runOnMainThread(block: @escaping () -> ()) {
  Runs a block in background
  */
 public func runInBackground(block: @escaping () -> ()) {
-    
+
     DispatchQueue.global(qos: .userInitiated).async {
         block()
     }
 }
 
 public func runOnMainThreadWithoutDeadlock(block: @escaping () -> ()) {
-    
+
     if(Thread.isMainThread)
     {
         block()
@@ -46,7 +46,7 @@ public func runOnMainThreadWithoutDeadlock(block: @escaping () -> ()) {
  */
 
 public func runAfterTime(time: Double, block: @escaping () -> ()) {
-    
+
     DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: {
         block()
     })

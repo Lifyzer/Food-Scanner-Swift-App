@@ -14,7 +14,7 @@ protocol PKSwipeCellDelegateProtocol {
 import UIKit
 
 class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
-    
+
     //MARK: Variables
     //Set the delegate object
     internal var delegate:AnyObject?
@@ -22,34 +22,34 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
     internal var isPanEnabled = true
     private var viewRightAccessory = UIView()
     private var backview:UIView = UIView()
-    
-    
+
+
     //MARK: Cell Methods
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         resetCellState()
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initializeCell()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initializeCell()
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
     }
-    
+
     //MARK: Gesture Method
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.isKind(of: UIPanGestureRecognizer.classForCoder()) {
@@ -58,18 +58,18 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
         }
         return false
     }
-    
+
     //MARK: Private Functions
     /**
     This Method is used to initialize the cell with pan gesture and back views.
-    
+
     */
     private func initializeCell() {
         let panGesture = UIPanGestureRecognizer(target: self, action: "handlePanGesture:")
         self.addGestureRecognizer(panGesture)
         panGesture.delegate = self
         let cellFrame = CGRect(x: 0, y: 0, width: self.screenBoundsFixedToPortraitOrientation().height, height: self.frame.size.height)
-      
+
         let viewBackground = UIView(frame: cellFrame)
         self.backgroundView = viewBackground
         self.backview =  UIView(frame:cellFrame)
@@ -78,10 +78,10 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
         self.contentView.isExclusiveTouch = true
         self.backview.isExclusiveTouch = true
     }
-    
+
     /**
      This function is used to get the screen frame independent of orientation
-     
+
      - returns: frame of screen
      */
     func screenBoundsFixedToPortraitOrientation()->CGRect {
@@ -91,10 +91,10 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
         }
         return screen.bounds
     }
-    
+
     /**
     This Method will be called when user will start the panning
-    
+
     - parameter panGestureRecognizer: panGesture Object
     */
     func handlePanGesture(panGestureRecognizer : UIPanGestureRecognizer) {
@@ -114,7 +114,7 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
         let velocity = panGestureRecognizer .velocityInView(panGestureRecognizer.view)
         let panOffset = translation.x
         let actualTranslation = CGPointMake(panOffset, translation.y)
-        
+
         if panGestureRecognizer.state == UIGestureRecognizerState.Began && panGestureRecognizer.numberOfTouches() > 0 {
             //start swipe
             self.backgroundView!.addSubview(backview)
@@ -129,10 +129,10 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
             self.resetCellFromPoint(actualTranslation, withVelocity: velocity)
         }
     }
-    
+
     /**
     This function is called when panning will start to update the frames to show the panning
-    
+
     - parameter point:    point of panning
     - parameter velocity: velocity of panning
     */
@@ -148,10 +148,10 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
             }
         }
     }
-    
+
     /**
     This function is called to reset the panning state. If panning is less then it will reset to the original position depending on panning direction.
-    
+
     - parameter point:    point of panning
     - parameter velocity: velocity of panning
     */
@@ -175,11 +175,11 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
                     UIView.animateWithDuration(0.5, animations: { () -> Void in
                         self.contentView.frame = CGRectOffset(self.contentView.bounds, -CGRectGetWidth(self.viewRightAccessory.frame), 0)
                         self.viewRightAccessory.frame = CGRectMake(UIScreen.mainScreen().bounds.size.width - CGRectGetWidth(self.viewRightAccessory.frame), 0, CGRectGetWidth(self.viewRightAccessory.frame), CGRectGetHeight(self.frame))
-                        
-                        
+
+
                         }) { (Bool) -> Void in
                     }
-                    
+
                 }else {  // IF SCROLL LESS THEN MOVE TO ORIGINAL STATE
                     UIView.animateWithDuration(0.5, animations: { () -> Void in
                         self.contentView.frame = CGRectOffset(self.contentView.bounds, 0, 0);
@@ -190,11 +190,11 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
             }
         }
     }
-    
+
     //MARK: public Methods
     /**
     This function is used to add the view in right side
-    
+
     - parameter view: view to be displayed on the right hsnd side of the cell
     */
     internal func addRightOptionsView(view:UIView) {
@@ -203,7 +203,7 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
         viewRightAccessory.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin
         self.backview.addSubview(viewRightAccessory)
     }
-    
+
     /**
     This function is used to reset the cell state back to original position to hide the right view options.
     */
@@ -214,10 +214,10 @@ class PKSwipeTableViewCell: UITableViewCell , PKSwipeCellDelegateProtocol {
             }) { (Bool) -> Void in
         }
     }
-    
+
     func swipeBeginInCell(cell: PKSwipeTableViewCell) {
     }
-    
+
     func swipeDoneOnPreviousCell() -> PKSwipeTableViewCell? {
         return self
     }

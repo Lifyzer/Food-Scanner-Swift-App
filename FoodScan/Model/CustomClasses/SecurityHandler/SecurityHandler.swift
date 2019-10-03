@@ -24,10 +24,10 @@ let kEncrypted = "encrypted_value"
 
 
 func includeSecurityCredentials(processedData:@escaping (_ data: NSDictionary?) -> Void){
-    
+
     let accessKey : String
     let secretKey : String
-    
+
     if UserDefaults.standard.bool(forKey: kLogIn) && (UserDefaults.standard.value(forKey: kEncrypted) != nil)
     {
         accessKey = UserDefaults.standard.value(forKey: kEncrypted) as! String
@@ -36,12 +36,12 @@ func includeSecurityCredentials(processedData:@escaping (_ data: NSDictionary?) 
     {
         accessKey = kNoUsername
     }
-    
+
     if UserDefaults.standard.bool(forKey: kLogIn) && (UserDefaults.standard.value(forKey: kUserToken) != nil) {
         secretKey = UserDefaults.standard.value(forKey: kUserToken) as! String
-        
+
         processedData( [kAccessKey:accessKey, kSecretKey:  secretKey /*,"device_type":DEVICE_TYPE , kIsdelete : "0"*/] as NSDictionary)
-        
+
     }else if UserDefaults.standard.value(forKey: kTempToken) != nil {
         secretKey = UserDefaults.standard.value(forKey: kTempToken) as! String
         processedData( [kAccessKey:accessKey, kSecretKey:  secretKey /*, "device_type":DEVICE_TYPE , kIsdelete : "0"*/] as NSDictionary)
@@ -54,7 +54,7 @@ func includeSecurityCredentials(processedData:@escaping (_ data: NSDictionary?) 
 }
 
 func checkSecurity() {
-    
+
     if UserDefaults.standard.bool(forKey: kLogIn) {
         let isExpired: Bool = isTokenExpired()
         if isExpired {
@@ -68,36 +68,36 @@ func checkSecurity() {
 }
 
 func isTokenExpired() -> Bool {
-    
+
     return false
-    
+
     if UserDefaults.standard.bool(forKey: kLogIn) && (UserDefaults.standard.value(forKey: kUserToken) != nil) {
         var secretKey:String = String()
         var accessKey:String = String()
         var dateTimeString:String = String()
         var arrSecretkeyComponents:NSArray = NSArray()
-        
+
         accessKey = UserDefaults.standard.value(forKey: kUserGUID) as! String
         secretKey = UserDefaults.standard.value(forKey: kUserToken) as! String
         arrSecretkeyComponents = secretKey.components(separatedBy: "_") as NSArray
-        
+
         if (!(arrSecretkeyComponents.count==2) || (!(arrSecretkeyComponents.object(at: 0) as! String).isValid()) || (!(arrSecretkeyComponents.object(at: 1) as! String).isValid())) {
             return true
         }
-        
+
         dateTimeString = arrSecretkeyComponents.object(at: 1) as! String
         dateTimeString = FBEncryptorAES.decryptBase64String(dateTimeString, keyString: accessKey)
-        
+
         let calendar:Calendar = Calendar.current
         let timeZone:TimeZone = TimeZone (abbreviation: "UTC")!
-        
+
         var dateCurrent:Date = Date()
         let formatter:DateFormatter = DateFormatter()
         formatter.timeZone=timeZone
         formatter.dateFormat="yyyy-MM-dd HH:mm:ss"
         let dateString:String = formatter.string(from: dateCurrent)
         dateCurrent = formatter.date(from: dateString)!
-        
+
         var comps:DateComponents = DateComponents()
         comps.day = dateTimeString.substring(0, length: 2) as! Int
         comps.month = dateTimeString.substring(2, length: 2) as! Int
@@ -137,7 +137,7 @@ func callUpdateTokenWS() {
     let param:NSDictionary = [KGUID:"",
                               kUserId:""]
     HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIUpdateToken, parameters: param, responseData: { (response, error, message) in
-        
+
         if response != nil
         {
             let dicTemp:NSDictionary = (response as! NSDictionary).object(forKey: WSDATA) as! NSDictionary
@@ -154,7 +154,7 @@ func callUpdateTokenWS() {
 //MARK:- TempToken
 func getTempToken(processedData:@escaping () -> Void) {
     let param:NSDictionary = [kAccessKey:kNoUsername]
-    
+
     HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRefreshToken, parameters: param as NSDictionary) { (response, error, message) in
         if (error == nil)
         {

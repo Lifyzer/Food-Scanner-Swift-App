@@ -12,22 +12,22 @@ import SwiftyJSON
 
 class ForgotPasswordVC: UIViewController {
     @IBOutlet var txtEmail: UITextField!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         txtEmail.setLeftPaddingPoints(10)
-      
+
         // Do any additional setup after loading the view.
     }
-    
+
 
     //MARK: - Buttons
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
-    
+
     @IBAction func buttonSendClicked(_ sender: Any) {
-        
+
         if ValidateField() {
             if Connectivity.isConnectedToInternet
             {
@@ -42,7 +42,7 @@ class ForgotPasswordVC: UIViewController {
                     let data1 = data as! [AnyHashable : Any]
                     param.addEntries(from: data1)
                 }
-                
+
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIForgotPassword, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                self.hideIndicator(view: self.view)
                 if response != nil
@@ -67,7 +67,7 @@ class ForgotPasswordVC: UIViewController {
 //            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
-   
+
     func ValidateField() -> Bool {
         if !txtEmail.text!.isValid(){
             self.generateAlertWithOkButton(text: please_enter_email)
@@ -80,5 +80,5 @@ class ForgotPasswordVC: UIViewController {
         }
         return false
     }
-    
+
 }

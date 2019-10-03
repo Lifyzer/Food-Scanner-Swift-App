@@ -12,7 +12,7 @@ class tableSettingsCell: UITableViewCell {
 
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var txtKeyword : UITextField!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

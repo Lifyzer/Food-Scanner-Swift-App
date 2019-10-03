@@ -34,7 +34,7 @@ extension Optional {
             return 0.0
         }
     }
-    
+
     func asStringOrNilText() -> String {
         switch self {
         case .some(let value):

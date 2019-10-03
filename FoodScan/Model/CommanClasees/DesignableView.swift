@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 public enum UIButtonBorderSide:String {
-    
+
     case Top = "Top"
     case Bottom = "Bottom"
     case Left = "Left"
@@ -19,7 +19,7 @@ public enum UIButtonBorderSide:String {
 
 extension UIView {
     public func addBordere(side:UIButtonBorderSide, color:UIColor, width: CGFloat) {
-        
+
         let border = CALayer()
         border.backgroundColor = color.cgColor
         switch side {
@@ -33,7 +33,7 @@ extension UIView {
             border.frame = CGRect(x: self.frame.size.width - width, y: 0, width: width, height: self.frame.size.height)
         }
         self.layer.addSublayer(border)
-        
+
     }
 }
 
@@ -44,16 +44,16 @@ class DesignableView:UIView {
 }
 @IBDesignable
 class DesignableButton:UIButton{
-    
+
     }
 
 @IBDesignable
 class DesignableLabel:UILabel{
-    
+
     @IBInspectable
     var Color: UIColor? {
         get {
-           
+
             if let color = layer.backgroundColor {
                 return UIColor(cgColor: color)
             }
@@ -80,7 +80,7 @@ extension UIView {
             layer.cornerRadius = newValue
         }
     }
-    
+
     @IBInspectable
     var borderWidth: CGFloat {
         get {
@@ -91,10 +91,10 @@ extension UIView {
         }
     }
 
-    
+
 // create top or left or write
 
-    
+
     @IBInspectable
     var borderColor: UIColor? {
         get {
@@ -111,7 +111,7 @@ extension UIView {
             }
         }
     }
-    
+
     @IBInspectable
     var shadowRadius: CGFloat {
         get {
@@ -121,7 +121,7 @@ extension UIView {
             layer.shadowRadius = newValue
         }
     }
-    
+
     @IBInspectable
     var shadowOpacity: Float {
         get {
@@ -131,7 +131,7 @@ extension UIView {
             layer.shadowOpacity = newValue
         }
     }
-    
+
     @IBInspectable
     var shadowOffset: CGSize {
         get {
@@ -141,7 +141,7 @@ extension UIView {
             layer.shadowOffset = newValue
         }
     }
-    
+
     @IBInspectable
     var shadowColor: UIColor? {
         get {
@@ -165,10 +165,10 @@ extension UIColor {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid green component")
         assert(blue >= 0 && blue <= 255, "Invalid blue component")
-        
+
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
     }
-    
+
     convenience init(rgb: Int) {
         self.init(
             red: (rgb >> 16) & 0xFF,

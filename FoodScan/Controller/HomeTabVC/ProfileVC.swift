@@ -13,7 +13,7 @@ import SDWebImage
 
 
 class ProfileVC: UIViewController {
-    
+
       enum ProfileItems: Int {
         case UserEmail=0 , FavouriteFood
         case totalCount = 2
@@ -33,17 +33,17 @@ class ProfileVC: UIViewController {
       var noOfRecords  = REQ_NO_OF_RECORD
       private let refresher = UIRefreshControl()
     var RemoveIndex = -1
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableProfile.tableFooterView = UIView()
-    
+
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
-        
+
            // Crashlytics.sharedInstance().crash()
-        
+
         if checkLoginAlert(){
             objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
             userEmail.text = objUser?.email
@@ -60,17 +60,19 @@ class ProfileVC: UIViewController {
             self.tableProfile.isHidden = true
         }
     }
-   
+
     @IBAction func btnRedirectToEditProfile(_ sender: Any) {
-         self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idEditProfileVC, animation: true)
+        if checkLoginAlert(){
+        self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idEditProfileVC, animation: true)
+        }
     }
     @IBAction func buttonSettingsClicked(_ sender: Any) {
-        
+
         if checkLoginAlert(){
             self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idSettingsVC, animation: true)
         }
     }
-    
+
     //MARK: Functions
     func checkLoginAlert() -> Bool{
         if !UserDefaults.standard.bool(forKey: kLogIn){
@@ -81,7 +83,7 @@ class ProfileVC: UIViewController {
                                             self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
             }))
             alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
-                
+
             }))
             self.present(alert, animated: true, completion: nil)
         }else {
@@ -89,7 +91,7 @@ class ProfileVC: UIViewController {
         }
         return false
     }
-    
+
     @objc func btnFavourite(_ sender: UIButton) {
         let objProduct  = arrayFavFood[sender.tag]
         RemoveIndex = sender.tag
@@ -99,7 +101,7 @@ class ProfileVC: UIViewController {
         arrayFavFood.remove(at:RemoveIndex)
         tableProfile.reloadData()
     }
-    
+
     @objc private func initialRequest(_ sender: Any) {
         self.offSet = 0
         getFavFood(isLoader: false)
@@ -109,9 +111,9 @@ class ProfileVC: UIViewController {
         self.offSet = arrayFavFood.count
         getFavFood(isLoader: false)
     }
-    
+
     func getFavFood(isLoader : Bool){
-        
+
         if Connectivity.isConnectedToInternet
         {
             let userToken = UserDefaults.standard.string(forKey: kTempToken)
@@ -126,7 +128,7 @@ class ProfileVC: UIViewController {
                     let data1 = data as! [AnyHashable : Any]
                     param.addEntries(from: data1)
                 }
-        
+
             if(isLoader){
                 showIndicator(view: self.view)
             }
@@ -143,9 +145,9 @@ class ProfileVC: UIViewController {
                         self.tableProfile.reloadData()
                     }else {
                         self.vwNoData.isHidden = false
-                        self.tableProfile.isHidden = true                        
+                        self.tableProfile.isHidden = true
                     }
-                    
+
                     if self.isLoadMore{
                         self.isLoadMore = false
                         self.indicatorView.isHidden = true
@@ -168,6 +170,7 @@ class ProfileVC: UIViewController {
             }
         }
 
+
 }
 
 //MARK:- Table - Delegate - DataSource
@@ -175,14 +178,14 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
 
     //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+
             return arrayFavFood.count;
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 130//UITableView.automaticDimension//120;
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "fav_food_cell", for: indexPath) as! tableFoodCell
         let objProduct: WSProduct = arrayFavFood[indexPath.row]
@@ -205,7 +208,7 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
         {
             cell.imgFavouriteFood.image = UIImage(named: "food_place_holder")
         }
-       
+
         let isHealthy : String = objProduct.isHealthy ?? ""
         if isHealthy != "" && isHealthy.count > 0{
             if isHealthy == "0" {
@@ -220,22 +223,23 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
         }
         cell.selectionStyle = .none
         return cell
-        
+
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
         vc.objProduct = arrayFavFood[indexPath.row]
         vc.objProduct.isFavourite = 1
-      
+
         self.navigationController?.pushViewController(vc, animated: true)
 //        pushViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC, animation: true)
     }
-    
+
     func scrollViewDidEndDecelerating(_ scrollView : UIScrollView) {
         let currentOffset = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-        
+
         // Change 10.0 to adjust the distance from bottom
 //        if maximumOffset - currentOffset <= 10.0{
 //            if !isLoadMore{
@@ -245,7 +249,6 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
 //                isLoadMore = true
 //            }
 //        }
-        
     }
 }
 

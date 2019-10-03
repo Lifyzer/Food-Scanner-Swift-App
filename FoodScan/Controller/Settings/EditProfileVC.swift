@@ -14,7 +14,7 @@ class EditProfileVC: UIViewController {
     @IBOutlet var txtFullName: UITextField!
     @IBOutlet var txtEmailId: UITextField!
     var objUser: WSUser!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         txtFullName.setLeftPaddingPoints(10)
@@ -23,7 +23,7 @@ class EditProfileVC: UIViewController {
         txtFullName.text = objUser.firstName
         txtEmailId.text = objUser.email
     }
-    
+
 
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -32,7 +32,7 @@ class EditProfileVC: UIViewController {
 
     @IBAction func buttonSaveClicked(_ sender: Any) {
         if ValidateField(){
-            
+
             if Connectivity.isConnectedToInternet
             {
                 showIndicator(view: view)
@@ -44,12 +44,12 @@ class EditProfileVC: UIViewController {
                     WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
 //                    WS_KAccess_key:DEFAULT_ACCESS_KEY,
 //                    WS_KSecret_key:userToken ?? ""]
-                
+
                 includeSecurityCredentials {(data) in
                     let data1 = data as! [AnyHashable : Any]
                     param.addEntries(from: data1)
                 }
-                
+
                 HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIEditProfile, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                     self.hideIndicator(view: self.view)
                     if response != nil

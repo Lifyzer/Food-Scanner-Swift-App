@@ -17,19 +17,19 @@ class DrawingView: UIView {
             setNeedsDisplay()
         }
     }
-    
+
     override func draw(_ rect: CGRect) {
         for i in self.subviews
         {
             i.removeFromSuperview()
         }
-        
+
         guard let ctx = UIGraphicsGetCurrentContext() else { return }
         ctx.clear(rect);
         guard let visionText = visionText else { return }
-        
+
         let frameSize = self.bounds.size
-        
+
         let blocks: [VisionTextBlock] = visionText.blocks
         print(blocks.count)
         let font = UIFont.systemFont(ofSize: 10)
@@ -40,15 +40,15 @@ class DrawingView: UIView {
             NSAttributedString.Key.font: font,
             NSAttributedString.Key.foregroundColor: UIColor.green
         ]
-        
-        
+
+
         for block in blocks {
             let lines: [VisionTextLine] = block.lines
             for line in lines {
-            
+
                 let elements: [VisionTextElement] = line.elements
                 for element in elements {
-                 
+
                     let text = element.text
                     let labl = UILabel()
                     let frame = element.frame * (frameSize / imageSize)
@@ -61,7 +61,7 @@ class DrawingView: UIView {
                     labl.backgroundColor = UIColor.clear
                     labl.font = UIFont(name: "aribl_bold", size: 15.0)
                     self.addSubview(labl)
-                    
+
                     let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandle(_:)))
                     tap.numberOfTapsRequired = 1
                     labl.addGestureRecognizer(tap)
@@ -69,7 +69,7 @@ class DrawingView: UIView {
             }
         }
     }
-    
+
     @objc func tapHandle(_ gesture  :UITapGestureRecognizer)
     {
         if gesture.view!.isKind(of: UILabel.classForCoder())
@@ -88,7 +88,7 @@ class DrawingView: UIView {
             }
         }
     }
-    
+
     private func drawLine(ctx: CGContext, from p1: CGPoint, to p2: CGPoint, color: CGColor) {
         ctx.setStrokeColor(color)
         ctx.setLineWidth(1.0)
@@ -96,7 +96,7 @@ class DrawingView: UIView {
         ctx.addLine(to: p2)
         ctx.strokePath();
     }
-    
+
     private func drawRect(ctx: CGContext, rect: CGRect, color: CGColor, fill: Bool = true) {
         let points: [CGPoint] = [
             rect.origin + CGSize(width: 0, height: 0),
@@ -106,7 +106,7 @@ class DrawingView: UIView {
         ]
         drawPolygon(ctx: ctx, points: points, color: color, fill: fill)
     }
-    
+
     private func drawPolygon(ctx: CGContext, points: [CGPoint], color: CGColor, fill: Bool = false) {
         if fill {
             ctx.setStrokeColor(UIColor.clear.cgColor)
@@ -116,8 +116,8 @@ class DrawingView: UIView {
             ctx.setStrokeColor(color)
             ctx.setLineWidth(1.0)
         }
-        
-        
+
+
         for i in 0..<points.count {
             if i == 0 {
                 ctx.move(to: points[i])
@@ -128,7 +128,7 @@ class DrawingView: UIView {
         if let firstPoint = points.first {
             ctx.addLine(to: firstPoint)
         }
-        
+
         if fill {
             ctx.fillPath()
         } else {

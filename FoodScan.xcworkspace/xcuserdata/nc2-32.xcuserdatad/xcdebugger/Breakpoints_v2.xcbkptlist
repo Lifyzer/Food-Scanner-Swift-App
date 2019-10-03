@@ -10,11 +10,59 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
-            timestampString = "584615241.426886"
+            timestampString = "587276742.469294"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "GetProductDetailsAPI()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FoodScan.ViewProductPopUpVC.GetProductDetailsAPI() -&gt; ()"
+                  moduleName = "FoodScan"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
+                  timestampString = "587040249.80241"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115"
+                  offsetFromSymbolStart = "3120">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;Swift.AnyObject&gt;, Swift.Optional&lt;__C.NSError&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; () in FoodScan.ViewProductPopUpVC.GetProductDetailsAPI() -&gt; ()"
+                  moduleName = "FoodScan"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/DATA/Mayuri/Projects/MGU/Food%20Scan/Git%20Code/Food-Scanner-Swift-App%202/FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
+                  timestampString = "587040249.8194751"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
+            timestampString = "587276742.469753"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "GetProductDetailsAPI()"
             landmarkType = "7">
          </BreakpointContent>
@@ -25,13 +73,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
-            timestampString = "584615241.427009"
+            filePath = "FoodScan/Model/WebService/HttpRequestManager.swift"
+            timestampString = "587714247.828797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
-            landmarkName = "GetProductDetailsAPI()"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "postJSONRequest(endpointurl:parameters:encodingType:responseData:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodScan/Model/WebService/HttpRequestManager.swift"
+            timestampString = "587714247.828908"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "postJSONRequest(endpointurl:parameters:encodingType:responseData:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,11 +106,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodScan/Controller/HomeTabVC/ViewProductPopUpVC.swift"
-            timestampString = "584615241.427108"
+            timestampString = "587276742.470628"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "GetProductDetailsAPI()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodScan/Controller/HomeTabVC/ScanProductVC.swift"
+            timestampString = "587714247.829037"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "382"
+            endingLineNumber = "382"
             landmarkName = "GetProductDetailsAPI()"
             landmarkType = "7">
          </BreakpointContent>

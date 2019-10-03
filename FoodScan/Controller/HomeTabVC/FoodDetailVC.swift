@@ -13,29 +13,29 @@ let IMG_UNFAV = UIImage(named: "fav_white_icon")
 
 class FoodDetailVC: UIViewController {
     @IBOutlet var tableDetails: UITableView!
-  
+
     @IBOutlet weak var imgProduct: UIImageView!
     @IBOutlet var lblProduct: UILabel!
     @IBOutlet var btnFav: UIButton!
     @IBOutlet var btnCategory: UIButton!
     @IBOutlet var vwHeader : UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollWidth: NSLayoutConstraint!
+    @IBOutlet weak var contentHeight: NSLayoutConstraint!
+    @IBOutlet weak var tableContentViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var tableProductDetails: UITableView!
+    @IBOutlet weak var btnShare: UIButton!
+
     var objProduct : WSProduct!
     var arrDetails : NSMutableArray = NSMutableArray()
     var arrTitle : NSMutableArray = NSMutableArray()
     var arrImages : [UIImage] = [UIImage]()
-    @IBOutlet weak var scrollView: UIScrollView!
-    
-    @IBOutlet weak var scrollWidth: NSLayoutConstraint!
-    
-    @IBOutlet weak var contentHeight: NSLayoutConstraint!
-    @IBOutlet weak var tableContentViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var tableProductDetails: UITableView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         SetFoodDetails()
         setupUI()
-       
+
     }
     enum SubDetailsItems: Int {
         case Protein=0 , Sugar, Salt, Ingredients, Fat, Calories, SaturatedFats, Carbohydrate, DietaryFiber
@@ -69,7 +69,7 @@ class FoodDetailVC: UIViewController {
             btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
         }
     }
-    
+
     func setupUI(){
         btnFav.setImage(IMG_UNFAV, for: .normal)
         btnFav.setImage(IMG_FAV, for: .selected)
@@ -104,7 +104,7 @@ class FoodDetailVC: UIViewController {
         CheckDetails(string: objFood?.saturatedFats, key: "Saturated Fats",img: "SaturatedFats")
         CheckDetails(string: objFood?.carbohydrate, key: "Carbohydrate",img: "Carbohydrate")
         CheckDetails(string: objFood?.dietaryFiber, key: "Dietary Fiber",img: "DietaryFiber")
-        
+
         // Set scrollview
         scrollWidth.constant = self.view.frame.width
         self.tableProductDetails.layoutIfNeeded()
@@ -113,7 +113,7 @@ class FoodDetailVC: UIViewController {
         tableProductDetails.tableFooterView = UIView()
         self.view.layoutIfNeeded()
     }
-    
+
     func CheckDetails(string:String?,key:String,img:String){
         if (string.asStringOrEmpty() != "" && (string.asStringOrEmpty()) != "0")
         {
@@ -140,37 +140,77 @@ class FoodDetailVC: UIViewController {
             objProduct.isFavourite = 1
         }
     }
-    
+
+    func checkLoginAlert() -> Bool{
+         if UserDefaults.standard.bool(forKey: kLogIn){
+            return true
+               // self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+        }else {
+          return false
+       }
+    }
+    @objc func shareFoodDetails()
+    {
+        let text = "Hey,I just scanned \(objProduct.productName.asStringOrEmpty()) thanks “Lifyzer” app.\nSee what unbelievable things I found about it. It literally blows my mind! 😮\n\nP.S. I like you. You are my friend after all! Wouldn’t it be silly to get cancer just because of garbage food?\n\n Scan your foods right now and see what you REALLY eat! 🥘\n —- \n🎯"
+        let link = URL(string:"https://get.lifyzer.com")!
+
+
+        let shareAll = [text ,link] as [Any]
+        let activityViewController = UIActivityViewController(activityItems: shareAll, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
+        print("Share product details")
+    }
+
+    @IBAction func btnShare(_ sender: Any) {
+        shareFoodDetails()
+    }
+
     @IBAction func btnFavourite(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected
+
+        if checkLoginAlert()
         {
-            btnFav.setImage(IMG_FAV, for: .normal)
+            sender.isSelected = !sender.isSelected
+            if sender.isSelected
+            {
+                btnFav.setImage(IMG_FAV, for: .normal)
+            }
+            else
+            {
+                btnFav.setImage(IMG_UNFAV, for: .normal)
+            }
+            if objProduct.isFavourite.asStringOrEmpty() == "0"
+            {
+                AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
+            }
+            else if objProduct.isFavourite.asStringOrEmpty() == "1"
+            {
+                AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
+            }
+            else
+            {
+                AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
+            }
         }
         else
         {
-            btnFav.setImage(IMG_UNFAV, for: .normal)
+            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "LOGIN",
+                                          style: .default,
+                                          handler: {(_: UIAlertAction!) in
+                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+            }))
+            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
+
+            }))
+            self.present(alert, animated: true, completion: nil)
         }
-        
-        if objProduct.isFavourite.asStringOrEmpty() == "0"
-        {
-            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
-        }
-        else if objProduct.isFavourite.asStringOrEmpty() == "1"
-        {
-            AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
-        }
-        else
-        {
-            AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
-        }
-        
     }
 }
 
 //MARK:- Table - Delegate - DataSource
 extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
-    
+
     //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        if tableView == tableProductDetails
@@ -179,7 +219,7 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
 //        }
         return arrDetails.count
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 //        if tableView == tableProductDetails
 //        {
@@ -202,14 +242,13 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
         }
         return 60.0
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let objTitle = arrTitle[indexPath.row]
         let objDetails = arrDetails[indexPath.row]
         let objImg = arrImages[indexPath.row]
-        
-       
+
         if "\(objTitle)" != "Ingredients"
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "food_details_cell1", for: indexPath) as! tableFoodCell
@@ -217,7 +256,6 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
              cell.imgFood.setImage(objImg, for: .normal)
             cell.productName.text = "\(objTitle)"
             cell.productType.setTitle("\(objDetails)", for: .normal)
-            
             return cell
         }
         else
@@ -230,9 +268,6 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
              cell.productCategory.text = "\(objDetails)"
             return cell
         }
-
-        
-       
     }
 }
 //MARK: API related stuff

@@ -21,7 +21,7 @@ extension UIColor{
         let color = UIColor(red: red, green: green, blue: blue, alpha: alpha)
         return color
     }
-    
+
     func intFromHexString(hexStr: String) -> UInt32 {
         var hexInt: UInt32 = 0
         // Create scanner

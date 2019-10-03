@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tdm-tG-duy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tdm-tG-duy">
     <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -100,12 +100,27 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5D-k3-HUn">
+                                        <rect key="frame" x="356" y="0.0" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="pg8-qM-8uk"/>
+                                        </constraints>
+                                        <state key="normal" image="flash">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btnFlashClicked:" destination="hOt-Mv-tAY" eventType="touchUpInside" id="aq7-2n-Epg"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.2666666667" green="0.69019607839999997" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="l5D-k3-HUn" firstAttribute="top" secondItem="6gW-Na-DRA" secondAttribute="top" id="Fej-V7-iiz"/>
                                     <constraint firstItem="hzx-0B-Mhu" firstAttribute="centerY" secondItem="6gW-Na-DRA" secondAttribute="centerY" id="HzM-yN-zan"/>
                                     <constraint firstItem="hzx-0B-Mhu" firstAttribute="centerX" secondItem="6gW-Na-DRA" secondAttribute="centerX" id="KLq-Gc-Trw"/>
                                     <constraint firstAttribute="height" constant="50" id="bIe-3S-BGZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="l5D-k3-HUn" secondAttribute="trailing" constant="8" id="exf-QA-mPI"/>
+                                    <constraint firstAttribute="bottom" secondItem="l5D-k3-HUn" secondAttribute="bottom" id="r3R-2g-jPb"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EEz-hc-m0m" userLabel="TopView">
@@ -142,6 +157,7 @@
                     <tabBarItem key="tabBarItem" title="Scan Food" image="scan_food_icon" selectedImage="scan_food_icon_sel" id="FaE-io-B51"/>
                     <connections>
                         <outlet property="btnBarcode" destination="Ohg-YI-qOB" id="ZCw-iD-qcy"/>
+                        <outlet property="btnFlash" destination="l5D-k3-HUn" id="y3I-KF-x3U"/>
                         <outlet property="btnProduct" destination="jtW-WA-4zQ" id="mZN-lh-g5x"/>
                         <outlet property="cameraView" destination="nJ5-AI-mYW" id="Vo6-GD-gdc"/>
                         <outlet property="drawingView" destination="2CT-Td-Vjt" id="vD0-aY-7xW"/>
@@ -539,16 +555,16 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="719"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtY-k6-E3Z" userLabel="view">
-                                                <rect key="frame" x="20" y="254.66666666666669" width="374" height="210"/>
+                                                <rect key="frame" x="20" y="287" width="374" height="145"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Favourite Yet!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vGI-ZN-sHu">
-                                                        <rect key="frame" x="105.00000000000001" y="117.00000000000001" width="164.33333333333337" height="22.666666666666671"/>
+                                                        <rect key="frame" x="105.00000000000001" y="52" width="164.33333333333337" height="22.666666666666671"/>
                                                         <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="20"/>
                                                         <color key="textColor" red="0.33333333329999998" green="0.64705882349999999" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Once you favourite any food, you will see them here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Asb-OC-m1n">
-                                                        <rect key="frame" x="62" y="149.66666666666663" width="250" height="40.333333333333343"/>
+                                                        <rect key="frame" x="62" y="84.666666666666686" width="250" height="40.333333333333343"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="250" id="v1G-LJ-DKd"/>
                                                         </constraints>
@@ -557,7 +573,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Pk-6O-6Li">
-                                                        <rect key="frame" x="144.66666666666666" y="20" width="85" height="87"/>
+                                                        <rect key="frame" x="179" y="20" width="16" height="22"/>
                                                         <state key="normal" image="img_no_fav_data"/>
                                                     </button>
                                                 </subviews>
@@ -944,16 +960,16 @@
                                         <rect key="frame" x="5" y="632" width="404" height="87"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLk-oZ-FXY" userLabel="view">
-                                                <rect key="frame" x="20" y="169.66666666666669" width="364" height="210"/>
+                                                <rect key="frame" x="20" y="202" width="364" height="145"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Favourite Yet!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ID-IG-C8P">
-                                                        <rect key="frame" x="100.00000000000001" y="116.99999999999996" width="164.33333333333337" height="22.666666666666671"/>
+                                                        <rect key="frame" x="100.00000000000001" y="52" width="164.33333333333337" height="22.666666666666671"/>
                                                         <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="20"/>
                                                         <color key="textColor" red="0.33333333329999998" green="0.64705882349999999" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Once you favourite any food, you will see them here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nq4-dZ-DgJ">
-                                                        <rect key="frame" x="57" y="149.66666666666669" width="250" height="40.333333333333343"/>
+                                                        <rect key="frame" x="57" y="84.666666666666629" width="250" height="40.333333333333343"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="250" id="Nw2-d9-c58"/>
                                                         </constraints>
@@ -962,7 +978,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PDZ-61-DKs">
-                                                        <rect key="frame" x="139.66666666666666" y="20" width="85" height="87"/>
+                                                        <rect key="frame" x="174" y="20" width="16" height="22"/>
                                                         <state key="normal" image="img_no_fav_data"/>
                                                     </button>
                                                 </subviews>
@@ -1081,11 +1097,23 @@
                                             <action selector="buttonBackClicked:" destination="Nxa-II-jD3" eventType="touchUpInside" id="3y0-2K-IiA"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kFp-Sj-8jh">
+                                        <rect key="frame" x="370" y="0.0" width="44" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="B1z-ua-umS"/>
+                                        </constraints>
+                                        <state key="normal" image="share"/>
+                                        <connections>
+                                            <action selector="btnShare:" destination="Nxa-II-jD3" eventType="touchUpInside" id="16V-ah-egT"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.2666666667" green="0.69019607839999997" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="5Rj-mj-FWh"/>
                                     <constraint firstAttribute="bottom" secondItem="hVO-Xh-Dtt" secondAttribute="bottom" id="Ady-kT-b41"/>
+                                    <constraint firstItem="kFp-Sj-8jh" firstAttribute="top" secondItem="k7A-xu-A5I" secondAttribute="top" id="C7T-wq-BMB"/>
+                                    <constraint firstAttribute="bottom" secondItem="kFp-Sj-8jh" secondAttribute="bottom" id="HA9-iS-wB9"/>
                                     <constraint firstItem="Fp6-XV-DrS" firstAttribute="leading" secondItem="k7A-xu-A5I" secondAttribute="leading" id="OIA-bX-mTN"/>
                                     <constraint firstItem="hVO-Xh-Dtt" firstAttribute="top" secondItem="k7A-xu-A5I" secondAttribute="top" id="OgT-hc-kAQ"/>
                                     <constraint firstAttribute="bottom" secondItem="Fp6-XV-DrS" secondAttribute="bottom" id="YTI-l6-vVQ"/>
@@ -1093,6 +1121,7 @@
                                     <constraint firstItem="Fp6-XV-DrS" firstAttribute="top" secondItem="k7A-xu-A5I" secondAttribute="top" id="j4k-BN-GJy"/>
                                     <constraint firstItem="hVO-Xh-Dtt" firstAttribute="leading" secondItem="k7A-xu-A5I" secondAttribute="leading" id="v5I-yK-WSa"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="vpt-F5-TXB"/>
+                                    <constraint firstAttribute="trailing" secondItem="kFp-Sj-8jh" secondAttribute="trailing" id="zdB-z6-FlD"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zoW-ap-MJ8" userLabel="TopView">
@@ -1422,6 +1451,7 @@
                     <connections>
                         <outlet property="btnCategory" destination="Gel-fw-Ny6" id="6hz-Je-Jcd"/>
                         <outlet property="btnFav" destination="yBA-ho-8fB" id="39g-rP-qSZ"/>
+                        <outlet property="btnShare" destination="kFp-Sj-8jh" id="pk9-ee-dd7"/>
                         <outlet property="contentHeight" destination="SrK-jL-4zk" id="HVB-hj-6I5"/>
                         <outlet property="imgProduct" destination="TZP-nw-TD6" id="ukh-aL-9Ay"/>
                         <outlet property="lblProduct" destination="TGZ-8X-SUa" id="7P8-Pq-8nH"/>
@@ -1630,19 +1660,21 @@
     </scenes>
     <resources>
         <image name="back_icon_white" width="10" height="19"/>
-        <image name="dot_green_small" width="8" height="8"/>
-        <image name="edit" width="15" height="14"/>
+        <image name="dot_green_small" width="8.3333330154418945" height="8.3333330154418945"/>
+        <image name="edit" width="15" height="14.666666984558105"/>
         <image name="fav_green_small" width="14" height="12"/>
-        <image name="food_place_holder" width="78" height="71"/>
+        <image name="flash" width="27.666666030883789" height="27.666666030883789"/>
+        <image name="food_place_holder" width="78" height="71.666664123535156"/>
         <image name="history_icon" width="20" height="22"/>
         <image name="history_icon_sel" width="20" height="22"/>
-        <image name="img_no_fav_data" width="85" height="87"/>
-        <image name="profile_icon" width="23" height="23"/>
-        <image name="profile_icon_sel" width="23" height="23"/>
+        <image name="img_no_fav_data" width="85.666664123535156" height="87.666664123535156"/>
+        <image name="profile_icon" width="23.666666030883789" height="23.666666030883789"/>
+        <image name="profile_icon_sel" width="23.666666030883789" height="23.666666030883789"/>
         <image name="protein_icon" width="30" height="30"/>
-        <image name="scan_food_icon" width="22" height="21"/>
-        <image name="scan_food_icon_sel" width="22" height="21"/>
-        <image name="settings_icon" width="18" height="19"/>
-        <image name="unfav_white_icon" width="21" height="19"/>
+        <image name="scan_food_icon" width="22" height="21.666666030883789"/>
+        <image name="scan_food_icon_sel" width="22" height="21.666666030883789"/>
+        <image name="settings_icon" width="18" height="19.666666030883789"/>
+        <image name="share" width="20" height="20"/>
+        <image name="unfav_white_icon" width="21.666666030883789" height="19.666666030883789"/>
     </resources>
 </document>

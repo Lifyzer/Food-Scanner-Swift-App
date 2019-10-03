@@ -23,21 +23,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-       
+
         FirebaseApp.configure()
         Fabric.with([Crashlytics.self])
-        
+
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC) as! HomeTabVC
         vc.selectedIndex = 1
         mainNavigationController = UINavigationController.init(rootViewController: vc)
         mainNavigationController?.isNavigationBarHidden = true
         window?.rootViewController = mainNavigationController
-        
+
         setupIQKeyboard()
         checkSecurity()
-        
-        
+
+
         return true
     }
 
@@ -79,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
+
                 /*
                  Typical reasons for an error here include:
                  * The parent directory does not exist, cannot be created, or disallows writing.
@@ -109,9 +109,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
+
     //MARK:- IQKeyboard Setup
-    func setupIQKeyboard() {        
+    func setupIQKeyboard() {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 40.0
         IQKeyboardManager.shared.placeholderFont = UIFont(name: APP_FONT_BOLD, size: 15)
