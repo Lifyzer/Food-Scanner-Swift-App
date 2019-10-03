@@ -33,7 +33,7 @@ private var kIQKeyboardToolbar              = "kIQKeyboardToolbar"
  IQBarButtonItemConfiguration for creating toolbar with bar button items
  */
 public class IQBarButtonItemConfiguration : NSObject {
-    
+
     #if swift(>=4.2)
     public init(barButtonSystemItem : UIBarButtonItem.SystemItem, action: Selector) {
         self.barButtonSystemItem = barButtonSystemItem
@@ -59,7 +59,7 @@ public class IQBarButtonItemConfiguration : NSObject {
         self.action = action
         super.init()
     }
-    
+
     public init(title : String, action: Selector) {
         self.barButtonSystemItem = nil
         self.image = nil
@@ -67,17 +67,17 @@ public class IQBarButtonItemConfiguration : NSObject {
         self.action = action
         super.init()
     }
-    
+
     #if swift(>=4.2)
     public let barButtonSystemItem : UIBarButtonItem.SystemItem?    //System Item to be used to instantiate bar button.
     #else
     public let barButtonSystemItem : UIBarButtonSystemItem?    //System Item to be used to instantiate bar button.
     #endif
-    
+
     public let image : UIImage?    //Image to show on bar button item if it's not a system item.
-    
+
     public let title : String?     //Title to show on bar button item if it's not a system item.
-    
+
     public let action : Selector?  //action for bar button item. Usually 'doneAction:(IQBarButtonItem*)item'.
 }
 
@@ -85,9 +85,9 @@ public class IQBarButtonItemConfiguration : NSObject {
  UIImage category methods to get next/prev images
  */
 extension UIImage {
-    
+
     public static func keyboardPreviousiOS9Image() -> UIImage? {
-        
+
         struct Static {
             static var keyboardPreviousiOS9Image : UIImage?
         }
@@ -95,116 +95,116 @@ extension UIImage {
         if Static.keyboardPreviousiOS9Image == nil {
             // Get the top level "bundle" which may actually be the framework
             var bundle = Bundle(for: IQKeyboardManager.self)
-            
+
             if let resourcePath = bundle.path(forResource: "IQKeyboardManager", ofType: "bundle") {
                 if let resourcesBundle = Bundle(path: resourcePath) {
                     bundle = resourcesBundle
                 }
             }
-            
+
             Static.keyboardPreviousiOS9Image = UIImage(named: "IQButtonBarArrowLeft", in: bundle, compatibleWith: nil)
-            
+
             //Support for RTL languages like Arabic, Persia etc... (Bug ID: #448)
             if #available(iOS 9, *) {
                 Static.keyboardPreviousiOS9Image = Static.keyboardPreviousiOS9Image?.imageFlippedForRightToLeftLayoutDirection()
             }
         }
-        
+
         return Static.keyboardPreviousiOS9Image
     }
-    
+
     public static func keyboardNextiOS9Image() -> UIImage? {
-        
+
         struct Static {
             static var keyboardNextiOS9Image : UIImage?
         }
-        
+
         if Static.keyboardNextiOS9Image == nil {
             // Get the top level "bundle" which may actually be the framework
             var bundle = Bundle(for: IQKeyboardManager.self)
-            
+
             if let resourcePath = bundle.path(forResource: "IQKeyboardManager", ofType: "bundle") {
                 if let resourcesBundle = Bundle(path: resourcePath) {
                     bundle = resourcesBundle
                 }
             }
-            
+
             Static.keyboardNextiOS9Image = UIImage(named: "IQButtonBarArrowRight", in: bundle, compatibleWith: nil)
-            
+
             //Support for RTL languages like Arabic, Persia etc... (Bug ID: #448)
             if #available(iOS 9, *) {
                 Static.keyboardNextiOS9Image = Static.keyboardNextiOS9Image?.imageFlippedForRightToLeftLayoutDirection()
             }
         }
-        
+
         return Static.keyboardNextiOS9Image
     }
-    
+
     public static func keyboardPreviousiOS10Image() -> UIImage? {
-        
+
         struct Static {
             static var keyboardPreviousiOS10Image : UIImage?
         }
-        
+
         if Static.keyboardPreviousiOS10Image == nil {
             // Get the top level "bundle" which may actually be the framework
             var bundle = Bundle(for: IQKeyboardManager.self)
-            
+
             if let resourcePath = bundle.path(forResource: "IQKeyboardManager", ofType: "bundle") {
                 if let resourcesBundle = Bundle(path: resourcePath) {
                     bundle = resourcesBundle
                 }
             }
-            
+
             Static.keyboardPreviousiOS10Image = UIImage(named: "IQButtonBarArrowUp", in: bundle, compatibleWith: nil)
-            
+
             //Support for RTL languages like Arabic, Persia etc... (Bug ID: #448)
             if #available(iOS 9, *) {
                 Static.keyboardPreviousiOS10Image = Static.keyboardPreviousiOS10Image?.imageFlippedForRightToLeftLayoutDirection()
             }
         }
-        
+
         return Static.keyboardPreviousiOS10Image
     }
-    
+
     public static func keyboardNextiOS10Image() -> UIImage? {
-        
+
         struct Static {
             static var keyboardNextiOS10Image : UIImage?
         }
-        
+
         if Static.keyboardNextiOS10Image == nil {
             // Get the top level "bundle" which may actually be the framework
             var bundle = Bundle(for: IQKeyboardManager.self)
-            
+
             if let resourcePath = bundle.path(forResource: "IQKeyboardManager", ofType: "bundle") {
                 if let resourcesBundle = Bundle(path: resourcePath) {
                     bundle = resourcesBundle
                 }
             }
-            
+
             Static.keyboardNextiOS10Image = UIImage(named: "IQButtonBarArrowDown", in: bundle, compatibleWith: nil)
-            
+
             //Support for RTL languages like Arabic, Persia etc... (Bug ID: #448)
             if #available(iOS 9, *) {
                 Static.keyboardNextiOS10Image = Static.keyboardNextiOS10Image?.imageFlippedForRightToLeftLayoutDirection()
             }
         }
-        
+
         return Static.keyboardNextiOS10Image
     }
-    
+
     public static func keyboardPreviousImage() -> UIImage? {
-        
+
         if #available(iOS 10, *) {
             return keyboardPreviousiOS10Image()
         } else {
             return keyboardPreviousiOS9Image()
         }
     }
-    
+
     public static func keyboardNextImage() -> UIImage? {
-        
+
         if #available(iOS 10, *) {
             return keyboardNextiOS10Image()
         } else {
@@ -217,47 +217,47 @@ extension UIImage {
 UIView category methods to add IQToolbar on UIKeyboard.
 */
 public extension UIView {
-    
+
     ///--------------
     /// MARK: Toolbar
     ///--------------
-    
+
     /**
      IQToolbar references for better customization control.
      */
     public var keyboardToolbar: IQToolbar {
         var toolbar = inputAccessoryView as? IQToolbar
-        
+
         if (toolbar == nil)
         {
             toolbar = objc_getAssociatedObject(self, &kIQKeyboardToolbar) as? IQToolbar
         }
-        
+
         if let unwrappedToolbar = toolbar {
-            
+
             return unwrappedToolbar
-            
+
         } else {
-            
+
             let newToolbar = IQToolbar()
-            
+
             objc_setAssociatedObject(self, &kIQKeyboardToolbar, newToolbar, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            
+
             return newToolbar
         }
     }
-    
+
     ///--------------------
     /// MARK: Toolbar title
     ///--------------------
-    
+
     /**
     If `shouldHideToolbarPlaceholder` is YES, then title will not be added to the toolbar. Default to NO.
     */
     @objc public var shouldHideToolbarPlaceholder: Bool {
         get {
             let aValue = objc_getAssociatedObject(self, &kIQShouldHideToolbarPlaceholder) as Any?
-            
+
             if let unwrapedValue = aValue as? Bool {
                 return unwrapedValue
             } else {
@@ -266,23 +266,23 @@ public extension UIView {
         }
         set(newValue) {
             objc_setAssociatedObject(self, &kIQShouldHideToolbarPlaceholder, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            
+
             self.keyboardToolbar.titleBarButton.title = self.drawingToolbarPlaceholder
         }
     }
-    
+
     /**
      `toolbarPlaceholder` to override default `placeholder` text when drawing text on toolbar.
      */
     @objc public var toolbarPlaceholder: String? {
         get {
             let aValue = objc_getAssociatedObject(self, &kIQToolbarPlaceholder) as? String
-            
+
             return aValue
         }
         set(newValue) {
             objc_setAssociatedObject(self, &kIQToolbarPlaceholder, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            
+
             self.keyboardToolbar.titleBarButton.title = self.drawingToolbarPlaceholder
         }
     }
@@ -300,7 +300,7 @@ public extension UIView {
             return self.toolbarPlaceholder
         }
         else if self.responds(to: #selector(getter: UITextField.placeholder)) {
-            
+
             if let textField = self as? UITextField {
                 return textField.placeholder
             } else if let textView = self as? IQTextView {
@@ -317,14 +317,14 @@ public extension UIView {
     ///---------------------
     /// MARK: Private helper
     ///---------------------
-    
+
     private static func flexibleBarButtonItem () -> IQBarButtonItem {
-        
+
         struct Static {
-            
+
             static let nilButton = IQBarButtonItem(barButtonSystemItem:.flexibleSpace, target: nil, action: nil)
         }
-        
+
         Static.nilButton.isSystemItem = true
         return Static.nilButton
     }
@@ -334,15 +334,15 @@ public extension UIView {
     ///-------------
 
     @objc public func addKeyboardToolbarWithTarget(target : AnyObject?, titleText : String?, rightBarButtonConfiguration:IQBarButtonItemConfiguration?, previousBarButtonConfiguration:IQBarButtonItemConfiguration? = nil, nextBarButtonConfiguration:IQBarButtonItemConfiguration? = nil) {
-        
+
         //If can't set InputAccessoryView. Then return
         if self.responds(to: #selector(setter: UITextField.inputAccessoryView)) {
-            
+
             //  Creating a toolBar for phoneNumber keyboard
             let toolbar = self.keyboardToolbar
-            
+
             var items : [IQBarButtonItem] = []
-            
+
             if let prevConfig = previousBarButtonConfiguration {
 
                 var prev = toolbar.previousBarButton
@@ -361,7 +361,7 @@ public extension UIView {
                     } else {
                         prev = IQBarButtonItem(title: prevConfig.title, style: .plain, target: target, action: prevConfig.action)
                     }
-                    
+
                     prev.invocation = toolbar.previousBarButton.invocation
                     prev.accessibilityLabel = toolbar.previousBarButton.accessibilityLabel
                     toolbar.previousBarButton = prev
@@ -369,14 +369,14 @@ public extension UIView {
 
                 items.append(prev)
             }
-            
+
             if previousBarButtonConfiguration != nil && nextBarButtonConfiguration != nil {
-                
+
                 items.append(toolbar.fixedSpaceBarButton)
             }
 
             if let nextConfig = nextBarButtonConfiguration {
-                
+
                 var next = toolbar.nextBarButton
 
                 if nextConfig.barButtonSystemItem == nil && next.isSystemItem == false {
@@ -393,7 +393,7 @@ public extension UIView {
                     } else {
                         next = IQBarButtonItem(title: nextConfig.title, style: .plain, target: target, action: nextConfig.action)
                     }
-                    
+
                     next.invocation = toolbar.nextBarButton.invocation
                     next.accessibilityLabel = toolbar.nextBarButton.accessibilityLabel
                     toolbar.nextBarButton = next
@@ -401,15 +401,15 @@ public extension UIView {
 
                 items.append(next)
             }
-            
+
             //Title bar button item
             do {
                 //Flexible space
                 items.append(UIView.flexibleBarButtonItem())
-                
+
                 //Title button
                 toolbar.titleBarButton.title = titleText
-                
+
                 #if swift(>=3.2)
                 if #available(iOS 11, *) {}
                 else {
@@ -418,15 +418,15 @@ public extension UIView {
                 #else
                 toolbar.titleBarButton.customView?.frame = CGRect.zero
                 #endif
-                
+
                 items.append(toolbar.titleBarButton)
-                
+
                 //Flexible space
                 items.append(UIView.flexibleBarButtonItem())
             }
-            
+
             if let rightConfig = rightBarButtonConfiguration {
-                
+
                 var done = toolbar.doneBarButton
 
                 if rightConfig.barButtonSystemItem == nil && done.isSystemItem == false {
@@ -443,18 +443,18 @@ public extension UIView {
                     } else {
                         done = IQBarButtonItem(title: rightConfig.title, style: .plain, target: target, action: rightConfig.action)
                     }
-                    
+
                     done.invocation = toolbar.doneBarButton.invocation
                     done.accessibilityLabel = toolbar.doneBarButton.accessibilityLabel
                     toolbar.doneBarButton = done
                 }
-                
+
                 items.append(done)
             }
-            
+
             //  Adding button to toolBar.
             toolbar.items = items
-            
+
             //  Setting toolbar to keyboard.
             if let textField = self as? UITextField {
                 textField.inputAccessoryView = toolbar
@@ -477,46 +477,46 @@ public extension UIView {
             }
         }
     }
-    
+
     ///------------
     /// MARK: Right
     ///------------
 
     @objc public func addDoneOnKeyboardWithTarget(_ target : AnyObject?, action : Selector, shouldShowPlaceholder: Bool = false) {
-        
+
         addDoneOnKeyboardWithTarget(target, action: action, titleText: (shouldShowPlaceholder ? self.drawingToolbarPlaceholder : nil))
     }
 
     @objc public func addDoneOnKeyboardWithTarget(_ target : AnyObject?, action : Selector, titleText: String?) {
-        
+
         let rightConfiguration = IQBarButtonItemConfiguration(barButtonSystemItem: .done, action: action)
-        
+
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration)
     }
-    
+
 
     @objc public func addRightButtonOnKeyboardWithImage(_ image : UIImage, target : AnyObject?, action : Selector, shouldShowPlaceholder: Bool = false) {
-        
+
         addRightButtonOnKeyboardWithImage(image, target: target, action: action, titleText: (shouldShowPlaceholder ? self.drawingToolbarPlaceholder : nil))
     }
-    
+
     @objc public func addRightButtonOnKeyboardWithImage(_ image : UIImage, target : AnyObject?, action : Selector, titleText: String?) {
-        
+
         let rightConfiguration = IQBarButtonItemConfiguration(image: image, action: action)
-        
+
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration)
     }
-    
+
 
     @objc public func addRightButtonOnKeyboardWithText(_ text : String, target : AnyObject?, action : Selector, shouldShowPlaceholder: Bool = false) {
-        
+
         addRightButtonOnKeyboardWithText(text, target: target, action: action, titleText: (shouldShowPlaceholder ? self.drawingToolbarPlaceholder : nil))
     }
-    
+
     @objc public func addRightButtonOnKeyboardWithText(_ text : String, target : AnyObject?, action : Selector, titleText: String?) {
-        
+
         let rightConfiguration = IQBarButtonItemConfiguration(title: text, action: action)
-        
+
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration)
     }
 
@@ -525,44 +525,44 @@ public extension UIView {
     ///-----------------
 
     @objc public func addCancelDoneOnKeyboardWithTarget(_ target : AnyObject?, cancelAction : Selector, doneAction : Selector, shouldShowPlaceholder: Bool = false) {
-        
+
         addCancelDoneOnKeyboardWithTarget(target, cancelAction: cancelAction, doneAction: doneAction, titleText: (shouldShowPlaceholder ? self.drawingToolbarPlaceholder : nil))
     }
 
     @objc public func addRightLeftOnKeyboardWithTarget(_ target : AnyObject?, leftButtonTitle : String, rightButtonTitle : String, leftButtonAction : Selector, rightButtonAction : Selector, shouldShowPlaceholder: Bool = false) {
-        
+
         addRightLeftOnKeyboardWithTarget(target, leftButtonTitle: leftButtonTitle, rightButtonTitle: rightButtonTitle, leftButtonAction: leftButtonAction, rightButtonAction: rightButtonAction, titleText: (shouldShowPlaceholder ? self.drawingToolbarPlaceholder : nil))
     }
-    
+
     @objc public func addRightLeftOnKeyboardWithTarget(_ target : AnyObject?, leftButtonImage : UIImage, rightButtonImage : UIImage, leftButtonAction : Selector, rightButtonAction : Selector, shouldShowPlaceholder: Bool = false) {
-        
+
         addRightLeftOnKeyboardWithTarget(target, leftButtonImage: leftButtonImage, rightButtonImage: rightButtonImage, leftButtonAction: leftButtonAction, rightButtonAction: rightButtonAction, titleText: (shouldShowPlaceholder ? self.drawingToolbarPlaceholder : nil))
     }
-    
+
     @objc public func addCancelDoneOnKeyboardWithTarget(_ target : AnyObject?, cancelAction : Selector, doneAction : Selector, titleText: String?) {
-        
+
         let leftConfiguration = IQBarButtonItemConfiguration(barButtonSystemItem: .cancel, action: cancelAction)
         let rightConfiguration = IQBarButtonItemConfiguration(barButtonSystemItem: .done , action: doneAction)
-        
+
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration, previousBarButtonConfiguration: leftConfiguration)
     }
-    
+
     @objc public func addRightLeftOnKeyboardWithTarget(_ target : AnyObject?, leftButtonTitle : String, rightButtonTitle : String, leftButtonAction : Selector, rightButtonAction : Selector, titleText: String?) {
-        
+
         let leftConfiguration = IQBarButtonItemConfiguration(title: leftButtonTitle, action: leftButtonAction)
         let rightConfiguration = IQBarButtonItemConfiguration(title: rightButtonTitle, action: rightButtonAction)
-        
+
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration, previousBarButtonConfiguration: leftConfiguration)
     }
-    
+
     @objc public func addRightLeftOnKeyboardWithTarget(_ target : AnyObject?, leftButtonImage : UIImage, rightButtonImage : UIImage, leftButtonAction : Selector, rightButtonAction : Selector, titleText: String?) {
-        
+
         let leftConfiguration = IQBarButtonItemConfiguration(image: leftButtonImage, action: leftButtonAction)
         let rightConfiguration = IQBarButtonItemConfiguration(image: rightButtonImage, action: rightButtonAction)
-        
+
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration, previousBarButtonConfiguration: leftConfiguration)
     }
-    
+
     ///--------------------------
     /// MARK: Previous/Next/Right
     ///--------------------------
@@ -573,39 +573,39 @@ public extension UIView {
     }
 
     @objc public func addPreviousNextRightOnKeyboardWithTarget(_ target : AnyObject?, rightButtonImage : UIImage, previousAction : Selector, nextAction : Selector, rightButtonAction : Selector, shouldShowPlaceholder : Bool = false) {
-        
+
         addPreviousNextRightOnKeyboardWithTarget(target, rightButtonImage: rightButtonImage, previousAction: previousAction, nextAction: nextAction, rightButtonAction: rightButtonAction, titleText: (shouldShowPlaceholder ? self.drawingToolbarPlaceholder : nil))
     }
-    
+
     @objc public func addPreviousNextRightOnKeyboardWithTarget(_ target : AnyObject?, rightButtonTitle : String, previousAction : Selector, nextAction : Selector, rightButtonAction : Selector, shouldShowPlaceholder : Bool = false) {
-        
+
         addPreviousNextRightOnKeyboardWithTarget(target, rightButtonTitle: rightButtonTitle, previousAction: previousAction, nextAction: nextAction, rightButtonAction: rightButtonAction, titleText: (shouldShowPlaceholder ? self.drawingToolbarPlaceholder : nil))
     }
-    
+
     @objc public func addPreviousNextDoneOnKeyboardWithTarget (_ target : AnyObject?, previousAction : Selector, nextAction : Selector, doneAction : Selector,  titleText: String?) {
-        
+
         let rightConfiguration = IQBarButtonItemConfiguration(barButtonSystemItem: .done, action: doneAction)
         let nextConfiguration = IQBarButtonItemConfiguration(image: UIImage.keyboardNextImage() ?? UIImage(), action: nextAction)
         let prevConfiguration = IQBarButtonItemConfiguration(image: UIImage.keyboardPreviousImage() ?? UIImage(), action: previousAction)
 
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration, previousBarButtonConfiguration: prevConfiguration, nextBarButtonConfiguration: nextConfiguration)
     }
-    
+
     @objc public func addPreviousNextRightOnKeyboardWithTarget(_ target : AnyObject?, rightButtonImage : UIImage, previousAction : Selector, nextAction : Selector, rightButtonAction : Selector, titleText : String?) {
-        
+
         let rightConfiguration = IQBarButtonItemConfiguration(image: rightButtonImage, action: rightButtonAction)
         let nextConfiguration = IQBarButtonItemConfiguration(image: UIImage.keyboardNextImage() ?? UIImage(), action: nextAction)
         let prevConfiguration = IQBarButtonItemConfiguration(image: UIImage.keyboardPreviousImage() ?? UIImage(), action: previousAction)
-        
+
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration, previousBarButtonConfiguration: prevConfiguration, nextBarButtonConfiguration: nextConfiguration)
     }
-    
+
     @objc public func addPreviousNextRightOnKeyboardWithTarget(_ target : AnyObject?, rightButtonTitle : String, previousAction : Selector, nextAction : Selector, rightButtonAction : Selector, titleText : String?) {
-        
+
         let rightConfiguration = IQBarButtonItemConfiguration(title: rightButtonTitle, action: rightButtonAction)
         let nextConfiguration = IQBarButtonItemConfiguration(image: UIImage.keyboardNextImage() ?? UIImage(), action: nextAction)
         let prevConfiguration = IQBarButtonItemConfiguration(image: UIImage.keyboardPreviousImage() ?? UIImage(), action: previousAction)
-        
+
         addKeyboardToolbarWithTarget(target: target, titleText: titleText, rightBarButtonConfiguration: rightConfiguration, previousBarButtonConfiguration: prevConfiguration, nextBarButtonConfiguration: nextConfiguration)
     }
 }

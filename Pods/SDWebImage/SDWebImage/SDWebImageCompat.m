@@ -21,7 +21,7 @@ inline UIImage *SDScaledImageForKey(NSString * _Nullable key, UIImage * _Nullabl
     if (!image) {
         return nil;
     }
-    
+
 #if SD_MAC
     return image;
 #elif SD_UIKIT || SD_WATCH
@@ -31,7 +31,7 @@ inline UIImage *SDScaledImageForKey(NSString * _Nullable key, UIImage * _Nullabl
         for (UIImage *tempImage in image.images) {
             [scaledImages addObject:SDScaledImageForKey(key, tempImage)];
         }
-        
+
         UIImage *animatedImage = [UIImage animatedImageWithImages:scaledImages duration:image.duration];
         if (animatedImage) {
             animatedImage.sd_imageLoopCount = image.sd_imageLoopCount;
@@ -50,7 +50,7 @@ inline UIImage *SDScaledImageForKey(NSString * _Nullable key, UIImage * _Nullabl
                 if (range.location != NSNotFound) {
                     scale = 2.0;
                 }
-                
+
                 range = [key rangeOfString:@"@3x."];
                 if (range.location != NSNotFound) {
                     scale = 3.0;

@@ -1,6 +1,0 @@
-framework module ABMenuTableViewCell {
-  umbrella header "ABMenuTableViewCell-umbrella.h"
-
-  export *
-  module * { export * }
-}

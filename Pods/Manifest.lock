@@ -1,60 +1,176 @@
 PODS:
-  - ABMenuTableViewCell (2.0.2)
   - Alamofire (4.7.3)
+  - Crashlytics (3.12.0):
+    - Fabric (~> 1.9.0)
+  - Fabric (1.9.0)
+  - Firebase/Core (5.13.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 5.3.0)
+  - Firebase/CoreOnly (5.13.0):
+    - FirebaseCore (= 5.1.8)
+  - Firebase/MLVision (5.13.0):
+    - Firebase/CoreOnly
+    - FirebaseMLVision (= 0.13.0)
+  - Firebase/MLVisionTextModel (5.13.0):
+    - Firebase/CoreOnly
+    - FirebaseMLVisionTextModel (= 0.13.0)
+  - FirebaseAnalytics (5.3.0):
+    - FirebaseCore (~> 5.1)
+    - FirebaseInstanceID (~> 3.3)
+    - GoogleAppMeasurement (~> 5.3)
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
+    - GoogleUtilities/MethodSwizzler (~> 5.2)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - nanopb (~> 0.3)
+  - FirebaseCore (5.1.8):
+    - GoogleUtilities/Logger (~> 5.2)
+  - FirebaseInstanceID (3.3.0):
+    - FirebaseCore (~> 5.1)
+    - GoogleUtilities/Environment (~> 5.3)
+    - GoogleUtilities/UserDefaults (~> 5.3)
+  - FirebaseMLCommon (0.13.0):
+    - FirebaseCore (~> 5.1)
+  - FirebaseMLVision (0.13.0):
+    - FirebaseCore (~> 5.1)
+    - FirebaseMLCommon (~> 0.13)
+    - GoogleAPIClientForREST/Core (~> 1.3)
+    - GoogleAPIClientForREST/Vision (~> 1.3)
+    - GoogleMobileVision/Detector (~> 1.4)
+  - FirebaseMLVisionTextModel (0.13.0):
+    - GoogleMobileVision/TextDetector (~> 1.4)
+  - GoogleAPIClientForREST/Core (1.3.7):
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleAPIClientForREST/Vision (1.3.7):
+    - GoogleAPIClientForREST/Core
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleAppMeasurement (5.3.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
+    - GoogleUtilities/MethodSwizzler (~> 5.2)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - nanopb (~> 0.3)
+  - GoogleMobileVision/Detector (1.5.0):
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.1)
+  - GoogleMobileVision/TextDetector (1.5.0):
+    - GoogleMobileVision/Detector (~> 1.5)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/Logger (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleUtilities/AppDelegateSwizzler (5.3.6):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (5.3.6)
+  - GoogleUtilities/Logger (5.3.6):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (5.3.6):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (5.3.6):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (5.3.6)"
+  - GoogleUtilities/Reachability (5.3.6):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (5.3.6):
+    - GoogleUtilities/Logger
+  - GTMSessionFetcher (1.2.1):
+    - GTMSessionFetcher/Full (= 1.2.1)
+  - GTMSessionFetcher/Core (1.2.1)
+  - GTMSessionFetcher/Full (1.2.1):
+    - GTMSessionFetcher/Core (= 1.2.1)
   - IQKeyboardManagerSwift (6.2.0)
   - MarqueeLabel/Swift (3.2.0)
+  - nanopb (0.3.901):
+    - nanopb/decode (= 0.3.901)
+    - nanopb/encode (= 0.3.901)
+  - nanopb/decode (0.3.901)
+  - nanopb/encode (0.3.901)
   - NotificationBannerSwift (1.7.3):
     - MarqueeLabel/Swift (~> 3.2.0)
     - SnapKit (~> 4.0.1)
-  - Realm (3.11.1):
-    - Realm/Headers (= 3.11.1)
-  - Realm/Headers (3.11.1)
-  - RealmSwift (3.11.1):
-    - Realm (= 3.11.1)
+  - Protobuf (3.6.1)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
   - SnapKit (4.0.1)
   - SwiftyJSON (4.2.0)
-  - TesseractOCRiOS (5.0.1)
+  - UILoadControl (2.1.0)
 
 DEPENDENCIES:
-  - ABMenuTableViewCell (~> 2.0)
   - Alamofire
+  - Crashlytics
+  - Fabric
+  - Firebase/Core
+  - Firebase/MLVision
+  - Firebase/MLVisionTextModel
   - IQKeyboardManagerSwift
   - NotificationBannerSwift
-  - RealmSwift
   - SDWebImage (~> 4.2)
   - SwiftyJSON
-  - TesseractOCRiOS
+  - UILoadControl
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - ABMenuTableViewCell
     - Alamofire
+    - Crashlytics
+    - Fabric
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseInstanceID
+    - FirebaseMLCommon
+    - FirebaseMLVision
+    - FirebaseMLVisionTextModel
+    - GoogleAPIClientForREST
+    - GoogleAppMeasurement
+    - GoogleMobileVision
+    - GoogleToolboxForMac
+    - GoogleUtilities
+    - GTMSessionFetcher
     - IQKeyboardManagerSwift
     - MarqueeLabel
+    - nanopb
     - NotificationBannerSwift
-    - Realm
-    - RealmSwift
+    - Protobuf
     - SDWebImage
     - SnapKit
     - SwiftyJSON
-    - TesseractOCRiOS
+    - UILoadControl
 
 SPEC CHECKSUMS:
-  ABMenuTableViewCell: 931797cc144de2ef0ff56d1fe30ef42dcb26e2dc
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
+  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
+  Firebase: 6df9a6114bc9f106a98fe83d5438d4d9833c2019
+  FirebaseAnalytics: 63202d2665de4e6adcbdce189135255d8b5962ba
+  FirebaseCore: fba2bfaa691c49028309b92e4dd37cc4b5512fbe
+  FirebaseInstanceID: e2fa4cb35ef5558c200f7f0ad8a53e212215f93e
+  FirebaseMLCommon: 5e1bc4c4aa1d12c1f6bc38b40d2d60e8e63466bb
+  FirebaseMLVision: eba288c56228b25d9be498861ad0b9f305e8ce5c
+  FirebaseMLVisionTextModel: abb5bc051ea1c286bfe04a0347ce25237d1df0aa
+  GoogleAPIClientForREST: 825503f12cb5824601cf526cf06d81a1cea4afd9
+  GoogleAppMeasurement: 5029d78f2b438bd30ffb44e6c558b57c21622727
+  GoogleMobileVision: a1f93108b3527d67339e2de80e1db76645f9e8b9
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  GoogleUtilities: 95996bea7c7d9b8fb811b7507669a4a8762f80c7
+  GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
+  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   NotificationBannerSwift: c9f4bc868d78df975ed59c0b2fccdbbe0e863efe
-  Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
-  RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
+  Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
-  TesseractOCRiOS: 2c189465f86abb030d0c5141c90da9705b647854
+  UILoadControl: e742ddbe4c67ba1f13b00b7d462d4141307d021f
 
-PODFILE CHECKSUM: 93f9d61d31013e6bc21a8ebe3027ba9c8022bb03
+PODFILE CHECKSUM: 8b8985e42ed42badaf1c765af72a1f0569788f7c
 
 COCOAPODS: 1.5.3

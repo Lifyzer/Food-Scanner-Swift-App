@@ -81,9 +81,9 @@
 - (void)cachedImageExistsForURL:(nullable NSURL *)url
                      completion:(nullable SDWebImageCheckCacheCompletionBlock)completionBlock {
     NSString *key = [self cacheKeyForURL:url];
-    
+
     BOOL isInMemoryCache = ([self.imageCache imageFromMemoryCacheForKey:key] != nil);
-    
+
     if (isInMemoryCache) {
         // making sure we call the completion block on the main queue
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -93,7 +93,7 @@
         });
         return;
     }
-    
+
     [self.imageCache diskImageExistsWithKey:key completion:^(BOOL isInDiskCache) {
         // the completion block of checkDiskCacheForImageWithKey:completion: is always called on the main queue, no need to further dispatch
         if (completionBlock) {
@@ -105,7 +105,7 @@
 - (void)diskImageExistsForURL:(nullable NSURL *)url
                    completion:(nullable SDWebImageCheckCacheCompletionBlock)completionBlock {
     NSString *key = [self cacheKeyForURL:url];
-    
+
     [self.imageCache diskImageExistsWithKey:key completion:^(BOOL isInDiskCache) {
         // the completion block of checkDiskCacheForImageWithKey:completion: is always called on the main queue, no need to further dispatch
         if (completionBlock) {
@@ -151,12 +151,12 @@
     [self.runningOperations addObject:operation];
     UNLOCK(self.runningOperationsLock);
     NSString *key = [self cacheKeyForURL:url];
-    
+
     SDImageCacheOptions cacheOptions = 0;
     if (options & SDWebImageQueryDataWhenInMemory) cacheOptions |= SDImageCacheQueryDataWhenInMemory;
     if (options & SDWebImageQueryDiskSync) cacheOptions |= SDImageCacheQueryDiskSync;
     if (options & SDWebImageScaleDownLargeImages) cacheOptions |= SDImageCacheScaleDownLargeImages;
-    
+
     __weak SDWebImageCombinedOperation *weakOperation = operation;
     operation.cacheOperation = [self.imageCache queryCacheOperationForKey:key options:cacheOptions done:^(UIImage *cachedImage, NSData *cachedData, SDImageCacheType cacheType) {
         __strong __typeof(weakOperation) strongOperation = weakOperation;
@@ -164,7 +164,7 @@
             [self safelyRemoveOperationFromRunning:strongOperation];
             return;
         }
-        
+
         // Check whether we should download image from network
         BOOL shouldDownload = (!(options & SDWebImageFromCacheOnly))
             && (!cachedImage || options & SDWebImageRefreshCached)
@@ -186,14 +186,14 @@
             if (options & SDWebImageAllowInvalidSSLCertificates) downloaderOptions |= SDWebImageDownloaderAllowInvalidSSLCertificates;
             if (options & SDWebImageHighPriority) downloaderOptions |= SDWebImageDownloaderHighPriority;
             if (options & SDWebImageScaleDownLargeImages) downloaderOptions |= SDWebImageDownloaderScaleDownLargeImages;
-            
+
             if (cachedImage && options & SDWebImageRefreshCached) {
                 // force progressive off if image already cached but forced refreshing
                 downloaderOptions &= ~SDWebImageDownloaderProgressiveDownload;
                 // ignore image read from NSURLCache if image if cached but force refreshing
                 downloaderOptions |= SDWebImageDownloaderIgnoreCachedResponse;
             }
-            
+
             // `SDWebImageCombinedOperation` -> `SDWebImageDownloadToken` -> `downloadOperationCancelToken`, which is a `SDCallbacksDictionary` and retain the completed block below, so we need weak-strong again to avoid retain cycle
             __weak typeof(strongOperation) weakSubOperation = strongOperation;
             strongOperation.downloadToken = [self.imageDownloader downloadImageWithURL:url options:downloaderOptions progress:progressBlock completed:^(UIImage *downloadedImage, NSData *downloadedData, NSError *error, BOOL finished) {
@@ -218,7 +218,7 @@
                                                 && error.code != NSURLErrorCannotConnectToHost
                                                 && error.code != NSURLErrorNetworkConnectionLost);
                     }
-                    
+
                     if (shouldBlockFailedURL) {
                         LOCK(self.failedURLsLock);
                         [self.failedURLs addObject:url];
@@ -231,9 +231,9 @@
                         [self.failedURLs removeObject:url];
                         UNLOCK(self.failedURLsLock);
                     }
-                    
+
                     BOOL cacheOnDisk = !(options & SDWebImageCacheMemoryOnly);
-                    
+
                     // We've done the scale process in SDWebImageDownloader with the shared manager, this is used for custom manager and avoid extra scale.
                     if (self != [SDWebImageManager sharedManager] && self.cacheKeyFilter && downloadedImage) {
                         downloadedImage = [self scaledImageForKey:key image:downloadedImage];
@@ -256,7 +256,7 @@
                                 }
                                 [self.imageCache storeImage:transformedImage imageData:cacheData forKey:key toDisk:cacheOnDisk completion:nil];
                             }
-                            
+
                             [self callCompletionBlockForOperation:strongSubOperation completion:completedBlock image:transformedImage data:downloadedData error:nil cacheType:SDImageCacheTypeNone finished:finished url:url];
                         });
                     } else {

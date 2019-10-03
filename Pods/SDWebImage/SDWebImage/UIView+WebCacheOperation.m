@@ -46,7 +46,7 @@ typedef NSMapTable<NSString *, id<SDWebImageOperation>> SDOperationsDictionary;
         // Cancel in progress downloader from queue
         SDOperationsDictionary *operationDictionary = [self sd_operationDictionary];
         id<SDWebImageOperation> operation;
-        
+
         @synchronized (self) {
             operation = [operationDictionary objectForKey:key];
         }

@@ -21,7 +21,7 @@
     SDWebImageFrame *frame = [[SDWebImageFrame alloc] init];
     frame.image = image;
     frame.duration = duration;
-    
+
     return frame;
 }
 

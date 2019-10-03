@@ -123,7 +123,7 @@ Then run `swift build` whenever you get prepared.
 
 #### Manually (iOS 7+, OS X 10.9+)
 
-To use this library in your project manually you may:  
+To use this library in your project manually you may:
 
 1. for Projects, just drag SwiftyJSON.swift to the project tree
 2. for Workspaces, include the whole SwiftyJSON.xcodeproj
@@ -357,10 +357,10 @@ let rawValue: Any = json.rawValue
 ```swift
 //convert the JSON to raw NSData
 do {
-	let rawData = try json.rawData()
+    let rawData = try json.rawData()
   //Do something you want
 } catch {
-	print("Error \(error)")
+    print("Error \(error)")
 }
 ```
 
@@ -369,7 +369,7 @@ do {
 if let rawString = json.rawString() {
   //Do something you want
 } else {
-	print("json.rawString is nil")
+    print("json.rawString is nil")
 }
 ```
 

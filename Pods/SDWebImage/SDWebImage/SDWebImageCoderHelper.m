@@ -20,9 +20,9 @@
     if (frameCount == 0) {
         return nil;
     }
-    
+
     UIImage *animatedImage;
-    
+
 #if SD_UIKIT || SD_WATCH
     NSUInteger durations[frameCount];
     for (size_t i = 0; i < frameCount; i++) {
@@ -45,11 +45,11 @@
             [animatedImages addObject:image];
         }
     }];
-    
+
     animatedImage = [UIImage animatedImageWithImages:animatedImages duration:totalDuration / 1000.f];
-    
+
 #else
-    
+
     NSMutableData *imageData = [NSMutableData data];
     CFStringRef imageUTType = [NSData sd_UTTypeFromSDImageFormat:SDImageFormatGIF];
     // Create an image destination. GIF does not support EXIF image orientation
@@ -58,7 +58,7 @@
         // Handle failure.
         return nil;
     }
-    
+
     for (size_t i = 0; i < frameCount; i++) {
         @autoreleasepool {
             SDWebImageFrame *frame = frames[i];
@@ -79,7 +79,7 @@
     animatedImage = [[NSImage alloc] initWithSize:imageRep.size];
     [animatedImage addRepresentation:imageRep];
 #endif
-    
+
     return animatedImage;
 }
 
@@ -87,22 +87,22 @@
     if (!animatedImage) {
         return nil;
     }
-    
+
     NSMutableArray<SDWebImageFrame *> *frames = [NSMutableArray array];
     NSUInteger frameCount = 0;
-    
+
 #if SD_UIKIT || SD_WATCH
     NSArray<UIImage *> *animatedImages = animatedImage.images;
     frameCount = animatedImages.count;
     if (frameCount == 0) {
         return nil;
     }
-    
+
     NSTimeInterval avgDuration = animatedImage.duration / frameCount;
     if (avgDuration == 0) {
         avgDuration = 0.1; // if it's a animated image but no duration, set it to default 100ms (this do not have that 10ms limit like GIF or WebP to allow custom coder provide the limit)
     }
-    
+
     __block NSUInteger index = 0;
     __block NSUInteger repeatCount = 1;
     __block UIImage *previousImage = animatedImages.firstObject;
@@ -126,9 +126,9 @@
             [frames addObject:frame];
         }
     }];
-    
+
 #else
-    
+
     NSBitmapImageRep *bitmapRep;
     for (NSImageRep *imageRep in animatedImage.representations) {
         if ([imageRep isKindOfClass:[NSBitmapImageRep class]]) {
@@ -139,11 +139,11 @@
     if (bitmapRep) {
         frameCount = [[bitmapRep valueForProperty:NSImageFrameCount] unsignedIntegerValue];
     }
-    
+
     if (frameCount == 0) {
         return nil;
     }
-    
+
     for (size_t i = 0; i < frameCount; i++) {
         @autoreleasepool {
             // NSBitmapImageRep need to manually change frame. "Good taste" API
@@ -155,7 +155,7 @@
         }
     }
 #endif
-    
+
     return frames;
 }
 

@@ -92,8 +92,8 @@ typedef void(^SDWebImagePrefetcherCompletionBlock)(NSUInteger noOfFinishedUrls, 
  * Any previously-running prefetch operations are canceled.
  *
  * @param urls            list of URLs to prefetch
- * @param progressBlock   block to be called when progress updates; 
- *                        first parameter is the number of completed (successful or not) requests, 
+ * @param progressBlock   block to be called when progress updates;
+ *                        first parameter is the number of completed (successful or not) requests,
  *                        second parameter is the total number of images originally requested to be prefetched
  * @param completionBlock block to be called when prefetching is completed
  *                        first param is the number of completed (successful or not) requests,

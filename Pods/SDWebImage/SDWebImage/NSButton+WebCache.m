@@ -56,7 +56,7 @@ static inline NSString * alternateImageOperationKey() {
                   progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                  completed:(nullable SDExternalCompletionBlock)completedBlock {
     self.sd_currentImageURL = url;
-    
+
     __weak typeof(self)weakSelf = self;
     [self sd_internalSetImageWithURL:url
                     placeholderImage:placeholder
@@ -101,7 +101,7 @@ static inline NSString * alternateImageOperationKey() {
                            progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                           completed:(nullable SDExternalCompletionBlock)completedBlock {
     self.sd_currentAlternateImageURL = url;
-    
+
     __weak typeof(self)weakSelf = self;
     [self sd_internalSetImageWithURL:url
                     placeholderImage:placeholder
