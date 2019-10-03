@@ -151,9 +151,8 @@ class FoodDetailVC: UIViewController {
     }
     @objc func shareFoodDetails()
     {
-        let text = "Hey,I just scanned \(objProduct.productName.asStringOrEmpty()) thanks “Lifyzer” app.\nSee what unbelievable things I found about it. It literally blows my mind! 😮\n\nP.S. I like you. You are my friend after all! Wouldn’t it be silly to get cancer just because of garbage food?\n\n Scan your foods right now and see what you REALLY eat! 🥘\n —- \n🎯"
-        let link = URL(string:"https://get.lifyzer.com")!
-
+        let text = "Hey 🤗\n I just scanned \(objProduct.productName.asStringOrEmpty()) thanks “Lifyzer app”.\nSee what unbelievable things I found about it. It literally blows my mind! 😮\n\nP.S. I like you. You are my friend after all! Wouldn’t it be silly to get cancer just because of garbage food?\n\nScan your foods right now and see what you REALLY eat! 🥘\n —- \n🎯"
+        let link = URL(string: "https://get.lifyzer.com")!
 
         let shareAll = [text ,link] as [Any]
         let activityViewController = UIActivityViewController(activityItems: shareAll, applicationActivities: nil)
