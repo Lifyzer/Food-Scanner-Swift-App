@@ -28,7 +28,7 @@
 #define FBENCRYPT_KEY_SIZE      kCCKeySizeAES256
 
 @interface FBEncryptorAES : NSObject {
-    
+
 }
 
 //-----------------

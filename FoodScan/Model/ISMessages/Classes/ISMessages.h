@@ -43,9 +43,9 @@ typedef NS_ENUM(NSInteger, ISAlertPosition) {
 
 /**
  @author Ilya Inyushin
- 
+
  Method is show card alert view
- 
+
  @param title Title for alert view
  @param message Subtitle for alertview, can be empty and nil
  @param duration duration after which alert will dismiss
@@ -67,9 +67,9 @@ typedef NS_ENUM(NSInteger, ISAlertPosition) {
 
 /**
  @author Ilya Inyushin
- 
+
  Only Initialize ISMessages and you can customize alert, to show alert you need call method [show]
- 
+
  @param title Title for alert view
  @param message Subtitle for alertview, can be empty and nil
  @param iconImage image for alert. If nil then alert will show with image by alert type
@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, ISAlertPosition) {
 
 /**
  @author Ilya Inyushin
- 
+
  handler is callback block
  */
 
@@ -99,9 +99,9 @@ typedef NS_ENUM(NSInteger, ISAlertPosition) {
 
 /**
  @author Ilya Inyushin
- 
+
  Method is hide alert view
- 
+
  @param animated @(YES/NO) animated hide
  */
 

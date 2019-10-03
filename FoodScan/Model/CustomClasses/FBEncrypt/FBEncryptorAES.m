@@ -42,23 +42,23 @@
 
     // setup key
     unsigned char cKey[FBENCRYPT_KEY_SIZE];
-	bzero(cKey, sizeof(cKey));
+    bzero(cKey, sizeof(cKey));
     [key getBytes:cKey length:FBENCRYPT_KEY_SIZE];
-	
+
     // setup iv
     char cIv[FBENCRYPT_BLOCK_SIZE];
     bzero(cIv, FBENCRYPT_BLOCK_SIZE);
     if (iv) {
         [iv getBytes:cIv length:FBENCRYPT_BLOCK_SIZE];
     }
-    
+
     // setup output buffer
-	size_t bufferSize = [data length] + FBENCRYPT_BLOCK_SIZE;
-	void *buffer = malloc(bufferSize);
+    size_t bufferSize = [data length] + FBENCRYPT_BLOCK_SIZE;
+    void *buffer = malloc(bufferSize);
 
     // do encrypt
-	size_t encryptedSize = 0;
-	CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt,
+    size_t encryptedSize = 0;
+    CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt,
                                           FBENCRYPT_ALGORITHM,
                                           kCCOptionPKCS7Padding | kCCModeCBC,
                                           cKey,
@@ -68,8 +68,8 @@
                                           [data length],
                                           buffer,
                                           bufferSize,
-										  &encryptedSize);
-    
+                                          &encryptedSize);
+
     /*CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt,
                                           kCCAlgorithmDES,
                                           kCCOptionPKCS7Padding | kCCOptionECBMode,
@@ -82,14 +82,14 @@
                                           bufferSize
                                           &numBytesEncrypted);*/
 
-	if (cryptStatus == kCCSuccess) {
-		result = [NSData dataWithBytesNoCopy:buffer length:encryptedSize];
-	} else {
+    if (cryptStatus == kCCSuccess) {
+        result = [NSData dataWithBytesNoCopy:buffer length:encryptedSize];
+    } else {
         free(buffer);
         NSLog(@"[ERROR] failed to encrypt|CCCryptoStatus: %d", cryptStatus);
     }
-	
-	return result;
+
+    return result;
 }
 
 + (NSData*)decryptData:(NSData*)data key:(NSData*)key iv:(NSData*)iv;
@@ -98,7 +98,7 @@
 
     // setup key
     unsigned char cKey[FBENCRYPT_KEY_SIZE];
-	bzero(cKey, sizeof(cKey));
+    bzero(cKey, sizeof(cKey));
     [key getBytes:cKey length:FBENCRYPT_KEY_SIZE];
 
     // setup iv
@@ -107,17 +107,17 @@
     if (iv) {
         [iv getBytes:cIv length:FBENCRYPT_BLOCK_SIZE];
     }
-    
+
     // setup output buffer
-	size_t bufferSize = [data length] + FBENCRYPT_BLOCK_SIZE;
-	void *buffer = malloc(bufferSize);
-	
+    size_t bufferSize = [data length] + FBENCRYPT_BLOCK_SIZE;
+    void *buffer = malloc(bufferSize);
+
     // do decrypt
-	size_t decryptedSize = 0;
-	CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt,
+    size_t decryptedSize = 0;
+    CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt,
                                           FBENCRYPT_ALGORITHM,
                                           kCCOptionPKCS7Padding | kCCModeCBC,
-										  cKey,
+                                          cKey,
                                           FBENCRYPT_KEY_SIZE,
                                           cIv,
                                           [data bytes],
@@ -125,15 +125,15 @@
                                           buffer,
                                           bufferSize,
                                           &decryptedSize);
-	
-	if (cryptStatus == kCCSuccess) {
-		result = [NSData dataWithBytesNoCopy:buffer length:decryptedSize];
-	} else {
+
+    if (cryptStatus == kCCSuccess) {
+        result = [NSData dataWithBytesNoCopy:buffer length:decryptedSize];
+    } else {
         free(buffer);
         NSLog(@"[ERROR] failed to decrypt| CCCryptoStatus: %d", cryptStatus);
     }
 
-	return result;
+    return result;
 }
 
 + (NSString*)encryptBase64String:(NSString*)string keyString:(NSString*)keyString keyIv:(NSString*)keyIv separateLines:(BOOL)separateLines{
@@ -184,7 +184,7 @@
     NSMutableString* hexString = [NSMutableString string];
 
     const unsigned char *p = [data bytes];
-    
+
     for (int i=0; i < [data length]; i++) {
         [hexString appendFormat:@"%02x", *p++];
     }
@@ -196,7 +196,7 @@
     if (hexString == nil) {
         return nil;
     }
-    
+
     const char* ch = [[hexString lowercaseString] cStringUsingEncoding:NSUTF8StringEncoding];
     NSMutableData* data = [NSMutableData data];
     while (*ch) {
