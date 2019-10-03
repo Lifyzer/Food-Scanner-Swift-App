@@ -7,14 +7,14 @@
 #pragma mark -
 #pragma mark Private methods and instance variables
 
-@interface GPUImageView () 
+@interface GPUImageView ()
 {
     GPUImageFramebuffer *inputFramebufferForDisplay;
 
     GLProgram *displayProgram;
     GLint displayPositionAttribute, displayTextureCoordinateAttribute;
     GLint displayInputTextureUniform;
-    
+
     CGSize inputImageSize;
     GLfloat imageVertices[8];
     GLfloat backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha;
@@ -45,24 +45,24 @@
 {
     if (!(self = [super initWithFrame:frame]))
     {
-		return nil;
+        return nil;
     }
-    
+
     [self commonInit];
-    
+
     return self;
 }
 
 -(id)initWithCoder:(NSCoder *)coder
 {
-	if (!(self = [super initWithCoder:coder])) 
+    if (!(self = [super initWithCoder:coder]))
     {
         return nil;
-	}
+    }
 
     [self commonInit];
 
-	return self;
+    return self;
 }
 
 - (void)commonInit;
@@ -73,12 +73,12 @@
     {
         [self  setWantsBestResolutionOpenGLSurface:YES];
     }
-    
+
     inputRotation = kGPUImageNoRotation;
     self.hidden = NO;
 
     self.enabled = YES;
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
         displayProgram = [[GPUImageContext sharedImageProcessingContext] programForVertexShaderString:kGPUImageVertexShaderString fragmentShaderString:kGPUImagePassthroughFragmentShaderString];
@@ -87,7 +87,7 @@
         {
             [displayProgram addAttribute:@"position"];
             [displayProgram addAttribute:@"inputTextureCoordinate"];
-            
+
             if (![displayProgram link])
             {
                 NSString *progLog = [displayProgram programLog];
@@ -100,21 +100,21 @@
                 NSAssert(NO, @"Filter shader link failed");
             }
         }
-        
+
         displayPositionAttribute = [displayProgram attributeIndex:@"position"];
         displayTextureCoordinateAttribute = [displayProgram attributeIndex:@"inputTextureCoordinate"];
         displayInputTextureUniform = [displayProgram uniformIndex:@"inputImageTexture"];
-        
+
         [GPUImageContext setActiveShaderProgram:displayProgram];
 
         glEnableVertexAttribArray(displayPositionAttribute);
         glEnableVertexAttribArray(displayTextureCoordinateAttribute);
-    
+
         [self setBackgroundColorRed:0.0 green:0.0 blue:0.0 alpha:1.0];
         _fillMode = kGPUImageFillModePreserveAspectRatio;
         [self createDisplayFramebuffer];
     });
-    
+
 }
 
 - (void)dealloc
@@ -146,7 +146,7 @@
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    
+
     glViewport(0, 0, (GLint)_sizeInPixels.width, (GLint)_sizeInPixels.height);
 }
 
@@ -162,12 +162,12 @@
     {
         viewSize = [self convertSizeToBacking:self.bounds.size];
     }
-    
+
     if ( (_sizeInPixels.width == viewSize.width) && (_sizeInPixels.height == viewSize.height) )
     {
         return;
     }
-    
+
     _sizeInPixels = viewSize;
 
     [self recalculateViewGeometry];
@@ -182,7 +182,7 @@
 - (void)recalculateViewGeometry;
 {
     CGFloat heightScaling, widthScaling;
-    
+
     CGSize currentViewSize = self.sizeInPixels;
 
     if ((inputImageSize.width < 1.0) || (inputImageSize.height < 1.0))
@@ -195,7 +195,7 @@
     {
         insetRect = CGRectMake(0.0,0.0,currentViewSize.width,currentViewSize.height);
     }
-    
+
     switch(_fillMode)
     {
         case kGPUImageFillModeStretch:
@@ -214,7 +214,7 @@
             heightScaling = currentViewSize.width / insetRect.size.width;
         }; break;
     }
-    
+
     imageVertices[0] = -widthScaling;
     imageVertices[1] = -heightScaling;
     imageVertices[2] = widthScaling;
@@ -241,7 +241,7 @@
 //        0.0f, 1.0f,
 //        1.0f, 1.0f,
 //    };
-    
+
     static const GLfloat noRotationTextureCoordinates[] = {
         0.0f, 1.0f,
         1.0f, 1.0f,
@@ -262,42 +262,42 @@
         1.0f, 0.0f,
         1.0f, 1.0f,
     };
-        
+
     static const GLfloat verticalFlipTextureCoordinates[] = {
         0.0f, 0.0f,
         1.0f, 0.0f,
         0.0f, 1.0f,
         1.0f, 1.0f,
     };
-    
+
     static const GLfloat horizontalFlipTextureCoordinates[] = {
         1.0f, 1.0f,
         0.0f, 1.0f,
         1.0f, 0.0f,
         0.0f, 0.0f,
     };
-    
+
     static const GLfloat rotateRightVerticalFlipTextureCoordinates[] = {
         1.0f, 0.0f,
         1.0f, 1.0f,
         0.0f, 0.0f,
         0.0f, 1.0f,
     };
-    
+
     static const GLfloat rotateRightHorizontalFlipTextureCoordinates[] = {
         1.0f, 1.0f,
         1.0f, 0.0f,
         0.0f, 1.0f,
         0.0f, 0.0f,
     };
-    
+
     static const GLfloat rotate180TextureCoordinates[] = {
         1.0f, 0.0f,
         0.0f, 0.0f,
         1.0f, 1.0f,
         0.0f, 1.0f,
     };
-    
+
     switch(rotationMode)
     {
         case kGPUImageNoRotation: return noRotationTextureCoordinates;
@@ -319,10 +319,10 @@
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext setActiveShaderProgram:displayProgram];
         [self setDisplayFramebuffer];
-        
+
         glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+
         // Re-render onscreen, flipped to a normal orientation
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -343,16 +343,16 @@
         {
             [self lockFocus];
         }
-        
+
         if (canLockFocus)
         {
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-            
+
             [self presentFramebuffer];
             glBindTexture(GL_TEXTURE_2D, 0);
             [self unlockFocus];
         }
-        
+
         [inputFramebufferForDisplay unlock];
         inputFramebufferForDisplay = nil;
     });
@@ -380,16 +380,16 @@
     {
         return;
     }
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         CGSize rotatedSize = newSize;
-        
+
         if (GPUImageRotationSwapsWidthAndHeight(inputRotation))
         {
             rotatedSize.width = newSize.height;
             rotatedSize.height = newSize.width;
         }
-        
+
         if (!CGSizeEqualToSize(inputImageSize, rotatedSize))
         {
             inputImageSize = rotatedSize;
@@ -421,7 +421,7 @@
 
 - (void)conserveMemoryForNextFrame;
 {
-    
+
 }
 
 - (BOOL)wantsMonochromeInput;
@@ -431,7 +431,7 @@
 
 - (void)setCurrentlyReceivingMonochromeInput:(BOOL)newValue;
 {
-    
+
 }
 
 #pragma mark -

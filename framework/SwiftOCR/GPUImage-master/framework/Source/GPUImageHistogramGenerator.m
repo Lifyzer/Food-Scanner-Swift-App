@@ -4,10 +4,10 @@ NSString *const kGPUImageHistogramGeneratorVertexShaderString = SHADER_STRING
 (
  attribute vec4 position;
  attribute vec4 inputTextureCoordinate;
- 
+
  varying vec2 textureCoordinate;
  varying float height;
- 
+
  void main()
  {
      gl_Position = position;
@@ -21,10 +21,10 @@ NSString *const kGPUImageHistogramGeneratorFragmentShaderString = SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
  varying highp float height;
- 
+
  uniform sampler2D inputImageTexture;
  uniform lowp vec4 backgroundColor;
- 
+
  void main()
  {
      lowp vec3 colorChannels = texture2D(inputImageTexture, textureCoordinate).rgb;
@@ -37,10 +37,10 @@ NSString *const kGPUImageHistogramGeneratorFragmentShaderString = SHADER_STRING
 (
  varying vec2 textureCoordinate;
  varying float height;
- 
+
  uniform sampler2D inputImageTexture;
  uniform vec4 backgroundColor;
- 
+
  void main()
  {
      vec3 colorChannels = texture2D(inputImageTexture, textureCoordinate).rgb;
@@ -61,11 +61,11 @@ NSString *const kGPUImageHistogramGeneratorFragmentShaderString = SHADER_STRING
     {
         return nil;
     }
-    
+
     backgroundColorUniform = [filterProgram uniformIndex:@"backgroundColor"];
 
     [self setBackgroundColorRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    
+
     return self;
 }
 
@@ -76,11 +76,11 @@ NSString *const kGPUImageHistogramGeneratorFragmentShaderString = SHADER_STRING
 {
 //    GLfloat backgroundColor[4];
 //    backgroundColor[0] = redComponent;
-//    backgroundColor[1] = greenComponent;    
+//    backgroundColor[1] = greenComponent;
 //    backgroundColor[2] = blueComponent;
 //    backgroundColor[3] = alphaComponent;
     GPUVector4 backgroundColor = {redComponent, greenComponent, blueComponent, alphaComponent};
-    
+
     [self setVec4:backgroundColor forUniform:backgroundColorUniform program:filterProgram];
 }
 

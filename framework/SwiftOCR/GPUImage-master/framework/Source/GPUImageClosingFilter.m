@@ -11,9 +11,9 @@
 {
     if (!(self = [self initWithRadius:1]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 
@@ -21,22 +21,22 @@
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
     // First pass: dilation
     dilationFilter = [[GPUImageDilationFilter alloc] initWithRadius:radius];
     [self addFilter:dilationFilter];
-    
+
     // Second pass: erosion
     erosionFilter = [[GPUImageErosionFilter alloc] initWithRadius:radius];
     [self addFilter:erosionFilter];
-    
+
     [dilationFilter addTarget:erosionFilter];
-    
+
     self.initialFilters = [NSArray arrayWithObjects:dilationFilter, nil];
     self.terminalFilter = erosionFilter;
-    
+
     return self;
 }
 

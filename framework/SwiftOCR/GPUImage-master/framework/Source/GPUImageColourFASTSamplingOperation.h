@@ -10,7 +10,7 @@
 @interface GPUImageColourFASTSamplingOperation : GPUImageTwoInputFilter
 {
     GLint texelWidthUniform, texelHeightUniform;
-    
+
     CGFloat texelWidth, texelHeight;
     BOOL hasOverriddenImageSizeFactor;
 }

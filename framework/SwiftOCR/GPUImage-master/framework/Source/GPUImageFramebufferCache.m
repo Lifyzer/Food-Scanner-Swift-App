@@ -32,9 +32,9 @@
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     __unsafe_unretained __typeof__ (self) weakSelf = self;
     memoryWarningObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
@@ -51,7 +51,7 @@
     framebufferTypeCounts = [[NSMutableDictionary alloc] init];
     activeImageCaptureList = [[NSMutableArray alloc] init];
     framebufferCacheQueue = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.framebufferCacheQueue", GPUImageDefaultQueueAttribute());
-    
+
     return self;
 }
 
@@ -86,7 +86,7 @@
         NSString *lookupHash = [self hashForSize:framebufferSize textureOptions:textureOptions onlyTexture:onlyTexture];
         NSNumber *numberOfMatchingTexturesInCache = [framebufferTypeCounts objectForKey:lookupHash];
         NSInteger numberOfMatchingTextures = [numberOfMatchingTexturesInCache integerValue];
-        
+
         if ([numberOfMatchingTexturesInCache integerValue] < 1)
         {
             // Nothing in the cache, create a new framebuffer to use
@@ -108,11 +108,11 @@
                 }
                 currentTextureID--;
             }
-            
+
             currentTextureID++;
-            
+
             [framebufferTypeCounts setObject:[NSNumber numberWithInteger:currentTextureID] forKey:lookupHash];
-            
+
             if (framebufferFromCache == nil)
             {
                 framebufferFromCache = [[GPUImageFramebuffer alloc] initWithSize:framebufferSize textureOptions:textureOptions onlyTexture:onlyTexture];
@@ -134,14 +134,14 @@
     defaultTextureOptions.internalFormat = GL_RGBA;
     defaultTextureOptions.format = GL_BGRA;
     defaultTextureOptions.type = GL_UNSIGNED_BYTE;
-    
+
     return [self fetchFramebufferForSize:framebufferSize textureOptions:defaultTextureOptions onlyTexture:onlyTexture];
 }
 
 - (void)returnFramebufferToCache:(GPUImageFramebuffer *)framebuffer;
 {
     [framebuffer clearAllLocks];
-    
+
 //    dispatch_async(framebufferCacheQueue, ^{
     runAsynchronouslyOnVideoProcessingQueue(^{
         CGSize framebufferSize = framebuffer.size;
@@ -149,9 +149,9 @@
         NSString *lookupHash = [self hashForSize:framebufferSize textureOptions:framebufferTextureOptions onlyTexture:framebuffer.missingFramebuffer];
         NSNumber *numberOfMatchingTexturesInCache = [framebufferTypeCounts objectForKey:lookupHash];
         NSInteger numberOfMatchingTextures = [numberOfMatchingTexturesInCache integerValue];
-        
+
         NSString *textureHash = [NSString stringWithFormat:@"%@-%ld", lookupHash, (long)numberOfMatchingTextures];
-        
+
 //        [framebufferCache setObject:framebuffer forKey:textureHash cost:round(framebufferSize.width * framebufferSize.height * 4.0)];
         [framebufferCache setObject:framebuffer forKey:textureHash];
         [framebufferTypeCounts setObject:[NSNumber numberWithInteger:(numberOfMatchingTextures + 1)] forKey:lookupHash];

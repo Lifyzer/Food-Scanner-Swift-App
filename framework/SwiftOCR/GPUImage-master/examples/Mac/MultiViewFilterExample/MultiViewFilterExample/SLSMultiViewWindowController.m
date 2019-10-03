@@ -14,16 +14,16 @@
     if (self) {
         // Initialization code here.
     }
-    
+
     return self;
 }
 
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
+
     videoCamera = [[GPUImageAVCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraDevice:nil];
-    
+
     filter1 = [[GPUImageFilter alloc] initWithFragmentShaderFromFile:@"Shader1"];
     filter2 = [[GPUImageFilter alloc] initWithFragmentShaderFromFile:@"Shader2"];
     filter3 = [[GPUImageSepiaFilter alloc] init];
@@ -38,7 +38,7 @@
     [filter2 addTarget:self.lowerLeftView];
     [videoCamera addTarget:filter3];
     [filter3 addTarget:self.lowerRightView];
-    
+
     [videoCamera startCameraCapture];
 }
 

@@ -27,7 +27,7 @@ typedef enum { GPUIMAGE_BENCHMARK_CPU, GPUIMAGE_BENCHMARK_COREIMAGE, GPUIMAGE_BE
     [super viewDidLoad];
 
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 60.0f)];
-    
+
     UIButton *benchmarkButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     benchmarkButton.frame = CGRectMake(60.0f, 20.0f, 200.0f, 40.0f);
     [benchmarkButton setTitle:@"Run Benchmark" forState:UIControlStateNormal];
@@ -79,7 +79,7 @@ typedef enum { GPUIMAGE_BENCHMARK_CPU, GPUIMAGE_BENCHMARK_COREIMAGE, GPUIMAGE_BE
     return 3;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return NSLocalizedStringFromTable(@"Processing times", @"Localized", nil);
 
@@ -90,16 +90,16 @@ typedef enum { GPUIMAGE_BENCHMARK_CPU, GPUIMAGE_BENCHMARK_COREIMAGE, GPUIMAGE_BE
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"StillImageBenchmarkCell";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) 
+    if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        
+
         cell.detailTextLabel.textColor = [UIColor colorWithRed:50.0f/255.0f green:79.0f/255.0f blue:133.0f/255.0f alpha:1.0f];
-        cell.detailTextLabel.highlightedTextColor = [UIColor whiteColor];			
+        cell.detailTextLabel.highlightedTextColor = [UIColor whiteColor];
     }
-    
+
     switch (indexPath.row)
     {
         case GPUIMAGE_BENCHMARK_CPU:
@@ -123,7 +123,7 @@ typedef enum { GPUIMAGE_BENCHMARK_CPU, GPUIMAGE_BENCHMARK_COREIMAGE, GPUIMAGE_BE
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2f ms", processingTimeForCPURoutine];
         }
     }
-    
+
     return cell;
 }
 
@@ -146,7 +146,7 @@ typedef enum { GPUIMAGE_BENCHMARK_CPU, GPUIMAGE_BENCHMARK_COREIMAGE, GPUIMAGE_BE
 
 - (void)runBenchmark;
 {
-    
+
 }
 
 @end

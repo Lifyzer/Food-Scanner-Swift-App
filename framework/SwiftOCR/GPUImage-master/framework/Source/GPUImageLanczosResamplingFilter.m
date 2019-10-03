@@ -4,10 +4,10 @@ NSString *const kGPUImageLanczosVertexShaderString = SHADER_STRING
 (
  attribute vec4 position;
  attribute vec2 inputTextureCoordinate;
- 
+
  uniform float texelWidthOffset;
  uniform float texelHeightOffset;
- 
+
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepLeftTextureCoordinate;
  varying vec2 twoStepsLeftTextureCoordinate;
@@ -21,12 +21,12 @@ NSString *const kGPUImageLanczosVertexShaderString = SHADER_STRING
  void main()
  {
      gl_Position = position;
-     
+
      vec2 firstOffset = vec2(texelWidthOffset, texelHeightOffset);
      vec2 secondOffset = vec2(2.0 * texelWidthOffset, 2.0 * texelHeightOffset);
      vec2 thirdOffset = vec2(3.0 * texelWidthOffset, 3.0 * texelHeightOffset);
      vec2 fourthOffset = vec2(4.0 * texelWidthOffset, 4.0 * texelHeightOffset);
-     
+
      centerTextureCoordinate = inputTextureCoordinate;
      oneStepLeftTextureCoordinate = inputTextureCoordinate - firstOffset;
      twoStepsLeftTextureCoordinate = inputTextureCoordinate - secondOffset;
@@ -43,9 +43,9 @@ NSString *const kGPUImageLanczosVertexShaderString = SHADER_STRING
 NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
 (
  precision highp float;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepLeftTextureCoordinate;
  varying vec2 twoStepsLeftTextureCoordinate;
@@ -58,14 +58,14 @@ NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
 
  // sinc(x) * sinc(x/a) = (a * sin(pi * x) * sin(pi * x / a)) / (pi^2 * x^2)
  // Assuming a Lanczos constant of 2.0, and scaling values to max out at x = +/- 1.5
- 
+
  void main()
  {
      lowp vec4 fragmentColor = texture2D(inputImageTexture, centerTextureCoordinate) * 0.38026;
-     
+
      fragmentColor += texture2D(inputImageTexture, oneStepLeftTextureCoordinate) * 0.27667;
      fragmentColor += texture2D(inputImageTexture, oneStepRightTextureCoordinate) * 0.27667;
-     
+
      fragmentColor += texture2D(inputImageTexture, twoStepsLeftTextureCoordinate) * 0.08074;
      fragmentColor += texture2D(inputImageTexture, twoStepsRightTextureCoordinate) * 0.08074;
 
@@ -82,7 +82,7 @@ NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
 NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
- 
+
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepLeftTextureCoordinate;
  varying vec2 twoStepsLeftTextureCoordinate;
@@ -92,26 +92,26 @@ NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
  varying vec2 twoStepsRightTextureCoordinate;
  varying vec2 threeStepsRightTextureCoordinate;
  varying vec2 fourStepsRightTextureCoordinate;
- 
+
  // sinc(x) * sinc(x/a) = (a * sin(pi * x) * sin(pi * x / a)) / (pi^2 * x^2)
  // Assuming a Lanczos constant of 2.0, and scaling values to max out at x = +/- 1.5
- 
+
  void main()
  {
      vec4 fragmentColor = texture2D(inputImageTexture, centerTextureCoordinate) * 0.38026;
-     
+
      fragmentColor += texture2D(inputImageTexture, oneStepLeftTextureCoordinate) * 0.27667;
      fragmentColor += texture2D(inputImageTexture, oneStepRightTextureCoordinate) * 0.27667;
-     
+
      fragmentColor += texture2D(inputImageTexture, twoStepsLeftTextureCoordinate) * 0.08074;
      fragmentColor += texture2D(inputImageTexture, twoStepsRightTextureCoordinate) * 0.08074;
-     
+
      fragmentColor += texture2D(inputImageTexture, threeStepsLeftTextureCoordinate) * -0.02612;
      fragmentColor += texture2D(inputImageTexture, threeStepsRightTextureCoordinate) * -0.02612;
-     
+
      fragmentColor += texture2D(inputImageTexture, fourStepsLeftTextureCoordinate) * -0.02143;
      fragmentColor += texture2D(inputImageTexture, fourStepsRightTextureCoordinate) * -0.02143;
-     
+
      gl_FragColor = fragmentColor;
  }
 );
@@ -128,9 +128,9 @@ NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFirstStageVertexShaderFromString:kGPUImageLanczosVertexShaderString firstStageFragmentShaderFromString:kGPUImageLanczosFragmentShaderString secondStageVertexShaderFromString:kGPUImageLanczosVertexShaderString secondStageFragmentShaderFromString:kGPUImageLanczosFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-        
+
     return self;
 }
 
@@ -155,7 +155,7 @@ NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
             verticalPassTexelWidthOffset = 0.0;
             verticalPassTexelHeightOffset = 1.0 / _originalImageSize.height;
         }
-        
+
         horizontalPassTexelWidthOffset = 1.0 / _originalImageSize.width;
         horizontalPassTexelHeightOffset = 0.0;
     });
@@ -169,9 +169,9 @@ NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
         [firstInputFramebuffer unlock];
         return;
     }
-    
+
     [GPUImageContext setActiveShaderProgram:filterProgram];
-    
+
     CGSize currentFBOSize = [self sizeOfFBO];
     if (GPUImageRotationSwapsWidthAndHeight(inputRotation))
     {
@@ -183,24 +183,24 @@ NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
     }
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:currentFBOSize textureOptions:self.outputTextureOptions onlyTexture:NO];
     [outputFramebuffer activateFramebuffer];
-    
+
     [self setUniformsForProgramAtIndex:0];
-    
+
     glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-	
-	glUniform1i(filterInputTextureUniform, 2);
-    
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+
+    glUniform1i(filterInputTextureUniform, 2);
+
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
-	glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-    
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
+
     [firstInputFramebuffer unlock];
-    
+
     // Run the second stage of the two-pass filter
     [GPUImageContext setActiveShaderProgram:secondFilterProgram];
     glActiveTexture(GL_TEXTURE2);
@@ -215,18 +215,18 @@ NSString *const kGPUImageLanczosFragmentShaderString = SHADER_STRING
     }
 
     [self setUniformsForProgramAtIndex:1];
-    
+
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
     glVertexAttribPointer(secondFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, [[self class] textureCoordinatesForRotation:kGPUImageNoRotation]);
-    
-	glUniform1i(secondFilterInputTextureUniform, 3);
-    
+
+    glUniform1i(secondFilterInputTextureUniform, 3);
+
     glVertexAttribPointer(secondFilterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
-    
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     [outputFramebuffer unlock];
     outputFramebuffer = nil;

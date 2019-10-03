@@ -57,7 +57,7 @@
 #pragma mark - Matrix algorithms
 
 /* Matrix algorithms adapted from http://www.graficaobscura.com/matrix/index.html
- 
+
  Note about luminance vector values below from that page:
  Where rwgt is 0.3086, gwgt is 0.6094, and bwgt is 0.0820. This is the luminance vector. Notice here that we do not use the standard NTSC weights of 0.299, 0.587, and 0.114. The NTSC weights are only applicable to RGB colors in a gamma 2.2 color space. For linear RGB colors the values above are better.
  */
@@ -71,15 +71,15 @@
 #define BLUM (0.11f)
 
 /*
- *	matrixmult -
- *		multiply two matricies
+ *    matrixmult -
+ *        multiply two matricies
  */
 static void matrixmult(a,b,c)
 float a[4][4], b[4][4], c[4][4];
 {
     int x, y;
     float temp[4][4];
-    
+
     for(y=0; y<4 ; y++)
         for(x=0 ; x<4 ; x++) {
             temp[y][x] = b[y][0] * a[0][x]
@@ -93,8 +93,8 @@ float a[4][4], b[4][4], c[4][4];
 }
 
 /*
- *	identmat -
- *		make an identity matrix
+ *    identmat -
+ *        make an identity matrix
  */
 static void identmat(matrix)
 float matrix[4][4];
@@ -107,8 +107,8 @@ float matrix[4][4];
 }
 
 /*
- *	xformpnt -
- *		transform a 3D point using a matrix
+ *    xformpnt -
+ *        transform a 3D point using a matrix
  */
 static void xformpnt(matrix,x,y,z,tx,ty,tz)
 float matrix[4][4];
@@ -121,31 +121,31 @@ float *tx,*ty,*tz;
 }
 
 /*
- *	cscalemat -
- *		make a color scale marix
+ *    cscalemat -
+ *        make a color scale marix
  */
 static void cscalemat(mat,rscale,gscale,bscale)
 float mat[4][4];
 float rscale, gscale, bscale;
 {
     float mmat[4][4];
-    
+
     mmat[0][0] = rscale;
     mmat[0][1] = 0.0;
     mmat[0][2] = 0.0;
     mmat[0][3] = 0.0;
-    
+
     mmat[1][0] = 0.0;
     mmat[1][1] = gscale;
     mmat[1][2] = 0.0;
     mmat[1][3] = 0.0;
-    
-    
+
+
     mmat[2][0] = 0.0;
     mmat[2][1] = 0.0;
     mmat[2][2] = bscale;
     mmat[2][3] = 0.0;
-    
+
     mmat[3][0] = 0.0;
     mmat[3][1] = 0.0;
     mmat[3][2] = 0.0;
@@ -154,8 +154,8 @@ float rscale, gscale, bscale;
 }
 
 /*
- *	saturatemat -
- *		make a saturation marix
+ *    saturatemat -
+ *        make a saturation marix
  */
 static void saturatemat(mat,sat)
 float mat[4][4];
@@ -164,11 +164,11 @@ float sat;
     float mmat[4][4];
     float a, b, c, d, e, f, g, h, i;
     float rwgt, gwgt, bwgt;
-    
+
     rwgt = RLUM;
     gwgt = GLUM;
     bwgt = BLUM;
-    
+
     a = (1.0-sat)*rwgt + sat;
     b = (1.0-sat)*rwgt;
     c = (1.0-sat)*rwgt;
@@ -182,17 +182,17 @@ float sat;
     mmat[0][1] = b;
     mmat[0][2] = c;
     mmat[0][3] = 0.0;
-    
+
     mmat[1][0] = d;
     mmat[1][1] = e;
     mmat[1][2] = f;
     mmat[1][3] = 0.0;
-    
+
     mmat[2][0] = g;
     mmat[2][1] = h;
     mmat[2][2] = i;
     mmat[2][3] = 0.0;
-    
+
     mmat[3][0] = 0.0;
     mmat[3][1] = 0.0;
     mmat[3][2] = 0.0;
@@ -201,30 +201,30 @@ float sat;
 }
 
 /*
- *	xrotate -
- *		rotate about the x (red) axis
+ *    xrotate -
+ *        rotate about the x (red) axis
  */
 static void xrotatemat(mat,rs,rc)
 float mat[4][4];
 float rs, rc;
 {
     float mmat[4][4];
-    
+
     mmat[0][0] = 1.0;
     mmat[0][1] = 0.0;
     mmat[0][2] = 0.0;
     mmat[0][3] = 0.0;
-    
+
     mmat[1][0] = 0.0;
     mmat[1][1] = rc;
     mmat[1][2] = rs;
     mmat[1][3] = 0.0;
-    
+
     mmat[2][0] = 0.0;
     mmat[2][1] = -rs;
     mmat[2][2] = rc;
     mmat[2][3] = 0.0;
-    
+
     mmat[3][0] = 0.0;
     mmat[3][1] = 0.0;
     mmat[3][2] = 0.0;
@@ -233,30 +233,30 @@ float rs, rc;
 }
 
 /*
- *	yrotate -
- *		rotate about the y (green) axis
+ *    yrotate -
+ *        rotate about the y (green) axis
  */
 static void yrotatemat(mat,rs,rc)
 float mat[4][4];
 float rs, rc;
 {
     float mmat[4][4];
-    
+
     mmat[0][0] = rc;
     mmat[0][1] = 0.0;
     mmat[0][2] = -rs;
     mmat[0][3] = 0.0;
-    
+
     mmat[1][0] = 0.0;
     mmat[1][1] = 1.0;
     mmat[1][2] = 0.0;
     mmat[1][3] = 0.0;
-    
+
     mmat[2][0] = rs;
     mmat[2][1] = 0.0;
     mmat[2][2] = rc;
     mmat[2][3] = 0.0;
-    
+
     mmat[3][0] = 0.0;
     mmat[3][1] = 0.0;
     mmat[3][2] = 0.0;
@@ -265,30 +265,30 @@ float rs, rc;
 }
 
 /*
- *	zrotate -
- *		rotate about the z (blue) axis
+ *    zrotate -
+ *        rotate about the z (blue) axis
  */
 static void zrotatemat(mat,rs,rc)
 float mat[4][4];
 float rs, rc;
 {
     float mmat[4][4];
-    
+
     mmat[0][0] = rc;
     mmat[0][1] = rs;
     mmat[0][2] = 0.0;
     mmat[0][3] = 0.0;
-    
+
     mmat[1][0] = -rs;
     mmat[1][1] = rc;
     mmat[1][2] = 0.0;
     mmat[1][3] = 0.0;
-    
+
     mmat[2][0] = 0.0;
     mmat[2][1] = 0.0;
     mmat[2][2] = 1.0;
     mmat[2][3] = 0.0;
-    
+
     mmat[3][0] = 0.0;
     mmat[3][1] = 0.0;
     mmat[3][2] = 0.0;
@@ -297,30 +297,30 @@ float rs, rc;
 }
 
 /*
- *	zshear -
- *		shear z using x and y.
+ *    zshear -
+ *        shear z using x and y.
  */
 static void zshearmat(mat,dx,dy)
 float mat[4][4];
 float dx, dy;
 {
     float mmat[4][4];
-    
+
     mmat[0][0] = 1.0;
     mmat[0][1] = 0.0;
     mmat[0][2] = dx;
     mmat[0][3] = 0.0;
-    
+
     mmat[1][0] = 0.0;
     mmat[1][1] = 1.0;
     mmat[1][2] = dy;
     mmat[1][3] = 0.0;
-    
+
     mmat[2][0] = 0.0;
     mmat[2][1] = 0.0;
     mmat[2][2] = 1.0;
     mmat[2][3] = 0.0;
-    
+
     mmat[3][0] = 0.0;
     mmat[3][1] = 0.0;
     mmat[3][2] = 0.0;
@@ -329,8 +329,8 @@ float dx, dy;
 }
 
 /*
- *	simplehuerotatemat -
- *		simple hue rotation. This changes luminance
+ *    simplehuerotatemat -
+ *        simple hue rotation. This changes luminance
  */
 //static void simplehuerotatemat(mat,rot)
 //float mat[4][4];
@@ -340,31 +340,31 @@ float dx, dy;
 //    float xrs, xrc;
 //    float yrs, yrc;
 //    float zrs, zrc;
-//    
+//
 //    /* rotate the grey vector into positive Z */
 //    mag = sqrt(2.0);
 //    xrs = 1.0/mag;
 //    xrc = 1.0/mag;
 //    xrotatemat(mat,xrs,xrc);
-//    
+//
 //    mag = sqrt(3.0);
 //    yrs = -1.0/mag;
 //    yrc = sqrt(2.0)/mag;
 //    yrotatemat(mat,yrs,yrc);
-//    
+//
 //    /* rotate the hue */
 //    zrs = sin(rot*M_PI/180.0);
 //    zrc = cos(rot*M_PI/180.0);
 //    zrotatemat(mat,zrs,zrc);
-//    
+//
 //    /* rotate the grey vector back into place */
 //    yrotatemat(mat,-yrs,yrc);
 //    xrotatemat(mat,-xrs,xrc);
 //}
 
 /*
- *	huerotatemat -
- *		rotate the hue, while maintaining luminance.
+ *    huerotatemat -
+ *        rotate the hue, while maintaining luminance.
  */
 static void huerotatemat(mat,rot)
 float mat[4][4];
@@ -377,9 +377,9 @@ float rot;
     float yrs, yrc;
     float zrs, zrc;
     float zsx, zsy;
-    
+
     identmat(mmat);
-    
+
     /* rotate the grey vector into positive Z */
     mag = sqrt(2.0);
     xrs = 1.0/mag;
@@ -389,25 +389,25 @@ float rot;
     yrs = -1.0/mag;
     yrc = sqrt(2.0)/mag;
     yrotatemat(mmat,yrs,yrc);
-    
+
     /* shear the space to make the luminance plane horizontal */
     xformpnt(mmat,RLUM,GLUM,BLUM,&lx,&ly,&lz);
     zsx = lx/lz;
     zsy = ly/lz;
     zshearmat(mmat,zsx,zsy);
-    
+
     /* rotate the hue */
     zrs = sin(rot*M_PI/180.0);
     zrc = cos(rot*M_PI/180.0);
     zrotatemat(mmat,zrs,zrc);
-    
+
     /* unshear the space to put the luminance plane back */
     zshearmat(mmat,-zsx,-zsy);
-    
+
     /* rotate the grey vector back into place */
     yrotatemat(mmat,-yrs,yrc);
     xrotatemat(mmat,-xrs,xrc);
-    
+
     matrixmult(mmat,mat,mat);
 }
 

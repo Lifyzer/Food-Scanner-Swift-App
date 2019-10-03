@@ -7,7 +7,7 @@
     GLProgram *secondFilterProgram;
     GLint secondFilterPositionAttribute, secondFilterTextureCoordinateAttribute;
     GLint secondFilterInputTextureUniform, secondFilterInputTextureUniform2;
-    
+
     NSMutableDictionary *secondProgramUniformStateRestorationBlocks;
 }
 

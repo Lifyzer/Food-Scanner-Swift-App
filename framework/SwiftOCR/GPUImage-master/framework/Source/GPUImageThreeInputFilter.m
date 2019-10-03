@@ -7,11 +7,11 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
  attribute vec4 inputTextureCoordinate;
  attribute vec4 inputTextureCoordinate2;
  attribute vec4 inputTextureCoordinate3;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 textureCoordinate2;
  varying vec2 textureCoordinate3;
- 
+
  void main()
  {
      gl_Position = position;
@@ -30,9 +30,9 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
 {
     if (!(self = [self initWithVertexShaderFromString:kGPUImageThreeInputTextureVertexShaderString fragmentShaderFromString:fragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 
@@ -40,27 +40,27 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
 {
     if (!(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     inputRotation3 = kGPUImageNoRotation;
-    
+
     hasSetSecondTexture = NO;
-    
+
     hasReceivedThirdFrame = NO;
     thirdFrameWasVideo = NO;
     thirdFrameCheckDisabled = NO;
-    
+
     thirdFrameTime = kCMTimeInvalid;
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
         filterThirdTextureCoordinateAttribute = [filterProgram attributeIndex:@"inputTextureCoordinate3"];
-        
+
         filterInputTextureUniform3 = [filterProgram uniformIndex:@"inputImageTexture3"]; // This does assume a name of "inputImageTexture3" for the third input texture in the fragment shader
         glEnableVertexAttribArray(filterThirdTextureCoordinateAttribute);
     });
-    
+
     return self;
 }
 
@@ -87,7 +87,7 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
         [thirdInputFramebuffer unlock];
         return;
     }
-    
+
     [GPUImageContext setActiveShaderProgram:filterProgram];
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
     [outputFramebuffer activateFramebuffer];
@@ -97,14 +97,14 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
     }
 
     [self setUniformsForProgramAtIndex:0];
-    
+
     glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-	glUniform1i(filterInputTextureUniform, 2);
-    
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+    glUniform1i(filterInputTextureUniform, 2);
+
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, [secondInputFramebuffer texture]);
     glUniform1i(filterInputTextureUniform2, 3);
@@ -114,10 +114,10 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
     glUniform1i(filterInputTextureUniform3, 4);
 
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
-	glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     glVertexAttribPointer(filterSecondTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, [[self class] textureCoordinatesForRotation:inputRotation2]);
     glVertexAttribPointer(filterThirdTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, [[self class] textureCoordinatesForRotation:inputRotation3]);
-    
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     [firstInputFramebuffer unlock];
     [secondInputFramebuffer unlock];
@@ -173,7 +173,7 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
     if (textureIndex == 0)
     {
         [super setInputSize:newSize atIndex:textureIndex];
-        
+
         if (CGSizeEqualToSize(newSize, CGSizeZero))
         {
             hasSetFirstTexture = NO;
@@ -207,7 +207,7 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
 - (CGSize)rotatedSize:(CGSize)sizeToRotate forIndex:(NSInteger)textureIndex;
 {
     CGSize rotatedSize = sizeToRotate;
-    
+
     GPUImageRotationMode rotationToCheck;
     if (textureIndex == 0)
     {
@@ -221,13 +221,13 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
     {
         rotationToCheck = inputRotation3;
     }
-    
+
     if (GPUImageRotationSwapsWidthAndHeight(rotationToCheck))
     {
         rotatedSize.width = sizeToRotate.height;
         rotatedSize.height = sizeToRotate.width;
     }
-    
+
     return rotatedSize;
 }
 
@@ -238,9 +238,9 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
     {
         return;
     }
-    
+
     BOOL updatedMovieFrameOppositeStillImage = NO;
-    
+
     if (textureIndex == 0)
     {
         hasReceivedFirstFrame = YES;
@@ -253,7 +253,7 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
         {
             hasReceivedThirdFrame = YES;
         }
-        
+
         if (!CMTIME_IS_INDEFINITE(frameTime))
         {
             if CMTIME_IS_INDEFINITE(secondFrameTime)
@@ -295,7 +295,7 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
         {
             hasReceivedSecondFrame = YES;
         }
-        
+
         if (!CMTIME_IS_INDEFINITE(frameTime))
         {
             if CMTIME_IS_INDEFINITE(firstFrameTime)
@@ -304,7 +304,7 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
             }
         }
     }
-    
+
     // || (hasReceivedFirstFrame && secondFrameCheckDisabled) || (hasReceivedSecondFrame && firstFrameCheckDisabled)
     if ((hasReceivedFirstFrame && hasReceivedSecondFrame && hasReceivedThirdFrame) || updatedMovieFrameOppositeStillImage)
     {
@@ -314,9 +314,9 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
             -1.0f,  1.0f,
             1.0f,  1.0f,
         };
-        
+
         [self renderToTextureWithVertices:imageVertices textureCoordinates:[[self class] textureCoordinatesForRotation:inputRotation]];
-        
+
         [self informTargetsAboutNewFrameAtTime:frameTime];
 
         hasReceivedFirstFrame = NO;

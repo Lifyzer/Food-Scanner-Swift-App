@@ -6,19 +6,19 @@
 NSString *const kGPUImagePrewittFragmentShaderString = SHADER_STRING
 (
  precision highp float;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;
  varying vec2 rightTextureCoordinate;
- 
+
  varying vec2 topTextureCoordinate;
  varying vec2 topLeftTextureCoordinate;
  varying vec2 topRightTextureCoordinate;
- 
+
  varying vec2 bottomTextureCoordinate;
  varying vec2 bottomLeftTextureCoordinate;
  varying vec2 bottomRightTextureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform float edgeStrength;
 
@@ -34,9 +34,9 @@ NSString *const kGPUImagePrewittFragmentShaderString = SHADER_STRING
      float topIntensity = texture2D(inputImageTexture, topTextureCoordinate).r;
      float h = -topLeftIntensity - topIntensity - topRightIntensity + bottomLeftIntensity + bottomIntensity + bottomRightIntensity;
      float v = -bottomLeftIntensity - leftIntensity - topLeftIntensity + bottomRightIntensity + rightIntensity + topRightIntensity;
-     
+
      float mag = length(vec2(h, v)) * edgeStrength;
-     
+
      gl_FragColor = vec4(vec3(mag), 1.0);
  }
 );
@@ -46,15 +46,15 @@ NSString *const kGPUImagePrewittFragmentShaderString = SHADER_STRING
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;
  varying vec2 rightTextureCoordinate;
- 
+
  varying vec2 topTextureCoordinate;
  varying vec2 topLeftTextureCoordinate;
  varying vec2 topRightTextureCoordinate;
- 
+
  varying vec2 bottomTextureCoordinate;
  varying vec2 bottomLeftTextureCoordinate;
  varying vec2 bottomRightTextureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform float edgeStrength;
 
@@ -70,9 +70,9 @@ NSString *const kGPUImagePrewittFragmentShaderString = SHADER_STRING
      float topIntensity = texture2D(inputImageTexture, topTextureCoordinate).r;
      float h = -topLeftIntensity - topIntensity - topRightIntensity + bottomLeftIntensity + bottomIntensity + bottomRightIntensity;
      float v = -bottomLeftIntensity - leftIntensity - topLeftIntensity + bottomRightIntensity + rightIntensity + topRightIntensity;
-     
+
      float mag = length(vec2(h, v)) * edgeStrength;
-     
+
      gl_FragColor = vec4(vec3(mag), 1.0);
  }
 );
@@ -85,11 +85,11 @@ NSString *const kGPUImagePrewittFragmentShaderString = SHADER_STRING
 {
     if (!(self = [self initWithFragmentShaderFromString:kGPUImagePrewittFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
 
     self.edgeStrength = 1.0;
-    
+
     return self;
 }
 

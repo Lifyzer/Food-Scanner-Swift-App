@@ -29,23 +29,23 @@ static void *openGLESContextQueueKey;
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
 
-	openGLESContextQueueKey = &openGLESContextQueueKey;
+    openGLESContextQueueKey = &openGLESContextQueueKey;
     _contextQueue = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.openGLESContextQueue", GPUImageDefaultQueueAttribute());
-    
+
 #if OS_OBJECT_USE_OBJC
-	dispatch_queue_set_specific(_contextQueue, openGLESContextQueueKey, (__bridge void *)self, NULL);
+    dispatch_queue_set_specific(_contextQueue, openGLESContextQueueKey, (__bridge void *)self, NULL);
 #endif
     shaderProgramCache = [[NSMutableDictionary alloc] init];
     shaderProgramUsageHistory = [[NSMutableArray alloc] init];
-    
+
     return self;
 }
 
 + (void *)contextKey {
-	return openGLESContextQueueKey;
+    return openGLESContextQueueKey;
 }
 
 // Based on Colin Wheeler's example here: http://cocoasamurai.blogspot.com/2011/04/singletons-your-doing-them-wrong.html
@@ -53,7 +53,7 @@ static void *openGLESContextQueueKey;
 {
     static dispatch_once_t pred;
     static GPUImageContext *sharedImageProcessingContext = nil;
-    
+
     dispatch_once(&pred, ^{
         sharedImageProcessingContext = [[[self class] alloc] init];
     });
@@ -97,7 +97,7 @@ static void *openGLESContextQueueKey;
     {
         [EAGLContext setCurrentContext:imageProcessingContext];
     }
-    
+
     if (self.currentShaderProgram != shaderProgram)
     {
         self.currentShaderProgram = shaderProgram;
@@ -109,7 +109,7 @@ static void *openGLESContextQueueKey;
 {
     static dispatch_once_t pred;
     static GLint maxTextureSize = 0;
-    
+
     dispatch_once(&pred, ^{
         [self useImageProcessingContext];
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
@@ -127,7 +127,7 @@ static void *openGLESContextQueueKey;
         [self useImageProcessingContext];
         glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
     });
-    
+
     return maxTextureUnits;
 }
 
@@ -166,11 +166,11 @@ static void *openGLESContextQueueKey;
 {
     static dispatch_once_t pred;
     static BOOL supportsRedTextures = NO;
-    
+
     dispatch_once(&pred, ^{
         supportsRedTextures = [GPUImageContext deviceSupportsOpenGLESExtension:@"GL_EXT_texture_rg"];
     });
-    
+
     return supportsRedTextures;
 }
 
@@ -178,22 +178,22 @@ static void *openGLESContextQueueKey;
 {
     static dispatch_once_t pred;
     static BOOL supportsFramebufferReads = NO;
-    
+
     dispatch_once(&pred, ^{
         supportsFramebufferReads = [GPUImageContext deviceSupportsOpenGLESExtension:@"GL_EXT_shader_framebuffer_fetch"];
     });
-    
+
     return supportsFramebufferReads;
 }
 
 + (CGSize)sizeThatFitsWithinATextureForSize:(CGSize)inputSize;
 {
-    GLint maxTextureSize = [self maximumTextureSizeForThisDevice]; 
+    GLint maxTextureSize = [self maximumTextureSizeForThisDevice];
     if ( (inputSize.width < maxTextureSize) && (inputSize.height < maxTextureSize) )
     {
         return inputSize;
     }
-    
+
     CGSize adjustedSize;
     if (inputSize.width > inputSize.height)
     {
@@ -234,14 +234,14 @@ static void *openGLESContextQueueKey;
 //            }
 //        }
     }
-    
+
     return programFromCache;
 }
 
 - (void)useSharegroup:(EAGLSharegroup *)sharegroup;
 {
     NSAssert(_context == nil, @"Unable to use a share group when the context has already been created. Call this method before you use the context for the first time.");
-    
+
     _sharegroup = sharegroup;
 }
 
@@ -261,7 +261,7 @@ static void *openGLESContextQueueKey;
 #if TARGET_IPHONE_SIMULATOR
     return NO;
 #else
-    
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wtautological-pointer-compare"
     return (CVOpenGLESTextureCacheCreate != NULL);
@@ -279,11 +279,11 @@ static void *openGLESContextQueueKey;
     {
         _context = [self createContext];
         [EAGLContext setCurrentContext:_context];
-        
+
         // Set up a few global settings for the image processing pipeline
         glDisable(GL_DEPTH_TEST);
     }
-    
+
     return _context;
 }
 
@@ -296,14 +296,14 @@ static void *openGLESContextQueueKey;
 #else
         CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)[self context], NULL, &_coreVideoTextureCache);
 #endif
-        
+
         if (err)
         {
             NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreate %d", err);
         }
 
     }
-    
+
     return _coreVideoTextureCache;
 }
 
@@ -313,7 +313,7 @@ static void *openGLESContextQueueKey;
     {
         _framebufferCache = [[GPUImageFramebufferCache alloc] init];
     }
-    
+
     return _framebufferCache;
 }
 

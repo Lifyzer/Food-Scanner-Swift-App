@@ -37,12 +37,12 @@
     if (!filters) {
         return NO;
     }
-    
+
     NSError *regexError = nil;
     NSRegularExpression *parsingRegex = [NSRegularExpression regularExpressionWithPattern:@"(float|CGPoint|NSString)\\((.*?)(?:,\\s*(.*?))*\\)"
                                                                                   options:0
                                                                                     error:&regexError];
-    
+
     // It's faster to put them into an array and then pass it to the filters property than it is to call [self addFilter:] every time
     NSMutableArray *orderedFilters = [NSMutableArray arrayWithCapacity:[filters count]];
     for (NSDictionary *filter in filters) {
@@ -58,12 +58,12 @@
                 NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[theClass instanceMethodSignatureForSelector:theSelector]];
                 [inv setSelector:theSelector];
                 [inv setTarget:genericFilter];
-                
+
                 // check selector given with parameter
                 if ([propertyKey hasSuffix:@":"]) {
-                    
+
                     stringValue = nil;
-                    
+
                     // Then parse the arguments
                     NSMutableArray *parsedArray;
                     if ([[filterAttributes objectForKey:propertyKey] isKindOfClass:[NSArray class]]) {
@@ -90,7 +90,7 @@
                                 // NSString modifier, one string argument
                                 stringValue = [[string substringWithRange:[parse rangeAtIndex:2]] copy];
                                 [inv setArgument:&stringValue atIndex:2];
-                                
+
                             } else {
                                 return NO;
                             }
@@ -101,7 +101,7 @@
                         NSTextCheckingResult *parse = [parsingRegex firstMatchInString:string
                                                                                options:0
                                                                                  range:NSMakeRange(0, [string length])];
-                        
+
                         NSString *modifier = [string substringWithRange:[parse rangeAtIndex:1]];
                         if ([modifier isEqualToString:@"float"]) {
                             // Float modifier, one argument
@@ -117,13 +117,13 @@
                             // NSString modifier, one string argument
                             stringValue = [[string substringWithRange:[parse rangeAtIndex:2]] copy];
                             [inv setArgument:&stringValue atIndex:2];
-                            
+
                         } else {
                             return NO;
                         }
                     }
                 }
-                
+
 
                 [inv invoke];
             }
@@ -131,7 +131,7 @@
         [orderedFilters addObject:genericFilter];
     }
     self.filters = orderedFilters;
-    
+
     return YES;
 }
 
@@ -185,19 +185,19 @@
 }
 
 - (void)_refreshFilters {
-    
+
     id prevFilter = self.input;
     GPUImageOutput<GPUImageInput> *theFilter = nil;
-    
+
     for (int i = 0; i < [self.filters count]; i++) {
         theFilter = [self.filters objectAtIndex:i];
         [prevFilter removeAllTargets];
         [prevFilter addTarget:theFilter];
         prevFilter = theFilter;
     }
-    
+
     [prevFilter removeAllTargets];
-    
+
     if (self.output != nil) {
         [prevFilter addTarget:self.output];
     }

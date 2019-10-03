@@ -8,7 +8,7 @@ NSString *const kGPUImageDifferenceBlendFragmentShaderString = SHADER_STRING
 
  uniform sampler2D inputImageTexture;
  uniform sampler2D inputImageTexture2;
- 
+
  void main()
  {
      mediump vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
@@ -21,10 +21,10 @@ NSString *const kGPUImageDifferenceBlendFragmentShaderString = SHADER_STRING
 (
  varying vec2 textureCoordinate;
  varying vec2 textureCoordinate2;
- 
+
  uniform sampler2D inputImageTexture;
  uniform sampler2D inputImageTexture2;
- 
+
  void main()
  {
      vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
@@ -40,9 +40,9 @@ NSString *const kGPUImageDifferenceBlendFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageDifferenceBlendFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 

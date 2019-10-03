@@ -8,25 +8,25 @@
 import Accelerate
 
 open class Matrix {
-    
+
     open let columns: Int
     open let rows: Int
     open let shape: (Int, Int)
     open let size: Int
     var flat: Vector
-    
+
     open var vectorView: Vector {
         get {
             return self.flat
         }
     }
-    
+
     open var description: String {
         get {
             return self.flat.flat.description
         }
     }
-    
+
     open var transpose: Matrix {
         get {
             let m = Matrix(rows: self.columns, columns: self.rows)
@@ -34,7 +34,7 @@ open class Matrix {
             return m
         }
     }
-    
+
     public init(rows: Int, columns: Int) {
         self.columns = columns
         self.rows = rows
@@ -42,7 +42,7 @@ open class Matrix {
         self.size = columns * rows
         self.flat = Vector(size: self.size)
     }
-    
+
     /// Returns/sets the item at the given row and column index.
     open subscript(row: Int, column: Int) -> Double {
         get {
@@ -52,9 +52,9 @@ open class Matrix {
             self.flat.flat[row * self.columns + column] = newValue
         }
     }
-    
+
     // TODO: Guard against invalid indices for row/column accessors.
-    
+
     /// Returns the receiver's row at the given index.
     open func row(_ index: Int) -> Vector {
         var v = self.flat.flat
@@ -67,7 +67,7 @@ open class Matrix {
         vector.flat = r
         return vector
     }
-    
+
     /// Select column vector from matrix
     open func column(_ index: Int) -> Vector{
         var v = self.flat.flat
@@ -80,12 +80,12 @@ open class Matrix {
         vector.flat = c
         return vector
     }
-    
+
     /// Returns a new `Matrix` that is a copy of the receiver.
     open func copy() -> Matrix {
         let c = Matrix(rows: self.rows, columns: self.columns)
         c.flat = self.flat.copy()
         return c
     }
-    
+
 }

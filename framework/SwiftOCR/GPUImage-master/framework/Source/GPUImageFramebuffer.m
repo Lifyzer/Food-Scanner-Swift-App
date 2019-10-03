@@ -37,9 +37,9 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
     _textureOptions = fboTextureOptions;
     _size = framebufferSize;
     framebufferReferenceCount = 0;
@@ -65,7 +65,7 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
 
     GPUTextureOptions defaultTextureOptions;
@@ -81,9 +81,9 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
     _size = framebufferSize;
     framebufferReferenceCount = 0;
     referenceCountingDisabled = YES;
-    
+
     _texture = inputTexture;
-    
+
     return self;
 }
 
@@ -100,7 +100,7 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
 
     if (!(self = [self initWithSize:framebufferSize textureOptions:defaultTextureOptions onlyTexture:NO]))
     {
-		return nil;
+        return nil;
     }
 
     return self;
@@ -124,7 +124,7 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
     // This is necessary for non-power-of-two textures
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _textureOptions.wrapS);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _textureOptions.wrapT);
-    
+
     // TODO: Handle mipmaps
 }
 
@@ -132,30 +132,30 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
 {
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
-    
+
         glGenFramebuffers(1, &framebuffer);
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-        
+
         // By default, all framebuffers on iOS 5.0+ devices are backed by texture caches, using one shared cache
         if ([GPUImageContext supportsFastTextureUpload])
         {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
             CVOpenGLESTextureCacheRef coreVideoTextureCache = [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache];
             // Code originally sourced from http://allmybrain.com/2011/12/08/rendering-to-a-texture-with-ios-5-texture-cache-api/
-            
+
             CFDictionaryRef empty; // empty value for attr value.
             CFMutableDictionaryRef attrs;
             empty = CFDictionaryCreate(kCFAllocatorDefault, NULL, NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks); // our empty IOSurface properties dictionary
             attrs = CFDictionaryCreateMutable(kCFAllocatorDefault, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
             CFDictionarySetValue(attrs, kCVPixelBufferIOSurfacePropertiesKey, empty);
-            
+
             CVReturn err = CVPixelBufferCreate(kCFAllocatorDefault, (int)_size.width, (int)_size.height, kCVPixelFormatType_32BGRA, attrs, &renderTarget);
             if (err)
             {
                 NSLog(@"FBO size: %f, %f", _size.width, _size.height);
                 NSAssert(NO, @"Error at CVPixelBufferCreate %d", err);
             }
-            
+
             err = CVOpenGLESTextureCacheCreateTextureFromImage (kCFAllocatorDefault, coreVideoTextureCache, renderTarget,
                                                                 NULL, // texture attributes
                                                                 GL_TEXTURE_2D,
@@ -170,15 +170,15 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
             {
                 NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
             }
-            
+
             CFRelease(attrs);
             CFRelease(empty);
-            
+
             glBindTexture(CVOpenGLESTextureGetTarget(renderTexture), CVOpenGLESTextureGetName(renderTexture));
             _texture = CVOpenGLESTextureGetName(renderTexture);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _textureOptions.wrapS);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _textureOptions.wrapT);
-            
+
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(renderTexture), 0);
 #endif
         }
@@ -187,16 +187,16 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
             [self generateTexture];
 
             glBindTexture(GL_TEXTURE_2D, _texture);
-            
+
             glTexImage2D(GL_TEXTURE_2D, 0, _textureOptions.internalFormat, (int)_size.width, (int)_size.height, 0, _textureOptions.format, _textureOptions.type, 0);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
         }
-        
+
         #ifndef NS_BLOCK_ASSERTIONS
         GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);
         #endif
-        
+
         glBindTexture(GL_TEXTURE_2D, 0);
     });
 }
@@ -205,14 +205,14 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
 {
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
-        
+
         if (framebuffer)
         {
             glDeleteFramebuffers(1, &framebuffer);
             framebuffer = 0;
         }
 
-        
+
         if ([GPUImageContext supportsFastTextureUpload] && (!_missingFramebuffer))
         {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -221,7 +221,7 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
                 CFRelease(renderTarget);
                 renderTarget = NULL;
             }
-            
+
             if (renderTexture)
             {
                 CFRelease(renderTexture);
@@ -255,7 +255,7 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size);
     {
         return;
     }
-    
+
     framebufferReferenceCount++;
 }
 
@@ -300,7 +300,7 @@ void dataProviderReleaseCallback (void *info, const void *data, size_t size)
 void dataProviderUnlockCallback (void *info, const void *data, size_t size)
 {
     GPUImageFramebuffer *framebuffer = (__bridge_transfer GPUImageFramebuffer*)info;
-    
+
     [framebuffer restoreRenderTarget];
     [framebuffer unlock];
     [[GPUImageContext sharedFramebufferCache] removeFramebufferFromActiveImageCaptureList:framebuffer];
@@ -311,24 +311,24 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size)
     // a CGImage can only be created from a 'normal' color texture
     NSAssert(self.textureOptions.internalFormat == GL_RGBA, @"For conversion to a CGImage the output texture format for this filter must be GL_RGBA.");
     NSAssert(self.textureOptions.type == GL_UNSIGNED_BYTE, @"For conversion to a CGImage the type of the output texture of this filter must be GL_UNSIGNED_BYTE.");
-    
+
     __block CGImageRef cgImageFromBytes;
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
-        
+
         NSUInteger totalBytesForImage = (int)_size.width * (int)_size.height * 4;
         // It appears that the width of a texture must be padded out to be a multiple of 8 (32 bytes) if reading from it using a texture cache
-        
+
         GLubyte *rawImagePixels;
-        
+
         CGDataProviderRef dataProvider = NULL;
         if ([GPUImageContext supportsFastTextureUpload])
         {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
             NSUInteger paddedWidthOfImage = CVPixelBufferGetBytesPerRow(renderTarget) / 4.0;
             NSUInteger paddedBytesForImage = paddedWidthOfImage * (int)_size.height * 4;
-            
+
             glFinish();
             CFRetain(renderTarget); // I need to retain the pixel buffer here and release in the data source callback to prevent its bytes from being prematurely deallocated during a photo write operation
             [self lockForReading];
@@ -346,9 +346,9 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size)
             dataProvider = CGDataProviderCreateWithData(NULL, rawImagePixels, totalBytesForImage, dataProviderReleaseCallback);
             [self unlock]; // Don't need to keep this around anymore
         }
-        
+
         CGColorSpaceRef defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB();
-        
+
         if ([GPUImageContext supportsFastTextureUpload])
         {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -360,13 +360,13 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size)
         {
             cgImageFromBytes = CGImageCreate((int)_size.width, (int)_size.height, 8, 32, 4 * (int)_size.width, defaultRGBColorSpace, kCGBitmapByteOrderDefault | kCGImageAlphaLast, dataProvider, NULL, NO, kCGRenderingIntentDefault);
         }
-        
+
         // Capture image with current device orientation
         CGDataProviderRelease(dataProvider);
         CGColorSpaceRelease(defaultRGBColorSpace);
-        
+
     });
-    
+
     return cgImageFromBytes;
 }
 

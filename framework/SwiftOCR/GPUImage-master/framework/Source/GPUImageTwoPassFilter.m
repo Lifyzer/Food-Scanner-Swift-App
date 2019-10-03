@@ -9,20 +9,20 @@
 {
     if (!(self = [super initWithVertexShaderFromString:firstStageVertexShaderString fragmentShaderFromString:firstStageFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     secondProgramUniformStateRestorationBlocks = [NSMutableDictionary dictionaryWithCapacity:10];
 
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
 
         secondFilterProgram = [[GPUImageContext sharedImageProcessingContext] programForVertexShaderString:secondStageVertexShaderString fragmentShaderString:secondStageFragmentShaderString];
-        
+
         if (!secondFilterProgram.initialized)
         {
             [self initializeSecondaryAttributes];
-            
+
             if (![secondFilterProgram link])
             {
                 NSString *progLog = [secondFilterProgram programLog];
@@ -35,14 +35,14 @@
                 NSAssert(NO, @"Filter shader link failed");
             }
         }
-        
+
         secondFilterPositionAttribute = [secondFilterProgram attributeIndex:@"position"];
         secondFilterTextureCoordinateAttribute = [secondFilterProgram attributeIndex:@"inputTextureCoordinate"];
         secondFilterInputTextureUniform = [secondFilterProgram uniformIndex:@"inputImageTexture"]; // This does assume a name of "inputImageTexture" for the fragment shader
         secondFilterInputTextureUniform2 = [secondFilterProgram uniformIndex:@"inputImageTexture2"]; // This does assume a name of "inputImageTexture2" for second input texture in the fragment shader
-        
+
         [GPUImageContext setActiveShaderProgram:secondFilterProgram];
-        
+
         glEnableVertexAttribArray(secondFilterPositionAttribute);
         glEnableVertexAttribArray(secondFilterTextureCoordinateAttribute);
     });
@@ -54,16 +54,16 @@
 {
     if (!(self = [self initWithFirstStageVertexShaderFromString:kGPUImageVertexShaderString firstStageFragmentShaderFromString:firstStageFragmentShaderString secondStageVertexShaderFromString:kGPUImageVertexShaderString secondStageFragmentShaderFromString:secondStageFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 
 - (void)initializeSecondaryAttributes;
 {
     [secondFilterProgram addAttribute:@"position"];
-	[secondFilterProgram addAttribute:@"inputTextureCoordinate"];
+    [secondFilterProgram addAttribute:@"inputTextureCoordinate"];
 }
 
 #pragma mark -
@@ -89,30 +89,30 @@
         [firstInputFramebuffer unlock];
         return;
     }
-    
+
     [GPUImageContext setActiveShaderProgram:filterProgram];
-    
+
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
     [outputFramebuffer activateFramebuffer];
-    
+
     [self setUniformsForProgramAtIndex:0];
-    
+
     glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-	
-	glUniform1i(filterInputTextureUniform, 2);
-    
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+
+    glUniform1i(filterInputTextureUniform, 2);
+
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
-	glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-    
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
+
     [firstInputFramebuffer unlock];
     firstInputFramebuffer = nil;
-    
+
     // This assumes that any two-pass filter that says it desires monochrome input is using the first pass for a luminance conversion, which can be dropped
 //    if (!currentlyReceivingMonochromeInput)
 //    {
@@ -130,7 +130,7 @@
     }
 
     [self setUniformsForProgramAtIndex:1];
-    
+
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
     glVertexAttribPointer(secondFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, [[self class] textureCoordinatesForRotation:kGPUImageNoRotation]);
@@ -148,9 +148,9 @@
 //        glBindTexture(GL_TEXTURE_2D, sourceTexture);
 //        glVertexAttribPointer(secondFilterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
 //    }
-    
-	glUniform1i(secondFilterInputTextureUniform, 3);
-    
+
+    glUniform1i(secondFilterInputTextureUniform, 3);
+
     glVertexAttribPointer(secondFilterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -159,7 +159,7 @@
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     [outputFramebuffer unlock];
     outputFramebuffer = nil;
-    
+
     if (usingNextFrameForImageCapture)
     {
         dispatch_semaphore_signal(imageCaptureSemaphore);

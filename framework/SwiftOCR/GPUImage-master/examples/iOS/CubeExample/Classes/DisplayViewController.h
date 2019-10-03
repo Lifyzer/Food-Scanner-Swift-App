@@ -12,7 +12,7 @@
     ES2Renderer *renderer;
     GPUImageTextureInput *textureInput;
     GPUImageFilter *filter;
-    
+
     NSDate *startTime;
 }
 

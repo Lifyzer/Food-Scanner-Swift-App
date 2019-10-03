@@ -4,19 +4,19 @@
 NSString *const kGPUImageSolarizeFragmentShaderString = SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform highp float threshold;
- 
+
  const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);
- 
+
  void main()
  {
      highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
      highp float luminance = dot(textureColor.rgb, W);
      highp float thresholdResult = step(luminance, threshold);
      highp vec3 finalColor = abs(thresholdResult - textureColor.rgb);
-     
+
      gl_FragColor = vec4(finalColor, textureColor.w);
  }
 );
@@ -24,12 +24,12 @@ NSString *const kGPUImageSolarizeFragmentShaderString = SHADER_STRING
 NSString *const kGPUImageSolarizeFragmentShaderString = SHADER_STRING
 (
  varying vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform float threshold;
- 
+
  const vec3 W = vec3(0.2125, 0.7154, 0.0721);
- 
+
  void main()
  {
      vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
@@ -55,10 +55,10 @@ NSString *const kGPUImageSolarizeFragmentShaderString = SHADER_STRING
     {
         return nil;
     }
-    
+
     thresholdUniform = [filterProgram uniformIndex:@"threshold"];
     self.threshold = 0.5;
-    
+
     return self;
 }
 
@@ -68,7 +68,7 @@ NSString *const kGPUImageSolarizeFragmentShaderString = SHADER_STRING
 - (void)setThreshold:(CGFloat)newValue;
 {
     _threshold = newValue;
-    
+
     [self setFloat:_threshold forUniform:thresholdUniform program:filterProgram];
 }
 

@@ -4,16 +4,16 @@
 NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  uniform highp float fractionalWidthOfPixel;
  uniform highp float aspectRatio;
 
  void main()
  {
      highp vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);
-     
+
      highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;
      gl_FragColor = texture2D(inputImageTexture, samplePos );
  }
@@ -22,16 +22,16 @@ NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
 NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
 (
  varying vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  uniform float fractionalWidthOfPixel;
  uniform float aspectRatio;
- 
+
  void main()
  {
      vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);
-     
+
      vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;
      gl_FragColor = texture2D(inputImageTexture, samplePos );
  }
@@ -58,9 +58,9 @@ NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
 {
     if (!(self = [self initWithFragmentShaderFromString:kGPUImagePixellationFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 
@@ -68,14 +68,14 @@ NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:fragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     fractionalWidthOfAPixelUniform = [filterProgram uniformIndex:@"fractionalWidthOfPixel"];
     aspectRatioUniform = [filterProgram uniformIndex:@"aspectRatio"];
 
     self.fractionalWidthOfAPixel = 0.05;
-    
+
     return self;
 }
 
@@ -93,7 +93,7 @@ NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
 
 - (void)setInputRotation:(GPUImageRotationMode)newInputRotation atIndex:(NSInteger)textureIndex;
 {
-    [super setInputRotation:newInputRotation atIndex:textureIndex];    
+    [super setInputRotation:newInputRotation atIndex:textureIndex];
     [self adjustAspectRatio];
 }
 
@@ -107,7 +107,7 @@ NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
 {
     CGSize oldInputSize = inputTextureSize;
     [super setInputSize:newSize atIndex:textureIndex];
-    
+
     if ( (!CGSizeEqualToSize(oldInputSize, inputTextureSize)) && (!CGSizeEqualToSize(newSize, CGSizeZero)) )
     {
         [self adjustAspectRatio];
@@ -128,7 +128,7 @@ NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
     {
         singlePixelSpacing = 1.0 / 2048.0;
     }
-    
+
     if (newValue < singlePixelSpacing)
     {
         _fractionalWidthOfAPixel = singlePixelSpacing;
@@ -137,7 +137,7 @@ NSString *const kGPUImagePixellationFragmentShaderString = SHADER_STRING
     {
         _fractionalWidthOfAPixel = newValue;
     }
-    
+
     [self setFloat:_fractionalWidthOfAPixel forUniform:fractionalWidthOfAPixelUniform program:filterProgram];
 }
 

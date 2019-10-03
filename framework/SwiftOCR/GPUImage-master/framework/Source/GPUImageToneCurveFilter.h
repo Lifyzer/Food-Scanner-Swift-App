@@ -26,5 +26,5 @@
 - (NSMutableArray *)splineCurve:(NSArray *)points;
 - (NSMutableArray *)secondDerivative:(NSArray *)cgPoints;
 - (void)updateToneCurveTexture;
-   
+
 @end

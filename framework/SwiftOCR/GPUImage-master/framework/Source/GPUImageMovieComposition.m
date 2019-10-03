@@ -57,7 +57,7 @@
     if (shouldRecordAudioTrack)
     {
         [self.audioEncodingTarget setShouldInvalidateAudioSampleWhenDone:YES];
-        
+
         readerAudioOutput = [AVAssetReaderAudioMixOutput assetReaderAudioMixOutputWithAudioTracks:audioTracks audioSettings:nil];
         readerAudioOutput.audioMix = self.audioMix;
         readerAudioOutput.alwaysCopiesSampleData = NO;

@@ -9,7 +9,7 @@
 #import "CubeExampleAppDelegate.h"
 
 int main(int argc, char *argv[]) {
-    
+
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     int retVal = UIApplicationMain(argc, argv, nil, NSStringFromClass([CubeExampleAppDelegate class]));
     [pool release];

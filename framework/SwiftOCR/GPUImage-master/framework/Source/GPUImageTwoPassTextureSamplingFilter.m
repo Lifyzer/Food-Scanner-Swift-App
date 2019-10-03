@@ -12,29 +12,29 @@
 {
     if (!(self = [super initWithFirstStageVertexShaderFromString:firstStageVertexShaderString firstStageFragmentShaderFromString:firstStageFragmentShaderString secondStageVertexShaderFromString:secondStageVertexShaderString secondStageFragmentShaderFromString:secondStageFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
 
         verticalPassTexelWidthOffsetUniform = [filterProgram uniformIndex:@"texelWidthOffset"];
         verticalPassTexelHeightOffsetUniform = [filterProgram uniformIndex:@"texelHeightOffset"];
-        
+
         horizontalPassTexelWidthOffsetUniform = [secondFilterProgram uniformIndex:@"texelWidthOffset"];
         horizontalPassTexelHeightOffsetUniform = [secondFilterProgram uniformIndex:@"texelHeightOffset"];
     });
-    
+
     self.verticalTexelSpacing = 1.0;
     self.horizontalTexelSpacing = 1.0;
-    
+
     return self;
 }
 
 - (void)setUniformsForProgramAtIndex:(NSUInteger)programIndex;
 {
     [super setUniformsForProgramAtIndex:programIndex];
-    
+
     if (programIndex == 0)
     {
         glUniform1f(verticalPassTexelWidthOffsetUniform, verticalPassTexelWidthOffset);
@@ -61,7 +61,7 @@
             verticalPassTexelWidthOffset = 0.0;
             verticalPassTexelHeightOffset = _verticalTexelSpacing / filterFrameSize.height;
         }
-        
+
         horizontalPassTexelWidthOffset = _horizontalTexelSpacing / filterFrameSize.width;
         horizontalPassTexelHeightOffset = 0.0;
     });

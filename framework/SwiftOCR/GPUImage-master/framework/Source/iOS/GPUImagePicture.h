@@ -6,7 +6,7 @@
 {
     CGSize pixelSizeOfImage;
     BOOL hasProcessedImage;
-    
+
     dispatch_semaphore_t imageUpdateSemaphore;
 }
 

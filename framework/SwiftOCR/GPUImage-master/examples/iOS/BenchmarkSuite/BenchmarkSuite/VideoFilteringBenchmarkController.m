@@ -17,11 +17,11 @@
 - (void)finishedTestWithAverageTimesForCPU:(CGFloat)cpuTime coreImage:(CGFloat)coreImageTime gpuImage:(CGFloat)gpuImageTime;
 {
     [self dismissModalViewControllerAnimated:YES];
-    
+
     processingTimeForCPURoutine = cpuTime;
     processingTimeForCoreImageRoutine = coreImageTime;
     processingTimeForGPUImageRoutine = gpuImageTime;
-    
+
     [self.tableView reloadData];
 }
 

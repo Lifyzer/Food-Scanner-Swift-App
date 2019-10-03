@@ -5,7 +5,7 @@
 {
     GPUImagePicture *sourcePicture;
     GPUImageOutput<GPUImageInput> *sepiaFilter, *sepiaFilter2;
-    
+
     UISlider *imageSlider;
 }
 

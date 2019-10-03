@@ -20,27 +20,27 @@
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
     self.thresholdMultiplier = 1.0;
-    
+
     luminosityFilter = [[GPUImageLuminosity alloc] init];
     [self addFilter:luminosityFilter];
-    
+
     luminanceThresholdFilter = [[GPUImageLuminanceThresholdFilter alloc] init];
     [self addFilter:luminanceThresholdFilter];
-    
+
     __unsafe_unretained GPUImageAverageLuminanceThresholdFilter *weakSelf = self;
     __unsafe_unretained GPUImageLuminanceThresholdFilter *weakThreshold = luminanceThresholdFilter;
-    
+
     [luminosityFilter setLuminosityProcessingFinishedBlock:^(CGFloat luminosity, CMTime frameTime) {
         weakThreshold.threshold = luminosity * weakSelf.thresholdMultiplier;
     }];
-    
+
     self.initialFilters = [NSArray arrayWithObjects:luminosityFilter, luminanceThresholdFilter, nil];
     self.terminalFilter = luminanceThresholdFilter;
-    
+
     return self;
 }
 

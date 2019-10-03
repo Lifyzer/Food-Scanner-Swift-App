@@ -5,12 +5,12 @@ NSString *const kGPUImageVignetteFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
  varying highp vec2 textureCoordinate;
- 
+
  uniform lowp vec2 vignetteCenter;
  uniform lowp vec3 vignetteColor;
  uniform highp float vignetteStart;
  uniform highp float vignetteEnd;
- 
+
  void main()
  {
      lowp vec4 sourceImageColor = texture2D(inputImageTexture, textureCoordinate);
@@ -24,12 +24,12 @@ NSString *const kGPUImageVignetteFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
  varying vec2 textureCoordinate;
- 
+
  uniform vec2 vignetteCenter;
  uniform vec3 vignetteColor;
  uniform float vignetteStart;
  uniform float vignetteEnd;
- 
+
  void main()
  {
      vec4 sourceImageColor = texture2D(inputImageTexture, textureCoordinate);
@@ -54,19 +54,19 @@ NSString *const kGPUImageVignetteFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageVignetteFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     vignetteCenterUniform = [filterProgram uniformIndex:@"vignetteCenter"];
     vignetteColorUniform = [filterProgram uniformIndex:@"vignetteColor"];
     vignetteStartUniform = [filterProgram uniformIndex:@"vignetteStart"];
     vignetteEndUniform = [filterProgram uniformIndex:@"vignetteEnd"];
-    
+
     self.vignetteCenter = (CGPoint){ 0.5f, 0.5f };
     self.vignetteColor = (GPUVector3){ 0.0f, 0.0f, 0.0f };
     self.vignetteStart = 0.3;
     self.vignetteEnd = 0.75;
-    
+
     return self;
 }
 
@@ -76,21 +76,21 @@ NSString *const kGPUImageVignetteFragmentShaderString = SHADER_STRING
 - (void)setVignetteCenter:(CGPoint)newValue
 {
     _vignetteCenter = newValue;
-    
+
     [self setPoint:newValue forUniform:vignetteCenterUniform program:filterProgram];
 }
 
 - (void)setVignetteColor:(GPUVector3)newValue
 {
     _vignetteColor = newValue;
-    
+
     [self setVec3:newValue forUniform:vignetteColorUniform program:filterProgram];
 }
 
 - (void)setVignetteStart:(CGFloat)newValue;
 {
     _vignetteStart = newValue;
-    
+
     [self setFloat:_vignetteStart forUniform:vignetteStartUniform program:filterProgram];
 }
 

@@ -19,7 +19,7 @@
     if (self) {
         // Initialization code here.
     }
-    
+
     return self;
 }
 
@@ -29,10 +29,10 @@
 
     inputCamera = [[GPUImageAVCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraDevice:nil];
     inputCamera.runBenchmark = YES;
-    
+
     currentlySelectedRow = 1;
     [self changeSelectedRow:0];
-    
+
     [inputCamera startCameraCapture];
 }
 
@@ -45,7 +45,7 @@
     {
         return;
     }
-    
+
     currentlySelectedRow = newRowIndex;
     BOOL needsSecondImage = NO;
 
@@ -57,7 +57,7 @@
         [currentlySelectedFilter removeAllTargets];
         currentlySelectedFilter = nil;
     }
-    
+
     switch(currentlySelectedRow)
     {
         case GPUIMAGE_SATURATION:
@@ -72,7 +72,7 @@
         case GPUIMAGE_CONTRAST:
         {
             currentlySelectedFilter = [[GPUImageContrastFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 4.0;
             self.currentSliderValue = 1.0;
@@ -90,7 +90,7 @@
         case GPUIMAGE_LEVELS:
         {
             currentlySelectedFilter = [[GPUImageLevelsFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.0;
@@ -99,7 +99,7 @@
         case GPUIMAGE_EXPOSURE:
         {
             currentlySelectedFilter = [[GPUImageExposureFilter alloc] init];
-            
+
             self.minimumSliderValue = -4.0;
             self.maximumSliderValue = 4.0;
             self.currentSliderValue = 0.0;
@@ -108,7 +108,7 @@
         case GPUIMAGE_RGB:
         {
             currentlySelectedFilter = [[GPUImageRGBFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 2.0;
             self.currentSliderValue = 1.0;
@@ -117,7 +117,7 @@
         case GPUIMAGE_HUE:
         {
             currentlySelectedFilter = [[GPUImageHueFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 360.0;
             self.currentSliderValue = 90.0;
@@ -126,7 +126,7 @@
         case GPUIMAGE_WHITEBALANCE:
         {
             currentlySelectedFilter = [[GPUImageWhiteBalanceFilter alloc] init];
-            
+
             self.minimumSliderValue = 2500.0;
             self.maximumSliderValue = 7500.0;
             self.currentSliderValue = 5000.0;
@@ -150,7 +150,7 @@
         case GPUIMAGE_SHARPEN:
         {
             currentlySelectedFilter = [[GPUImageSharpenFilter alloc] init];
-            
+
             self.minimumSliderValue = -1.0;
             self.maximumSliderValue = 4.0;
             self.currentSliderValue = 0.0;
@@ -159,7 +159,7 @@
         case GPUIMAGE_UNSHARPMASK:
         {
             currentlySelectedFilter = [[GPUImageUnsharpMaskFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 5.0;
             self.currentSliderValue = 1.0;
@@ -183,9 +183,9 @@
             perspectiveTransform.m33 = 0.4;
             perspectiveTransform = CATransform3DScale(perspectiveTransform, 0.75, 0.75, 0.75);
             perspectiveTransform = CATransform3DRotate(perspectiveTransform, 0.75, 0.0, 1.0, 0.0);
-            
+
             [(GPUImageTransformFilter *)currentlySelectedFilter setTransform3D:perspectiveTransform];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 6.28;
             self.currentSliderValue = 0.75;
@@ -194,7 +194,7 @@
         case GPUIMAGE_CROP:
         {
             currentlySelectedFilter = [[GPUImageCropFilter alloc] initWithCropRegion:CGRectMake(0.0, 0.0, 1.0, 0.25)];
-            
+
             self.minimumSliderValue = 0.2;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.5;
@@ -210,7 +210,7 @@
         case GPUIMAGE_GAMMA:
         {
             currentlySelectedFilter = [[GPUImageGammaFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 3.0;
             self.currentSliderValue = 1.0;
@@ -219,7 +219,7 @@
         case GPUIMAGE_TONECURVE:
         {
             currentlySelectedFilter = [[GPUImageToneCurveFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.5;
@@ -228,7 +228,7 @@
         case GPUIMAGE_HIGHLIGHTSHADOW:
         {
             currentlySelectedFilter = [[GPUImageHighlightShadowFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 1.0;
@@ -237,7 +237,7 @@
         case GPUIMAGE_HAZE:
         {
             currentlySelectedFilter = [[GPUImageHazeFilter alloc] init];
-            
+
             self.minimumSliderValue = -0.2;
             self.maximumSliderValue = 0.2;
             self.currentSliderValue = 0.2;
@@ -246,7 +246,7 @@
         case GPUIMAGE_SEPIA:
         {
             currentlySelectedFilter = [[GPUImageSepiaFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 1.0;
@@ -275,7 +275,7 @@
         case GPUIMAGE_HISTOGRAM:
         {
             currentlySelectedFilter = [[GPUImageHistogramFilter alloc] init];
-            
+
             self.minimumSliderValue = 4.0;
             self.maximumSliderValue = 32.0;
             self.currentSliderValue = 16.0;
@@ -286,12 +286,12 @@
             currentlySelectedFilter = [[GPUImageAverageColor alloc] init];
             self.enableSlider = NO;
         }; break;
-		case GPUIMAGE_LUMINOSITY:
+        case GPUIMAGE_LUMINOSITY:
         {
             currentlySelectedFilter = [[GPUImageLuminosity alloc] init];
             self.enableSlider = NO;
         }; break;
-		case GPUIMAGE_THRESHOLD:
+        case GPUIMAGE_THRESHOLD:
         {
             currentlySelectedFilter = [[GPUImageLuminanceThresholdFilter alloc] init];
 
@@ -300,19 +300,19 @@
             self.currentSliderValue = 0.5;
             self.enableSlider = YES;
         }; break;
-		case GPUIMAGE_ADAPTIVETHRESHOLD:
+        case GPUIMAGE_ADAPTIVETHRESHOLD:
         {
             currentlySelectedFilter = [[GPUImageAdaptiveThresholdFilter alloc] init];
-            
+
             self.minimumSliderValue = 1.0;
             self.maximumSliderValue = 20.0;
             self.currentSliderValue = 1.0;
             self.enableSlider = YES;
         }; break;
-		case GPUIMAGE_AVERAGELUMINANCETHRESHOLD:
+        case GPUIMAGE_AVERAGELUMINANCETHRESHOLD:
         {
             currentlySelectedFilter = [[GPUImageAverageLuminanceThresholdFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 2.0;
             self.currentSliderValue = 1.0;
@@ -329,7 +329,7 @@
             self.currentSliderValue = 0.20;
             self.enableSlider = YES;
         }; break;
-		case GPUIMAGE_NOBLECORNERDETECTION:
+        case GPUIMAGE_NOBLECORNERDETECTION:
         {
             currentlySelectedFilter = [[GPUImageNobleCornerDetectionFilter alloc] init];
             [(GPUImageNobleCornerDetectionFilter *)currentlySelectedFilter setThreshold:0.20];
@@ -339,7 +339,7 @@
             self.currentSliderValue = 0.20;
             self.enableSlider = YES;
         }; break;
-		case GPUIMAGE_SHITOMASIFEATUREDETECTION:
+        case GPUIMAGE_SHITOMASIFEATUREDETECTION:
         {
             currentlySelectedFilter = [[GPUImageShiTomasiFeatureDetectionFilter alloc] init];
             [(GPUImageShiTomasiFeatureDetectionFilter *)currentlySelectedFilter setThreshold:0.20];
@@ -349,7 +349,7 @@
             self.currentSliderValue = 0.20;
             self.enableSlider = YES;
         }; break;
-		case GPUIMAGE_HOUGHTRANSFORMLINEDETECTOR:
+        case GPUIMAGE_HOUGHTRANSFORMLINEDETECTOR:
         {
             currentlySelectedFilter = [[GPUImageHoughTransformLineDetector alloc] init];
             [(GPUImageHoughTransformLineDetector *)currentlySelectedFilter setLineDetectionThreshold:0.60];
@@ -367,7 +367,7 @@
         case GPUIMAGE_LOWPASS:
         {
             currentlySelectedFilter = [[GPUImageLowPassFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.5;
@@ -376,7 +376,7 @@
         case GPUIMAGE_HIGHPASS:
         {
             currentlySelectedFilter = [[GPUImageHighPassFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.5;
@@ -385,7 +385,7 @@
         case GPUIMAGE_MOTIONDETECTOR:
         {
             currentlySelectedFilter = [[GPUImageMotionDetector alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.5;
@@ -399,7 +399,7 @@
         case GPUIMAGE_PIXELLATE:
         {
             currentlySelectedFilter = [[GPUImagePixellateFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 0.3;
             self.currentSliderValue = 0.05;
@@ -408,7 +408,7 @@
         case GPUIMAGE_POLARPIXELLATE:
         {
             currentlySelectedFilter = [[GPUImagePolarPixellateFilter alloc] init];
-            
+
             self.minimumSliderValue = -0.1;
             self.maximumSliderValue = 0.1;
             self.currentSliderValue = 0.05;
@@ -417,7 +417,7 @@
         case GPUIMAGE_PIXELLATE_POSITION:
         {
             currentlySelectedFilter = [[GPUImagePixellatePositionFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 0.5;
             self.currentSliderValue = 0.25;
@@ -426,7 +426,7 @@
         case GPUIMAGE_POLKADOT:
         {
             currentlySelectedFilter = [[GPUImagePolkaDotFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 0.3;
             self.currentSliderValue = 0.05;
@@ -435,7 +435,7 @@
         case GPUIMAGE_HALFTONE:
         {
             currentlySelectedFilter = [[GPUImageHalftoneFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 0.05;
             self.currentSliderValue = 0.01;
@@ -444,7 +444,7 @@
         case GPUIMAGE_CROSSHATCH:
         {
             currentlySelectedFilter = [[GPUImageCrosshatchFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.01;
             self.maximumSliderValue = 0.06;
             self.currentSliderValue = 0.03;
@@ -480,7 +480,7 @@
         case GPUIMAGE_THRESHOLDEDGEDETECTION:
         {
             currentlySelectedFilter = [[GPUImageThresholdEdgeDetectionFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.5;
@@ -516,7 +516,7 @@
         case GPUIMAGE_CONVOLUTION:
         {
             currentlySelectedFilter = [[GPUImage3x3ConvolutionFilter alloc] init];
-            
+
             [(GPUImage3x3ConvolutionFilter *)currentlySelectedFilter setConvolutionKernel:(GPUMatrix3x3){
                 {-1.0f,  0.0f, 1.0f},
                 {-2.0f, 0.0f, 2.0f},
@@ -586,7 +586,7 @@
         case GPUIMAGE_KUWAHARA:
         {
             currentlySelectedFilter = [[GPUImageKuwaharaFilter alloc] init];
-            
+
             self.minimumSliderValue = 3.0;
             self.maximumSliderValue = 8.0;
             self.currentSliderValue = 3.0;
@@ -608,7 +608,7 @@
         case GPUIMAGE_GAUSSIAN:
         {
             currentlySelectedFilter = [[GPUImageGaussianBlurFilter alloc] init];
-            
+
             self.minimumSliderValue = 1.0;
             self.maximumSliderValue = 24.0;
             self.currentSliderValue = 2.0;
@@ -628,7 +628,7 @@
         {
             currentlySelectedFilter = [[GPUImageGaussianBlurPositionFilter alloc] init];
             [(GPUImageGaussianBlurPositionFilter*)currentlySelectedFilter setBlurRadius:40.0/320.0];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 0.75;
             self.currentSliderValue = 40.0/320.0;
@@ -637,7 +637,7 @@
         case GPUIMAGE_BOXBLUR:
         {
             currentlySelectedFilter = [[GPUImageBoxBlurFilter alloc] init];
-            
+
             self.minimumSliderValue = 1.0;
             self.maximumSliderValue = 24.0;
             self.currentSliderValue = 2.0;
@@ -646,13 +646,13 @@
         case GPUIMAGE_MEDIAN:
         {
             currentlySelectedFilter = [[GPUImageMedianFilter alloc] init];
-            
+
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_BILATERAL:
         {
             currentlySelectedFilter = [[GPUImageBilateralFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 10.0;
             self.currentSliderValue = 1.0;
@@ -661,7 +661,7 @@
         case GPUIMAGE_MOTIONBLUR:
         {
             currentlySelectedFilter = [[GPUImageMotionBlurFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 180.0;
             self.currentSliderValue = 0.0;
@@ -670,7 +670,7 @@
         case GPUIMAGE_ZOOMBLUR:
         {
             currentlySelectedFilter = [[GPUImageZoomBlurFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 2.5;
             self.currentSliderValue = 1.0;
@@ -679,7 +679,7 @@
         case GPUIMAGE_SWIRL:
         {
             currentlySelectedFilter = [[GPUImageSwirlFilter alloc] init];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 2.0;
             self.currentSliderValue = 1.0;
@@ -688,7 +688,7 @@
         case GPUIMAGE_BULGE:
         {
             currentlySelectedFilter = [[GPUImageBulgeDistortionFilter alloc] init];
-            
+
             self.minimumSliderValue = -1.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.5;
@@ -697,7 +697,7 @@
         case GPUIMAGE_PINCH:
         {
             currentlySelectedFilter = [[GPUImagePinchDistortionFilter alloc] init];
-            
+
             self.minimumSliderValue = -2.0;
             self.maximumSliderValue = 2.0;
             self.currentSliderValue = 0.5;
@@ -717,7 +717,7 @@
         {
             currentlySelectedFilter = [[GPUImageGlassSphereFilter alloc] init];
             [(GPUImageGlassSphereFilter *)currentlySelectedFilter setRadius:0.15];
-            
+
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
             self.currentSliderValue = 0.15;
@@ -726,37 +726,37 @@
         case GPUIMAGE_STRETCH:
         {
             currentlySelectedFilter = [[GPUImageStretchDistortionFilter alloc] init];
-            
+
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_DILATION:
         {
             currentlySelectedFilter = [[GPUImageRGBDilationFilter alloc] init];
-            
+
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_EROSION:
         {
             currentlySelectedFilter = [[GPUImageRGBErosionFilter alloc] init];
-            
+
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_OPENING:
         {
             currentlySelectedFilter = [[GPUImageRGBOpeningFilter alloc] init];
-            
+
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_CLOSING:
         {
             currentlySelectedFilter = [[GPUImageRGBClosingFilter alloc] init];
-            
+
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_PERLINNOISE:
         {
             currentlySelectedFilter = [[GPUImagePerlinNoiseFilter alloc] init];
-            
+
             self.minimumSliderValue = 1.0;
             self.maximumSliderValue = 30.0;
             self.currentSliderValue = 8.0;
@@ -765,21 +765,21 @@
         case GPUIMAGE_VORONOI:
         {
             self.enableSlider = NO;
-            
+
             GPUImageJFAVoronoiFilter *jfa = [[GPUImageJFAVoronoiFilter alloc] init];
             [jfa setSizeInPixels:CGSizeMake(1024.0, 1024.0)];
-            
+
             NSImage *voronoiPoints = [NSImage imageNamed:@"voroni_points2.png"];
 
             imageForBlending = [[GPUImagePicture alloc] initWithImage:voronoiPoints];
-            
+
             [imageForBlending addTarget:jfa];
-            
+
             currentlySelectedFilter = [[GPUImageVoronoiConsumerFilter alloc] init];
-            
+
             [jfa setSizeInPixels:CGSizeMake(1024.0, 1024.0)];
             [(GPUImageVoronoiConsumerFilter *)currentlySelectedFilter setSizeInPixels:CGSizeMake(1024.0, 1024.0)];
-            
+
             [inputCamera addTarget:currentlySelectedFilter];
             [jfa addTarget:currentlySelectedFilter];
             [imageForBlending processImage];
@@ -799,7 +799,7 @@
         case GPUIMAGE_LOCALBINARYPATTERN:
         {
             currentlySelectedFilter = [[GPUImageLocalBinaryPatternFilter alloc] init];
-            
+
             self.minimumSliderValue = 1.0;
             self.maximumSliderValue = 5.0;
             self.currentSliderValue = 1.0;
@@ -808,7 +808,7 @@
         case GPUIMAGE_DISSOLVE:
         {
             currentlySelectedFilter = [[GPUImageDissolveBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
@@ -829,147 +829,147 @@
         case GPUIMAGE_ADD:
         {
             currentlySelectedFilter = [[GPUImageAddBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_DIVIDE:
         {
             currentlySelectedFilter = [[GPUImageDivideBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_MULTIPLY:
         {
             currentlySelectedFilter = [[GPUImageMultiplyBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_OVERLAY:
         {
             currentlySelectedFilter = [[GPUImageOverlayBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_LIGHTEN:
         {
             currentlySelectedFilter = [[GPUImageLightenBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_DARKEN:
         {
             currentlySelectedFilter = [[GPUImageDarkenBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_COLORBURN:
         {
             currentlySelectedFilter = [[GPUImageColorBurnBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_COLORDODGE:
         {
             currentlySelectedFilter = [[GPUImageColorDodgeBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_LINEARBURN:
         {
             currentlySelectedFilter = [[GPUImageLinearBurnBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_SCREENBLEND:
         {
             currentlySelectedFilter = [[GPUImageScreenBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_DIFFERENCEBLEND:
         {
             currentlySelectedFilter = [[GPUImageDifferenceBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_SUBTRACTBLEND:
         {
             currentlySelectedFilter = [[GPUImageSubtractBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_EXCLUSIONBLEND:
         {
             currentlySelectedFilter = [[GPUImageExclusionBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_HARDLIGHTBLEND:
         {
             currentlySelectedFilter = [[GPUImageHardLightBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_SOFTLIGHTBLEND:
         {
             currentlySelectedFilter = [[GPUImageSoftLightBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_COLORBLEND:
         {
             currentlySelectedFilter = [[GPUImageColorBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_HUEBLEND:
         {
             currentlySelectedFilter = [[GPUImageHueBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_SATURATIONBLEND:
         {
             currentlySelectedFilter = [[GPUImageSaturationBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_LUMINOSITYBLEND:
         {
             currentlySelectedFilter = [[GPUImageLuminosityBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_NORMALBLEND:
         {
             currentlySelectedFilter = [[GPUImageNormalBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.enableSlider = NO;
         }; break;
         case GPUIMAGE_POISSONBLEND:
         {
             currentlySelectedFilter = [[GPUImagePoissonBlendFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
@@ -979,7 +979,7 @@
         case GPUIMAGE_OPACITY:
         {
             currentlySelectedFilter = [[GPUImageOpacityFilter alloc] init];
-            
+
             needsSecondImage = YES;
             self.minimumSliderValue = 0.0;
             self.maximumSliderValue = 1.0;
@@ -994,13 +994,13 @@
     }
 
     [currentlySelectedFilter addTarget:self.glView];
-    
+
     if (needsSecondImage)
     {
         if (imageForBlending == nil)
         {
             NSImage *inputImage;
-            
+
             if (currentlySelectedRow == GPUIMAGE_MASK)
             {
                 inputImage = [NSImage imageNamed:@"mask"];
@@ -1013,7 +1013,7 @@
                 // The picture is only used for two-image blend filters
                 inputImage = [NSImage imageNamed:@"Lambeau.jpg"];
             }
-            
+
             imageForBlending = [[GPUImagePicture alloc] initWithImage:inputImage smoothlyScaleOutput:YES];
         }
         [imageForBlending processImage];
@@ -1027,29 +1027,29 @@
         [imageForBlending removeTarget:currentlySelectedFilter];
         [inputCamera removeTarget:currentlySelectedFilter];
         [inputCamera addTarget:currentlySelectedFilter];
-        
+
         GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
         blendFilter.mix = 1.0;
         [imageForBlending addTarget:blendFilter];
         [currentlySelectedFilter addTarget:blendFilter];
-        
+
         [blendFilter addTarget:self.glView];
     }
     else if (currentlySelectedRow == GPUIMAGE_BUFFER)
     {
         [currentlySelectedFilter removeTarget:self.glView];
-        
+
         GPUImageDifferenceBlendFilter *blendFilter = [[GPUImageDifferenceBlendFilter alloc] init];
-        
+
         [inputCamera removeTarget:currentlySelectedFilter];
-        
+
         GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
         [inputCamera addTarget:gammaFilter];
         [gammaFilter addTarget:blendFilter];
         [inputCamera addTarget:currentlySelectedFilter];
-        
+
         [currentlySelectedFilter addTarget:blendFilter];
-        
+
         [blendFilter addTarget:self.glView];
     }
     else if (currentlySelectedRow == GPUIMAGE_HISTOGRAM)
@@ -1061,19 +1061,19 @@
         GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
         [inputCamera addTarget:gammaFilter];
         [gammaFilter addTarget:currentlySelectedFilter];
-        
+
         GPUImageHistogramGenerator *histogramGraph = [[GPUImageHistogramGenerator alloc] init];
-        
+
         [histogramGraph forceProcessingAtSize:CGSizeMake(256.0, 144.0)];
         [currentlySelectedFilter addTarget:histogramGraph];
-        
+
         GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
         blendFilter.mix = 0.75;
         [blendFilter forceProcessingAtSize:CGSizeMake(256.0, 144.0)];
-        
+
         [inputCamera addTarget:blendFilter];
         [histogramGraph addTarget:blendFilter];
-        
+
         [blendFilter addTarget:self.glView];
     }
     else if ( (currentlySelectedRow == GPUIMAGE_SPHEREREFRACTION) || (currentlySelectedRow == GPUIMAGE_GLASSSPHERE) )
@@ -1084,12 +1084,12 @@
         GPUImageGaussianBlurFilter *gaussianBlur = [[GPUImageGaussianBlurFilter alloc] init];
         [inputCamera addTarget:gaussianBlur];
         gaussianBlur.blurRadiusInPixels = 10.0;
-        
+
         GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
         blendFilter.mix = 1.0;
         [gaussianBlur addTarget:blendFilter];
         [currentlySelectedFilter addTarget:blendFilter];
-        
+
         [blendFilter addTarget:self.glView];
     }
     else if (currentlySelectedRow == GPUIMAGE_AVERAGECOLOR)
@@ -1098,12 +1098,12 @@
 
         GPUImageSolidColorGenerator *colorGenerator = [[GPUImageSolidColorGenerator alloc] init];
         [colorGenerator forceProcessingAtSize:[self.glView sizeInPixels]];
-        
+
         [(GPUImageAverageColor *)currentlySelectedFilter setColorAverageProcessingFinishedBlock:^(CGFloat redComponent, CGFloat greenComponent, CGFloat blueComponent, CGFloat alphaComponent, CMTime frameTime) {
             [colorGenerator setColorRed:redComponent green:greenComponent blue:blueComponent alpha:alphaComponent];
             //                NSLog(@"Average color: %f, %f, %f, %f", redComponent, greenComponent, blueComponent, alphaComponent);
         }];
-        
+
         [colorGenerator addTarget:self.glView];
     }
     else if (currentlySelectedRow == GPUIMAGE_LUMINOSITY)
@@ -1112,11 +1112,11 @@
 
         GPUImageSolidColorGenerator *colorGenerator = [[GPUImageSolidColorGenerator alloc] init];
         [colorGenerator forceProcessingAtSize:[self.glView sizeInPixels]];
-        
+
         [(GPUImageLuminosity *)currentlySelectedFilter setLuminosityProcessingFinishedBlock:^(CGFloat luminosity, CMTime frameTime) {
             [colorGenerator setColorRed:luminosity green:luminosity blue:luminosity alpha:1.0];
         }];
-        
+
         [colorGenerator addTarget:self.glView];
     }
     else if ( (currentlySelectedRow == GPUIMAGE_HARRISCORNERDETECTION) || (currentlySelectedRow == GPUIMAGE_NOBLECORNERDETECTION) || (currentlySelectedRow == GPUIMAGE_SHITOMASIFEATUREDETECTION) )
@@ -1126,19 +1126,19 @@
         GPUImageCrosshairGenerator *crosshairGenerator = [[GPUImageCrosshairGenerator alloc] init];
         crosshairGenerator.crosshairWidth = 15.0;
         [crosshairGenerator forceProcessingAtSize:[self.glView sizeInPixels]];
-        
+
         [(GPUImageHarrisCornerDetectionFilter *)currentlySelectedFilter setCornersDetectedBlock:^(GLfloat* cornerArray, NSUInteger cornersDetected, CMTime frameTime) {
             [crosshairGenerator renderCrosshairsFromArray:cornerArray count:cornersDetected frameTime:frameTime];
         }];
-        
+
         GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
         [blendFilter forceProcessingAtSize:[self.glView sizeInPixels]];
         GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
         [inputCamera addTarget:gammaFilter];
         [gammaFilter addTarget:blendFilter];
-        
+
         [crosshairGenerator addTarget:blendFilter];
-        
+
         [blendFilter addTarget:self.glView];
     }
     else if (currentlySelectedRow == GPUIMAGE_HOUGHTRANSFORMLINEDETECTOR)
@@ -1152,15 +1152,15 @@
         [(GPUImageHoughTransformLineDetector *)currentlySelectedFilter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
             [lineGenerator renderLinesFromArray:lineArray count:linesDetected frameTime:frameTime];
         }];
-        
+
         GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
         [blendFilter forceProcessingAtSize:[self.glView sizeInPixels]];
         GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
         [inputCamera addTarget:gammaFilter];
         [gammaFilter addTarget:blendFilter];
-        
+
         [lineGenerator addTarget:blendFilter];
-        
+
         [blendFilter addTarget:self.glView];
     }
 
@@ -1203,7 +1203,7 @@
         case GPUIMAGE_HISTOGRAM: [(GPUImageHistogramFilter *)currentlySelectedFilter setDownsamplingFactor:round(_currentSliderValue)]; break;
         case GPUIMAGE_THRESHOLD: [(GPUImageLuminanceThresholdFilter *)currentlySelectedFilter setThreshold:_currentSliderValue]; break;
         case GPUIMAGE_ADAPTIVETHRESHOLD: [(GPUImageAdaptiveThresholdFilter *)currentlySelectedFilter setBlurRadiusInPixels:_currentSliderValue]; break;
-        case GPUIMAGE_AVERAGELUMINANCETHRESHOLD: [(GPUImageAverageLuminanceThresholdFilter *)currentlySelectedFilter setThresholdMultiplier:_currentSliderValue]; break;        
+        case GPUIMAGE_AVERAGELUMINANCETHRESHOLD: [(GPUImageAverageLuminanceThresholdFilter *)currentlySelectedFilter setThresholdMultiplier:_currentSliderValue]; break;
         case GPUIMAGE_CANNYEDGEDETECTION: [(GPUImageCannyEdgeDetectionFilter *)currentlySelectedFilter setBlurTexelSpacingMultiplier:_currentSliderValue]; break;
         case GPUIMAGE_THRESHOLDEDGEDETECTION: [(GPUImageThresholdEdgeDetectionFilter *)currentlySelectedFilter setThreshold:_currentSliderValue]; break;
         case GPUIMAGE_HARRISCORNERDETECTION: [(GPUImageHarrisCornerDetectionFilter *)currentlySelectedFilter setThreshold:_currentSliderValue]; break;
@@ -1237,7 +1237,7 @@
             perspectiveTransform.m33 = 0.4;
             perspectiveTransform = CATransform3DScale(perspectiveTransform, 0.75, 0.75, 0.75);
             perspectiveTransform = CATransform3DRotate(perspectiveTransform, _currentSliderValue, 0.0, 1.0, 0.0);
-            
+
             [(GPUImageTransformFilter *)currentlySelectedFilter setTransform3D:perspectiveTransform];
         }; break;
         case GPUIMAGE_CROP: [(GPUImageCropFilter *)currentlySelectedFilter setCropRegion:CGRectMake(0.0, 0.0, 1.0, _currentSliderValue)]; break;
@@ -1260,7 +1260,7 @@
             CGFloat multiplier = _currentSliderValue;
             [(GPUImageLocalBinaryPatternFilter *)currentlySelectedFilter setTexelWidth:(multiplier / self.glView.bounds.size.width)];
             [(GPUImageLocalBinaryPatternFilter *)currentlySelectedFilter setTexelHeight:(multiplier / self.glView.bounds.size.height)];
-        }; break;        
+        }; break;
         case GPUIMAGE_DISSOLVE: [(GPUImageDissolveBlendFilter *)currentlySelectedFilter setMix:_currentSliderValue]; break;
         case GPUIMAGE_CHROMAKEY: [(GPUImageChromaKeyBlendFilter *)currentlySelectedFilter setThresholdSensitivity:_currentSliderValue]; break;
         case GPUIMAGE_POISSONBLEND: [(GPUImagePoissonBlendFilter *)currentlySelectedFilter setMix:_currentSliderValue]; break;
@@ -1273,13 +1273,13 @@
 
 - (int)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	return GPUIMAGE_NUMFILTERS;
+    return GPUIMAGE_NUMFILTERS;
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
 {
     NSString *tableRowTitle = nil;
-    
+
     switch(rowIndex)
     {
         case GPUIMAGE_SATURATION: tableRowTitle = @"Saturation"; break;
@@ -1395,13 +1395,13 @@
         case GPUIMAGE_OPACITY: tableRowTitle = @"Opacity adjustment"; break;
     }
 
-	return tableRowTitle;
+    return tableRowTitle;
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification;
 {
-	NSInteger rowIndex = [[aNotification object] selectedRow];
-    
+    NSInteger rowIndex = [[aNotification object] selectedRow];
+
     [self changeSelectedRow:rowIndex];
 }
 

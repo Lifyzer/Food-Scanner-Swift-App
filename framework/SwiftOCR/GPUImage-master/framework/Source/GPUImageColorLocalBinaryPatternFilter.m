@@ -19,21 +19,21 @@
 NSString *const kGPUImageColorLocalBinaryPatternFragmentShaderString = SHADER_STRING
 (
  precision highp float;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;
  varying vec2 rightTextureCoordinate;
- 
+
  varying vec2 topTextureCoordinate;
  varying vec2 topLeftTextureCoordinate;
  varying vec2 topRightTextureCoordinate;
- 
+
  varying vec2 bottomTextureCoordinate;
  varying vec2 bottomLeftTextureCoordinate;
  varying vec2 bottomRightTextureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  void main()
  {
      lowp vec3 centerColor = texture2D(inputImageTexture, textureCoordinate).rgb;
@@ -75,7 +75,7 @@ NSString *const kGPUImageColorLocalBinaryPatternFragmentShaderString = SHADER_ST
 
      // TODO: Replace the above with a dot product and two vec4s
      // TODO: Apply step to a matrix, rather than individually
-     
+
      gl_FragColor = vec4(redByteTally, blueByteTally, greenByteTally, 1.0);
  }
 );
@@ -85,17 +85,17 @@ NSString *const kGPUImageColorLocalBinaryPatternFragmentShaderString = SHADER_ST
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;
  varying vec2 rightTextureCoordinate;
- 
+
  varying vec2 topTextureCoordinate;
  varying vec2 topLeftTextureCoordinate;
  varying vec2 topRightTextureCoordinate;
- 
+
  varying vec2 bottomTextureCoordinate;
  varying vec2 bottomLeftTextureCoordinate;
  varying vec2 bottomRightTextureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  void main()
  {
      vec3 centerColor = texture2D(inputImageTexture, textureCoordinate).rgb;
@@ -107,7 +107,7 @@ NSString *const kGPUImageColorLocalBinaryPatternFragmentShaderString = SHADER_ST
      vec3 rightColor = texture2D(inputImageTexture, rightTextureCoordinate).rgb;
      vec3 bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).rgb;
      vec3 topColor = texture2D(inputImageTexture, topTextureCoordinate).rgb;
-     
+
      float redByteTally = 1.0 / 255.0 * step(centerColor.r, topRightColor.r);
      redByteTally += 2.0 / 255.0 * step(centerColor.r, topColor.r);
      redByteTally += 4.0 / 255.0 * step(centerColor.r, topLeftColor.r);
@@ -116,7 +116,7 @@ NSString *const kGPUImageColorLocalBinaryPatternFragmentShaderString = SHADER_ST
      redByteTally += 32.0 / 255.0 * step(centerColor.r, bottomColor.r);
      redByteTally += 64.0 / 255.0 * step(centerColor.r, bottomRightColor.r);
      redByteTally += 128.0 / 255.0 * step(centerColor.r, rightColor.r);
-     
+
      float blueByteTally = 1.0 / 255.0 * step(centerColor.b, topRightColor.b);
      blueByteTally += 2.0 / 255.0 * step(centerColor.b, topColor.b);
      blueByteTally += 4.0 / 255.0 * step(centerColor.b, topLeftColor.b);
@@ -125,7 +125,7 @@ NSString *const kGPUImageColorLocalBinaryPatternFragmentShaderString = SHADER_ST
      blueByteTally += 32.0 / 255.0 * step(centerColor.b, bottomColor.b);
      blueByteTally += 64.0 / 255.0 * step(centerColor.b, bottomRightColor.b);
      blueByteTally += 128.0 / 255.0 * step(centerColor.b, rightColor.b);
-     
+
      float greenByteTally = 1.0 / 255.0 * step(centerColor.g, topRightColor.g);
      greenByteTally += 2.0 / 255.0 * step(centerColor.g, topColor.g);
      greenByteTally += 4.0 / 255.0 * step(centerColor.g, topLeftColor.g);
@@ -134,10 +134,10 @@ NSString *const kGPUImageColorLocalBinaryPatternFragmentShaderString = SHADER_ST
      greenByteTally += 32.0 / 255.0 * step(centerColor.g, bottomColor.g);
      greenByteTally += 64.0 / 255.0 * step(centerColor.g, bottomRightColor.g);
      greenByteTally += 128.0 / 255.0 * step(centerColor.g, rightColor.g);
-     
+
      // TODO: Replace the above with a dot product and two vec4s
      // TODO: Apply step to a matrix, rather than individually
-     
+
      gl_FragColor = vec4(redByteTally, blueByteTally, greenByteTally, 1.0);
  }
 );
@@ -150,9 +150,9 @@ NSString *const kGPUImageColorLocalBinaryPatternFragmentShaderString = SHADER_ST
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageColorLocalBinaryPatternFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 

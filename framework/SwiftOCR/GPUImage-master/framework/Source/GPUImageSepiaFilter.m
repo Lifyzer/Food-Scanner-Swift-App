@@ -6,9 +6,9 @@
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
     self.intensity = 1.0;
     self.colorMatrix = (GPUMatrix4x4){
         {0.3588, 0.7044, 0.1368, 0.0},

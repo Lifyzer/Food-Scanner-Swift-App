@@ -20,15 +20,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
+
     NSURL *sampleURL = [[NSBundle mainBundle] URLForResource:@"sample_iPod" withExtension:@"m4v"];
-    
+
     movieFile = [[GPUImageMovie alloc] initWithURL:sampleURL];
     movieFile.runBenchmark = YES;
     movieFile.playAtActualSpeed = NO;
     filter = [[GPUImagePixellateFilter alloc] init];
 //    filter = [[GPUImageUnsharpMaskFilter alloc] init];
-    
+
     [movieFile addTarget:filter];
 
     // Only rotate the video for display, leave orientation the same for recording
@@ -47,20 +47,20 @@
     movieWriter.shouldPassthroughAudio = YES;
     movieFile.audioEncodingTarget = movieWriter;
     [movieFile enableSynchronizedEncodingUsingMovieWriter:movieWriter];
-    
+
     [movieWriter startRecording];
     [movieFile startProcessing];
-    
+
     timer = [NSTimer scheduledTimerWithTimeInterval:0.3f
                                              target:self
                                            selector:@selector(retrievingProgress)
                                            userInfo:nil
                                             repeats:YES];
-    
+
     [movieWriter setCompletionBlock:^{
         [filter removeTarget:movieWriter];
         [movieWriter finishRecording];
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [timer invalidate];
             self.progressLabel.text = @"100%";

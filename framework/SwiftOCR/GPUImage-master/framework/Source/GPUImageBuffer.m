@@ -17,11 +17,11 @@
     {
         return nil;
     }
-    
+
     bufferedFramebuffers = [[NSMutableArray alloc] init];
 //    [bufferedTextures addObject:[NSNumber numberWithInt:outputTexture]];
     _bufferSize = 1;
-    
+
     return self;
 }
 
@@ -49,7 +49,7 @@
         outputFramebuffer = firstInputFramebuffer;
         [firstInputFramebuffer lock];
     }
-    
+
     [bufferedFramebuffers addObject:firstInputFramebuffer];
 
     // Need to pass along rotation information, as we're just holding on to buffered framebuffers and not rotating them ourselves
@@ -59,14 +59,14 @@
         {
             NSInteger indexOfObject = [targets indexOfObject:currentTarget];
             NSInteger textureIndex = [[targetTextureIndices objectAtIndex:indexOfObject] integerValue];
-            
+
             [currentTarget setInputRotation:inputRotation atIndex:textureIndex];
         }
     }
 
     // Let the downstream video elements see the previous frame from the buffer before rendering a new one into place
     [self informTargetsAboutNewFrameAtTime:frameTime];
- 
+
 //    [self renderToTextureWithVertices:imageVertices textureCoordinates:[[self class] textureCoordinatesForRotation:inputRotation]];
 }
 
@@ -84,7 +84,7 @@
     {
         return;
     }
-        
+
     if (newValue > _bufferSize)
     {
         NSUInteger texturesToAdd = newValue - _bufferSize;
@@ -100,7 +100,7 @@
         {
             GPUImageFramebuffer *lastFramebuffer = [bufferedFramebuffers lastObject];
             [bufferedFramebuffers removeObjectAtIndex:([bufferedFramebuffers count] - 1)];
-            
+
             [lastFramebuffer unlock];
             lastFramebuffer = nil;
         }

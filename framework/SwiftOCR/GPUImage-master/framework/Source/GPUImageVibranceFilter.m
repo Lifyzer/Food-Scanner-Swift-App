@@ -1,6 +1,6 @@
 //
 //  GPUImageVibranceFilter.m
-//  
+//
 //
 //  Created by github.com/r3mus on 8/13/15.
 //
@@ -12,10 +12,10 @@
 NSString *const kGPUImageVibranceFragmentShaderString = SHADER_STRING
 (
     varying highp vec2 textureCoordinate;
- 
+
     uniform sampler2D inputImageTexture;
     uniform lowp float vibrance;
- 
+
     void main() {
         lowp vec4 color = texture2D(inputImageTexture, textureCoordinate);
         lowp float average = (color.r + color.g + color.b) / 3.0;
@@ -29,10 +29,10 @@ NSString *const kGPUImageVibranceFragmentShaderString = SHADER_STRING
 NSString *const kGPUImageVibranceFragmentShaderString = SHADER_STRING
 (
     varying vec2 textureCoordinate;
- 
+
     uniform sampler2D inputImageTexture;
     uniform float vibrance;
- 
+
     void main() {
         vec4 color = texture2D(inputImageTexture, textureCoordinate);
         float average = (color.r + color.g + color.b) / 3.0;
@@ -57,10 +57,10 @@ NSString *const kGPUImageVibranceFragmentShaderString = SHADER_STRING
     {
         return nil;
     }
-    
+
     vibranceUniform = [filterProgram uniformIndex:@"vibrance"];
     self.vibrance = 0.0;
-    
+
     return self;
 }
 
@@ -70,7 +70,7 @@ NSString *const kGPUImageVibranceFragmentShaderString = SHADER_STRING
 - (void)setVibrance:(GLfloat)vibrance;
 {
     _vibrance = vibrance;
-    
+
     [self setFloat:_vibrance forUniform:vibranceUniform program:filterProgram];
 }
 

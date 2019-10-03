@@ -50,7 +50,7 @@ class FilterOperation<FilterClass: GPUImageOutput where FilterClass: GPUImageInp
                 self.internalFilter = FilterClass()
         }
     }
-    
+
     var filter: GPUImageOutput {
         return internalFilter!
     }

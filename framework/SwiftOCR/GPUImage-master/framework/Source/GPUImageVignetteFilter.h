@@ -2,7 +2,7 @@
 
 /** Performs a vignetting effect, fading out the image at the edges
  */
-@interface GPUImageVignetteFilter : GPUImageFilter 
+@interface GPUImageVignetteFilter : GPUImageFilter
 {
     GLint vignetteCenterUniform, vignetteColorUniform, vignetteStartUniform, vignetteEndUniform;
 }

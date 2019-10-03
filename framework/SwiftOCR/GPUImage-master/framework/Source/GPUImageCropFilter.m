@@ -4,9 +4,9 @@
 NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  void main()
  {
      gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
@@ -16,9 +16,9 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
 NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
 (
  varying vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  void main()
  {
      gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
@@ -52,7 +52,7 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
     {
         return nil;
     }
-    
+
     self.cropRegion = newCropRegion;
 
     return self;
@@ -64,7 +64,7 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
     {
         return nil;
     }
-    
+
     return self;
 }
 
@@ -77,7 +77,7 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
     {
         return;
     }
-    
+
 //    if (overrideInputSize)
 //    {
 //        if (CGSizeEqualToSize(forcedMaximumSize, CGSizeZero))
@@ -91,7 +91,7 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
 //            return;
 //        }
 //    }
-    
+
     CGSize rotatedSize = [self rotatedSize:newSize forIndex:textureIndex];
     originallySuppliedInputSize = rotatedSize;
 
@@ -99,7 +99,7 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
     scaledSize.width = rotatedSize.width * _cropRegion.size.width;
     scaledSize.height = rotatedSize.height * _cropRegion.size.height;
 
-    
+
     if (CGSizeEqualToSize(scaledSize, CGSizeZero))
     {
         inputTextureSize = scaledSize;
@@ -119,14 +119,14 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
     CGFloat minY = _cropRegion.origin.y;
     CGFloat maxX = CGRectGetMaxX(_cropRegion);
     CGFloat maxY = CGRectGetMaxY(_cropRegion);
-    
+
     switch(inputRotation)
     {
         case kGPUImageNoRotation: // Works
         {
             cropTextureCoordinates[0] = minX; // 0,0
             cropTextureCoordinates[1] = minY;
-            
+
             cropTextureCoordinates[2] = maxX; // 1,0
             cropTextureCoordinates[3] = minY;
 
@@ -157,7 +157,7 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
 
             cropTextureCoordinates[2] = minY; // 0,0
             cropTextureCoordinates[3] = 1.0 - maxX;
-            
+
             cropTextureCoordinates[4] = maxY; // 1,1
             cropTextureCoordinates[5] = 1.0 - minX;
 
@@ -174,7 +174,7 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
 
             cropTextureCoordinates[4] = minX; // 0,0
             cropTextureCoordinates[5] = minY;
-            
+
             cropTextureCoordinates[6] = maxX; // 1,0
             cropTextureCoordinates[7] = minY;
         }; break;
@@ -185,10 +185,10 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
 
             cropTextureCoordinates[2] = minX; // 0,0
             cropTextureCoordinates[3] = minY;
-            
+
             cropTextureCoordinates[4] = maxX; // 1,1
             cropTextureCoordinates[5] = maxY;
-            
+
             cropTextureCoordinates[6] = minX; // 0,1
             cropTextureCoordinates[7] = maxY;
         }; break;
@@ -210,13 +210,13 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
         {
             cropTextureCoordinates[0] = minY; // 0,0
             cropTextureCoordinates[1] = 1.0 - maxX;
-            
+
             cropTextureCoordinates[2] = minY; // 0,1
             cropTextureCoordinates[3] = 1.0 - minX;
 
             cropTextureCoordinates[4] = maxY; // 1,0
             cropTextureCoordinates[5] = 1.0 - maxX;
-            
+
             cropTextureCoordinates[6] = maxY; // 1,1
             cropTextureCoordinates[7] = 1.0 - minX;
         }; break;
@@ -245,7 +245,7 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
         -1.0f,  1.0f,
         1.0f,  1.0f,
     };
-    
+
     [self renderToTextureWithVertices:cropSquareVertices textureCoordinates:cropTextureCoordinates];
 
     [self informTargetsAboutNewFrameAtTime:frameTime];

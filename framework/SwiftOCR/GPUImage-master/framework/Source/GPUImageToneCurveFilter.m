@@ -12,16 +12,16 @@
 @interface GPUImageACVFile : NSObject{
     short version;
     short totalCurves;
-    
+
     NSArray *rgbCompositeCurvePoints;
     NSArray *redCurvePoints;
-    NSArray *greenCurvePoints;    
+    NSArray *greenCurvePoints;
     NSArray *blueCurvePoints;
 }
 
 @property(strong,nonatomic) NSArray *rgbCompositeCurvePoints;
 @property(strong,nonatomic) NSArray *redCurvePoints;
-@property(strong,nonatomic) NSArray *greenCurvePoints;    
+@property(strong,nonatomic) NSArray *greenCurvePoints;
 @property(strong,nonatomic) NSArray *blueCurvePoints;
 
 - (id) initWithACVFileData:(NSData*)data;
@@ -41,26 +41,26 @@ unsigned short int16WithBytes(Byte* bytes);
         if (data.length == 0)
         {
             NSLog(@"failed to init ACVFile with data:%@", data);
-            
+
             return self;
         }
-        
+
         Byte* rawBytes = (Byte*) [data bytes];
         version        = int16WithBytes(rawBytes);
         rawBytes+=2;
-        
+
         totalCurves    = int16WithBytes(rawBytes);
         rawBytes+=2;
-        
+
         NSMutableArray *curves = [NSMutableArray new];
-        
+
         float pointRate = (1.0 / 255);
         // The following is the data for each curve specified by count above
         for (NSInteger x = 0; x<totalCurves; x++)
         {
             unsigned short pointCount = int16WithBytes(rawBytes);
             rawBytes+=2;
-            
+
             NSMutableArray *points = [NSMutableArray new];
             // point count * 4
             // Curve points. Each curve point is a pair of short integers where
@@ -104,14 +104,14 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
  varying highp vec2 textureCoordinate;
  uniform sampler2D inputImageTexture;
  uniform sampler2D toneCurveTexture;
- 
+
  void main()
  {
      lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
      lowp float redCurveValue = texture2D(toneCurveTexture, vec2(textureColor.r, 0.0)).r;
      lowp float greenCurveValue = texture2D(toneCurveTexture, vec2(textureColor.g, 0.0)).g;
      lowp float blueCurveValue = texture2D(toneCurveTexture, vec2(textureColor.b, 0.0)).b;
-     
+
      gl_FragColor = vec4(redCurveValue, greenCurveValue, blueCurveValue, textureColor.a);
  }
 );
@@ -121,14 +121,14 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
  varying vec2 textureCoordinate;
  uniform sampler2D inputImageTexture;
  uniform sampler2D toneCurveTexture;
- 
+
  void main()
  {
      vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
      float redCurveValue = texture2D(toneCurveTexture, vec2(textureColor.r, 0.0)).r;
      float greenCurveValue = texture2D(toneCurveTexture, vec2(textureColor.g, 0.0)).g;
      float blueCurveValue = texture2D(toneCurveTexture, vec2(textureColor.b, 0.0)).b;
-     
+
      gl_FragColor = vec4(redCurveValue, greenCurveValue, blueCurveValue, textureColor.a);
  }
 );
@@ -139,7 +139,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
     GLint toneCurveTextureUniform;
     GLuint toneCurveTexture;
     GLubyte *toneCurveByteArray;
-    
+
     NSArray *_redCurve, *_greenCurve, *_blueCurve, *_rgbCompositeCurve;
 }
 
@@ -159,9 +159,9 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageToneCurveFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     toneCurveTextureUniform = [filterProgram uniformIndex:@"toneCurveTexture"];
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     NSArray *defaultCurve = [NSArray arrayWithObjects:[NSValue valueWithCGPoint:CGPointMake(0.0, 0.0)], [NSValue valueWithCGPoint:CGPointMake(0.5, 0.5)], [NSValue valueWithCGPoint:CGPointMake(1.0, 1.0)], nil];
@@ -172,7 +172,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
     [self setRedControlPoints:defaultCurve];
     [self setGreenControlPoints:defaultCurve];
     [self setBlueControlPoints:defaultCurve];
-    
+
     return self;
 }
 
@@ -180,20 +180,20 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 - (id)initWithACVData:(NSData *)data {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageToneCurveFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     toneCurveTextureUniform = [filterProgram uniformIndex:@"toneCurveTexture"];
-    
+
     GPUImageACVFile *curve = [[GPUImageACVFile alloc] initWithACVFileData:data];
-    
+
     [self setRgbCompositeControlPoints:curve.rgbCompositeCurvePoints];
     [self setRedControlPoints:curve.redCurvePoints];
     [self setGreenControlPoints:curve.greenCurvePoints];
     [self setBlueControlPoints:curve.blueCurvePoints];
-    
+
     curve = nil;
-    
+
     return self;
 }
 
@@ -218,12 +218,12 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 {
     NSData* fileData = [NSData dataWithContentsOfURL:curveFileURL];
     GPUImageACVFile *curve = [[GPUImageACVFile alloc] initWithACVFileData:fileData];
-    
+
     [self setRgbCompositeControlPoints:curve.rgbCompositeCurvePoints];
     [self setRedControlPoints:curve.redCurvePoints];
     [self setGreenControlPoints:curve.greenCurvePoints];
     [self setBlueControlPoints:curve.blueCurvePoints];
-    
+
     curve = nil;
 }
 
@@ -246,7 +246,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 
 - (NSArray *)getPreparedSplineCurve:(NSArray *)points
 {
-    if (points && [points count] > 0) 
+    if (points && [points count] > 0)
     {
         // Sort the array.
         NSArray *sortedPoints = [points sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
@@ -259,7 +259,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 #endif
             return x1 > x2;
         }];
-                
+
         // Convert from (0, 1) to (0, 255).
         NSMutableArray *convertedPoints = [NSMutableArray arrayWithCapacity:[sortedPoints count]];
         for (int i=0; i<[points count]; i++){
@@ -270,17 +270,17 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 #endif
             point.x = point.x * 255;
             point.y = point.y * 255;
-                        
+
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
             [convertedPoints addObject:[NSValue valueWithCGPoint:point]];
 #else
             [convertedPoints addObject:[NSValue valueWithPoint:point]];
 #endif
         }
-        
-        
+
+
         NSMutableArray *splinePoints = [self splineCurve:convertedPoints];
-        
+
         // If we have a first point like (0.3, 0) we'll be missing some points at the beginning
         // that should be 0.
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -288,7 +288,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 #else
         NSPoint firstSplinePoint = [[splinePoints objectAtIndex:0] pointValue];
 #endif
-        
+
         if (firstSplinePoint.x > 0) {
             for (int i=firstSplinePoint.x; i >= 0; i--) {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -313,7 +313,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
         }
 #else
         NSPoint lastSplinePoint = [[splinePoints lastObject] pointValue];
-        
+
         if (lastSplinePoint.x < 255) {
             for (int i = lastSplinePoint.x + 1; i <= 255; i++) {
                 NSPoint newNSPoint = NSMakePoint(i, 255);
@@ -321,10 +321,10 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
             }
         }
 #endif
-        
+
         // Prepare the spline points.
         NSMutableArray *preparedSplinePoints = [NSMutableArray arrayWithCapacity:[splinePoints count]];
-        for (int i=0; i<[splinePoints count]; i++) 
+        for (int i=0; i<[splinePoints count]; i++)
         {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
             CGPoint newPoint = [[splinePoints objectAtIndex:i] CGPointValue];
@@ -332,20 +332,20 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
             NSPoint newPoint = [[splinePoints objectAtIndex:i] pointValue];
 #endif
             CGPoint origPoint = CGPointMake(newPoint.x, newPoint.x);
-            
+
             float distance = sqrt(pow((origPoint.x - newPoint.x), 2.0) + pow((origPoint.y - newPoint.y), 2.0));
-            
-            if (origPoint.y > newPoint.y) 
+
+            if (origPoint.y > newPoint.y)
             {
                 distance = -distance;
             }
-            
+
             [preparedSplinePoints addObject:[NSNumber numberWithFloat:distance]];
         }
-        
+
         return preparedSplinePoints;
     }
-    
+
     return nil;
 }
 
@@ -353,7 +353,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 - (NSMutableArray *)splineCurve:(NSArray *)points
 {
     NSMutableArray *sdA = [self secondDerivative:points];
-    
+
     // [points count] is equal to [sdA count]
     NSInteger n = [sdA count];
     if (n < 1)
@@ -361,17 +361,17 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
         return nil;
     }
     double sd[n];
-    
+
     // From NSMutableArray to sd[n];
-    for (int i=0; i<n; i++) 
+    for (int i=0; i<n; i++)
     {
         sd[i] = [[sdA objectAtIndex:i] doubleValue];
     }
-    
-    
+
+
     NSMutableArray *output = [NSMutableArray arrayWithCapacity:(n+1)];
-                              
-    for(int i=0; i<n-1 ; i++) 
+
+    for(int i=0; i<n-1 ; i++)
     {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
         CGPoint cur = [[points objectAtIndex:i] CGPointValue];
@@ -380,24 +380,24 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
         NSPoint cur = [[points objectAtIndex:i] pointValue];
         NSPoint next = [[points objectAtIndex:(i+1)] pointValue];
 #endif
-        
-        for(int x=cur.x;x<(int)next.x;x++) 
+
+        for(int x=cur.x;x<(int)next.x;x++)
         {
             double t = (double)(x-cur.x)/(next.x-cur.x);
-            
+
             double a = 1-t;
             double b = t;
             double h = next.x-cur.x;
-            
+
             double y= a*cur.y + b*next.y + (h*h/6)*( (a*a*a-a)*sd[i]+ (b*b*b-b)*sd[i+1] );
-                        
+
             if (y > 255.0)
             {
-                y = 255.0;   
+                y = 255.0;
             }
             else if (y < 0.0)
             {
-                y = 0.0;   
+                y = 0.0;
             }
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
             [output addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];
@@ -406,7 +406,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 #endif
         }
     }
-    
+
     // The above always misses the last point because the last point is the last next, so we approach but don't equal it.
     [output addObject:[points lastObject]];
     return output;
@@ -419,15 +419,15 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
     {
         return nil;
     }
-    
+
     double matrix[n][3];
     double result[n];
     matrix[0][1]=1;
     // What about matrix[0][1] and matrix[0][0]? Assuming 0 for now (Brad L.)
-    matrix[0][0]=0;    
-    matrix[0][2]=0;    
-    
-    for(int i=1;i<n-1;i++) 
+    matrix[0][0]=0;
+    matrix[0][2]=0;
+
+    for(int i=1;i<n-1;i++)
     {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
         CGPoint P1 = [[points objectAtIndex:(i-1)] CGPointValue];
@@ -438,48 +438,48 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
         NSPoint P2 = [[points objectAtIndex:i] pointValue];
         NSPoint P3 = [[points objectAtIndex:(i+1)] pointValue];
 #endif
-        
+
         matrix[i][0]=(double)(P2.x-P1.x)/6;
         matrix[i][1]=(double)(P3.x-P1.x)/3;
         matrix[i][2]=(double)(P3.x-P2.x)/6;
         result[i]=(double)(P3.y-P2.y)/(P3.x-P2.x) - (double)(P2.y-P1.y)/(P2.x-P1.x);
     }
-    
+
     // What about result[0] and result[n-1]? Assuming 0 for now (Brad L.)
     result[0] = 0;
     result[n-1] = 0;
-	
+
     matrix[n-1][1]=1;
     // What about matrix[n-1][0] and matrix[n-1][2]? For now, assuming they are 0 (Brad L.)
     matrix[n-1][0]=0;
     matrix[n-1][2]=0;
-    
-  	// solving pass1 (up->down)
-  	for(int i=1;i<n;i++) 
+
+      // solving pass1 (up->down)
+      for(int i=1;i<n;i++)
     {
-		double k = matrix[i][0]/matrix[i-1][1];
-		matrix[i][1] -= k*matrix[i-1][2];
-		matrix[i][0] = 0;
-		result[i] -= k*result[i-1];
+        double k = matrix[i][0]/matrix[i-1][1];
+        matrix[i][1] -= k*matrix[i-1][2];
+        matrix[i][0] = 0;
+        result[i] -= k*result[i-1];
     }
-	// solving pass2 (down->up)
-	for(NSInteger i=n-2;i>=0;i--)
+    // solving pass2 (down->up)
+    for(NSInteger i=n-2;i>=0;i--)
     {
-		double k = matrix[i][2]/matrix[i+1][1];
-		matrix[i][1] -= k*matrix[i+1][0];
-		matrix[i][2] = 0;
-		result[i] -= k*result[i+1];
-	}
-    
+        double k = matrix[i][2]/matrix[i+1][1];
+        matrix[i][1] -= k*matrix[i+1][0];
+        matrix[i][2] = 0;
+        result[i] -= k*result[i+1];
+    }
+
     double y2[n];
     for(int i=0;i<n;i++) y2[i]=result[i]/matrix[i][1];
-    
+
     NSMutableArray *output = [NSMutableArray arrayWithCapacity:n];
-    for (int i=0;i<n;i++) 
+    for (int i=0;i<n;i++)
     {
         [output addObject:[NSNumber numberWithDouble:y2[i]]];
     }
-    
+
     return output;
 }
 
@@ -496,7 +496,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            
+
             toneCurveByteArray = calloc(256 * 4, sizeof(GLubyte));
         }
         else
@@ -504,7 +504,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
             glActiveTexture(GL_TEXTURE3);
             glBindTexture(GL_TEXTURE_2D, toneCurveTexture);
         }
-        
+
         if ( ([_redCurve count] >= 256) && ([_greenCurve count] >= 256) && ([_blueCurve count] >= 256) && ([_rgbCompositeCurve count] >= 256))
         {
             for (unsigned int currentCurveIndex = 0; currentCurveIndex < 256; currentCurveIndex++)
@@ -518,9 +518,9 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
                 toneCurveByteArray[currentCurveIndex * 4 + 2] = fmin(fmax(r + [[_rgbCompositeCurve objectAtIndex:r] floatValue], 0), 255);
                 toneCurveByteArray[currentCurveIndex * 4 + 3] = 255;
             }
-            
+
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256 /*width*/, 1 /*height*/, 0, GL_BGRA, GL_UNSIGNED_BYTE, toneCurveByteArray);
-        }        
+        }
     });
 }
 
@@ -534,7 +534,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
         [firstInputFramebuffer unlock];
         return;
     }
-    
+
     [GPUImageContext setActiveShaderProgram:filterProgram];
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
     [outputFramebuffer activateFramebuffer];
@@ -545,18 +545,18 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 
     glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-  	glActiveTexture(GL_TEXTURE2);
-  	glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-  	glUniform1i(filterInputTextureUniform, 2);	
-    
+
+      glActiveTexture(GL_TEXTURE2);
+      glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+      glUniform1i(filterInputTextureUniform, 2);
+
     glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, toneCurveTexture);                
-    glUniform1i(toneCurveTextureUniform, 3);	
-    
+    glBindTexture(GL_TEXTURE_2D, toneCurveTexture);
+    glUniform1i(toneCurveTextureUniform, 3);
+
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
     glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-    
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     [firstInputFramebuffer unlock];
     if (usingNextFrameForImageCapture)
@@ -578,7 +578,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 
     _blueControlPoints = [points copy];
     _blueCurve = [self getPreparedSplineCurve:_blueControlPoints];
-    
+
     [self updateToneCurveTexture];
 }
 
@@ -587,16 +587,16 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 {
   _rgbCompositeControlPoints = [newValue copy];
   _rgbCompositeCurve = [self getPreparedSplineCurve:_rgbCompositeControlPoints];
-  
+
   [self updateToneCurveTexture];
 }
 
 
 - (void)setRedControlPoints:(NSArray *)newValue;
-{  
+{
     _redControlPoints = [newValue copy];
     _redCurve = [self getPreparedSplineCurve:_redControlPoints];
-    
+
     [self updateToneCurveTexture];
 }
 
@@ -605,7 +605,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 {
     _greenControlPoints = [newValue copy];
     _greenCurve = [self getPreparedSplineCurve:_greenControlPoints];
-    
+
     [self updateToneCurveTexture];
 }
 
@@ -614,7 +614,7 @@ NSString *const kGPUImageToneCurveFragmentShaderString = SHADER_STRING
 {
     _blueControlPoints = [newValue copy];
     _blueCurve = [self getPreparedSplineCurve:_blueControlPoints];
-    
+
     [self updateToneCurveTexture];
 }
 

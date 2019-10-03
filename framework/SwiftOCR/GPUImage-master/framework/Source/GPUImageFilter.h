@@ -42,25 +42,25 @@ struct GPUMatrix3x3 {
 typedef struct GPUMatrix3x3 GPUMatrix3x3;
 
 /** GPUImage's base filter class
- 
+
  Filters and other subsequent elements in the chain conform to the GPUImageInput protocol, which lets them take in the supplied or processed texture from the previous link in the chain and do something with it. Objects one step further down the chain are considered targets, and processing can be branched by adding multiple targets to a single output or filter.
  */
 @interface GPUImageFilter : GPUImageOutput <GPUImageInput>
 {
     GPUImageFramebuffer *firstInputFramebuffer;
-    
+
     GLProgram *filterProgram;
     GLint filterPositionAttribute, filterTextureCoordinateAttribute;
     GLint filterInputTextureUniform;
     GLfloat backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha;
-    
+
     BOOL isEndProcessing;
 
     CGSize currentFilterSize;
     GPUImageRotationMode inputRotation;
-    
+
     BOOL currentlyReceivingMonochromeInput;
-    
+
     NSMutableDictionary *uniformStateRestorationBlocks;
     dispatch_semaphore_t imageCaptureSemaphore;
 }
@@ -73,7 +73,7 @@ typedef struct GPUMatrix3x3 GPUMatrix3x3;
 
 /**
  Initialize with vertex and fragment shaders
- 
+
  You make take advantage of the SHADER_STRING macro to write your shaders in-line.
  @param vertexShaderString Source code of the vertex shader to use
  @param fragmentShaderString Source code of the fragment shader to use
@@ -82,7 +82,7 @@ typedef struct GPUMatrix3x3 GPUMatrix3x3;
 
 /**
  Initialize with a fragment shader
- 
+
  You may take advantage of the SHADER_STRING macro to write your shader in-line.
  @param fragmentShaderString Source code of fragment shader to use
  */

@@ -5,7 +5,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
 
     @IBOutlet var filterSlider: UISlider?
     @IBOutlet var filterView: GPUImageView?
-    
+
     let videoCamera: GPUImageVideoCamera
     var blendImage: GPUImagePicture?
 
@@ -16,7 +16,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
 
         super.init(coder: aDecoder)!
     }
-    
+
     var filterOperation: FilterOperationInterface? {
         didSet {
             self.configureView()
@@ -26,7 +26,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
     func configureView() {
         if let currentFilterConfiguration = self.filterOperation {
             self.title = currentFilterConfiguration.titleName
-            
+
             // Configure the filter chain, ending with the view
             if let view = self.filterView {
                 switch currentFilterConfiguration.filterOperationType {
@@ -44,7 +44,7 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
                     let inputToFunction:(GPUImageOutput, GPUImageOutput?) = setupFunction(camera:videoCamera, outputView:view) // Type inference falls down, for now needs this hard cast
                     currentFilterConfiguration.configureCustomFilter(inputToFunction)
                 }
-                
+
                 videoCamera.startCameraCapture()
             }
 
@@ -62,10 +62,10 @@ class FilterDisplayViewController: UIViewController, UISplitViewControllerDelega
                     self.updateSliderValue()
                 }
             }
-            
+
         }
     }
-    
+
     @IBAction func updateSliderValue() {
         if let currentFilterConfiguration = self.filterOperation {
             switch (currentFilterConfiguration.sliderConfiguration) {

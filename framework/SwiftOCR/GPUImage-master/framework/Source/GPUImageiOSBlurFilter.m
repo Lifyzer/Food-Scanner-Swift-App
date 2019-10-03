@@ -16,27 +16,27 @@
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
     // First pass: downsample and desaturate
     saturationFilter = [[GPUImageSaturationFilter alloc] init];
     [self addFilter:saturationFilter];
-    
+
     // Second pass: apply a strong Gaussian blur
     blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
     [self addFilter:blurFilter];
-    
+
     // Third pass: upsample and adjust luminance range
     luminanceRangeFilter = [[GPUImageLuminanceRangeFilter alloc] init];
     [self addFilter:luminanceRangeFilter];
-        
+
     [saturationFilter addTarget:blurFilter];
     [blurFilter addTarget:luminanceRangeFilter];
-    
+
     self.initialFilters = [NSArray arrayWithObject:saturationFilter];
     self.terminalFilter = luminanceRangeFilter;
-    
+
     self.blurRadiusInPixels = 12.0;
     self.saturation = 0.8;
     self.downsampling = 4.0;
@@ -54,7 +54,7 @@
         [saturationFilter forceProcessingAtSize:CGSizeMake(rotatedSize.width / _downsampling, rotatedSize.height / _downsampling)];
         [luminanceRangeFilter forceProcessingAtSize:rotatedSize];
     }
-    
+
     [super setInputSize:newSize atIndex:textureIndex];
 }
 

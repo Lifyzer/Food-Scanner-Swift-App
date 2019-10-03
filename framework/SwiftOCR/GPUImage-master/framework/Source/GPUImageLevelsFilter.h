@@ -18,7 +18,7 @@
     GLint maxUniform;
     GLint minOutputUniform;
     GLint maxOutputUniform;
-    
+
     GPUVector3 minVector, midVector, maxVector, minOutputVector, maxOutputVector;
 }
 

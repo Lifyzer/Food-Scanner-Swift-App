@@ -5,9 +5,9 @@ typedef enum { kGPUImageHistogramRed, kGPUImageHistogramGreen, kGPUImageHistogra
 @interface GPUImageHistogramFilter : GPUImageFilter
 {
     GPUImageHistogramType histogramType;
-    
+
     GLubyte *vertexSamplingCoordinates;
-    
+
     GLProgram *secondFilterProgram, *thirdFilterProgram;
     GLint secondFilterPositionAttribute, thirdFilterPositionAttribute;
 }

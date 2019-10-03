@@ -32,10 +32,10 @@
     NSAssert(!CGRectIsEmpty(subRect), @"Passed sub rect must not be empty");
 
     NSAssert(CGSizeEqualToSize(subimageRect.size, subRect.size), @"Subimage size must match the size of sub rect");
-    
+
     // We don't have to worry about scaling the subimage or finding a power of two size.
     // The initialization has taken care of that for us.
-    
+
     dispatch_semaphore_signal(imageUpdateSemaphore);
 
     BOOL shouldRedrawUsingCoreGraphics = NO;
@@ -59,11 +59,11 @@
     {
         // For resized or incompatible image: redraw
         imageData = (GLubyte *) calloc(1, (int)subimageRect.size.width * (int)subimageRect.size.height * 4);
-        
+
         CGColorSpaceRef genericRGBColorspace = CGColorSpaceCreateDeviceRGB();
-        
+
         CGContextRef imageContext = CGBitmapContextCreate(imageData, (size_t)subimageRect.size.width, (size_t)subimageRect.size.height, 8, (size_t)subimageRect.size.width * 4, genericRGBColorspace,  kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast);
-        
+
         CGContextDrawImage(imageContext, CGRectMake(0.0, 0.0, subimageRect.size.width, subimageRect.size.height), subimageSource);
         CGContextRelease(imageContext);
         CGColorSpaceRelease(genericRGBColorspace);
@@ -74,16 +74,16 @@
         dataFromImageDataProvider = CGDataProviderCopyData(CGImageGetDataProvider(subimageSource));
         imageData = (GLubyte *)CFDataGetBytePtr(dataFromImageDataProvider);
     }
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
         [outputFramebuffer disableReferenceCounting];
-        
+
         glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
-        
+
         // no need to use self.outputTextureOptions here since pictures need this texture formats and type
         glTexSubImage2D(GL_TEXTURE_2D, 0, subRect.origin.x, subRect.origin.y, (GLint)subRect.size.width, subRect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-        
+
         if (self.shouldSmoothlyScaleOutput)
         {
             glGenerateMipmap(GL_TEXTURE_2D);

@@ -5,9 +5,9 @@ NSString *const kGPUImageTiltedTexelSamplingVertexShaderString = SHADER_STRING
 (
  attribute vec4 position;
  attribute vec4 inputTextureCoordinate;
- 
+
  uniform vec2 directionalTexelStep;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 oneStepBackTextureCoordinate;
  varying vec2 twoStepsBackTextureCoordinate;
@@ -17,11 +17,11 @@ NSString *const kGPUImageTiltedTexelSamplingVertexShaderString = SHADER_STRING
  varying vec2 twoStepsForwardTextureCoordinate;
  varying vec2 threeStepsForwardTextureCoordinate;
  varying vec2 fourStepsForwardTextureCoordinate;
- 
+
  void main()
  {
      gl_Position = position;
-     
+
      textureCoordinate = inputTextureCoordinate.xy;
      oneStepBackTextureCoordinate = inputTextureCoordinate.xy - directionalTexelStep;
      twoStepsBackTextureCoordinate = inputTextureCoordinate.xy - 2.0 * directionalTexelStep;
@@ -38,9 +38,9 @@ NSString *const kGPUImageTiltedTexelSamplingVertexShaderString = SHADER_STRING
 NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
 (
  precision highp float;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 oneStepBackTextureCoordinate;
  varying vec2 twoStepsBackTextureCoordinate;
@@ -50,7 +50,7 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
  varying vec2 twoStepsForwardTextureCoordinate;
  varying vec2 threeStepsForwardTextureCoordinate;
  varying vec2 fourStepsForwardTextureCoordinate;
- 
+
  void main()
  {
      // Box weights
@@ -81,7 +81,7 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
 NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 oneStepBackTextureCoordinate;
  varying vec2 twoStepsBackTextureCoordinate;
@@ -91,7 +91,7 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
  varying vec2 twoStepsForwardTextureCoordinate;
  varying vec2 threeStepsForwardTextureCoordinate;
  varying vec2 fourStepsForwardTextureCoordinate;
- 
+
  void main()
  {
      // Box weights
@@ -104,7 +104,7 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
      //     fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) * 0.1111111;
      //     fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.1111111;
      //     fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.1111111;
-     
+
      vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.18;
      fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.15;
      fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) *  0.12;
@@ -114,7 +114,7 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
      fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) *  0.12;
      fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.09;
      fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.05;
-     
+
      gl_FragColor = fragmentColor;
  }
 );
@@ -143,12 +143,12 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
     {
         return nil;
     }
-    
+
     directionalTexelStepUniform = [filterProgram uniformIndex:@"directionalTexelStep"];
-    
+
     self.blurSize = 2.5;
     self.blurAngle = 0.0;
-    
+
     return self;
 }
 
@@ -156,7 +156,7 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
 {
     CGSize oldInputSize = inputTextureSize;
     [super setInputSize:newSize atIndex:textureIndex];
-    
+
     if (!CGSizeEqualToSize(oldInputSize, inputTextureSize) && (!CGSizeEqualToSize(newSize, CGSizeZero)) )
     {
         [self recalculateTexelOffsets];
@@ -167,7 +167,7 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
 {
     CGFloat aspectRatio = 1.0;
     CGPoint texelOffsets;
-    
+
     if (GPUImageRotationSwapsWidthAndHeight(inputRotation))
     {
         aspectRatio = (inputTextureSize.width / inputTextureSize.height);
@@ -180,7 +180,7 @@ NSString *const kGPUImageMotionBlurFragmentShaderString = SHADER_STRING
         texelOffsets.x = _blurSize * cos(_blurAngle * M_PI / 180.0) * aspectRatio / inputTextureSize.width;
         texelOffsets.y = _blurSize * sin(_blurAngle * M_PI / 180.0) / inputTextureSize.width;
     }
-    
+
     [self setPoint:texelOffsets forUniform:directionalTexelStepUniform program:filterProgram];
 }
 

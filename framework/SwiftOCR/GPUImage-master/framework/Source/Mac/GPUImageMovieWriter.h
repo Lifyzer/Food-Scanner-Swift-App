@@ -15,16 +15,16 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 @interface GPUImageMovieWriter : NSObject <GPUImageInput>
 {
     CMVideoDimensions videoDimensions;
-	CMVideoCodecType videoType;
+    CMVideoCodecType videoType;
 
     NSURL *movieURL;
     NSString *fileType;
-	AVAssetWriter *assetWriter;
-	AVAssetWriterInput *assetWriterAudioInput;
-	AVAssetWriterInput *assetWriterVideoInput;
+    AVAssetWriter *assetWriter;
+    AVAssetWriterInput *assetWriterAudioInput;
+    AVAssetWriterInput *assetWriterVideoInput;
     AVAssetWriterInputPixelBufferAdaptor *assetWriterPixelBufferInput;
-	dispatch_queue_t movieWritingQueue;
-    
+    dispatch_queue_t movieWritingQueue;
+
     CGSize videoSize;
     GPUImageRotationMode inputRotation;
 }

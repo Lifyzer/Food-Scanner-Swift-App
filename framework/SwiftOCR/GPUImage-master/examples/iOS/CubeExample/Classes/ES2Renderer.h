@@ -12,8 +12,8 @@
 @private
     EAGLContext *context;
 
-	GLuint textureForCubeFace, outputTexture;
-    
+    GLuint textureForCubeFace, outputTexture;
+
     // The pixel dimensions of the CAEAGLLayer
     GLint backingWidth;
     GLint backingHeight;
@@ -21,10 +21,10 @@
     // The OpenGL ES names for the framebuffer and renderbuffer used to render to this view
     GLuint defaultFramebuffer, colorRenderbuffer;
 
-	CATransform3D currentCalculatedMatrix;
+    CATransform3D currentCalculatedMatrix;
 
     GLuint program;
-    
+
     GPUImageVideoCamera *videoCamera;
     GPUImageFilter *inputFilter;
     GPUImageTextureOutput *textureOutput;

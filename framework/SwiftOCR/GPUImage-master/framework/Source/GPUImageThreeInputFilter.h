@@ -11,7 +11,7 @@ extern NSString *const kGPUImageThreeInputTextureVertexShaderString;
     GPUImageRotationMode inputRotation3;
     GLuint filterSourceTexture3;
     CMTime thirdFrameTime;
-    
+
     BOOL hasSetSecondTexture, hasReceivedThirdFrame, thirdFrameWasVideo;
     BOOL thirdFrameCheckDisabled;
 }

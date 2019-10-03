@@ -3,7 +3,7 @@
 NSString *const kGPUImageLineGeneratorVertexShaderString = SHADER_STRING
 (
  attribute vec4 position;
- 
+
  void main()
  {
      gl_Position = position;
@@ -14,7 +14,7 @@ NSString *const kGPUImageLineGeneratorVertexShaderString = SHADER_STRING
 NSString *const kGPUImageLineGeneratorFragmentShaderString = SHADER_STRING
 (
  uniform lowp vec3 lineColor;
- 
+
  void main()
  {
      gl_FragColor = vec4(lineColor, 1.0);
@@ -24,7 +24,7 @@ NSString *const kGPUImageLineGeneratorFragmentShaderString = SHADER_STRING
 NSString *const kGPUImageLineGeneratorFragmentShaderString = SHADER_STRING
 (
  uniform vec3 lineColor;
- 
+
  void main()
  {
      gl_FragColor = vec4(lineColor, 1.0);
@@ -51,15 +51,15 @@ NSString *const kGPUImageLineGeneratorFragmentShaderString = SHADER_STRING
     {
         return nil;
     }
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         lineWidthUniform = [filterProgram uniformIndex:@"lineWidth"];
         lineColorUniform = [filterProgram uniformIndex:@"lineColor"];
-        
+
         self.lineWidth = 1.0;
         [self setLineColorRed:0.0 green:1.0 blue:0.0];
     });
-    
+
     return self;
 }
 
@@ -85,12 +85,12 @@ NSString *const kGPUImageLineGeneratorFragmentShaderString = SHADER_STRING
     {
         return;
     }
-    
+
     if (lineCoordinates == NULL)
     {
         [self generateLineCoordinates];
     }
-    
+
     // Iterate through and generate vertices from the slopes and intercepts
     NSUInteger currentVertexIndex = 0;
     NSUInteger currentLineIndex = 0;
@@ -99,7 +99,7 @@ NSString *const kGPUImageLineGeneratorFragmentShaderString = SHADER_STRING
     {
         GLfloat slope = lineSlopeAndIntercepts[currentLineIndex++];
         GLfloat intercept = lineSlopeAndIntercepts[currentLineIndex++];
-        
+
         if (slope > 9000.0) // Vertical line
         {
             lineCoordinates[currentVertexIndex++] = intercept;
@@ -115,23 +115,23 @@ NSString *const kGPUImageLineGeneratorFragmentShaderString = SHADER_STRING
             lineCoordinates[currentVertexIndex++] = slope * 1.0 + intercept;
         }
     }
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext setActiveShaderProgram:filterProgram];
-        
+
         outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
         [outputFramebuffer activateFramebuffer];
-        
+
         glClearColor(0.0, 0.0, 0.0, 0.0);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+
         glBlendEquation(GL_FUNC_ADD);
         glBlendFunc(GL_ONE, GL_ONE);
         glEnable(GL_BLEND);
-        
+
         glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, lineCoordinates);
         glDrawArrays(GL_LINES, 0, ((unsigned int)numberOfLines * 2));
-        
+
         glDisable(GL_BLEND);
 
         [self informTargetsAboutNewFrameAtTime:frameTime];
@@ -156,7 +156,7 @@ NSString *const kGPUImageLineGeneratorFragmentShaderString = SHADER_STRING
 - (void)setLineColorRed:(GLfloat)redComponent green:(GLfloat)greenComponent blue:(GLfloat)blueComponent;
 {
     GPUVector3 lineColor = {redComponent, greenComponent, blueComponent};
-    
+
     [self setVec3:lineColor forUniform:lineColorUniform program:filterProgram];
 }
 

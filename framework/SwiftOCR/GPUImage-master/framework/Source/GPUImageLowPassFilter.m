@@ -8,31 +8,31 @@
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
     // Take in the frame and blend it with the previous one
     dissolveBlendFilter = [[GPUImageDissolveBlendFilter alloc] init];
     [self addFilter:dissolveBlendFilter];
-    
+
     // Buffer the result to be fed back into the blend
     bufferFilter = [[GPUImageBuffer alloc] init];
     [self addFilter:bufferFilter];
-    
+
     // Texture location 0 needs to be the original image for the dissolve blend
     [bufferFilter addTarget:dissolveBlendFilter atTextureLocation:1];
     [dissolveBlendFilter addTarget:bufferFilter];
-    
+
     [dissolveBlendFilter disableSecondFrameCheck];
-    
+
     // To prevent double updating of this filter, disable updates from the sharp image side
     //    self.inputFilterToIgnoreForUpdates = unsharpMaskFilter;
-    
+
     self.initialFilters = [NSArray arrayWithObject:dissolveBlendFilter];
     self.terminalFilter = dissolveBlendFilter;
-    
+
     self.filterStrength = 0.5;
-    
+
     return self;
 }
 

@@ -11,11 +11,11 @@
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
     filters = [[NSMutableArray alloc] init];
-    
+
     return self;
 }
 
@@ -116,7 +116,7 @@
 //    {
 //        return [[_initialFilters objectAtIndex:0] nextAvailableTextureIndex];
 //    }
-    
+
     return 0;
 }
 
@@ -168,7 +168,7 @@
             }
         }
     }
-    
+
     return cachedMaximumOutputSize;
      */
 }
@@ -178,7 +178,7 @@
     if (!isEndProcessing)
     {
         isEndProcessing = YES;
-        
+
         for (id<GPUImageInput> currentTarget in _initialFilters)
         {
             [currentTarget endProcessing];
@@ -193,7 +193,7 @@
     {
         allInputsWantMonochromeInput = allInputsWantMonochromeInput && [currentFilter wantsMonochromeInput];
     }
-    
+
     return allInputsWantMonochromeInput;
 }
 

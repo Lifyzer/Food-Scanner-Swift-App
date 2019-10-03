@@ -50,14 +50,14 @@ public enum ErrorFunction {
 
 /// A 3-Layer Feed-Forward Artificial Neural Network
 public struct FFNN {
-    
+
     /// The number of input nodes to the network (read only).
     let numInputs: Int
     /// The number of hidden nodes in the network (read only).
     let numHidden: Int
     /// The number of output nodes from the network (read only).
     let numOutputs: Int
-    
+
     /// The 'learning rate' parameter to apply during backpropagation.
     /// This parameter may be safely tuned at any time, except for during a backpropagation cycle.
     var learningRate: Float {
@@ -65,7 +65,7 @@ public struct FFNN {
             self.mfLR = (1 - self.momentumFactor) * newRate
         }
     }
-    
+
     /// The 'momentum factor' to apply during backpropagation.
     /// This parameter may be safely tuned at any time, except for during a backpropagation cycle.
     var momentumFactor: Float {
@@ -73,10 +73,10 @@ public struct FFNN {
             self.mfLR = (1 - newMomentum) * self.learningRate
         }
     }
-    
+
     /// The activation function to use during update cycles.
     internal fileprivate(set) var activationFunction : ActivationFunction = .Sigmoid
-    
+
     /// The error function used for training
     internal fileprivate(set) var errorFunction : ErrorFunction = .default(average: false)
     /**
@@ -85,11 +85,11 @@ public struct FFNN {
      Some known properties are computed in advance in order to to avoid casting, integer division
      and modulus operations inside loops.
      */
-    
+
     /// (1 - momentumFactor) * learningRate.
     /// Used frequently during backpropagation.
     fileprivate var mfLR: Float
-    
+
     /// The number of input nodes, INCLUDING the bias node.
     fileprivate let numInputNodes: Int
     /// The number of hidden nodes, INCLUDING the bias node.
@@ -98,7 +98,7 @@ public struct FFNN {
     fileprivate let numHiddenWeights: Int
     /// The total number of weights connecting all hidden nodes to all output nodes.
     fileprivate let numOutputWeights: Int
-    
+
     /// The current weights leading into all of the hidden nodes, serialized in a single array.
     fileprivate var hiddenWeights: [Float]
     /// The weights leading into all of the hidden nodes from the previous round of training, serialized in a single array.
@@ -109,14 +109,14 @@ public struct FFNN {
     /// The weights leading into all of the output nodes from the previous round of training, serialized in a single array.
     /// Used for applying momentum during backpropagation.
     fileprivate var previousOutputWeights: [Float]
-    
+
     /// The most recent set of inputs applied to the network.
     fileprivate var inputCache: [Float]
     /// The most recent outputs from each of the hidden nodes.
     fileprivate var hiddenOutputCache: [Float]
     /// The most recent output from the network.
     fileprivate var outputCache: [Float]
-    
+
     /// Temporary storage while calculating hidden errors, for use during backpropagation.
     fileprivate var hiddenErrorSumsCache: [Float]
     /// Temporary storage while calculating hidden errors, for use during backpropagation.
@@ -127,7 +127,7 @@ public struct FFNN {
     fileprivate var newHiddenWeights: [Float]
     /// Temporary storage while updating output weights, for use during backpropagation.
     fileprivate var newOutputWeights: [Float]
-    
+
     /// The output error indices corresponding to each output weight.
     fileprivate var outputErrorIndices = [Int]()
     /// The hidden output indices corresponding to each output weight.
@@ -136,54 +136,54 @@ public struct FFNN {
     fileprivate var hiddenErrorIndices = [Int]()
     /// The input indices corresponding to each hidden weight.
     fileprivate var inputIndices = [Int]()
-    
+
     /// Initializes a feed-forward neural network.
     public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float = 0.7, momentum: Float = 0.4, weights: [Float]? = nil, activationFunction: ActivationFunction = .Default, errorFunction: ErrorFunction = .default(average: false)) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
             print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
-        
+
         self.numHiddenWeights = (hidden * (inputs + 1))
         self.numOutputWeights = (outputs * (hidden + 1))
-        
+
         self.numInputs = inputs
         self.numHidden = hidden
         self.numOutputs = outputs
-        
+
         self.numInputNodes = inputs + 1
         self.numHiddenNodes = hidden + 1
-        
+
         self.learningRate = learningRate
         self.momentumFactor = momentum
         self.mfLR = (1 - momentum) * learningRate
-        
+
         self.inputCache = [Float](repeating: 0, count: self.numInputNodes)
         self.hiddenOutputCache = [Float](repeating: 0, count: self.numHiddenNodes)
         self.outputCache = [Float](repeating: 0, count: outputs)
-        
+
         self.outputErrorsCache = [Float](repeating: 0, count: self.numOutputs)
         self.hiddenErrorSumsCache = [Float](repeating: 0, count: self.numHiddenNodes)
         self.hiddenErrorsCache = [Float](repeating: 0, count: self.numHiddenNodes)
         self.newOutputWeights = [Float](repeating: 0, count: self.numOutputWeights)
         self.newHiddenWeights = [Float](repeating: 0, count: self.numHiddenWeights)
-        
+
         self.activationFunction = activationFunction
         self.errorFunction = errorFunction
         for weightIndex in 0..<self.numOutputWeights {
             self.outputErrorIndices.append(weightIndex / self.numHiddenNodes)
             self.hiddenOutputIndices.append(weightIndex % self.numHiddenNodes)
         }
-        
+
         for weightIndex in 0..<self.numHiddenWeights {
             self.hiddenErrorIndices.append(weightIndex / self.numInputNodes)
             self.inputIndices.append(weightIndex % self.numInputNodes)
         }
-        
+
         self.hiddenWeights = [Float](repeating: 0, count: self.numHiddenWeights)
         self.previousHiddenWeights = self.hiddenWeights
         self.outputWeights = [Float](repeating: 0, count: outputs * self.numHiddenNodes)
         self.previousOutputWeights = self.outputWeights
-        
+
         if let weights = weights {
             guard weights.count == numHiddenWeights + numOutputWeights else {
                 print("FFNN initialization error: Incorrect number of weights provided. Randomized weights will be used instead.")
@@ -195,9 +195,9 @@ public struct FFNN {
         } else {
             self.randomizeWeights()
         }
-        
+
     }
-    
+
     /// Propagates the given inputs through the neural network, returning the network's output.
     /// - Parameter inputs: An array of `Float`s, each element corresponding to one input node.
     /// - Returns: The network's output after applying the given inputs, as an array of `Float`s.
@@ -206,37 +206,37 @@ public struct FFNN {
         guard inputs.count == self.numInputs else {
             throw FFNNError.invalidAnswerError("Invalid number of inputs given: \(inputs.count). Expected: \(self.numInputs)")
         }
-        
+
         // Cache the inputs
         // Note: A bias node is inserted at index 0, followed by each of the given inputs
         self.inputCache[0] = 1.0
         for i in 1..<self.numInputNodes {
             self.inputCache[i] = inputs[i - 1]
         }
-        
+
         // Calculate the weighted sums for the hidden layer
         vDSP_mmul(self.hiddenWeights, 1,
                   self.inputCache, 1,
                   &self.hiddenOutputCache, 1,
                   vDSP_Length(self.numHidden), vDSP_Length(1), vDSP_Length(self.numInputNodes))
-        
+
         // Apply the activation function to the hidden layer nodes
         // Note: Array elements are shifted one index to the right, in order to efficiently insert the bias node at index 0
         self.activateHidden()
-        
+
         //  Calculate the weighted sums for the output layer
         vDSP_mmul(self.outputWeights, 1,
                   self.hiddenOutputCache, 1,
                   &self.outputCache, 1,
                   vDSP_Length(self.numOutputs), vDSP_Length(1), vDSP_Length(self.numHiddenNodes))
-        
+
         // Apply the activation function to the output layer nodes
         self.activateOutput()
-        
+
         // Return the final outputs
         return self.outputCache
     }
-    
+
     /// Trains the network by comparing its most recent output to the given 'answers', adjusting the network's weights as needed.
     /// - Parameter answer: The 'correct' desired output for the most recent update to the network, as an array of `Float`s.
     /// - Returns: The total calculated error from the most recent update.
@@ -245,7 +245,7 @@ public struct FFNN {
         guard answer.count == self.numOutputs else {
             throw FFNNError.invalidAnswerError("Invalid number of outputs given in answer: \(answer.count). Expected: \(self.numOutputs)")
         }
-        
+
         // Calculate output errors
         for (outputIndex, output) in self.outputCache.enumerated() {
             switch self.activationFunction {
@@ -256,7 +256,7 @@ public struct FFNN {
                 self.outputErrorsCache[outputIndex] = self.activationDerivative(output) * (answer[outputIndex] - output)
             }
         }
-        
+
         // Calculate hidden errors
         vDSP_mmul(self.outputErrorsCache, 1,
                   self.outputWeights, 1,
@@ -265,7 +265,7 @@ public struct FFNN {
         for (errorIndex, error) in self.hiddenErrorSumsCache.enumerated() {
             self.hiddenErrorsCache[errorIndex] = self.activationDerivative(self.hiddenOutputCache[errorIndex]) * error
         }
-        
+
         // Update output weights
         for weightIndex in 0..<self.outputWeights.count {
             let offset = self.outputWeights[weightIndex] + (self.momentumFactor * (self.outputWeights[weightIndex] - self.previousOutputWeights[weightIndex]))
@@ -274,10 +274,10 @@ public struct FFNN {
             let mfLRErrIn = self.mfLR * self.outputErrorsCache[errorIndex] * self.hiddenOutputCache[hiddenOutputIndex]
             self.newOutputWeights[weightIndex] = offset + mfLRErrIn
         }
-        
+
         vDSP_mmov(outputWeights, &previousOutputWeights, 1, vDSP_Length(numOutputWeights), 1, 1)
         vDSP_mmov(newOutputWeights, &outputWeights, 1, vDSP_Length(numOutputWeights), 1, 1)
-        
+
         // Update hidden weights
         for weightIndex in 0..<self.hiddenWeights.count {
             let offset = self.hiddenWeights[weightIndex] + (self.momentumFactor * (self.hiddenWeights[weightIndex]  - self.previousHiddenWeights[weightIndex]))
@@ -287,16 +287,16 @@ public struct FFNN {
             let mfLRErrIn = self.mfLR * self.hiddenErrorsCache[errorIndex + 1] * self.inputCache[inputIndex]
             self.newHiddenWeights[weightIndex] = offset + mfLRErrIn
         }
-        
+
         vDSP_mmov(hiddenWeights, &previousHiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
         vDSP_mmov(newHiddenWeights, &hiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
-        
+
         // Sum and return the output errors
         return self.outputErrorsCache.reduce(0, { (sum, error) -> Float in
             return sum + abs(error)
         })
     }
-    
+
     /// Trains the network using the given set of inputs and corresponding outputs.
     /// - Parameters:
     ///     - inputs: A 2D array of `Float`s.
@@ -313,9 +313,9 @@ public struct FFNN {
         guard errorThreshold > 0 else {
             throw FFNNError.invalidInputsError("Error threshold must be greater than zero!")
         }
-        
+
         // TODO: Allow trainer to exit early or regenerate new weights if it gets stuck in local minima
-        
+
         // Train forever until the desired error threshold is met
         while true {
             for (index, input) in inputs.enumerated() {
@@ -324,21 +324,21 @@ public struct FFNN {
             }
             // Calculate the total error of the validation set after each epoch
             let errorSum: Float = try self.error(testInputs, expected: testAnswers)
-            
+
             print("\(Date()) ----> \(errorSum)")
-            
+
             if errorSum < errorThreshold || !shouldContinue(errorSum){
                 break
             }
         }
         return self.hiddenWeights + self.outputWeights
     }
-    
+
     /// Returns a serialized array of the network's current weights.
     public func getWeights() -> [Float] {
         return self.hiddenWeights + self.outputWeights
     }
-    
+
     /// Resets the network with the given weights (i.e. from a pre-trained network).
     /// This change may be performed at any time except while the network is in the process of updating or backpropagating.
     /// - Parameter weights: An array of `Float`s, to be used as the weights for the network.
@@ -348,7 +348,7 @@ public struct FFNN {
         guard weights.count == self.numHiddenWeights + self.numOutputWeights else {
             throw FFNNError.invalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
         }
-        
+
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
@@ -357,14 +357,14 @@ public struct FFNN {
 // MARK:- FFNN private methods
 
 public extension FFNN {
-    
+
     /// Returns an NSURL for a document with the given filename in the default documents directory.
     public static func getFileURL(_ filename: String) -> URL {
         let manager = FileManager.default
         let dirURL = try! manager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         return dirURL.appendingPathComponent(filename)
     }
-    
+
     /// Reads a FFNN stored in a file at the given URL.
     public static func read(_ url: URL) -> FFNN? {
         guard let data = try? Data(contentsOf: url) else {
@@ -373,7 +373,7 @@ public extension FFNN {
         guard let storage = NSKeyedUnarchiver.unarchiveObject(with: data) as? [String : AnyObject] else {
             return nil
         }
-        
+
         // Read dictionary from file
         guard let numInputs = storage["inputs"] as? Int,
             let numHidden = storage["hidden"] as? Int,
@@ -385,20 +385,20 @@ public extension FFNN {
             let outputWeights = storage["outputWeights"] as? [Float] else {
                 return nil
         }
-        
+
         // Fallback to Default activation if an unknown value is found (i.e. newer version of FFNN)
         var activation = ActivationFunction(rawValue: activationFunction)
         if activation == nil {
             print("Warning: Unknown activation function read from file. Using Default activation instead.")
             activation = ActivationFunction.Default
         }
-        
+
         let weights = hiddenWeights + outputWeights
-        
+
         let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: weights, activationFunction: activation!, errorFunction: .default(average: false))
         return n
     }
-    
+
     /// Writes the current state of the FFNN to a file at the given URL.
     public func write(_ url: URL) {
         var storage = [String : AnyObject]()
@@ -410,11 +410,11 @@ public extension FFNN {
         storage["hiddenWeights"] = self.hiddenWeights as AnyObject?
         storage["outputWeights"] = self.outputWeights as AnyObject?
         storage["activationFunction"] = self.activationFunction.rawValue as AnyObject?
-        
+
         let data: Data = NSKeyedArchiver.archivedData(withRootObject: storage)
         try? data.write(to: url, options: [.atomic])
     }
-    
+
     /// Computes the error over the given training set.
     fileprivate mutating func error(_ result: [[Float]], expected: [[Float]]) throws -> Float {
         var errorSum: Float = 0
@@ -443,7 +443,7 @@ public extension FFNN {
         }
         return errorSum
     }
-    
+
     /// Applies the activation function to the hidden layer nodes.
     fileprivate mutating func activateHidden() {
         switch self.activationFunction {
@@ -480,7 +480,7 @@ public extension FFNN {
             self.hiddenOutputCache[0] = 1.0
         }
     }
-    
+
     /// Applies the activation function to the output layer nodes.
     fileprivate mutating func activateOutput() {
         switch self.activationFunction {
@@ -523,7 +523,7 @@ public extension FFNN {
             }
         }
     }
-    
+
     /// Calculates the derivative of the activation function, from the given `y` value.
     fileprivate func activationDerivative(_ output: Float) -> Float {
         switch self.activationFunction {
@@ -543,7 +543,7 @@ public extension FFNN {
             return hyperbolicTangentDerivative(output)
         }
     }
-    
+
     /// Randomizes all of the network's weights, from each layer.
     fileprivate mutating func randomizeWeights() {
         for i in 0..<self.numHiddenWeights {
@@ -553,7 +553,7 @@ public extension FFNN {
             self.outputWeights[i] = randomWeight(numInputNodes: self.numHiddenNodes)
         }
     }
-    
+
 }
 
 // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.

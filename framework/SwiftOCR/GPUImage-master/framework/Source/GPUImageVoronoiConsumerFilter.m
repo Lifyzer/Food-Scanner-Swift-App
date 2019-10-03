@@ -3,14 +3,14 @@
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 NSString *const kGPUImageVoronoiConsumerFragmentShaderString = SHADER_STRING
 (
- 
+
  precision highp float;
- 
+
  uniform sampler2D inputImageTexture;
  uniform sampler2D inputImageTexture2;
  uniform vec2 size;
  varying vec2 textureCoordinate;
- 
+
  vec2 getCoordFromColor(vec4 color)
 {
     float z = color.z * 256.0;
@@ -20,11 +20,11 @@ NSString *const kGPUImageVoronoiConsumerFragmentShaderString = SHADER_STRING
     float y = color.y*256.0 + yoff*256.0;
     return vec2(x,y) / size;
 }
- 
+
  void main(void) {
      vec4 colorLoc = texture2D(inputImageTexture2, textureCoordinate);
      vec4 color = texture2D(inputImageTexture, getCoordFromColor(colorLoc));
-     
+
      gl_FragColor = color;
  }
 );
@@ -35,7 +35,7 @@ NSString *const kGPUImageVoronoiConsumerFragmentShaderString = SHADER_STRING
  uniform sampler2D inputImageTexture2;
  uniform vec2 size;
  varying vec2 textureCoordinate;
- 
+
  vec2 getCoordFromColor(vec4 color)
  {
     float z = color.z * 256.0;
@@ -45,12 +45,12 @@ NSString *const kGPUImageVoronoiConsumerFragmentShaderString = SHADER_STRING
     float y = color.y*256.0 + yoff*256.0;
     return vec2(x,y) / size;
  }
- 
+
  void main(void)
  {
      vec4 colorLoc = texture2D(inputImageTexture2, textureCoordinate);
      vec4 color = texture2D(inputImageTexture, getCoordFromColor(colorLoc));
-     
+
      gl_FragColor = color;
  }
 );
@@ -64,22 +64,22 @@ NSString *const kGPUImageVoronoiConsumerFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageVoronoiConsumerFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     sizeUniform = [filterProgram uniformIndex:@"size"];
-    
+
     return self;
 }
 
 -(void)setSizeInPixels:(CGSize)sizeInPixels {
     _sizeInPixels = sizeInPixels;
-    
+
     //validate that it's a power of 2 and square
-    
+
     float width = log2(sizeInPixels.width);
     float height = log2(sizeInPixels.height);
-    
+
     if (width != height) {
         NSLog(@"Voronoi point texture must be square");
         return;

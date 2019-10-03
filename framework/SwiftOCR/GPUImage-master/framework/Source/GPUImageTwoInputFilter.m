@@ -5,10 +5,10 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
  attribute vec4 position;
  attribute vec4 inputTextureCoordinate;
  attribute vec4 inputTextureCoordinate2;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 textureCoordinate2;
- 
+
  void main()
  {
      gl_Position = position;
@@ -27,9 +27,9 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
 {
     if (!(self = [self initWithVertexShaderFromString:kGPUImageTwoInputTextureVertexShaderString fragmentShaderFromString:fragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 
@@ -37,31 +37,31 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
 {
     if (!(self = [super initWithVertexShaderFromString:vertexShaderString fragmentShaderFromString:fragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     inputRotation2 = kGPUImageNoRotation;
-    
+
     hasSetFirstTexture = NO;
-    
+
     hasReceivedFirstFrame = NO;
     hasReceivedSecondFrame = NO;
     firstFrameWasVideo = NO;
     secondFrameWasVideo = NO;
     firstFrameCheckDisabled = NO;
     secondFrameCheckDisabled = NO;
-    
+
     firstFrameTime = kCMTimeInvalid;
     secondFrameTime = kCMTimeInvalid;
-        
+
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
         filterSecondTextureCoordinateAttribute = [filterProgram attributeIndex:@"inputTextureCoordinate2"];
-        
+
         filterInputTextureUniform2 = [filterProgram uniformIndex:@"inputImageTexture2"]; // This does assume a name of "inputImageTexture2" for second input texture in the fragment shader
         glEnableVertexAttribArray(filterSecondTextureCoordinateAttribute);
     });
-    
+
     return self;
 }
 
@@ -92,7 +92,7 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
         [secondInputFramebuffer unlock];
         return;
     }
-    
+
     [GPUImageContext setActiveShaderProgram:filterProgram];
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
     [outputFramebuffer activateFramebuffer];
@@ -102,22 +102,22 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
     }
 
     [self setUniformsForProgramAtIndex:0];
-        
+
     glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-	glUniform1i(filterInputTextureUniform, 2);	
-    
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+    glUniform1i(filterInputTextureUniform, 2);
+
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, [secondInputFramebuffer texture]);
     glUniform1i(filterInputTextureUniform2, 3);
-    
+
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
-	glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
     glVertexAttribPointer(filterSecondTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, [[self class] textureCoordinatesForRotation:inputRotation2]);
-    
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     [firstInputFramebuffer unlock];
@@ -163,7 +163,7 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
     if (textureIndex == 0)
     {
         [super setInputSize:newSize atIndex:textureIndex];
-        
+
         if (CGSizeEqualToSize(newSize, CGSizeZero))
         {
             hasSetFirstTexture = NO;
@@ -186,7 +186,7 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
 - (CGSize)rotatedSize:(CGSize)sizeToRotate forIndex:(NSInteger)textureIndex;
 {
     CGSize rotatedSize = sizeToRotate;
-    
+
     GPUImageRotationMode rotationToCheck;
     if (textureIndex == 0)
     {
@@ -196,14 +196,14 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
     {
         rotationToCheck = inputRotation2;
     }
-    
+
     if (GPUImageRotationSwapsWidthAndHeight(rotationToCheck))
     {
         rotatedSize.width = sizeToRotate.height;
         rotatedSize.height = sizeToRotate.width;
     }
-    
-    return rotatedSize; 
+
+    return rotatedSize;
 }
 
 - (void)newFrameReadyAtTime:(CMTime)frameTime atIndex:(NSInteger)textureIndex;
@@ -213,9 +213,9 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
     {
         return;
     }
-    
+
     BOOL updatedMovieFrameOppositeStillImage = NO;
-    
+
     if (textureIndex == 0)
     {
         hasReceivedFirstFrame = YES;
@@ -224,7 +224,7 @@ NSString *const kGPUImageTwoInputTextureVertexShaderString = SHADER_STRING
         {
             hasReceivedSecondFrame = YES;
         }
-        
+
         if (!CMTIME_IS_INDEFINITE(frameTime))
         {
             if CMTIME_IS_INDEFINITE(secondFrameTime)

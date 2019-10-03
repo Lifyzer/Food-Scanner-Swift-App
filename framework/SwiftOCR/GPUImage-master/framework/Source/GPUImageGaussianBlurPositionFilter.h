@@ -2,7 +2,7 @@
 
 /** A more generalized 9x9 Gaussian blur filter
  */
-@interface GPUImageGaussianBlurPositionFilter : GPUImageTwoPassTextureSamplingFilter 
+@interface GPUImageGaussianBlurPositionFilter : GPUImageTwoPassTextureSamplingFilter
 {
     GLint blurCenterUniform, blurRadiusUniform, aspectRatioUniform;
 }

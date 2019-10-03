@@ -14,13 +14,13 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
+
     inputCamera = [[GPUImageAVCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraDevice:nil];
 //    inputCamera.runBenchmark = YES;
 
     self.vertexShader = kGPUImageInitialVertexShaderString;
     self.fragmentShader = kGPUImageInitialFragmentShaderString;
-    
+
     [inputCamera addTarget:self.previewView];
     self.previewView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
 
@@ -37,7 +37,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext useImageProcessingContext];
         GLProgram *filterProgram = [[GLProgram alloc] initWithVertexShaderString:self.vertexShader fragmentShaderString:self.fragmentShader];
-        
+
         if (!filterProgram.initialized)
         {
             if (![filterProgram link])
@@ -54,7 +54,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
     }
 
     [self.displayTabView selectTabViewItem:self.displayTabItem];
-    
+
     [inputCamera pauseCameraCapture];
     if (testFilter != nil)
     {
@@ -62,10 +62,10 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
         [testFilter removeTarget:self.shaderOutputView];
     }
     testFilter = [[GPUImageFilter alloc] initWithVertexShaderFromString:self.vertexShader fragmentShaderFromString:self.fragmentShader];
-    
+
     [inputCamera addTarget:testFilter];
     [testFilter addTarget:self.shaderOutputView];
-    
+
     [inputCamera resumeCameraCapture];
 }
 
@@ -76,7 +76,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
 {
     NSOpenPanel *shaderLoadingDialog = [NSOpenPanel openPanel];
     [shaderLoadingDialog setAllowedFileTypes:[NSArray arrayWithObjects:@"vsh", @"txt", nil]];
-    
+
     if ( [shaderLoadingDialog runModal] == NSModalResponseOK )
     {
         NSError *error = nil;
@@ -87,7 +87,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
             {
                 NSLog(@"Don't have an error to present for failing to save topography map");
             }
-            
+
             [NSApp presentError:error];
         }
         else
@@ -101,7 +101,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
 {
     NSOpenPanel *shaderLoadingDialog = [NSOpenPanel openPanel];
     [shaderLoadingDialog setAllowedFileTypes:[NSArray arrayWithObjects:@"fsh", @"txt", nil]];
-    
+
     if ( [shaderLoadingDialog runModal] == NSModalResponseOK )
     {
         NSError *error = nil;
@@ -112,7 +112,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
             {
                 NSLog(@"Don't have an error to present for failing to save topography map");
             }
-            
+
             [NSApp presentError:error];
         }
         else
@@ -126,7 +126,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
 {
     NSSavePanel *shaderSavingDialog = [NSSavePanel savePanel];
     [shaderSavingDialog setAllowedFileTypes:[NSArray arrayWithObjects:@"vsh", @"txt", nil]];
-    
+
     if ( [shaderSavingDialog runModal] == NSModalResponseOK )
     {
         NSError *error = nil;
@@ -136,7 +136,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
             {
                 NSLog(@"Don't have an error to present for failing to save topography map");
             }
-            
+
             [NSApp presentError:error];
         }
     }
@@ -146,7 +146,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
 {
     NSSavePanel *shaderSavingDialog = [NSSavePanel savePanel];
     [shaderSavingDialog setAllowedFileTypes:[NSArray arrayWithObjects:@"fsh", @"txt", nil]];
-    
+
     if ( [shaderSavingDialog runModal] == NSModalResponseOK )
     {
         NSError *error = nil;
@@ -156,7 +156,7 @@ NSString *const kGPUImageInitialFragmentShaderString = @"varying vec2 textureCoo
             {
                 NSLog(@"Don't have an error to present for failing to save topography map");
             }
-            
+
             [NSApp presentError:error];
         }
     }

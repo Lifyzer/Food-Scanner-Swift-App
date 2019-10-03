@@ -2,10 +2,10 @@ import UIKit
 import GPUImage
 
 class ViewController: UIViewController {
-    
+
     var videoCamera:GPUImageVideoCamera?
     var filter:GPUImagePixellateFilter?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

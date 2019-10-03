@@ -17,7 +17,7 @@ typedef enum {
     GPUIMAGE_TRANSFORM,
     GPUIMAGE_TRANSFORM3D,
     GPUIMAGE_CROP,
-	GPUIMAGE_MASK,
+    GPUIMAGE_MASK,
     GPUIMAGE_GAMMA,
     GPUIMAGE_TONECURVE,
     GPUIMAGE_HIGHLIGHTSHADOW,
@@ -104,7 +104,7 @@ typedef enum {
     GPUIMAGE_LINEARBURN,
     GPUIMAGE_SCREENBLEND,
     GPUIMAGE_DIFFERENCEBLEND,
-	GPUIMAGE_SUBTRACTBLEND,
+    GPUIMAGE_SUBTRACTBLEND,
     GPUIMAGE_EXCLUSIONBLEND,
     GPUIMAGE_HARDLIGHTBLEND,
     GPUIMAGE_SOFTLIGHTBLEND,
@@ -121,7 +121,7 @@ typedef enum {
     GPUIMAGE_FILTERGROUP,
     GPUIMAGE_FACES,
     GPUIMAGE_NUMFILTERS
-} GPUImageShowcaseFilterType; 
+} GPUImageShowcaseFilterType;
 
 
 @interface ShowcaseFilterViewController : UIViewController <GPUImageVideoCameraDelegate>
@@ -131,12 +131,12 @@ typedef enum {
     GPUImagePicture *sourcePicture;
     GPUImageShowcaseFilterType filterType;
     GPUImageUIElement *uiElementInput;
-    
+
     GPUImageFilterPipeline *pipeline;
     UIView *faceView;
-    
+
     CIDetector *faceDetector;
-    
+
     IBOutlet UISwitch *facesSwitch;
     IBOutlet UILabel *facesLabel;
     __unsafe_unretained UISlider *_filterSettingsSlider;

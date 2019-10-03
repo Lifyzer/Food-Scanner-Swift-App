@@ -3,23 +3,23 @@
 NSString *const kGPUImageLaplacianFragmentShaderString = SHADER_STRING
 (
  precision highp float;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  uniform mediump mat3 convolutionMatrix;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;
  varying vec2 rightTextureCoordinate;
- 
+
  varying vec2 topTextureCoordinate;
  varying vec2 topLeftTextureCoordinate;
  varying vec2 topRightTextureCoordinate;
- 
+
  varying vec2 bottomTextureCoordinate;
  varying vec2 bottomLeftTextureCoordinate;
  varying vec2 bottomRightTextureCoordinate;
- 
+
  void main()
  {
      mediump vec3 bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).rgb;
@@ -31,14 +31,14 @@ NSString *const kGPUImageLaplacianFragmentShaderString = SHADER_STRING
      mediump vec3 topColor = texture2D(inputImageTexture, topTextureCoordinate).rgb;
      mediump vec3 topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).rgb;
      mediump vec3 topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).rgb;
-     
+
      mediump vec3 resultColor = topLeftColor * convolutionMatrix[0][0] + topColor * convolutionMatrix[0][1] + topRightColor * convolutionMatrix[0][2];
      resultColor += leftColor * convolutionMatrix[1][0] + centerColor.rgb * convolutionMatrix[1][1] + rightColor * convolutionMatrix[1][2];
      resultColor += bottomLeftColor * convolutionMatrix[2][0] + bottomColor * convolutionMatrix[2][1] + bottomRightColor * convolutionMatrix[2][2];
-     
+
      // Normalize the results to allow for negative gradients in the 0.0-1.0 colorspace
      resultColor = resultColor + 0.5;
-     
+
      gl_FragColor = vec4(resultColor, centerColor.a);
  }
 );
@@ -46,21 +46,21 @@ NSString *const kGPUImageLaplacianFragmentShaderString = SHADER_STRING
 NSString *const kGPUImageLaplacianFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
- 
+
  uniform mat3 convolutionMatrix;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;
  varying vec2 rightTextureCoordinate;
- 
+
  varying vec2 topTextureCoordinate;
  varying vec2 topLeftTextureCoordinate;
  varying vec2 topRightTextureCoordinate;
- 
+
  varying vec2 bottomTextureCoordinate;
  varying vec2 bottomLeftTextureCoordinate;
  varying vec2 bottomRightTextureCoordinate;
- 
+
  void main()
  {
      vec3 bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).rgb;
@@ -72,11 +72,11 @@ NSString *const kGPUImageLaplacianFragmentShaderString = SHADER_STRING
      vec3 topColor = texture2D(inputImageTexture, topTextureCoordinate).rgb;
      vec3 topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).rgb;
      vec3 topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).rgb;
-     
+
      vec3 resultColor = topLeftColor * convolutionMatrix[0][0] + topColor * convolutionMatrix[0][1] + topRightColor * convolutionMatrix[0][2];
      resultColor += leftColor * convolutionMatrix[1][0] + centerColor.rgb * convolutionMatrix[1][1] + rightColor * convolutionMatrix[1][2];
      resultColor += bottomLeftColor * convolutionMatrix[2][0] + bottomColor * convolutionMatrix[2][1] + bottomRightColor * convolutionMatrix[2][2];
-     
+
      // Normalize the results to allow for negative gradients in the 0.0-1.0 colorspace
      resultColor = resultColor + 0.5;
 
@@ -91,24 +91,24 @@ NSString *const kGPUImageLaplacianFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageLaplacianFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     GPUMatrix3x3 newConvolutionMatrix;
     newConvolutionMatrix.one.one = 0.5;
     newConvolutionMatrix.one.two = 1.0;
     newConvolutionMatrix.one.three = 0.5;
-    
+
     newConvolutionMatrix.two.one = 1.0;
     newConvolutionMatrix.two.two = -6.0;
     newConvolutionMatrix.two.three = 1.0;
-    
+
     newConvolutionMatrix.three.one = 0.5;
     newConvolutionMatrix.three.two = 1.0;
     newConvolutionMatrix.three.three = 0.5;
-    
+
     self.convolutionKernel = newConvolutionMatrix;
-    
+
     return self;
 }
 

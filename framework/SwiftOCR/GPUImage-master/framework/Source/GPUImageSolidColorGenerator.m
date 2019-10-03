@@ -40,15 +40,15 @@ NSString *const kGPUSolidColorFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUSolidColorFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     colorUniform = [filterProgram uniformIndex:@"color"];
     useExistingAlphaUniform = [filterProgram uniformIndex:@"useExistingAlpha"];
-    
-	_color = (GPUVector4){0.0f, 0.0f, 0.5f, 1.0f};
+
+    _color = (GPUVector4){0.0f, 0.0f, 0.5f, 1.0f};
     self.useExistingAlpha = NO;
-    
+
     return self;
 }
 
@@ -58,13 +58,13 @@ NSString *const kGPUSolidColorFragmentShaderString = SHADER_STRING
     {
         return;
     }
-    
+
     runSynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext setActiveShaderProgram:filterProgram];
-        
+
         outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
         [outputFramebuffer activateFramebuffer];
-        
+
         glClearColor(_color.one, _color.two, _color.three, _color.four);
         glClear(GL_COLOR_BUFFER_BIT);
     });
@@ -97,7 +97,7 @@ NSString *const kGPUSolidColorFragmentShaderString = SHADER_STRING
 
 - (void)setColor:(GPUVector4)newValue;
 {
-	[self setColorRed:newValue.one green:newValue.two blue:newValue.three alpha:newValue.four];
+    [self setColorRed:newValue.one green:newValue.two blue:newValue.three alpha:newValue.four];
 }
 
 - (void)setColorRed:(CGFloat)redComponent green:(CGFloat)greenComponent blue:(CGFloat)blueComponent alpha:(CGFloat)alphaComponent;
@@ -106,7 +106,7 @@ NSString *const kGPUSolidColorFragmentShaderString = SHADER_STRING
     _color.two = (GLfloat)greenComponent;
     _color.three = (GLfloat)blueComponent;
     _color.four = (GLfloat)alphaComponent;
-    
+
 //    [self setVec4:_color forUniform:colorUniform program:filterProgram];
     runAsynchronouslyOnVideoProcessingQueue(^{
         [self newFrameReadyAtTime:kCMTimeIndefinite atIndex:0];

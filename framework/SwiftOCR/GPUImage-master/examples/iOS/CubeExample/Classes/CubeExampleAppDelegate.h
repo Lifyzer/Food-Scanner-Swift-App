@@ -2,7 +2,7 @@
 
 @class DisplayViewController;
 
-@interface CubeExampleAppDelegate : NSObject <UIApplicationDelegate> 
+@interface CubeExampleAppDelegate : NSObject <UIApplicationDelegate>
 {
     DisplayViewController *rootViewController;
 

@@ -1,7 +1,7 @@
 import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-                            
+
     var windowController:FilterShowcaseWindowController?
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {

@@ -26,17 +26,17 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
 {
     NSUInteger numberOfFramesCaptured;
     CGFloat totalFrameTimeDuringCapture;
-    
+
     AVCaptureSession *_captureSession;
     AVCaptureDevice *_inputCamera;
     AVCaptureDevice *_microphone;
     AVCaptureDeviceInput *videoInput;
-	AVCaptureVideoDataOutput *videoOutput;
+    AVCaptureVideoDataOutput *videoOutput;
 
     BOOL capturePaused;
     GPUImageRotationMode outputRotation, internalRotation;
     dispatch_semaphore_t frameRenderingSemaphore;
-        
+
     BOOL captureAsYUV;
     GLuint luminanceTexture, chrominanceTexture;
 
@@ -79,16 +79,16 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
 /// @name Initialization and teardown
 
 /** Begin a capture session
- 
+
  See AVCaptureSession for acceptable values
- 
+
  @param sessionPreset Session preset to use
  @param cameraPosition Camera to capture from
  */
 - (id)initWithSessionPreset:(NSString *)sessionPreset cameraPosition:(AVCaptureDevicePosition)cameraPosition;
 
 /** Add audio capture to the session. Adding inputs and outputs freezes the capture session momentarily, so you
-    can use this method to add the audio inputs and outputs early, if you're going to set the audioEncodingTarget 
+    can use this method to add the audio inputs and outputs early, if you're going to set the audioEncodingTarget
     later. Returns YES is the audio inputs and outputs were added, or NO if they had already been added.
  */
 - (BOOL)addAudioInputsAndOutputs;

@@ -4,21 +4,21 @@
 NSString *const kGPUImageThresholdedNonMaximumSuppressionFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
- 
+
  varying highp vec2 textureCoordinate;
  varying highp vec2 leftTextureCoordinate;
  varying highp vec2 rightTextureCoordinate;
- 
+
  varying highp vec2 topTextureCoordinate;
  varying highp vec2 topLeftTextureCoordinate;
  varying highp vec2 topRightTextureCoordinate;
- 
+
  varying highp vec2 bottomTextureCoordinate;
  varying highp vec2 bottomLeftTextureCoordinate;
  varying highp vec2 bottomRightTextureCoordinate;
- 
+
  uniform lowp float threshold;
- 
+
  void main()
  {
      lowp float bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).r;
@@ -30,21 +30,21 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionFragmentShaderString = 
      lowp float topColor = texture2D(inputImageTexture, topTextureCoordinate).r;
      lowp float topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).r;
      lowp float topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).r;
-     
+
      // Use a tiebreaker for pixels to the left and immediately above this one
      lowp float multiplier = 1.0 - step(centerColor.r, topColor);
      multiplier = multiplier * (1.0 - step(centerColor.r, topLeftColor));
      multiplier = multiplier * (1.0 - step(centerColor.r, leftColor));
      multiplier = multiplier * (1.0 - step(centerColor.r, bottomLeftColor));
-     
+
      lowp float maxValue = max(centerColor.r, bottomColor);
      maxValue = max(maxValue, bottomRightColor);
      maxValue = max(maxValue, rightColor);
      maxValue = max(maxValue, topRightColor);
-     
+
      lowp float finalValue = centerColor.r * step(maxValue, centerColor.r) * multiplier;
      finalValue = step(threshold, finalValue);
-     
+
      gl_FragColor = vec4(finalValue, finalValue, finalValue, 1.0);
 //
 //     gl_FragColor = vec4((centerColor.rgb * step(maxValue, step(threshold, centerColor.r)) * multiplier), 1.0);
@@ -54,19 +54,19 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionFragmentShaderString = 
 NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
- 
+
  varying highp vec2 textureCoordinate;
  varying highp vec2 leftTextureCoordinate;
  varying highp vec2 rightTextureCoordinate;
- 
+
  varying highp vec2 topTextureCoordinate;
  varying highp vec2 topLeftTextureCoordinate;
  varying highp vec2 topRightTextureCoordinate;
- 
+
  varying highp vec2 bottomTextureCoordinate;
  varying highp vec2 bottomLeftTextureCoordinate;
  varying highp vec2 bottomRightTextureCoordinate;
- 
+
  uniform lowp float threshold;
  uniform highp float texelWidth;
  uniform highp float texelHeight;
@@ -75,7 +75,7 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
  {
      return (sourceColor.b * 256.0 * 256.0 + sourceColor.g * 256.0 + sourceColor.r);
  }
- 
+
  void main()
  {
      highp float bottomColor = encodedIntensity(texture2D(inputImageTexture, bottomTextureCoordinate).rgb);
@@ -87,7 +87,7 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
      highp float topColor = encodedIntensity(texture2D(inputImageTexture, topTextureCoordinate).rgb);
      highp float topRightColor = encodedIntensity(texture2D(inputImageTexture, topRightTextureCoordinate).rgb);
      highp float topLeftColor = encodedIntensity(texture2D(inputImageTexture, topLeftTextureCoordinate).rgb);
-     
+
      highp float secondStageColor1 = encodedIntensity(texture2D(inputImageTexture, textureCoordinate + vec2(-2.0 * texelWidth, -2.0 * texelHeight)).rgb);
      highp float secondStageColor2 = encodedIntensity(texture2D(inputImageTexture, textureCoordinate + vec2(-2.0 * texelWidth, -1.0 * texelHeight)).rgb);
      highp float secondStageColor3 = encodedIntensity(texture2D(inputImageTexture, textureCoordinate + vec2(-2.0 * texelWidth, 0.0)).rgb);
@@ -105,7 +105,7 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
      highp float thirdStageColor6 = encodedIntensity(texture2D(inputImageTexture, textureCoordinate + vec2(2.0 * texelWidth, 0.0)).rgb);
      highp float thirdStageColor7 = encodedIntensity(texture2D(inputImageTexture, textureCoordinate + vec2(2.0 * texelWidth, 1.0 * texelHeight)).rgb);
      highp float thirdStageColor8 = encodedIntensity(texture2D(inputImageTexture, textureCoordinate + vec2(2.0 * texelWidth, 2.0 * texelHeight)).rgb);
-     
+
      // Use a tiebreaker for pixels to the left and immediately above this one
      highp float multiplier = 1.0 - step(centerColor, topColor);
      multiplier = multiplier * (1.0 - step(centerColor, topLeftColor));
@@ -137,7 +137,7 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
 
      highp float midValue = centerColor * step(maxValue, centerColor) * multiplier;
      highp float finalValue = step(threshold, midValue);
-     
+
      gl_FragColor = vec4(finalValue * centerColor, topLeftColor, topRightColor, topColor);
  }
 );
@@ -145,21 +145,21 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
 NSString *const kGPUImageThresholdedNonMaximumSuppressionFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;
  varying vec2 rightTextureCoordinate;
- 
+
  varying vec2 topTextureCoordinate;
  varying vec2 topLeftTextureCoordinate;
  varying vec2 topRightTextureCoordinate;
- 
+
  varying vec2 bottomTextureCoordinate;
  varying vec2 bottomLeftTextureCoordinate;
  varying vec2 bottomRightTextureCoordinate;
- 
+
  uniform float threshold;
- 
+
  void main()
  {
      float bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).r;
@@ -171,21 +171,21 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionFragmentShaderString = 
      float topColor = texture2D(inputImageTexture, topTextureCoordinate).r;
      float topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).r;
      float topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).r;
-     
+
      // Use a tiebreaker for pixels to the left and immediately above this one
      float multiplier = 1.0 - step(centerColor.r, topColor);
      multiplier = multiplier * (1.0 - step(centerColor.r, topLeftColor));
      multiplier = multiplier * (1.0 - step(centerColor.r, leftColor));
      multiplier = multiplier * (1.0 - step(centerColor.r, bottomLeftColor));
-     
+
      float maxValue = max(centerColor.r, bottomColor);
      maxValue = max(maxValue, bottomRightColor);
      maxValue = max(maxValue, rightColor);
      maxValue = max(maxValue, topRightColor);
-     
+
      float finalValue = centerColor.r * step(maxValue, centerColor.r) * multiplier;
      finalValue = step(threshold, finalValue);
-     
+
      gl_FragColor = vec4(finalValue, finalValue, finalValue, 1.0);
      //
      //     gl_FragColor = vec4((centerColor.rgb * step(maxValue, step(threshold, centerColor.r)) * multiplier), 1.0);
@@ -195,21 +195,21 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionFragmentShaderString = 
 NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmentShaderString = SHADER_STRING
 (
  uniform sampler2D inputImageTexture;
- 
+
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;
  varying vec2 rightTextureCoordinate;
- 
+
  varying vec2 topTextureCoordinate;
  varying vec2 topLeftTextureCoordinate;
  varying vec2 topRightTextureCoordinate;
- 
+
  varying vec2 bottomTextureCoordinate;
  varying vec2 bottomLeftTextureCoordinate;
  varying vec2 bottomRightTextureCoordinate;
- 
+
  uniform float threshold;
- 
+
  void main()
  {
      float bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).r;
@@ -221,21 +221,21 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
      float topColor = texture2D(inputImageTexture, topTextureCoordinate).r;
      float topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).r;
      float topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).r;
-     
+
      // Use a tiebreaker for pixels to the left and immediately above this one
      float multiplier = 1.0 - step(centerColor.r, topColor);
      multiplier = multiplier * (1.0 - step(centerColor.r, topLeftColor));
      multiplier = multiplier * (1.0 - step(centerColor.r, leftColor));
      multiplier = multiplier * (1.0 - step(centerColor.r, bottomLeftColor));
-     
+
      float maxValue = max(centerColor.r, bottomColor);
      maxValue = max(maxValue, bottomRightColor);
      maxValue = max(maxValue, rightColor);
      maxValue = max(maxValue, topRightColor);
-     
+
      float finalValue = centerColor.r * step(maxValue, centerColor.r) * multiplier;
      finalValue = step(threshold, finalValue);
-     
+
      gl_FragColor = vec4(finalValue, finalValue, finalValue, 1.0);
      //
      //     gl_FragColor = vec4((centerColor.rgb * step(maxValue, step(threshold, centerColor.r)) * multiplier), 1.0);
@@ -256,7 +256,7 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
     {
         return nil;
     }
-    
+
     return self;
 }
 
@@ -271,16 +271,16 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
     {
         shaderString = kGPUImageThresholdedNonMaximumSuppressionFragmentShaderString;
     }
-    
-    
+
+
     if (!(self = [super initWithFragmentShaderFromString:shaderString]))
     {
         return nil;
     }
-    
+
     thresholdUniform = [filterProgram uniformIndex:@"threshold"];
     self.threshold = 0.9;
-    
+
     return self;
 }
 
@@ -290,7 +290,7 @@ NSString *const kGPUImageThresholdedNonMaximumSuppressionPackedColorspaceFragmen
 - (void)setThreshold:(CGFloat)newValue;
 {
     _threshold = newValue;
-    
+
     [self setFloat:_threshold forUniform:thresholdUniform program:filterProgram];
 }
 

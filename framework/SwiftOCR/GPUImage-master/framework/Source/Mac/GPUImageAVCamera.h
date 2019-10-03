@@ -19,17 +19,17 @@
 {
     NSUInteger numberOfFramesCaptured;
     CGFloat totalFrameTimeDuringCapture;
-    
+
     AVCaptureSession *_captureSession;
     AVCaptureDevice *_inputCamera;
     AVCaptureDevice *_microphone;
     AVCaptureDeviceInput *videoInput;
-	AVCaptureVideoDataOutput *videoOutput;
+    AVCaptureVideoDataOutput *videoOutput;
 
     BOOL capturePaused;
     GPUImageRotationMode outputRotation;
     dispatch_semaphore_t frameRenderingSemaphore;
-        
+
     BOOL captureAsYUV;
     GLuint luminanceTexture, chrominanceTexture;
 
@@ -67,9 +67,9 @@
 + (NSArray *)connectedCameraDevices;
 
 /** Begin a capture session
- 
+
  See AVCaptureSession for acceptable values
- 
+
  @param sessionPreset Session preset to use
  @param cameraPosition Camera to capture from
  */

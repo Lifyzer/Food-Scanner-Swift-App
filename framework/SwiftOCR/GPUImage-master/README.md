@@ -86,7 +86,7 @@ Xcode 6 and iOS 8 support the use of full frameworks, as does the Mac, which sim
 
 For your application, go to its target build settings and choose the Build Phases tab. Under the Target Dependencies grouping, add GPUImageFramework on iOS (not GPUImage, which builds the static library) or GPUImage on the Mac. Under the Link Binary With Libraries section, add GPUImage.framework.
 
-This should cause GPUImage to build as a framework. Under Xcode 6, this will also build as a module, which will allow you to use this in Swift projects. When set up as above, you should just need to use 
+This should cause GPUImage to build as a framework. Under Xcode 6, this will also build as a module, which will allow you to use this in Swift projects. When set up as above, you should just need to use
 
     import GPUImage
 
@@ -104,18 +104,18 @@ Documentation is generated from header comments using appledoc. To build the doc
 
 To filter live video from an iOS device's camera, you can use code like the following:
 
-	GPUImageVideoCamera *videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
-	videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
-	
-	GPUImageFilter *customFilter = [[GPUImageFilter alloc] initWithFragmentShaderFromFile:@"CustomShader"];
-	GPUImageView *filteredVideoView = [[GPUImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, viewWidth, viewHeight)];
+    GPUImageVideoCamera *videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
+    videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
 
-	// Add the view somewhere so it's visible
+    GPUImageFilter *customFilter = [[GPUImageFilter alloc] initWithFragmentShaderFromFile:@"CustomShader"];
+    GPUImageView *filteredVideoView = [[GPUImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, viewWidth, viewHeight)];
 
-	[videoCamera addTarget:customFilter];
-	[customFilter addTarget:filteredVideoView];
+    // Add the view somewhere so it's visible
 
-	[videoCamera startCameraCapture];
+    [videoCamera addTarget:customFilter];
+    [customFilter addTarget:filteredVideoView];
+
+    [videoCamera startCameraCapture];
 
 This sets up a video source coming from the iOS device's back-facing camera, using a preset that tries to capture at 640x480. This video is captured with the interface being in portrait mode, where the landscape-left-mounted camera needs to have its video frames rotated before display. A custom filter, using code from the file CustomShader.fsh, is then set as the target for the video frames from the camera. These filtered video frames are finally displayed onscreen with the help of a UIView subclass that can present the filtered OpenGL ES texture that results from this pipeline.
 
@@ -132,33 +132,33 @@ Also, if you wish to enable microphone audio capture for recording to a movie, y
 
 To capture and filter still photos, you can use a process similar to the one for filtering video. Instead of a GPUImageVideoCamera, you use a GPUImageStillCamera:
 
-	stillCamera = [[GPUImageStillCamera alloc] init];
-	stillCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
-	
-	filter = [[GPUImageGammaFilter alloc] init];
-	[stillCamera addTarget:filter];
-	GPUImageView *filterView = (GPUImageView *)self.view;
-	[filter addTarget:filterView];
+    stillCamera = [[GPUImageStillCamera alloc] init];
+    stillCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
 
-	[stillCamera startCameraCapture];
+    filter = [[GPUImageGammaFilter alloc] init];
+    [stillCamera addTarget:filter];
+    GPUImageView *filterView = (GPUImageView *)self.view;
+    [filter addTarget:filterView];
+
+    [stillCamera startCameraCapture];
 
 This will give you a live, filtered feed of the still camera's preview video. Note that this preview video is only provided on iOS 4.3 and higher, so you may need to set that as your deployment target if you wish to have this functionality.
 
 Once you want to capture a photo, you use a callback block like the following:
 
-	[stillCamera capturePhotoProcessedUpToFilter:filter withCompletionHandler:^(UIImage *processedImage, NSError *error){
-	    NSData *dataForJPEGFile = UIImageJPEGRepresentation(processedImage, 0.8);
-    
-	    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-	    NSError *error2 = nil;
-	    if (![dataForJPEGFile writeToFile:[documentsDirectory stringByAppendingPathComponent:@"FilteredPhoto.jpg"] options:NSAtomicWrite error:&error2])
-	    {
-	        return;
-	    }
-	}];
-	
+    [stillCamera capturePhotoProcessedUpToFilter:filter withCompletionHandler:^(UIImage *processedImage, NSError *error){
+        NSData *dataForJPEGFile = UIImageJPEGRepresentation(processedImage, 0.8);
+
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+
+        NSError *error2 = nil;
+        if (![dataForJPEGFile writeToFile:[documentsDirectory stringByAppendingPathComponent:@"FilteredPhoto.jpg"] options:NSAtomicWrite error:&error2])
+        {
+            return;
+        }
+    }];
+
 The above code captures a full-size photo processed by the same filter chain used in the preview view and saves that photo to disk as a JPEG in the application's documents directory.
 
 Note that the framework currently can't handle images larger than 2048 pixels wide or high on older devices (those before the iPhone 4S, iPad 2, or Retina iPad) due to texture size limitations. This means that the iPhone 4, whose camera outputs still photos larger than this, won't be able to capture photos like this. A tiling mechanism is being implemented to work around this. All other devices should be able to capture and filter photos using this method.
@@ -167,52 +167,52 @@ Note that the framework currently can't handle images larger than 2048 pixels wi
 
 There are a couple of ways to process a still image and create a result. The first way you can do this is by creating a still image source object and manually creating a filter chain:
 
-	UIImage *inputImage = [UIImage imageNamed:@"Lambeau.jpg"];
+    UIImage *inputImage = [UIImage imageNamed:@"Lambeau.jpg"];
 
-	GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:inputImage];
-	GPUImageSepiaFilter *stillImageFilter = [[GPUImageSepiaFilter alloc] init];
+    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:inputImage];
+    GPUImageSepiaFilter *stillImageFilter = [[GPUImageSepiaFilter alloc] init];
 
-	[stillImageSource addTarget:stillImageFilter];
-	[stillImageFilter useNextFrameForImageCapture];
-	[stillImageSource processImage];
+    [stillImageSource addTarget:stillImageFilter];
+    [stillImageFilter useNextFrameForImageCapture];
+    [stillImageSource processImage];
 
-	UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
+    UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
 
-Note that for a manual capture of an image from a filter, you need to set -useNextFrameForImageCapture in order to tell the filter that you'll be needing to capture from it later. By default, GPUImage reuses framebuffers within filters to conserve memory, so if you need to hold on to a filter's framebuffer for manual image capture, you need to let it know ahead of time. 
+Note that for a manual capture of an image from a filter, you need to set -useNextFrameForImageCapture in order to tell the filter that you'll be needing to capture from it later. By default, GPUImage reuses framebuffers within filters to conserve memory, so if you need to hold on to a filter's framebuffer for manual image capture, you need to let it know ahead of time.
 
 For single filters that you wish to apply to an image, you can simply do the following:
 
-	GPUImageSepiaFilter *stillImageFilter2 = [[GPUImageSepiaFilter alloc] init];
-	UIImage *quickFilteredImage = [stillImageFilter2 imageByFilteringImage:inputImage];
+    GPUImageSepiaFilter *stillImageFilter2 = [[GPUImageSepiaFilter alloc] init];
+    UIImage *quickFilteredImage = [stillImageFilter2 imageByFilteringImage:inputImage];
 
 
 ### Writing a custom filter ###
 
-One significant advantage of this framework over Core Image on iOS (as of iOS 5.0) is the ability to write your own custom image and video processing filters. These filters are supplied as OpenGL ES 2.0 fragment shaders, written in the C-like OpenGL Shading Language. 
+One significant advantage of this framework over Core Image on iOS (as of iOS 5.0) is the ability to write your own custom image and video processing filters. These filters are supplied as OpenGL ES 2.0 fragment shaders, written in the C-like OpenGL Shading Language.
 
 A custom filter is initialized with code like
 
-	GPUImageFilter *customFilter = [[GPUImageFilter alloc] initWithFragmentShaderFromFile:@"CustomShader"];
+    GPUImageFilter *customFilter = [[GPUImageFilter alloc] initWithFragmentShaderFromFile:@"CustomShader"];
 
 where the extension used for the fragment shader is .fsh. Additionally, you can use the -initWithFragmentShaderFromString: initializer to provide the fragment shader as a string, if you would not like to ship your fragment shaders in your application bundle.
 
 Fragment shaders perform their calculations for each pixel to be rendered at that filter stage. They do this using the OpenGL Shading Language (GLSL), a C-like language with additions specific to 2-D and 3-D graphics. An example of a fragment shader is the following sepia-tone filter:
 
-	varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate;
 
-	uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture;
 
-	void main()
-	{
-	    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-	    lowp vec4 outputColor;
-	    outputColor.r = (textureColor.r * 0.393) + (textureColor.g * 0.769) + (textureColor.b * 0.189);
-	    outputColor.g = (textureColor.r * 0.349) + (textureColor.g * 0.686) + (textureColor.b * 0.168);    
-	    outputColor.b = (textureColor.r * 0.272) + (textureColor.g * 0.534) + (textureColor.b * 0.131);
-		outputColor.a = 1.0;
-    
-		gl_FragColor = outputColor;
-	}
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+        lowp vec4 outputColor;
+        outputColor.r = (textureColor.r * 0.393) + (textureColor.g * 0.769) + (textureColor.b * 0.189);
+        outputColor.g = (textureColor.r * 0.349) + (textureColor.g * 0.686) + (textureColor.b * 0.168);
+        outputColor.b = (textureColor.r * 0.272) + (textureColor.g * 0.534) + (textureColor.b * 0.131);
+        outputColor.a = 1.0;
+
+        gl_FragColor = outputColor;
+    }
 
 For an image filter to be usable within the GPUImage framework, the first two lines that take in the textureCoordinate varying (for the current coordinate within the texture, normalized to 1.0) and the inputImageTexture uniform (for the actual input image frame texture) are required.
 
@@ -227,29 +227,29 @@ Movies can be loaded into the framework via the GPUImageMovie class, filtered, a
 
 The following is an example of how you would load a sample movie, pass it through a pixellation filter, then record the result to disk as a 480 x 640 h.264 movie:
 
-	movieFile = [[GPUImageMovie alloc] initWithURL:sampleURL];
-	pixellateFilter = [[GPUImagePixellateFilter alloc] init];
+    movieFile = [[GPUImageMovie alloc] initWithURL:sampleURL];
+    pixellateFilter = [[GPUImagePixellateFilter alloc] init];
 
-	[movieFile addTarget:pixellateFilter];
+    [movieFile addTarget:pixellateFilter];
 
-	NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
-	unlink([pathToMovie UTF8String]);
-	NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
+    NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
+    unlink([pathToMovie UTF8String]);
+    NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
 
-	movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(480.0, 640.0)];
-	[pixellateFilter addTarget:movieWriter];
+    movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(480.0, 640.0)];
+    [pixellateFilter addTarget:movieWriter];
 
     movieWriter.shouldPassthroughAudio = YES;
     movieFile.audioEncodingTarget = movieWriter;
     [movieFile enableSynchronizedEncodingUsingMovieWriter:movieWriter];
 
-	[movieWriter startRecording];
-	[movieFile startProcessing];
+    [movieWriter startRecording];
+    [movieFile startProcessing];
 
 Once recording is finished, you need to remove the movie recorder from the filter chain and close off the recording using code like the following:
 
-	[pixellateFilter removeTarget:movieWriter];
-	[movieWriter finishRecording];
+    [pixellateFilter removeTarget:movieWriter];
+    [movieWriter finishRecording];
 
 A movie won't be usable until it has been finished off, so if this is interrupted before this point, the recording will be lost.
 
@@ -288,7 +288,7 @@ There are currently 125 built-in filters, divided into the following categories:
 
 - **GPUImageRGBFilter**: Adjusts the individual RGB channels of an image
   - *red*: Normalized values by which each color channel is multiplied. The range is from 0.0 up, with 1.0 as the default.
-  - *green*: 
+  - *green*:
   - *blue*:
 
 - **GPUImageHueFilter**: Adjusts the hue of an image
@@ -299,12 +299,12 @@ There are currently 125 built-in filters, divided into the following categories:
 
 - **GPUImageWhiteBalanceFilter**: Adjusts the white balance of an image.
   - *temperature*: The temperature to adjust the image by, in ºK. A value of 4000 is very cool and 7000 very warm. The default value is 5000. Note that the scale between 4000 and 5000 is nearly as visually significant as that between 5000 and 7000.
-  - *tint*: The tint to adjust the image by. A value of -200 is *very* green and 200 is *very* pink. The default value is 0.  
+  - *tint*: The tint to adjust the image by. A value of -200 is *very* green and 200 is *very* pink. The default value is 0.
 
 - **GPUImageToneCurveFilter**: Adjusts the colors of an image based on spline curves for each color channel.
   - *redControlPoints*:
   - *greenControlPoints*:
-  - *blueControlPoints*: 
+  - *blueControlPoints*:
   - *rgbCompositeControlPoints*: The tone curve takes in a series of control points that define the spline curve for each color component, or for all three in the composite. These are stored as NSValue-wrapped CGPoints in an NSArray, with normalized X and Y coordinates from 0 - 1. The defaults are (0,0), (0.5,0.5), (1,1).
 
 - **GPUImageHighlightShadowFilter**: Adjusts the shadows and highlights of an image
@@ -332,7 +332,7 @@ There are currently 125 built-in filters, divided into the following categories:
   - *maxHueShift*: Maximum amount of hue shifting allowed. Default: 0.25.
   - *maxSaturationShift* = Maximum amount of saturation to be shifted (when using orange). Default: 0.4.
   - *upperSkinToneColor* = `GPUImageSkinToneUpperColorGreen` or `GPUImageSkinToneUpperColorOrange`
-    
+
 - **GPUImageColorInvertFilter**: Inverts the colors of an image
 
 - **GPUImageGrayscaleFilter**: Converts an image to grayscale (a slightly faster implementation of the saturation filter, without the ability to vary the color contribution)
@@ -343,7 +343,7 @@ There are currently 125 built-in filters, divided into the following categories:
 
 - **GPUImageFalseColorFilter**: Uses the luminance of the image to mix between two user-specified colors
   - *firstColor*: The first and second colors specify what colors replace the dark and light areas of the image, respectively. The defaults are (0.0, 0.0, 0.5) amd (1.0, 0.0, 0.0).
-  - *secondColor*: 
+  - *secondColor*:
 
 - **GPUImageHazeFilter**: Used to add or remove haze (similar to a UV filter)
   - *distance*: Strength of the color applied. Default 0. Values between -.3 and .3 are best.
@@ -402,21 +402,21 @@ There are currently 125 built-in filters, divided into the following categories:
 - **GPUImageGaussianBlurFilter**: A hardware-optimized, variable-radius Gaussian blur
   - *texelSpacingMultiplier*: A multiplier for the spacing between texels, ranging from 0.0 on up, with a default of 1.0. Adjusting this may slightly increase the blur strength, but will introduce artifacts in the result. Highly recommend using other parameters first, before touching this one.
   - *blurRadiusInPixels*: A radius in pixels to use for the blur, with a default of 2.0. This adjusts the sigma variable in the Gaussian distribution function.
-  - *blurRadiusAsFractionOfImageWidth*: 
+  - *blurRadiusAsFractionOfImageWidth*:
   - *blurRadiusAsFractionOfImageHeight*: Setting these properties will allow the blur radius to scale with the size of the image
   - *blurPasses*: The number of times to sequentially blur the incoming image. The more passes, the slower the filter.
 
 - **GPUImageBoxBlurFilter**: A hardware-optimized, variable-radius box blur
   - *texelSpacingMultiplier*: A multiplier for the spacing between texels, ranging from 0.0 on up, with a default of 1.0. Adjusting this may slightly increase the blur strength, but will introduce artifacts in the result. Highly recommend using other parameters first, before touching this one.
   - *blurRadiusInPixels*: A radius in pixels to use for the blur, with a default of 2.0. This adjusts the sigma variable in the Gaussian distribution function.
-  - *blurRadiusAsFractionOfImageWidth*: 
+  - *blurRadiusAsFractionOfImageWidth*:
   - *blurRadiusAsFractionOfImageHeight*: Setting these properties will allow the blur radius to scale with the size of the image
   - *blurPasses*: The number of times to sequentially blur the incoming image. The more passes, the slower the filter.
 
 - **GPUImageSingleComponentGaussianBlurFilter**: A modification of the GPUImageGaussianBlurFilter that operates only on the red component
   - *texelSpacingMultiplier*: A multiplier for the spacing between texels, ranging from 0.0 on up, with a default of 1.0. Adjusting this may slightly increase the blur strength, but will introduce artifacts in the result. Highly recommend using other parameters first, before touching this one.
   - *blurRadiusInPixels*: A radius in pixels to use for the blur, with a default of 2.0. This adjusts the sigma variable in the Gaussian distribution function.
-  - *blurRadiusAsFractionOfImageWidth*: 
+  - *blurRadiusAsFractionOfImageWidth*:
   - *blurRadiusAsFractionOfImageHeight*: Setting these properties will allow the blur radius to scale with the size of the image
   - *blurPasses*: The number of times to sequentially blur the incoming image. The more passes, the slower the filter.
 
@@ -424,7 +424,7 @@ There are currently 125 built-in filters, divided into the following categories:
   - *blurRadiusInPixels*: A radius in pixels to use for the blur, with a default of 5.0. This adjusts the sigma variable in the Gaussian distribution function.
   - *excludeCircleRadius*: The radius of the circular area being excluded from the blur
   - *excludeCirclePoint*: The center of the circular area being excluded from the blur
-  - *excludeBlurSize*: The size of the area between the blurred portion and the clear circle 
+  - *excludeBlurSize*: The size of the area between the blurred portion and the clear circle
   - *aspectRatio*: The aspect ratio of the image, used to adjust the circularity of the in-focus region. By default, this matches the image aspect ratio, but you can override this value.
 
 - **GPUImageGaussianBlurPositionFilter**: The inverse of the GPUImageGaussianSelectiveBlurFilter, applying the blur only within a certain circle
@@ -453,23 +453,23 @@ There are currently 125 built-in filters, divided into the following categories:
   - *convolutionKernel*: The convolution kernel is a 3x3 matrix of values to apply to the pixel and its 8 surrounding pixels. The matrix is specified in row-major order, with the top left pixel being one.one and the bottom right three.three. If the values in the matrix don't add up to 1.0, the image could be brightened or darkened.
 
 - **GPUImageSobelEdgeDetectionFilter**: Sobel edge detection, with edges highlighted in white
-  - *texelWidth*: 
+  - *texelWidth*:
   - *texelHeight*: These parameters affect the visibility of the detected edges
   - *edgeStrength*: Adjusts the dynamic range of the filter. Higher values lead to stronger edges, but can saturate the intensity colorspace. Default is 1.0.
 
 - **GPUImagePrewittEdgeDetectionFilter**: Prewitt edge detection, with edges highlighted in white
-  - *texelWidth*: 
+  - *texelWidth*:
   - *texelHeight*: These parameters affect the visibility of the detected edges
   - *edgeStrength*: Adjusts the dynamic range of the filter. Higher values lead to stronger edges, but can saturate the intensity colorspace. Default is 1.0.
 
 - **GPUImageThresholdEdgeDetectionFilter**: Performs Sobel edge detection, but applies a threshold instead of giving gradual strength values
-  - *texelWidth*: 
+  - *texelWidth*:
   - *texelHeight*: These parameters affect the visibility of the detected edges
   - *edgeStrength*: Adjusts the dynamic range of the filter. Higher values lead to stronger edges, but can saturate the intensity colorspace. Default is 1.0.
   - *threshold*: Any edge above this threshold will be black, and anything below white. Ranges from 0.0 to 1.0, with 0.8 as the default
 
 - **GPUImageCannyEdgeDetectionFilter**: This uses the full Canny process to highlight one-pixel-wide edges
-  - *texelWidth*: 
+  - *texelWidth*:
   - *texelHeight*: These parameters affect the visibility of the detected edges
   - *blurRadiusInPixels*: The underlying blur radius for the Gaussian blur. Default is 2.0.
   - *blurTexelSpacingMultiplier*: The underlying blur texel spacing multiplier. Default is 1.0.
@@ -626,24 +626,24 @@ There are currently 125 built-in filters, divided into the following categories:
   - *lineWidth*: A relative width for the crosshatch lines. The default is 0.003.
 
 - **GPUImageSketchFilter**: Converts video to look like a sketch. This is just the Sobel edge detection filter with the colors inverted
-  - *texelWidth*: 
+  - *texelWidth*:
   - *texelHeight*: These parameters affect the visibility of the detected edges
   - *edgeStrength*: Adjusts the dynamic range of the filter. Higher values lead to stronger edges, but can saturate the intensity colorspace. Default is 1.0.
 
 - **GPUImageThresholdSketchFilter**: Same as the sketch filter, only the edges are thresholded instead of being grayscale
-  - *texelWidth*: 
+  - *texelWidth*:
   - *texelHeight*: These parameters affect the visibility of the detected edges
   - *edgeStrength*: Adjusts the dynamic range of the filter. Higher values lead to stronger edges, but can saturate the intensity colorspace. Default is 1.0.
   - *threshold*: Any edge above this threshold will be black, and anything below white. Ranges from 0.0 to 1.0, with 0.8 as the default
 
 - **GPUImageToonFilter**: This uses Sobel edge detection to place a black border around objects, and then it quantizes the colors present in the image to give a cartoon-like quality to the image.
-  - *texelWidth*: 
+  - *texelWidth*:
   - *texelHeight*: These parameters affect the visibility of the detected edges
   - *threshold*: The sensitivity of the edge detection, with lower values being more sensitive. Ranges from 0.0 to 1.0, with 0.2 as the default
   - *quantizationLevels*: The number of color levels to represent in the final image. Default is 10.0
 
 - **GPUImageSmoothToonFilter**: This uses a similar process as the GPUImageToonFilter, only it precedes the toon effect with a Gaussian blur to smooth out noise.
-  - *texelWidth*: 
+  - *texelWidth*:
   - *texelHeight*: These parameters affect the visibility of the detected edges
   - *blurRadiusInPixels*: The radius of the underlying Gaussian blur. The default is 2.0.
   - *threshold*: The sensitivity of the edge detection, with lower values being more sensitive. Ranges from 0.0 to 1.0, with 0.2 as the default
@@ -703,7 +703,7 @@ There are currently 125 built-in filters, divided into the following categories:
 
 - **GPUImageMosaicFilter**: This filter takes an input tileset, the tiles must ascend in luminance. It looks at the input image and replaces each display tile with an input tile according to the luminance of that tile.  The idea was to replicate the ASCII video filters seen in other apps, but the tileset can be anything.
   - *inputTileSize*:
-  - *numTiles*: 
+  - *numTiles*:
   - *displayTileSize*:
   - *colorOn*:
 

@@ -25,11 +25,11 @@
 @interface GPUImageHoughTransformLineDetector : GPUImageFilterGroup
 {
     GPUImageOutput<GPUImageInput> *thresholdEdgeDetectionFilter;
-    
+
 //    GPUImageThresholdEdgeDetectionFilter *thresholdEdgeDetectionFilter;
     GPUImageParallelCoordinateLineTransformFilter *parallelCoordinateLineTransformFilter;
     GPUImageThresholdedNonMaximumSuppressionFilter *nonMaximumSuppressionFilter;
-    
+
     GLfloat *linesArray;
     GLubyte *rawImagePixels;
 }

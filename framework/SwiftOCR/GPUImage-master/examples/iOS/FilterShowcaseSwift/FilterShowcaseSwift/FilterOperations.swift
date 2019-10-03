@@ -7,7 +7,7 @@ import OpenGLES
 #else
 import OpenGL
 #endif
-    
+
 let filterOperations: Array<FilterOperationInterface> = [
     FilterOperation <GPUImageSaturationFilter>(
         listName:"Saturation",
@@ -294,12 +294,12 @@ let filterOperations: Array<FilterOperationInterface> = [
             let filter = GPUImageAverageColor()
             let colorGenerator = GPUImageSolidColorGenerator()
             colorGenerator.forceProcessingAtSize(outputView.sizeInPixels)
-            
+
             filter.colorAverageProcessingFinishedBlock = {(redComponent, greenComponent, blueComponent, alphaComponent, frameTime) in
                 colorGenerator.setColorRed(redComponent, green:greenComponent, blue:blueComponent, alpha:alphaComponent)
             //                NSLog(@"Average color: %f, %f, %f, %f", redComponent, greenComponent, blueComponent, alphaComponent);
             }
-            
+
             camera.addTarget(filter)
             colorGenerator.addTarget(outputView)
             return (filter, nil)
@@ -314,12 +314,12 @@ let filterOperations: Array<FilterOperationInterface> = [
             let filter = GPUImageLuminosity()
             let colorGenerator = GPUImageSolidColorGenerator()
             colorGenerator.forceProcessingAtSize(outputView.sizeInPixels)
-            
+
             filter.luminosityProcessingFinishedBlock = {(luminosity, frameTime) in
                 colorGenerator.setColorRed(luminosity, green:luminosity, blue:luminosity, alpha:luminosity)
                 //                NSLog(@"Average color: %f, %f, %f, %f", redComponent, greenComponent, blueComponent, alphaComponent);
             }
-            
+
             camera.addTarget(filter)
             colorGenerator.addTarget(outputView)
             return (filter, nil)
@@ -467,25 +467,25 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.Custom(filterSetupFunction:{(camera, outputView) in
             let filter = GPUImageHarrisCornerDetectionFilter()
-            
+
             let crosshairGenerator = GPUImageCrosshairGenerator()
             crosshairGenerator.crosshairWidth = 15.0
             crosshairGenerator.forceProcessingAtSize(outputView.sizeInPixels)
-            
+
             filter.cornersDetectedBlock = { (cornerArray:UnsafeMutablePointer<GLfloat>, cornersDetected:UInt, frameTime:CMTime) in
                 crosshairGenerator.renderCrosshairsFromArray(cornerArray, count:cornersDetected, frameTime:frameTime)
             }
-            
+
             camera.addTarget(filter)
-            
+
             let blendFilter = GPUImageAlphaBlendFilter()
             blendFilter.forceProcessingAtSize(outputView.sizeInPixels)
             let gammaFilter = GPUImageGammaFilter()
             camera.addTarget(gammaFilter)
             gammaFilter.addTarget(blendFilter)
-            
+
             crosshairGenerator.addTarget(blendFilter)
-            
+
             blendFilter.addTarget(outputView)
             return (filter, nil)
         })
@@ -499,25 +499,25 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.Custom(filterSetupFunction:{(camera, outputView) in
             let filter = GPUImageNobleCornerDetectionFilter()
-            
+
             let crosshairGenerator = GPUImageCrosshairGenerator()
             crosshairGenerator.crosshairWidth = 15.0
             crosshairGenerator.forceProcessingAtSize(outputView.sizeInPixels)
-            
+
             filter.cornersDetectedBlock = { (cornerArray:UnsafeMutablePointer<GLfloat>, cornersDetected:UInt, frameTime:CMTime) in
                 crosshairGenerator.renderCrosshairsFromArray(cornerArray, count:cornersDetected, frameTime:frameTime)
             }
-            
+
             camera.addTarget(filter)
-            
+
             let blendFilter = GPUImageAlphaBlendFilter()
             blendFilter.forceProcessingAtSize(outputView.sizeInPixels)
             let gammaFilter = GPUImageGammaFilter()
             camera.addTarget(gammaFilter)
             gammaFilter.addTarget(blendFilter)
-            
+
             crosshairGenerator.addTarget(blendFilter)
-            
+
             blendFilter.addTarget(outputView)
             return (filter, nil)
         })
@@ -531,25 +531,25 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.Custom(filterSetupFunction:{(camera, outputView) in
             let filter = GPUImageShiTomasiFeatureDetectionFilter()
-            
+
             let crosshairGenerator = GPUImageCrosshairGenerator()
             crosshairGenerator.crosshairWidth = 15.0
             crosshairGenerator.forceProcessingAtSize(outputView.sizeInPixels)
-            
+
             filter.cornersDetectedBlock = { (cornerArray:UnsafeMutablePointer<GLfloat>, cornersDetected:UInt, frameTime:CMTime) in
                 crosshairGenerator.renderCrosshairsFromArray(cornerArray, count:cornersDetected, frameTime:frameTime)
             }
-            
+
             camera.addTarget(filter)
-            
+
             let blendFilter = GPUImageAlphaBlendFilter()
             blendFilter.forceProcessingAtSize(outputView.sizeInPixels)
             let gammaFilter = GPUImageGammaFilter()
             camera.addTarget(gammaFilter)
             gammaFilter.addTarget(blendFilter)
-            
+
             crosshairGenerator.addTarget(blendFilter)
-            
+
             blendFilter.addTarget(outputView)
             return (filter, nil)
         })
@@ -563,26 +563,26 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.Custom(filterSetupFunction:{(camera, outputView) in
             let filter = GPUImageHoughTransformLineDetector()
-            
+
             let lineGenerator = GPUImageLineGenerator()
-            
+
             lineGenerator.forceProcessingAtSize(outputView.sizeInPixels)
             lineGenerator.setLineColorRed(1.0, green:0.0, blue:0.0)
-            
+
             filter.linesDetectedBlock = { (lineArray:UnsafeMutablePointer<GLfloat>, linesDetected:UInt, frameTime:CMTime) in
                 lineGenerator.renderLinesFromArray(lineArray, count:linesDetected, frameTime:frameTime)
             }
-            
+
             camera.addTarget(filter)
-            
+
             let blendFilter = GPUImageAlphaBlendFilter()
             blendFilter.forceProcessingAtSize(outputView.sizeInPixels)
             let gammaFilter = GPUImageGammaFilter()
             camera.addTarget(gammaFilter)
             gammaFilter.addTarget(blendFilter)
-            
+
             lineGenerator.addTarget(blendFilter)
-            
+
             blendFilter.addTarget(outputView)
             return (filter, nil)
         })
@@ -607,7 +607,7 @@ let filterOperations: Array<FilterOperationInterface> = [
             gammaFilter.addTarget(blendFilter)
             camera.addTarget(filter)
             filter.addTarget(blendFilter)
-            
+
             blendFilter.addTarget(outputView)
             return (filter, nil)
         })
@@ -734,10 +734,10 @@ let filterOperations: Array<FilterOperationInterface> = [
         },
         filterOperationType:.Custom(filterSetupFunction:{(camera, outputView) in
             let filter = GPUImageChromaKeyFilter()
-            
+
             let blendFilter = GPUImageAlphaBlendFilter()
             blendFilter.mix = 1.0
-            
+
 #if os(iOS)
             let inputImage = UIImage(named:"WID-small.jpg")
 #else
@@ -889,7 +889,7 @@ let filterOperations: Array<FilterOperationInterface> = [
         filterOperationType:.Custom(filterSetupFunction:{(camera, outputView) in
             let filter = GPUImageSphereRefractionFilter()
             camera.addTarget(filter)
-            
+
             // Provide a blurred image for a cool-looking background
             let gaussianBlur = GPUImageGaussianBlurFilter()
             camera.addTarget(gaussianBlur)
@@ -899,7 +899,7 @@ let filterOperations: Array<FilterOperationInterface> = [
             blendFilter.mix = 1.0
             gaussianBlur.addTarget(blendFilter)
             filter.addTarget(blendFilter)
-            
+
             blendFilter.addTarget(outputView)
 
             return (filter, nil)
@@ -915,19 +915,19 @@ let filterOperations: Array<FilterOperationInterface> = [
         filterOperationType:.Custom(filterSetupFunction:{(camera, outputView) in
             let filter = GPUImageGlassSphereFilter()
             camera.addTarget(filter)
-            
+
             // Provide a blurred image for a cool-looking background
             let gaussianBlur = GPUImageGaussianBlurFilter()
             camera.addTarget(gaussianBlur)
             gaussianBlur.blurRadiusInPixels = 5.0
-            
+
             let blendFilter = GPUImageAlphaBlendFilter()
             blendFilter.mix = 1.0
             gaussianBlur.addTarget(blendFilter)
             filter.addTarget(blendFilter)
-            
+
             blendFilter.addTarget(outputView)
-            
+
             return (filter, nil)
         })
     ),
@@ -985,12 +985,12 @@ let filterOperations: Array<FilterOperationInterface> = [
 
             filter.sizeInPixels = CGSizeMake(1024.0, 1024.0)
             consumerFilter.sizeInPixels = CGSizeMake(1024.0, 1024.0)
-            
+
             voronoiPointImage.addTarget(filter)
             camera.addTarget(consumerFilter)
             filter.addTarget(consumerFilter)
             voronoiPointImage.processImage()
-            
+
             consumerFilter.addTarget(outputView)
             return (filter, voronoiPointImage)
         })
@@ -1005,12 +1005,12 @@ let filterOperations: Array<FilterOperationInterface> = [
         filterOperationType:.Custom(filterSetupFunction:{(camera, outputView) in
             let filter = GPUImageMosaicFilter()
             camera.addTarget(filter)
-            
+
             filter.tileSet = "squares.png"
             filter.colorOn = false
-            
+
             filter.addTarget(outputView)
-            
+
             return (filter, nil)
         })
     ),

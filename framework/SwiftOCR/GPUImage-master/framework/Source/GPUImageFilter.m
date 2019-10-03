@@ -7,9 +7,9 @@ NSString *const kGPUImageVertexShaderString = SHADER_STRING
 (
  attribute vec4 position;
  attribute vec4 inputTextureCoordinate;
- 
+
  varying vec2 textureCoordinate;
- 
+
  void main()
  {
      gl_Position = position;
@@ -22,9 +22,9 @@ NSString *const kGPUImageVertexShaderString = SHADER_STRING
 NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  void main()
  {
      gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
@@ -36,9 +36,9 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 (
  varying vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
- 
+
  void main()
  {
      gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
@@ -59,7 +59,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
 
     uniformStateRestorationBlocks = [NSMutableDictionary dictionaryWithCapacity:10];
@@ -77,11 +77,11 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
         [GPUImageContext useImageProcessingContext];
 
         filterProgram = [[GPUImageContext sharedImageProcessingContext] programForVertexShaderString:vertexShaderString fragmentShaderString:fragmentShaderString];
-        
+
         if (!filterProgram.initialized)
         {
             [self initializeAttributes];
-            
+
             if (![filterProgram link])
             {
                 NSString *progLog = [filterProgram programLog];
@@ -94,17 +94,17 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
                 NSAssert(NO, @"Filter shader link failed");
             }
         }
-        
+
         filterPositionAttribute = [filterProgram attributeIndex:@"position"];
         filterTextureCoordinateAttribute = [filterProgram attributeIndex:@"inputTextureCoordinate"];
         filterInputTextureUniform = [filterProgram uniformIndex:@"inputImageTexture"]; // This does assume a name of "inputImageTexture" for the fragment shader
-        
+
         [GPUImageContext setActiveShaderProgram:filterProgram];
-        
+
         glEnableVertexAttribArray(filterPositionAttribute);
-        glEnableVertexAttribArray(filterTextureCoordinateAttribute);    
+        glEnableVertexAttribArray(filterTextureCoordinateAttribute);
     });
-    
+
     return self;
 }
 
@@ -112,9 +112,9 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 {
     if (!(self = [self initWithVertexShaderFromString:kGPUImageVertexShaderString fragmentShaderFromString:fragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 
@@ -125,9 +125,9 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 
     if (!(self = [self initWithFragmentShaderFromString:fragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 
@@ -135,16 +135,16 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 {
     if (!(self = [self initWithFragmentShaderFromString:kGPUImagePassthroughFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     return self;
 }
 
 - (void)initializeAttributes;
 {
     [filterProgram addAttribute:@"position"];
-	[filterProgram addAttribute:@"inputTextureCoordinate"];
+    [filterProgram addAttribute:@"inputTextureCoordinate"];
 
     // Override this, calling back to this super method, in order to add new attributes to your vertex shader
 }
@@ -191,10 +191,10 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
     }
 
     GPUImageFramebuffer* framebuffer = [self framebufferForOutput];
-    
+
     usingNextFrameForImageCapture = NO;
     dispatch_semaphore_signal(imageCaptureSemaphore);
-    
+
     CGImageRef image = [framebuffer newCGImageFromFramebufferContents];
     return image;
 }
@@ -226,35 +226,35 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
         0.0f, 1.0f,
         1.0f, 1.0f,
     };
-    
+
     static const GLfloat rotateLeftTextureCoordinates[] = {
         1.0f, 0.0f,
         1.0f, 1.0f,
         0.0f, 0.0f,
         0.0f, 1.0f,
     };
-    
+
     static const GLfloat rotateRightTextureCoordinates[] = {
         0.0f, 1.0f,
         0.0f, 0.0f,
         1.0f, 1.0f,
         1.0f, 0.0f,
     };
-    
+
     static const GLfloat verticalFlipTextureCoordinates[] = {
         0.0f, 1.0f,
         1.0f, 1.0f,
         0.0f,  0.0f,
         1.0f,  0.0f,
     };
-    
+
     static const GLfloat horizontalFlipTextureCoordinates[] = {
         1.0f, 0.0f,
         0.0f, 0.0f,
         1.0f,  1.0f,
         0.0f,  1.0f,
     };
-    
+
     static const GLfloat rotateRightVerticalFlipTextureCoordinates[] = {
         0.0f, 0.0f,
         0.0f, 1.0f,
@@ -296,7 +296,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
         [firstInputFramebuffer unlock];
         return;
     }
-    
+
     [GPUImageContext setActiveShaderProgram:filterProgram];
 
     outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
@@ -307,22 +307,22 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
     }
 
     [self setUniformsForProgramAtIndex:0];
-    
+
     glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
     glClear(GL_COLOR_BUFFER_BIT);
 
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
-	
-	glUniform1i(filterInputTextureUniform, 2);	
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+
+    glUniform1i(filterInputTextureUniform, 2);
 
     glVertexAttribPointer(filterPositionAttribute, 2, GL_FLOAT, 0, 0, vertices);
-	glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
-    
+    glVertexAttribPointer(filterTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
+
     [firstInputFramebuffer unlock];
-    
+
     if (usingNextFrameForImageCapture)
     {
         dispatch_semaphore_signal(imageCaptureSemaphore);
@@ -335,7 +335,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
     {
         self.frameProcessingCompletionBlock(self, frameTime);
     }
-    
+
     // Get all targets the framebuffer so they can grab a lock on it
     for (id<GPUImageInput> currentTarget in targets)
     {
@@ -348,10 +348,10 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
             [currentTarget setInputSize:[self outputFrameSize] atIndex:textureIndex];
         }
     }
-    
+
     // Release our hold so it can return to the cache immediately upon processing
     [[self framebufferForOutput] unlock];
-    
+
     if (usingNextFrameForImageCapture)
     {
 //        usingNextFrameForImageCapture = NO;
@@ -359,8 +359,8 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
     else
     {
         [self removeOutputFramebuffer];
-    }    
-    
+    }
+
     // Trigger processing last, so that our unlock comes first in serial execution, avoiding the need for a callback
     for (id<GPUImageInput> currentTarget in targets)
     {
@@ -428,7 +428,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 - (void)setFloatArray:(GLfloat *)array length:(GLsizei)count forUniform:(NSString*)uniformName
 {
     GLint uniformIndex = [filterProgram uniformIndex:uniformName];
-    
+
     [self setFloatArray:array length:count forUniform:uniformIndex program:filterProgram];
 }
 
@@ -470,7 +470,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
             GLfloat positionArray[2];
             positionArray[0] = pointValue.x;
             positionArray[1] = pointValue.y;
-            
+
             glUniform2fv(uniform, 1, positionArray);
         }];
     });
@@ -480,12 +480,12 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 {
     runAsynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext setActiveShaderProgram:shaderProgram];
-        
+
         [self setAndExecuteUniformStateCallbackAtIndex:uniform forProgram:shaderProgram toBlock:^{
             GLfloat sizeArray[2];
             sizeArray[0] = sizeValue.width;
             sizeArray[1] = sizeValue.height;
-            
+
             glUniform2fv(uniform, 1, sizeArray);
         }];
     });
@@ -506,7 +506,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 {
     runAsynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext setActiveShaderProgram:shaderProgram];
-        
+
         [self setAndExecuteUniformStateCallbackAtIndex:uniform forProgram:shaderProgram toBlock:^{
             glUniform4fv(uniform, 1, (GLfloat *)&vectorValue);
         }];
@@ -520,7 +520,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 
     runAsynchronouslyOnVideoProcessingQueue(^{
         [GPUImageContext setActiveShaderProgram:shaderProgram];
-        
+
         [self setAndExecuteUniformStateCallbackAtIndex:uniform forProgram:shaderProgram toBlock:^{
             glUniform1fv(uniform, arrayLength, [arrayData bytes]);
         }];
@@ -563,7 +563,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
         -1.0f,  1.0f,
         1.0f,  1.0f,
     };
-    
+
     [self renderToTextureWithVertices:imageVertices textureCoordinates:[[self class] textureCoordinatesForRotation:inputRotation]];
 
     [self informTargetsAboutNewFrameAtTime:frameTime];
@@ -583,14 +583,14 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 - (CGSize)rotatedSize:(CGSize)sizeToRotate forIndex:(NSInteger)textureIndex;
 {
     CGSize rotatedSize = sizeToRotate;
-    
+
     if (GPUImageRotationSwapsWidthAndHeight(inputRotation))
     {
         rotatedSize.width = sizeToRotate.height;
         rotatedSize.height = sizeToRotate.width;
     }
-    
-    return rotatedSize; 
+
+    return rotatedSize;
 }
 
 - (CGPoint)rotatedPoint:(CGPoint)pointToRotate forRotation:(GPUImageRotationMode)rotation;
@@ -635,7 +635,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
             rotatedPoint.y = 1.0 - pointToRotate.y;
         }; break;
     }
-    
+
     return rotatedPoint;
 }
 
@@ -645,7 +645,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
     {
         return;
     }
-    
+
     if (overrideInputSize)
     {
         if (CGSizeEqualToSize(forcedMaximumSize, CGSizeZero))
@@ -660,7 +660,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
     else
     {
         CGSize rotatedSize = [self rotatedSize:newSize forIndex:textureIndex];
-        
+
         if (CGSizeEqualToSize(rotatedSize, CGSizeZero))
         {
             inputTextureSize = rotatedSize;
@@ -670,7 +670,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
             inputTextureSize = rotatedSize;
         }
     }
-    
+
     [self setupFilterForSize:[self sizeOfFBO]];
 }
 
@@ -680,7 +680,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 }
 
 - (void)forceProcessingAtSize:(CGSize)frameSize;
-{    
+{
     if (CGSizeEqualToSize(frameSize, CGSizeZero))
     {
         overrideInputSize = NO;
@@ -724,17 +724,17 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
             }
         }
     }
-    
+
     return cachedMaximumOutputSize;
      */
 }
 
-- (void)endProcessing 
+- (void)endProcessing
 {
     if (!isEndProcessing)
     {
         isEndProcessing = YES;
-        
+
         for (id<GPUImageInput> currentTarget in targets)
         {
             [currentTarget endProcessing];

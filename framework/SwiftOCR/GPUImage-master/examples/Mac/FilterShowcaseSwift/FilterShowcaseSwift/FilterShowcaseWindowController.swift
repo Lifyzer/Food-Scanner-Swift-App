@@ -6,7 +6,7 @@ class FilterShowcaseWindowController: NSWindowController {
     @IBOutlet var filterView: GPUImageView!
 
     @IBOutlet weak var filterSlider: NSSlider!
-    
+
     var enableSlider:Bool = false
     var minimumSliderValue:CGFloat = 0.0, maximumSliderValue:CGFloat = 1.0
     var currentSliderValue:CGFloat = 0.5 {
@@ -19,7 +19,7 @@ class FilterShowcaseWindowController: NSWindowController {
             }
         }
     }
-    
+
     var currentFilterOperation: FilterOperationInterface?
     var videoCamera: GPUImageAVCamera?
     lazy var blendImage: GPUImagePicture = {
@@ -34,19 +34,19 @@ class FilterShowcaseWindowController: NSWindowController {
         videoCamera = GPUImageAVCamera(sessionPreset: AVCaptureSessionPreset640x480, cameraDevice:nil)
         self.changeSelectedRow(0)
     }
-    
+
     func changeSelectedRow(row:Int) {
         if (currentlySelectedRow == row)
         {
             return
         }
-        
+
         // Clean up everything from the previous filter selection first
         videoCamera!.stopCameraCapture()
         videoCamera!.removeAllTargets()
 //        blendImage?.removeAllTargets()
         currentFilterOperation?.filter.removeAllTargets()
-        
+
         currentFilterOperation = filterOperations[row]
         switch currentFilterOperation!.filterOperationType {
             case .SingleInput:
@@ -61,7 +61,7 @@ class FilterShowcaseWindowController: NSWindowController {
                 let inputToFunction:(GPUImageOutput, GPUImageOutput?) = setupFunction(camera:videoCamera!, outputView:filterView!) // Type inference falls down, for now needs this hard cast
                 currentFilterOperation!.configureCustomFilter(inputToFunction)
         }
-        
+
         switch currentFilterOperation!.sliderConfiguration {
         case .Disabled:
             filterSlider.enabled = false
@@ -72,22 +72,22 @@ class FilterShowcaseWindowController: NSWindowController {
             filterSlider.enabled = true
             currentSliderValue = CGFloat(initialValue)
         }
-        
+
         videoCamera!.startCameraCapture()
     }
 
 // MARK: -
 // MARK: Table view delegate and datasource methods
-    
+
     func numberOfRowsInTableView(aTableView:NSTableView!) -> Int {
         return filterOperations.count
     }
-    
+
     func tableView(aTableView:NSTableView!, objectValueForTableColumn aTableColumn:NSTableColumn!, row rowIndex:Int) -> AnyObject! {
         let filterInList:FilterOperationInterface = filterOperations[rowIndex]
         return filterInList.listName
     }
-    
+
     func tableViewSelectionDidChange(aNotification: NSNotification!) {
         if let currentTableView = aNotification.object as? NSTableView {
             let rowIndex = currentTableView.selectedRow

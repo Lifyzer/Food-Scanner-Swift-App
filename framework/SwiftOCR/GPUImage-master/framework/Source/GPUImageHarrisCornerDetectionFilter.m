@@ -12,32 +12,32 @@
 
 @end
 
-// This is the Harris corner detector, as described in 
+// This is the Harris corner detector, as described in
 // C. Harris and M. Stephens. A Combined Corner and Edge Detector. Proc. Alvey Vision Conf., Univ. Manchester, pp. 147-151, 1988.
 
 @implementation GPUImageHarrisCornerDetectionFilter
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRING
-( 
+(
  varying highp vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform lowp float sensitivity;
- 
+
  const mediump float harrisConstant = 0.04;
- 
+
  void main()
  {
      mediump vec3 derivativeElements = texture2D(inputImageTexture, textureCoordinate).rgb;
-     
+
      mediump float derivativeSum = derivativeElements.x + derivativeElements.y;
-     
+
      mediump float zElement = (derivativeElements.z * 2.0) - 1.0;
 
      // R = Ix^2 * Iy^2 - Ixy * Ixy - k * (Ix^2 + Iy^2)^2
      mediump float cornerness = derivativeElements.x * derivativeElements.y - (zElement * zElement) - harrisConstant * derivativeSum * derivativeSum;
-     
+
      gl_FragColor = vec4(vec3(cornerness * sensitivity), 1.0);
  }
 );
@@ -45,23 +45,23 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
 NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRING
 (
  varying vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform float sensitivity;
- 
+
  const float harrisConstant = 0.04;
- 
+
  void main()
  {
      vec3 derivativeElements = texture2D(inputImageTexture, textureCoordinate).rgb;
-     
+
      float derivativeSum = derivativeElements.x + derivativeElements.y;
-     
+
      float zElement = (derivativeElements.z * 2.0) - 1.0;
-     
+
      // R = Ix^2 * Iy^2 - Ixy * Ixy - k * (Ix^2 + Iy^2)^2
      float cornerness = derivativeElements.x * derivativeElements.y - (zElement * zElement) - harrisConstant * derivativeSum * derivativeSum;
-     
+
      gl_FragColor = vec4(vec3(cornerness * sensitivity), 1.0);
  }
 );
@@ -82,7 +82,7 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
     {
         return nil;
     }
-    
+
     return self;
 }
 
@@ -90,13 +90,13 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
 
 #ifdef DEBUGFEATUREDETECTION
     _intermediateImages = [[NSMutableArray alloc] init];
 #endif
-    
+
     // First pass: reduce to luminance and take the derivative of the luminance texture
     derivativeFilter = [[GPUImageXYDerivativeFilter alloc] init];
     [self addFilter:derivativeFilter];
@@ -113,7 +113,7 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
     // Second pass: blur the derivative
     blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
     [self addFilter:blurFilter];
-    
+
 #ifdef DEBUGFEATUREDETECTION
     weakFilter = blurFilter;
     [blurFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime){
@@ -121,7 +121,7 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
         [weakIntermediateImages addObject:intermediateImage];
     }];
 #endif
-    
+
     // Third pass: apply the Harris corner detection calculation
     harrisCornerDetectionFilter = [[GPUImageFilter alloc] initWithFragmentShaderFromString:cornerDetectionFragmentShader];
     [self addFilter:harrisCornerDetectionFilter];
@@ -144,7 +144,7 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
     [nonMaximumSuppressionFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime){
         UIImage *intermediateImage = [weakFilter imageFromCurrentlyProcessedOutput];
         [weakIntermediateImages addObject:intermediateImage];
-        
+
         [weakSelf extractCornerLocationsFromImageAtFrameTime:frameTime];
     }];
 #else
@@ -152,21 +152,21 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
         [weakSelf extractCornerLocationsFromImageAtFrameTime:frameTime];
     }];
 #endif
-    
+
 // Sixth pass: compress the thresholded points into the RGBA channels
 //    colorPackingFilter = [[GPUImageColorPackingFilter alloc] init];
 //    [self addFilter:colorPackingFilter];
 //
-//    
+//
 //#ifdef DEBUGFEATUREDETECTION
 //    __unsafe_unretained GPUImageHarrisCornerDetectionFilter *weakSelf = self;
 //    weakFilter = colorPackingFilter;
 //    [colorPackingFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime){
 //        NSLog(@"Triggered response from compaction filter");
-//        
+//
 //        UIImage *intermediateImage = [weakFilter imageFromCurrentlyProcessedOutput];
 //        [weakIntermediateImages addObject:intermediateImage];
-//        
+//
 //        [weakSelf extractCornerLocationsFromImageAtFrameTime:frameTime];
 //    }];
 //#else
@@ -175,23 +175,23 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
 //        [weakSelf extractCornerLocationsFromImageAtFrameTime:frameTime];
 //    }];
 //#endif
-    
-    [derivativeFilter addTarget:blurFilter];    
+
+    [derivativeFilter addTarget:blurFilter];
     [blurFilter addTarget:harrisCornerDetectionFilter];
     [harrisCornerDetectionFilter addTarget:nonMaximumSuppressionFilter];
 //    [simpleThresholdFilter addTarget:colorPackingFilter];
-    
+
     self.initialFilters = [NSArray arrayWithObjects:derivativeFilter, nil];
 //    self.terminalFilter = colorPackingFilter;
     self.terminalFilter = nonMaximumSuppressionFilter;
-    
+
     self.blurRadiusInPixels = 2.0;
     self.sensitivity = 5.0;
     self.threshold = 0.20;
-    
+
     return self;
 }
-     
+
 - (void)dealloc;
 {
     free(rawImagePixels);
@@ -209,42 +209,42 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
 
     NSUInteger numberOfCorners = 0;
     CGSize imageSize = nonMaximumSuppressionFilter.outputFrameSize;
-    
+
     unsigned int imageByteSize = imageSize.width * imageSize.height * 4;
-    
+
     if (rawImagePixels == NULL)
     {
         rawImagePixels = (GLubyte *)malloc(imageByteSize);
         cornersArray = calloc(512 * 2, sizeof(GLfloat));
-    }    
-    
+    }
+
     glReadPixels(0, 0, (int)imageSize.width, (int)imageSize.height, GL_RGBA, GL_UNSIGNED_BYTE, rawImagePixels);
 
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
 
     unsigned int imageWidth = imageSize.width * 4;
-    
+
     unsigned int currentByte = 0;
     unsigned int cornerStorageIndex = 0;
     while (currentByte < imageByteSize)
     {
         GLubyte colorByte = rawImagePixels[currentByte];
-        
+
         if (colorByte > 0)
         {
             unsigned int xCoordinate = currentByte % imageWidth;
             unsigned int yCoordinate = currentByte / imageWidth;
-            
+
             cornersArray[cornerStorageIndex++] = (CGFloat)(xCoordinate / 4) / imageSize.width;
             cornersArray[cornerStorageIndex++] = (CGFloat)(yCoordinate) / imageSize.height;
             numberOfCorners++;
-            
+
             numberOfCorners = MIN(numberOfCorners, 511);
             cornerStorageIndex = MIN(cornerStorageIndex, 1021);
         }
         currentByte +=4;
     }
-    
+
     CFAbsoluteTime currentFrameTime = (CFAbsoluteTimeGetCurrent() - startTime);
     NSLog(@"Processing time : %f ms", 1000.0 * currentFrameTime);
 

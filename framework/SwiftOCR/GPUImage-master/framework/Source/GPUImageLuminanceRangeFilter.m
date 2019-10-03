@@ -4,19 +4,19 @@
 NSString *const kGPUImageLuminanceRangeFragmentShaderString = SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform lowp float rangeReduction;
- 
+
  // Values from "Graphics Shaders: Theory and Practice" by Bailey and Cunningham
  const mediump vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);
- 
+
  void main()
  {
      lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
      mediump float luminance = dot(textureColor.rgb, luminanceWeighting);
      mediump float luminanceRatio = ((0.5 - luminance) * rangeReduction);
-     
+
      gl_FragColor = vec4((textureColor.rgb) + (luminanceRatio), textureColor.w);
  }
 );
@@ -24,19 +24,19 @@ NSString *const kGPUImageLuminanceRangeFragmentShaderString = SHADER_STRING
 NSString *const kGPUImageLuminanceRangeFragmentShaderString = SHADER_STRING
 (
  varying vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform float rangeReduction;
- 
+
  // Values from "Graphics Shaders: Theory and Practice" by Bailey and Cunningham
  const vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);
- 
+
  void main()
  {
      vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
      float luminance = dot(textureColor.rgb, luminanceWeighting);
      float luminanceRatio = ((0.5 - luminance) * rangeReduction);
-     
+
      gl_FragColor = vec4((textureColor.rgb) + (luminanceRatio), textureColor.w);
  }
 );
@@ -53,12 +53,12 @@ NSString *const kGPUImageLuminanceRangeFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageLuminanceRangeFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     rangeReductionUniform = [filterProgram uniformIndex:@"rangeReduction"];
     self.rangeReductionFactor = 0.6;
-    
+
     return self;
 }
 
@@ -68,7 +68,7 @@ NSString *const kGPUImageLuminanceRangeFragmentShaderString = SHADER_STRING
 - (void)setRangeReductionFactor:(CGFloat)newValue;
 {
     _rangeReductionFactor = newValue;
-    
+
     [self setFloat:_rangeReductionFactor forUniform:rangeReductionUniform program:filterProgram];
 }
 

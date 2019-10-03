@@ -8,15 +8,15 @@
 {
     CGFloat totalFrameTimeForCPU, totalFrameTimeForCoreImage, totalFrameTimeForGPUImage;
     NSUInteger numberOfCPUFramesCaptured, numberOfCoreImageFramesCaptured, numberOfGPUImageFramesCaptured;
-    
+
     GLKView *videoDisplayView;
     AVCaptureSession *captureSession;
-	AVCaptureDeviceInput *videoInput;
-	AVCaptureVideoDataOutput *videoOutput;
-    
+    AVCaptureDeviceInput *videoInput;
+    AVCaptureVideoDataOutput *videoOutput;
+
     CIContext *coreImageContext;
     CIFilter *coreImageFilter;
-    
+
     GLuint _renderBuffer;
 
     BOOL processUsingCPU;
@@ -24,7 +24,7 @@
     GPUImageVideoCamera *videoCamera;
     GPUImageOutput<GPUImageInput> *benchmarkedGPUImageFilter;
     GPUImageView *filterView;
-    
+
     __unsafe_unretained id<VideoFilteringCallback> delegate;
 }
 

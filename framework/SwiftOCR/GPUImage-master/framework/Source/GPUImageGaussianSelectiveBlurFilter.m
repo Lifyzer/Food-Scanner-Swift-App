@@ -4,13 +4,13 @@
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 NSString *const kGPUImageGaussianSelectiveBlurFragmentShaderString = SHADER_STRING
-( 
+(
  varying highp vec2 textureCoordinate;
  varying highp vec2 textureCoordinate2;
- 
+
  uniform sampler2D inputImageTexture;
- uniform sampler2D inputImageTexture2; 
- 
+ uniform sampler2D inputImageTexture2;
+
  uniform lowp float excludeCircleRadius;
  uniform lowp vec2 excludeCirclePoint;
  uniform lowp float excludeBlurSize;
@@ -20,10 +20,10 @@ NSString *const kGPUImageGaussianSelectiveBlurFragmentShaderString = SHADER_STRI
  {
      lowp vec4 sharpImageColor = texture2D(inputImageTexture, textureCoordinate);
      lowp vec4 blurredImageColor = texture2D(inputImageTexture2, textureCoordinate2);
-     
+
      highp vec2 textureCoordinateToUse = vec2(textureCoordinate2.x, (textureCoordinate2.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
      highp float distanceFromCenter = distance(excludeCirclePoint, textureCoordinateToUse);
-     
+
      gl_FragColor = mix(sharpImageColor, blurredImageColor, smoothstep(excludeCircleRadius - excludeBlurSize, excludeCircleRadius, distanceFromCenter));
  }
 );
@@ -32,23 +32,23 @@ NSString *const kGPUImageGaussianSelectiveBlurFragmentShaderString = SHADER_STRI
 (
  varying vec2 textureCoordinate;
  varying vec2 textureCoordinate2;
- 
+
  uniform sampler2D inputImageTexture;
  uniform sampler2D inputImageTexture2;
- 
+
  uniform float excludeCircleRadius;
  uniform vec2 excludeCirclePoint;
  uniform float excludeBlurSize;
  uniform float aspectRatio;
- 
+
  void main()
  {
      vec4 sharpImageColor = texture2D(inputImageTexture, textureCoordinate);
      vec4 blurredImageColor = texture2D(inputImageTexture2, textureCoordinate2);
-     
+
      vec2 textureCoordinateToUse = vec2(textureCoordinate2.x, (textureCoordinate2.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
      float distanceFromCenter = distance(excludeCirclePoint, textureCoordinateToUse);
-     
+
      gl_FragColor = mix(sharpImageColor, blurredImageColor, smoothstep(excludeCircleRadius - excludeBlurSize, excludeCircleRadius, distanceFromCenter));
  }
 );
@@ -64,32 +64,32 @@ NSString *const kGPUImageGaussianSelectiveBlurFragmentShaderString = SHADER_STRI
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
-    
+
     hasOverriddenAspectRatio = NO;
-    
+
     // First pass: apply a variable Gaussian blur
     blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
     [self addFilter:blurFilter];
-    
+
     // Second pass: combine the blurred image with the original sharp one
     selectiveFocusFilter = [[GPUImageTwoInputFilter alloc] initWithFragmentShaderFromString:kGPUImageGaussianSelectiveBlurFragmentShaderString];
     [self addFilter:selectiveFocusFilter];
-    
+
     // Texture location 0 needs to be the sharp image for both the blur and the second stage processing
     [blurFilter addTarget:selectiveFocusFilter atTextureLocation:1];
-    
-    // To prevent double updating of this filter, disable updates from the sharp image side    
+
+    // To prevent double updating of this filter, disable updates from the sharp image side
     self.initialFilters = [NSArray arrayWithObjects:blurFilter, selectiveFocusFilter, nil];
     self.terminalFilter = selectiveFocusFilter;
-    
+
     self.blurRadiusInPixels = 5.0;
-    
+
     self.excludeCircleRadius = 60.0/320.0;
     self.excludeCirclePoint = CGPointMake(0.5f, 0.5f);
     self.excludeBlurSize = 30.0/320.0;
-    
+
     return self;
 }
 
@@ -98,7 +98,7 @@ NSString *const kGPUImageGaussianSelectiveBlurFragmentShaderString = SHADER_STRI
     CGSize oldInputSize = inputTextureSize;
     [super setInputSize:newSize atIndex:textureIndex];
     inputTextureSize = newSize;
-    
+
     if ( (!CGSizeEqualToSize(oldInputSize, inputTextureSize)) && (!hasOverriddenAspectRatio) && (!CGSizeEqualToSize(newSize, CGSizeZero)) )
     {
         _aspectRatio = (inputTextureSize.width / inputTextureSize.height);
@@ -140,7 +140,7 @@ NSString *const kGPUImageGaussianSelectiveBlurFragmentShaderString = SHADER_STRI
 - (void)setAspectRatio:(CGFloat)newValue;
 {
     hasOverriddenAspectRatio = YES;
-    _aspectRatio = newValue;    
+    _aspectRatio = newValue;
     [selectiveFocusFilter setFloat:_aspectRatio forUniformName:@"aspectRatio"];
 }
 

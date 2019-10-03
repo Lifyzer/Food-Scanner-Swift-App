@@ -25,15 +25,15 @@
 {
     [super windowControllerDidLoadNib:aController];
     // Add any code here that needs to be executed once the windowController has loaded the document's window.
-    
+
     NSLog(@"Did load nib");
-    
+
 //    [inputPicture addTarget:imageFilter];
 //    [imageFilter addTarget:self.imageView];
-    
+
 //    [inputPicture addTarget:self.imageView];
 //    [inputPicture processImage];
-    
+
     [inputPicture addTarget:imageFilter];
     GPUImageSketchFilter *sketchFilter = [[GPUImageSketchFilter alloc] init];
     [imageFilter addTarget:sketchFilter];
@@ -61,10 +61,10 @@
     // Start up a GPUImagePicture with that data
     NSImage *sourceImage = [[NSImage alloc] initWithData:data];
     inputPicture = [[GPUImagePicture alloc] initWithImage:sourceImage];
-    
+
     imageFilter = [[GPUImageBrightnessFilter alloc] init];
     NSLog(@"Set up filters");
-    
+
     return YES;
 }
 
@@ -74,7 +74,7 @@
 - (void)setSliderSetting:(CGFloat)newValue;
 {
     _sliderSetting = newValue;
-    
+
     [(GPUImageBrightnessFilter *)imageFilter setBrightness:_sliderSetting];
     [inputPicture processImage];
 }

@@ -24,19 +24,19 @@ static void *openGLESContextQueueKey;
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
 
-	openGLESContextQueueKey = &openGLESContextQueueKey;
+    openGLESContextQueueKey = &openGLESContextQueueKey;
     _contextQueue = dispatch_queue_create("com.sunsetlakesoftware.GPUImage.openGLESContextQueue", NULL);
-	dispatch_queue_set_specific(_contextQueue, openGLESContextQueueKey, (__bridge void *)self, NULL);
+    dispatch_queue_set_specific(_contextQueue, openGLESContextQueueKey, (__bridge void *)self, NULL);
     shaderProgramCache = [[NSMutableDictionary alloc] init];
-    
+
     return self;
 }
 
 + (void *)contextKey {
-	return openGLESContextQueueKey;
+    return openGLESContextQueueKey;
 }
 
 // Based on Colin Wheeler's example here: http://cocoasamurai.blogspot.com/2011/04/singletons-your-doing-them-wrong.html
@@ -44,7 +44,7 @@ static void *openGLESContextQueueKey;
 {
     static dispatch_once_t pred;
     static GPUImageContext *sharedImageProcessingContext = nil;
-    
+
     dispatch_once(&pred, ^{
         sharedImageProcessingContext = [[[self class] alloc] init];
     });
@@ -78,7 +78,7 @@ static void *openGLESContextQueueKey;
     {
         [imageProcessingContext makeCurrentContext];
     }
-    
+
     if (sharedContext.currentShaderProgram != shaderProgram)
     {
         sharedContext.currentShaderProgram = shaderProgram;
@@ -90,18 +90,18 @@ static void *openGLESContextQueueKey;
 {
     static dispatch_once_t pred;
     static GLint maxTextureSize = 0;
-    
+
     dispatch_once(&pred, ^{
         [self useImageProcessingContext];
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
     });
-    
+
     return maxTextureSize;
 }
 
 + (GLint)maximumTextureUnitsForThisDevice;
 {
-    GLint maxTextureUnits; 
+    GLint maxTextureUnits;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
     return maxTextureUnits;
 }
@@ -132,23 +132,23 @@ static void *openGLESContextQueueKey;
 {
     static dispatch_once_t pred;
     static BOOL supportsRedTextures = NO;
-    
+
     dispatch_once(&pred, ^{
         supportsRedTextures = [GPUImageContext deviceSupportsOpenGLESExtension:@"GL_EXT_texture_rg"];
     });
-    
+
     return supportsRedTextures;
 }
 
 
 + (CGSize)sizeThatFitsWithinATextureForSize:(CGSize)inputSize;
 {
-    GLint maxTextureSize = [self maximumTextureSizeForThisDevice]; 
+    GLint maxTextureSize = [self maximumTextureSizeForThisDevice];
     if ( (inputSize.width < maxTextureSize) && (inputSize.height < maxTextureSize) )
     {
         return inputSize;
     }
-    
+
     CGSize adjustedSize;
     if (inputSize.width > inputSize.height)
     {
@@ -179,14 +179,14 @@ static void *openGLESContextQueueKey;
         programFromCache = [[GLProgram alloc] initWithVertexShaderString:vertexShaderString fragmentShaderString:fragmentShaderString];
         [shaderProgramCache setObject:programFromCache forKey:lookupKeyForShaderProgram];
     }
-    
+
     return programFromCache;
 }
 
 - (void)useSharegroup:(CGLShareGroupObj *)sharegroup;
 {
     NSAssert(_context == nil, @"Unable to use a share group when the context has already been created. Call this method before you use the context for the first time.");
-    
+
     _sharegroup = sharegroup;
 }
 
@@ -197,12 +197,12 @@ static void *openGLESContextQueueKey;
         NSOpenGLPFAAccelerated, 0,
         0
     };
-    
+
     _pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:pixelFormatAttributes];
-	if (_pixelFormat == nil)
-	{
-		NSLog(@"Error: No appropriate pixel format found");
-	}
+    if (_pixelFormat == nil)
+    {
+        NSLog(@"Error: No appropriate pixel format found");
+    }
     // TODO: Take into account the sharegroup
     NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:_pixelFormat shareContext:nil];
 
@@ -214,16 +214,16 @@ static void *openGLESContextQueueKey;
 {
     if (_coreVideoTextureCache == NULL)
     {
-        
+
         CVReturn err = CVOpenGLTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)[self context], [_pixelFormat CGLPixelFormatObj], NULL, &_coreVideoTextureCache);
-        
+
         if (err)
         {
             NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreate %d", err);
         }
-        
+
     }
-    
+
     return _coreVideoTextureCache;
 }
 
@@ -251,7 +251,7 @@ static void *openGLESContextQueueKey;
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D);
     }
-    
+
     return _context;
 }
 
@@ -261,7 +261,7 @@ static void *openGLESContextQueueKey;
     {
         _framebufferCache = [[GPUImageFramebufferCache alloc] init];
     }
-    
+
     return _framebufferCache;
 }
 

@@ -17,11 +17,11 @@
     {
         return nil;
     }
-    
+
     self.texelSpacingMultiplier = 1.0;
     _blurRadiusInPixels = 2.0;
     shouldResizeBlurRadiusWithImageSize = NO;
-    
+
     return self;
 }
 
@@ -29,7 +29,7 @@
 {
     NSString *currentGaussianBlurVertexShader = [[self class] vertexShaderForOptimizedBlurOfRadius:4 sigma:2.0];
     NSString *currentGaussianBlurFragmentShader = [[self class] fragmentShaderForOptimizedBlurOfRadius:4 sigma:2.0];
-    
+
     return [self initWithFirstStageVertexShaderFromString:currentGaussianBlurVertexShader firstStageFragmentShaderFromString:currentGaussianBlurFragmentShader secondStageVertexShaderFromString:currentGaussianBlurVertexShader secondStageFragmentShaderFromString:currentGaussianBlurFragmentShader];
 }
 
@@ -44,7 +44,7 @@
     {
         return kGPUImageVertexShaderString;
     }
-    
+
 //    NSLog(@"Max varyings: %d", [GPUImageContext maximumVaryingVectorsForThisDevice]);
     NSMutableString *shaderString = [[NSMutableString alloc] init];
 
@@ -81,10 +81,10 @@
             [shaderString appendFormat:@"blurCoordinates[%ld] = inputTextureCoordinate.xy;\n", (unsigned long)currentBlurCoordinateIndex];
         }
     }
-    
+
     // Footer
     [shaderString appendString:@"}\n"];
-    
+
     return shaderString;
 }
 
@@ -120,7 +120,7 @@
 
     // Finally, generate the shader from these weights
     NSMutableString *shaderString = [[NSMutableString alloc] init];
-    
+
     // Header
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     [shaderString appendFormat:@"\
@@ -160,7 +160,7 @@
     [shaderString appendString:@"\
      gl_FragColor = sum;\n\
      }\n"];
-    
+
     free(standardGaussianWeights);
     return shaderString;
 }
@@ -178,7 +178,7 @@
     for (NSUInteger currentGaussianWeightIndex = 0; currentGaussianWeightIndex < blurRadius + 1; currentGaussianWeightIndex++)
     {
         standardGaussianWeights[currentGaussianWeightIndex] = (1.0 / sqrt(2.0 * M_PI * pow(sigma, 2.0))) * exp(-pow(currentGaussianWeightIndex, 2.0) / (2.0 * pow(sigma, 2.0)));
-        
+
         if (currentGaussianWeightIndex == 0)
         {
             sumOfWeights += standardGaussianWeights[currentGaussianWeightIndex];
@@ -188,7 +188,7 @@
             sumOfWeights += 2.0 * standardGaussianWeights[currentGaussianWeightIndex];
         }
     }
-    
+
     // Next, normalize these weights to prevent the clipping of the Gaussian curve at the end of the discrete samples from reducing luminance
     for (NSUInteger currentGaussianWeightIndex = 0; currentGaussianWeightIndex < blurRadius + 1; currentGaussianWeightIndex++)
     {
@@ -198,17 +198,17 @@
     // From these weights we calculate the offsets to read interpolated values from
     NSUInteger numberOfOptimizedOffsets = MIN(blurRadius / 2 + (blurRadius % 2), 7);
     GLfloat *optimizedGaussianOffsets = calloc(numberOfOptimizedOffsets, sizeof(GLfloat));
-    
+
     for (NSUInteger currentOptimizedOffset = 0; currentOptimizedOffset < numberOfOptimizedOffsets; currentOptimizedOffset++)
     {
         GLfloat firstWeight = standardGaussianWeights[currentOptimizedOffset*2 + 1];
         GLfloat secondWeight = standardGaussianWeights[currentOptimizedOffset*2 + 2];
-        
+
         GLfloat optimizedWeight = firstWeight + secondWeight;
-        
+
         optimizedGaussianOffsets[currentOptimizedOffset] = (firstWeight * (currentOptimizedOffset*2 + 1) + secondWeight * (currentOptimizedOffset*2 + 2)) / optimizedWeight;
     }
-    
+
     NSMutableString *shaderString = [[NSMutableString alloc] init];
     // Header
     [shaderString appendFormat:@"\
@@ -234,7 +234,7 @@
          blurCoordinates[%lu] = inputTextureCoordinate.xy + singleStepOffset * %f;\n\
          blurCoordinates[%lu] = inputTextureCoordinate.xy - singleStepOffset * %f;\n", (unsigned long)((currentOptimizedOffset * 2) + 1), optimizedGaussianOffsets[currentOptimizedOffset], (unsigned long)((currentOptimizedOffset * 2) + 2), optimizedGaussianOffsets[currentOptimizedOffset]];
     }
-    
+
     // Footer
     [shaderString appendString:@"}\n"];
 
@@ -249,14 +249,14 @@
     {
         return kGPUImagePassthroughFragmentShaderString;
     }
-    
+
     // First, generate the normal Gaussian weights for a given sigma
     GLfloat *standardGaussianWeights = calloc(blurRadius + 1, sizeof(GLfloat));
     GLfloat sumOfWeights = 0.0;
     for (NSUInteger currentGaussianWeightIndex = 0; currentGaussianWeightIndex < blurRadius + 1; currentGaussianWeightIndex++)
     {
         standardGaussianWeights[currentGaussianWeightIndex] = (1.0 / sqrt(2.0 * M_PI * pow(sigma, 2.0))) * exp(-pow(currentGaussianWeightIndex, 2.0) / (2.0 * pow(sigma, 2.0)));
-        
+
         if (currentGaussianWeightIndex == 0)
         {
             sumOfWeights += standardGaussianWeights[currentGaussianWeightIndex];
@@ -266,19 +266,19 @@
             sumOfWeights += 2.0 * standardGaussianWeights[currentGaussianWeightIndex];
         }
     }
-    
+
     // Next, normalize these weights to prevent the clipping of the Gaussian curve at the end of the discrete samples from reducing luminance
     for (NSUInteger currentGaussianWeightIndex = 0; currentGaussianWeightIndex < blurRadius + 1; currentGaussianWeightIndex++)
     {
         standardGaussianWeights[currentGaussianWeightIndex] = standardGaussianWeights[currentGaussianWeightIndex] / sumOfWeights;
     }
-    
+
     // From these weights we calculate the offsets to read interpolated values from
     NSUInteger numberOfOptimizedOffsets = MIN(blurRadius / 2 + (blurRadius % 2), 7);
     NSUInteger trueNumberOfOptimizedOffsets = blurRadius / 2 + (blurRadius % 2);
 
     NSMutableString *shaderString = [[NSMutableString alloc] init];
-    
+
     // Header
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     [shaderString appendFormat:@"\
@@ -306,7 +306,7 @@
 
     // Inner texture loop
     [shaderString appendFormat:@"sum += texture2D(inputImageTexture, blurCoordinates[0]) * %f;\n", standardGaussianWeights[0]];
-    
+
     for (NSUInteger currentBlurCoordinateIndex = 0; currentBlurCoordinateIndex < numberOfOptimizedOffsets; currentBlurCoordinateIndex++)
     {
         GLfloat firstWeight = standardGaussianWeights[currentBlurCoordinateIndex * 2 + 1];
@@ -316,7 +316,7 @@
         [shaderString appendFormat:@"sum += texture2D(inputImageTexture, blurCoordinates[%lu]) * %f;\n", (unsigned long)((currentBlurCoordinateIndex * 2) + 1), optimizedWeight];
         [shaderString appendFormat:@"sum += texture2D(inputImageTexture, blurCoordinates[%lu]) * %f;\n", (unsigned long)((currentBlurCoordinateIndex * 2) + 2), optimizedWeight];
     }
-    
+
     // If the number of required samples exceeds the amount we can pass in via varyings, we have to do dependent texture reads in the fragment shader
     if (trueNumberOfOptimizedOffsets > numberOfOptimizedOffsets)
     {
@@ -330,15 +330,15 @@
         {
             GLfloat firstWeight = standardGaussianWeights[currentOverlowTextureRead * 2 + 1];
             GLfloat secondWeight = standardGaussianWeights[currentOverlowTextureRead * 2 + 2];
-            
+
             GLfloat optimizedWeight = firstWeight + secondWeight;
             GLfloat optimizedOffset = (firstWeight * (currentOverlowTextureRead * 2 + 1) + secondWeight * (currentOverlowTextureRead * 2 + 2)) / optimizedWeight;
-            
+
             [shaderString appendFormat:@"sum += texture2D(inputImageTexture, blurCoordinates[0] + singleStepOffset * %f) * %f;\n", optimizedOffset, optimizedWeight];
             [shaderString appendFormat:@"sum += texture2D(inputImageTexture, blurCoordinates[0] - singleStepOffset * %f) * %f;\n", optimizedOffset, optimizedWeight];
         }
     }
-    
+
     // Footer
     [shaderString appendString:@"\
         gl_FragColor = sum;\n\
@@ -351,7 +351,7 @@
 - (void)setupFilterForSize:(CGSize)filterFrameSize;
 {
     [super setupFilterForSize:filterFrameSize];
-    
+
     if (shouldResizeBlurRadiusWithImageSize)
     {
         if (self.blurRadiusAsFractionOfImageWidth > 0)
@@ -371,7 +371,7 @@
 - (void)renderToTextureWithVertices:(const GLfloat *)vertices textureCoordinates:(const GLfloat *)textureCoordinates;
 {
     [super renderToTextureWithVertices:vertices textureCoordinates:textureCoordinates];
-    
+
     for (NSUInteger currentAdditionalBlurPass = 1; currentAdditionalBlurPass < _blurPasses; currentAdditionalBlurPass++)
     {
         [super renderToTextureWithVertices:vertices textureCoordinates:[[self class] textureCoordinatesForRotation:kGPUImageNoRotation]];
@@ -384,11 +384,11 @@
         [GPUImageContext useImageProcessingContext];
 
         filterProgram = [[GPUImageContext sharedImageProcessingContext] programForVertexShaderString:newVertexShader fragmentShaderString:newFragmentShader];
-        
+
         if (!filterProgram.initialized)
         {
             [self initializeAttributes];
-            
+
             if (![filterProgram link])
             {
                 NSString *progLog = [filterProgram programLog];
@@ -401,7 +401,7 @@
                 NSAssert(NO, @"Filter shader link failed");
             }
         }
-        
+
         filterPositionAttribute = [filterProgram attributeIndex:@"position"];
         filterTextureCoordinateAttribute = [filterProgram attributeIndex:@"inputTextureCoordinate"];
         filterInputTextureUniform = [filterProgram uniformIndex:@"inputImageTexture"]; // This does assume a name of "inputImageTexture" for the fragment shader
@@ -413,11 +413,11 @@
         glEnableVertexAttribArray(filterTextureCoordinateAttribute);
 
         secondFilterProgram = [[GPUImageContext sharedImageProcessingContext] programForVertexShaderString:newVertexShader fragmentShaderString:newFragmentShader];
-        
+
         if (!secondFilterProgram.initialized)
         {
             [self initializeSecondaryAttributes];
-            
+
             if (![secondFilterProgram link])
             {
                 NSString *progLog = [secondFilterProgram programLog];
@@ -430,7 +430,7 @@
                 NSAssert(NO, @"Filter shader link failed");
             }
         }
-        
+
         secondFilterPositionAttribute = [secondFilterProgram attributeIndex:@"position"];
         secondFilterTextureCoordinateAttribute = [secondFilterProgram attributeIndex:@"inputTextureCoordinate"];
         secondFilterInputTextureUniform = [secondFilterProgram uniformIndex:@"inputImageTexture"]; // This does assume a name of "inputImageTexture" for the fragment shader
@@ -441,7 +441,7 @@
 
         glEnableVertexAttribArray(secondFilterPositionAttribute);
         glEnableVertexAttribArray(secondFilterTextureCoordinateAttribute);
-        
+
         [self setupFilterForSize:[self sizeOfFBO]];
         glFinish();
     });
@@ -454,10 +454,10 @@
 - (void)setTexelSpacingMultiplier:(CGFloat)newValue;
 {
     _texelSpacingMultiplier = newValue;
-    
+
     _verticalTexelSpacing = _texelSpacingMultiplier;
     _horizontalTexelSpacing = _texelSpacingMultiplier;
-    
+
     [self setupFilterForSize:[self sizeOfFBO]];
 }
 
@@ -469,7 +469,7 @@
     if (round(newValue) != _blurRadiusInPixels)
     {
         _blurRadiusInPixels = round(newValue); // For now, only do integral sigmas
-        
+
         NSUInteger calculatedSampleRadius = 0;
         if (_blurRadiusInPixels >= 1) // Avoid a divide-by-zero error here
         {
@@ -478,15 +478,15 @@
             calculatedSampleRadius = floor(sqrt(-2.0 * pow(_blurRadiusInPixels, 2.0) * log(minimumWeightToFindEdgeOfSamplingArea * sqrt(2.0 * M_PI * pow(_blurRadiusInPixels, 2.0))) ));
             calculatedSampleRadius += calculatedSampleRadius % 2; // There's nothing to gain from handling odd radius sizes, due to the optimizations I use
         }
-        
+
 //        NSLog(@"Blur radius: %f, calculated sample radius: %d", _blurRadiusInPixels, calculatedSampleRadius);
-//        
+//
         NSString *newGaussianBlurVertexShader = [[self class] vertexShaderForOptimizedBlurOfRadius:calculatedSampleRadius sigma:_blurRadiusInPixels];
         NSString *newGaussianBlurFragmentShader = [[self class] fragmentShaderForOptimizedBlurOfRadius:calculatedSampleRadius sigma:_blurRadiusInPixels];
 
 //        NSLog(@"Optimized vertex shader: \n%@", newGaussianBlurVertexShader);
 //        NSLog(@"Optimized fragment shader: \n%@", newGaussianBlurFragmentShader);
-//        
+//
         [self switchToVertexShader:newGaussianBlurVertexShader fragmentShader:newGaussianBlurFragmentShader];
     }
     shouldResizeBlurRadiusWithImageSize = NO;

@@ -13,7 +13,7 @@
 import Foundation
 
 public protocol Storage {
-    
+
     associatedtype StorageType
     func writeToFile(_ filename: String)
     func writeToFile(_ url: URL)

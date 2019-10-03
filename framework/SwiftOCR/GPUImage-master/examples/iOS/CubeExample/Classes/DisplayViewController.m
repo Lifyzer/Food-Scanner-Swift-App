@@ -12,7 +12,7 @@
     if (self) {
         // Custom initialization
     }
-    
+
 
     return self;
 }
@@ -20,15 +20,15 @@
 - (void)dealloc
 {
     [renderer release];
-    
+
     [super dealloc];
 }
 
 - (void)loadView
-{    
-    CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];	
-	GPUImageView *primaryView = [[[GPUImageView alloc] initWithFrame:mainScreenFrame] autorelease];
-	self.view = primaryView;
+{
+    CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
+    GPUImageView *primaryView = [[[GPUImageView alloc] initWithFrame:mainScreenFrame] autorelease];
+    self.view = primaryView;
 
     renderer = [[ES2Renderer alloc] initWithSize:[primaryView sizeInPixels]];
 
@@ -41,13 +41,13 @@
 
     [textureInput addTarget:filter];
     [filter addTarget:primaryView];
-    
+
     [renderer setNewFrameAvailableBlock:^{
         float currentTimeInMilliseconds = [[NSDate date] timeIntervalSinceDate:startTime] * 1000.0;
-        
+
         [textureInput processTextureWithFrameTime:CMTimeMake((int)currentTimeInMilliseconds, 1000)];
     }];
-    
+
     [renderer startCameraCapture];
 }
 
@@ -68,29 +68,29 @@
 {
     NSMutableSet *currentTouches = [[[event touchesForView:self.view] mutableCopy] autorelease];
     [currentTouches minusSet:touches];
-	
-	// New touches are not yet included in the current touches for the view
-	lastMovementPosition = [[touches anyObject] locationInView:self.view];
+
+    // New touches are not yet included in the current touches for the view
+    lastMovementPosition = [[touches anyObject] locationInView:self.view];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 {
-	CGPoint currentMovementPosition = [[touches anyObject] locationInView:self.view];
-	[renderer renderByRotatingAroundX:(currentMovementPosition.x - lastMovementPosition.x) rotatingAroundY:(lastMovementPosition.y - currentMovementPosition.y)];
-	lastMovementPosition = currentMovementPosition;
+    CGPoint currentMovementPosition = [[touches anyObject] locationInView:self.view];
+    [renderer renderByRotatingAroundX:(currentMovementPosition.x - lastMovementPosition.x) rotatingAroundY:(lastMovementPosition.y - currentMovementPosition.y)];
+    lastMovementPosition = currentMovementPosition;
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event 
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	NSMutableSet *remainingTouches = [[[event touchesForView:self.view] mutableCopy] autorelease];
+    NSMutableSet *remainingTouches = [[[event touchesForView:self.view] mutableCopy] autorelease];
     [remainingTouches minusSet:touches];
-    
-	lastMovementPosition = [[remainingTouches anyObject] locationInView:self.view];
+
+    lastMovementPosition = [[remainingTouches anyObject] locationInView:self.view];
 }
 
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event 
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	// Handle touches canceled the same as as a touches ended event
+    // Handle touches canceled the same as as a touches ended event
     [self touchesEnded:touches withEvent:event];
 }
 

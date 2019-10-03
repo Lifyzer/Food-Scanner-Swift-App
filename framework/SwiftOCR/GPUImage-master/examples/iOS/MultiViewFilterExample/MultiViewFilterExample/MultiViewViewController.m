@@ -18,17 +18,17 @@
 #pragma mark - View lifecycle
 
 - (void)loadView
-{    
-    CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];	
-	UIView *primaryView = [[[UIView alloc] initWithFrame:mainScreenFrame] autorelease];
+{
+    CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
+    UIView *primaryView = [[[UIView alloc] initWithFrame:mainScreenFrame] autorelease];
     primaryView.backgroundColor = [UIColor blueColor];
-	self.view = primaryView;
+    self.view = primaryView;
 
     videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
     videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
-    
+
     CGFloat halfWidth = round(mainScreenFrame.size.width / 2.0);
-    CGFloat halfHeight = round(mainScreenFrame.size.height / 2.0);    
+    CGFloat halfHeight = round(mainScreenFrame.size.height / 2.0);
     view1 = [[GPUImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, halfWidth, halfHeight)];
     view2 = [[GPUImageView alloc] initWithFrame:CGRectMake(halfWidth, 0.0, halfWidth, halfHeight)];
     view3 = [[GPUImageView alloc] initWithFrame:CGRectMake(0.0, halfHeight, halfWidth, halfHeight)];
@@ -37,7 +37,7 @@
     [self.view addSubview:view2];
     [self.view addSubview:view3];
     [self.view addSubview:view4];
-    
+
     GPUImageFilter *filter1 = [[[GPUImageFilter alloc] initWithFragmentShaderFromFile:@"Shader1"] autorelease];
     GPUImageFilter *filter2 = [[[GPUImageFilter alloc] initWithFragmentShaderFromFile:@"Shader2"] autorelease];
     GPUImageSepiaFilter *filter3 = [[[GPUImageSepiaFilter alloc] init] autorelease];
@@ -55,7 +55,7 @@
 //    GPUImageSobelEdgeDetectionFilter *filter3 = [[GPUImageSobelEdgeDetectionFilter alloc] init];
 //    [filter3 setTexelHeight:(1.0 / 200.0)];
 //    [filter3 setTexelWidth:(1.0 / 400.0)];
-    
+
 //    GPUImageTransformFilter *filter1 = [[GPUImageTransformFilter alloc] init];
 //    GPUImageTransformFilter *filter2 = [[GPUImageTransformFilter alloc] init];
 //    CATransform3D perspectiveTransform = CATransform3DIdentity;
@@ -66,7 +66,7 @@
 //    [filter2 setTransform3D:perspectiveTransform];
 //    GPUImageTransformFilter *filter3 = [[GPUImageTransformFilter alloc] init];
 //    [filter3 setAffineTransform:CGAffineTransformMakeRotation(1.0)];
-    
+
     // For thumbnails smaller than the input video size, we currently need to make them render at a smaller size.
     // This is to avoid wasting processing time on larger frames than will be displayed.
     // You'll need to use -forceProcessingAtSize: with a zero size to re-enable full frame processing of video.

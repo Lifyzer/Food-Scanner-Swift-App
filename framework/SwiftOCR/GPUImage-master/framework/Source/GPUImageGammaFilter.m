@@ -4,14 +4,14 @@
 NSString *const kGPUImageGammaFragmentShaderString = SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform lowp float gamma;
- 
+
  void main()
  {
      lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-     
+
      gl_FragColor = vec4(pow(textureColor.rgb, vec3(gamma)), textureColor.w);
  }
 );
@@ -19,14 +19,14 @@ NSString *const kGPUImageGammaFragmentShaderString = SHADER_STRING
 NSString *const kGPUImageGammaFragmentShaderString = SHADER_STRING
 (
  varying vec2 textureCoordinate;
- 
+
  uniform sampler2D inputImageTexture;
  uniform float gamma;
- 
+
  void main()
  {
      vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-     
+
      gl_FragColor = vec4(pow(textureColor.rgb, vec3(gamma)), textureColor.w);
  }
 );
@@ -43,12 +43,12 @@ NSString *const kGPUImageGammaFragmentShaderString = SHADER_STRING
 {
     if (!(self = [super initWithFragmentShaderFromString:kGPUImageGammaFragmentShaderString]))
     {
-		return nil;
+        return nil;
     }
-    
+
     gammaUniform = [filterProgram uniformIndex:@"gamma"];
     self.gamma = 1.0;
-    
+
     return self;
 }
 
@@ -58,7 +58,7 @@ NSString *const kGPUImageGammaFragmentShaderString = SHADER_STRING
 - (void)setGamma:(CGFloat)newValue;
 {
     _gamma = newValue;
-    
+
     [self setFloat:_gamma forUniform:gammaUniform program:filterProgram];
 }
 

@@ -14,27 +14,27 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
-    
+
     mainTabBarController = [[UITabBarController alloc] initWithNibName:nil bundle:nil];
-    
+
     imageFilteringBenchmarkController = [[ImageFilteringBenchmarkController alloc] initWithNibName:@"BenchmarkTableViewController" bundle:nil];
     UIImage *itemImage = [UIImage imageNamed:@"41-picture-frame"];
     UITabBarItem *mathTabItem = [[UITabBarItem alloc] initWithTitle:@"Still images" image:itemImage tag:0];
     imageFilteringBenchmarkController.tabBarItem = mathTabItem;
 
-    
+
     videoFilteringBenchmarkController = [[VideoFilteringBenchmarkController alloc] initWithNibName:@"BenchmarkTableViewController" bundle:nil];
     UIImage *itemImage2 = [UIImage imageNamed:@"86-camera"];
     UITabBarItem *mathTabItem2 = [[UITabBarItem alloc] initWithTitle:@"Live video" image:itemImage2 tag:1];
     videoFilteringBenchmarkController.tabBarItem = mathTabItem2;
-    
+
     NSArray *arrayOfViewControllers = [[NSArray alloc] initWithObjects:imageFilteringBenchmarkController, videoFilteringBenchmarkController, nil];
-    
+
     mainTabBarController.viewControllers = arrayOfViewControllers;
     mainTabBarController.selectedViewController = imageFilteringBenchmarkController;
-    
+
     self.window.rootViewController = mainTabBarController;
-    
+
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -50,7 +50,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      */
 }

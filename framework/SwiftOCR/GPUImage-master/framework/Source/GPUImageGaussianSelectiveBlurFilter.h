@@ -4,7 +4,7 @@
 
 /** A Gaussian blur that preserves focus within a circular region
  */
-@interface GPUImageGaussianSelectiveBlurFilter : GPUImageFilterGroup 
+@interface GPUImageGaussianSelectiveBlurFilter : GPUImageFilterGroup
 {
     GPUImageGaussianBlurFilter *blurFilter;
     GPUImageFilter *selectiveFocusFilter;
