@@ -47,7 +47,7 @@ public final class Constraint {
         }
     }
     public var layoutConstraints: [LayoutConstraint]
-    
+
     public var isActive: Bool {
         set {
             if newValue {
@@ -57,7 +57,7 @@ public final class Constraint {
                 deactivate()
             }
         }
-        
+
         get {
             for layoutConstraint in self.layoutConstraints {
                 if layoutConstraint.isActive {
@@ -67,7 +67,7 @@ public final class Constraint {
             return false
         }
     }
-    
+
     // MARK: Initialization
 
     internal init(from: ConstraintItem,

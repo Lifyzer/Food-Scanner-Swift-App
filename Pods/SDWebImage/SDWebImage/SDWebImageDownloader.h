@@ -15,7 +15,7 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageDownloaderOptions) {
      * Put the download in the low queue priority and task priority.
      */
     SDWebImageDownloaderLowPriority = 1 << 0,
-    
+
     /**
      * This flag enables progressive download, the image is displayed progressively during download as a browser would do.
      */
@@ -32,7 +32,7 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageDownloaderOptions) {
      * (to be combined with `SDWebImageDownloaderUseNSURLCache`).
      */
     SDWebImageDownloaderIgnoreCachedResponse = 1 << 3,
-    
+
     /**
      * In iOS 4+, continue the download of the image if the app goes to background. This is achieved by asking the system for
      * extra time in background to let the request finish. If the background task expires the operation will be cancelled.
@@ -40,7 +40,7 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageDownloaderOptions) {
     SDWebImageDownloaderContinueInBackground = 1 << 4,
 
     /**
-     * Handles cookies stored in NSHTTPCookieStore by setting 
+     * Handles cookies stored in NSHTTPCookieStore by setting
      * NSMutableURLRequest.HTTPShouldHandleCookies = YES;
      */
     SDWebImageDownloaderHandleCookies = 1 << 5,
@@ -55,7 +55,7 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageDownloaderOptions) {
      * Put the download in the high queue priority and task priority.
      */
     SDWebImageDownloaderHighPriority = 1 << 7,
-    
+
     /**
      * Scale down the image
      */
@@ -201,7 +201,7 @@ typedef SDHTTPHeadersDictionary * _Nullable (^SDWebImageDownloaderHeadersFilterB
  * `NSOperation` to be used each time SDWebImage constructs a request
  * operation to download an image.
  *
- * @param operationClass The subclass of `SDWebImageDownloaderOperation` to set 
+ * @param operationClass The subclass of `SDWebImageDownloaderOperation` to set
  *        as default. Passing `nil` will revert to `SDWebImageDownloaderOperation`.
  */
 - (void)setOperationClass:(nullable Class)operationClass;

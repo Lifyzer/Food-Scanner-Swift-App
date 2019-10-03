@@ -34,35 +34,35 @@ public protocol ConstraintConstantTarget {
 extension CGPoint: ConstraintConstantTarget {
 }
 
-extension CGSize: ConstraintConstantTarget {    
+extension CGSize: ConstraintConstantTarget {
 }
 
 extension ConstraintInsets: ConstraintConstantTarget {
 }
 
 extension ConstraintConstantTarget {
-    
+
     internal func constraintConstantTargetValueFor(layoutAttribute: LayoutAttribute) -> CGFloat {
         if let value = self as? CGFloat {
             return value
         }
-        
+
         if let value = self as? Float {
             return CGFloat(value)
         }
-        
+
         if let value = self as? Double {
             return CGFloat(value)
         }
-        
+
         if let value = self as? Int {
             return CGFloat(value)
         }
-        
+
         if let value = self as? UInt {
             return CGFloat(value)
         }
-        
+
         if let value = self as? CGSize {
             if layoutAttribute == .width {
                 return value.width
@@ -72,7 +72,7 @@ extension ConstraintConstantTarget {
                 return 0.0
             }
         }
-        
+
         if let value = self as? CGPoint {
             #if os(iOS) || os(tvOS)
                 switch layoutAttribute {
@@ -94,7 +94,7 @@ extension ConstraintConstantTarget {
                 }
             #endif
         }
-        
+
         if let value = self as? ConstraintInsets {
             #if os(iOS) || os(tvOS)
                 switch layoutAttribute {
@@ -140,8 +140,8 @@ extension ConstraintConstantTarget {
                 }
             #endif
         }
-        
+
         return 0.0
     }
-    
+
 }

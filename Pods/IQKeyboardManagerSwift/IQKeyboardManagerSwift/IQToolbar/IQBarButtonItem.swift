@@ -28,7 +28,7 @@ import Foundation
 open class IQBarButtonItem: UIBarButtonItem {
 
     private static var _classInitialize: Void = classInitialize()
-    
+
     @objc public override init() {
         _ = IQBarButtonItem._classInitialize
           super.init()
@@ -39,7 +39,7 @@ open class IQBarButtonItem: UIBarButtonItem {
            super.init(coder: aDecoder)
        }
 
-   
+
     private class func classInitialize() {
 
         let  appearanceProxy = self.appearance()
@@ -59,12 +59,12 @@ open class IQBarButtonItem: UIBarButtonItem {
             appearanceProxy.setBackgroundImage(nil, for: state, style: .plain, barMetrics: .default)
             appearanceProxy.setBackButtonBackgroundImage(nil, for: state, barMetrics: .default)
         }
-        
+
         appearanceProxy.setTitlePositionAdjustment(UIOffset(), for: .default)
         appearanceProxy.setBackgroundVerticalPositionAdjustment(0, for: .default)
         appearanceProxy.setBackButtonBackgroundVerticalPositionAdjustment(0, for: .default)
     }
-    
+
     @objc override open var tintColor: UIColor? {
         didSet {
 
@@ -84,7 +84,7 @@ open class IQBarButtonItem: UIBarButtonItem {
             #if swift(>=4)
 
                 if let attributes = titleTextAttributes(for: .normal) {
-                    
+
                     for (key, value) in attributes {
                         #if swift(>=4.2)
                         textAttributes[key] = value
@@ -109,10 +109,10 @@ open class IQBarButtonItem: UIBarButtonItem {
      Boolean to know if it's a system item or custom item, we are having a limitation that we cannot override a designated initializer, so we are manually setting this property once in initialization
      */
     @objc internal var isSystemItem = false
-    
+
     /**
      Additional target & action to do get callback action. Note that setting custom target & selector doesn't affect native functionality, this is just an additional target to get a callback.
-     
+
      @param target Target object.
      @param action Target Selector.
      */
@@ -123,12 +123,12 @@ open class IQBarButtonItem: UIBarButtonItem {
             invocation = nil
         }
     }
-    
+
     /**
      Customized Invocation to be called when button is pressed. invocation is internally created using setTarget:action: method.
      */
     @objc open var invocation : IQInvocation?
-    
+
     deinit {
         target = nil
         invocation = nil

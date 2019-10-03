@@ -63,13 +63,13 @@ static char TAG_ACTIVITY_SHOW;
     NSString *validOperationKey = operationKey ?: NSStringFromClass([self class]);
     [self sd_cancelImageLoadOperationWithKey:validOperationKey];
     objc_setAssociatedObject(self, &imageURLKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
+
     if (!(options & SDWebImageDelayPlaceholder)) {
         dispatch_main_async_safe(^{
             [self sd_setImage:placeholder imageData:nil basedOnClassOrViaCustomSetImageBlock:setImageBlock];
         });
     }
-    
+
     if (url) {
 #if SD_UIKIT
         // check if activityView is enabled or not
@@ -77,18 +77,18 @@ static char TAG_ACTIVITY_SHOW;
             [self sd_addActivityIndicator];
         }
 #endif
-        
+
         // reset the progress
         self.sd_imageProgress.totalUnitCount = 0;
         self.sd_imageProgress.completedUnitCount = 0;
-        
+
         SDWebImageManager *manager;
         if ([context valueForKey:SDWebImageExternalCustomManagerKey]) {
             manager = (SDWebImageManager *)[context valueForKey:SDWebImageExternalCustomManagerKey];
         } else {
             manager = [SDWebImageManager sharedManager];
         }
-        
+
         __weak __typeof(self)wself = self;
         SDWebImageDownloaderProgressBlock combinedProgressBlock = ^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
             wself.sd_imageProgress.totalUnitCount = expectedSize;
@@ -120,7 +120,7 @@ static char TAG_ACTIVITY_SHOW;
                     completedBlock(image, error, cacheType, url);
                 }
             };
-            
+
             // case 1a: we got an image, but the SDWebImageAvoidAutoSetImage flag is set
             // OR
             // case 1b: we got no image and the SDWebImageDelayPlaceholder is not set
@@ -128,7 +128,7 @@ static char TAG_ACTIVITY_SHOW;
                 dispatch_main_async_safe(callCompletedBlockClojure);
                 return;
             }
-            
+
             UIImage *targetImage = nil;
             NSData *targetData = nil;
             if (image) {
@@ -140,7 +140,7 @@ static char TAG_ACTIVITY_SHOW;
                 targetImage = placeholder;
                 targetData = nil;
             }
-            
+
 #if SD_UIKIT || SD_MAC
             // check whether we should use the image transition
             SDWebImageTransition *transition = nil;
@@ -209,7 +209,7 @@ static char TAG_ACTIVITY_SHOW;
         };
     }
 #endif
-    
+
     if (transition) {
 #if SD_UIKIT
         [UIView transitionWithView:view duration:0 options:0 animations:^{
@@ -313,9 +313,9 @@ static char TAG_ACTIVITY_SHOW;
         if (!self.activityIndicator) {
             self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:[self sd_getIndicatorStyle]];
             self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-        
+
             [self addSubview:self.activityIndicator];
-            
+
             [self addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator
                                                              attribute:NSLayoutAttributeCenterX
                                                              relatedBy:NSLayoutRelationEqual

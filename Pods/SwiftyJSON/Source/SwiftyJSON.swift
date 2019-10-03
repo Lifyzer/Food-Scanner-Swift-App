@@ -68,40 +68,40 @@ JSON's type definitions.
 See http://www.json.org
 */
 public enum Type: Int {
-	case number
-	case string
-	case bool
-	case array
-	case dictionary
-	case null
-	case unknown
+    case number
+    case string
+    case bool
+    case array
+    case dictionary
+    case null
+    case unknown
 }
 
 // MARK: - JSON Base
 
 public struct JSON {
 
-	/**
-	 Creates a JSON using the data.
-	
-	 - parameter data: The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
-	 - parameter opt: The JSON serialization reading options. `[]` by default.
-	
-	 - returns: The created JSON
-	 */
+    /**
+     Creates a JSON using the data.
+
+     - parameter data: The NSData used to convert to json.Top level object in data is an NSArray or NSDictionary
+     - parameter opt: The JSON serialization reading options. `[]` by default.
+
+     - returns: The created JSON
+     */
     public init(data: Data, options opt: JSONSerialization.ReadingOptions = []) throws {
         let object: Any = try JSONSerialization.jsonObject(with: data, options: opt)
         self.init(jsonObject: object)
     }
 
     /**
-	 Creates a JSON object
-	 - note: this does not parse a `String` into JSON, instead use `init(parseJSON: String)`
-	
-	 - parameter object: the object
+     Creates a JSON object
+     - note: this does not parse a `String` into JSON, instead use `init(parseJSON: String)`
 
-	 - returns: the created JSON object
-	 */
+     - parameter object: the object
+
+     - returns: the created JSON object
+     */
     public init(_ object: Any) {
         switch object {
         case let object as Data:
@@ -115,54 +115,54 @@ public struct JSON {
         }
     }
 
-	/**
-	 Parses the JSON string into a JSON object
-	
-	 - parameter json: the JSON string
-	
-	 - returns: the created JSON object
-	*/
-	public init(parseJSON jsonString: String) {
-		if let data = jsonString.data(using: .utf8) {
-			self.init(data)
-		} else {
-			self.init(NSNull())
-		}
-	}
+    /**
+     Parses the JSON string into a JSON object
 
-	/**
-	 Creates a JSON using the object.
-	
-	 - parameter jsonObject:  The object must have the following properties: All objects are NSString/String, NSNumber/Int/Float/Double/Bool, NSArray/Array, NSDictionary/Dictionary, or NSNull; All dictionary keys are NSStrings/String; NSNumbers are not NaN or infinity.
-	
-	 - returns: The created JSON
-	 */
+     - parameter json: the JSON string
+
+     - returns: the created JSON object
+    */
+    public init(parseJSON jsonString: String) {
+        if let data = jsonString.data(using: .utf8) {
+            self.init(data)
+        } else {
+            self.init(NSNull())
+        }
+    }
+
+    /**
+     Creates a JSON using the object.
+
+     - parameter jsonObject:  The object must have the following properties: All objects are NSString/String, NSNumber/Int/Float/Double/Bool, NSArray/Array, NSDictionary/Dictionary, or NSNull; All dictionary keys are NSStrings/String; NSNumbers are not NaN or infinity.
+
+     - returns: The created JSON
+     */
     fileprivate init(jsonObject: Any) {
         self.object = jsonObject
     }
 
-	/**
-	 Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added,
-	 present values getting overwritten, array values getting appended and nested JSONs getting merged the same way.
- 
-	 - parameter other: The JSON which gets merged into this JSON
-	
-	 - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
-	 */
+    /**
+     Merges another JSON into this JSON, whereas primitive values which are not present in this JSON are getting added,
+     present values getting overwritten, array values getting appended and nested JSONs getting merged the same way.
+
+     - parameter other: The JSON which gets merged into this JSON
+
+     - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
+     */
     public mutating func merge(with other: JSON) throws {
         try self.merge(with: other, typecheck: true)
     }
 
-	/**
-	 Merges another JSON into this JSON and returns a new JSON, whereas primitive values which are not present in this JSON are getting added,
-	 present values getting overwritten, array values getting appended and nested JSONS getting merged the same way.
-	
-	 - parameter other: The JSON which gets merged into this JSON
-	
-	 - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
-	
-	 - returns: New merged JSON
-	 */
+    /**
+     Merges another JSON into this JSON and returns a new JSON, whereas primitive values which are not present in this JSON are getting added,
+     present values getting overwritten, array values getting appended and nested JSONS getting merged the same way.
+
+     - parameter other: The JSON which gets merged into this JSON
+
+     - throws `ErrorWrongType` if the other JSONs differs in type on the top level.
+
+     - returns: New merged JSON
+     */
     public func merged(with other: JSON) throws -> JSON {
         var merged = self
         try merged.merge(with: other, typecheck: true)
@@ -172,8 +172,8 @@ public struct JSON {
     /**
      Private woker function which does the actual merging
      Typecheck is set to true for the first recursion level to prevent total override of the source JSON
- 	*/
- 	fileprivate mutating func merge(with other: JSON, typecheck: Bool) throws {
+     */
+     fileprivate mutating func merge(with other: JSON, typecheck: Bool) throws {
         if self.type == other.type {
             switch self.type {
             case .dictionary:
@@ -453,23 +453,23 @@ extension JSON {
         }
     }
 
-	/**
-	 Find a json in the complex data structures by using array of Int and/or String as path.
-	
-	 Example:
-	
-	 ```
-	 let json = JSON[data]
-	 let path = [9,"list","person","name"]
-	 let name = json[path]
-	 ```
-	
-	 The same as: let name = json[9]["list"]["person"]["name"]
-	
-	 - parameter path: The target json's path.
-	
-	 - returns: Return a json found by the path or a null json with error
-	 */
+    /**
+     Find a json in the complex data structures by using array of Int and/or String as path.
+
+     Example:
+
+     ```
+     let json = JSON[data]
+     let path = [9,"list","person","name"]
+     let name = json[path]
+     ```
+
+     The same as: let name = json[9]["list"]["person"]["name"]
+
+     - parameter path: The target json's path.
+
+     - returns: Return a json found by the path or a null json with error
+     */
     public subscript(path: [JSONSubscriptType]) -> JSON {
         get {
             return path.reduce(self) { $0[sub: $1] }
@@ -585,72 +585,72 @@ extension JSON: Swift.RawRepresentable {
         }
 
         return try JSONSerialization.data(withJSONObject: self.object, options: opt)
-	}
+    }
 
-	public func rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
-		do {
-			return try _rawString(encoding, options: [.jsonSerialization: opt])
-		} catch {
-			print("Could not serialize object to JSON because:", error.localizedDescription)
-			return nil
-		}
-	}
+    public func rawString(_ encoding: String.Encoding = .utf8, options opt: JSONSerialization.WritingOptions = .prettyPrinted) -> String? {
+        do {
+            return try _rawString(encoding, options: [.jsonSerialization: opt])
+        } catch {
+            print("Could not serialize object to JSON because:", error.localizedDescription)
+            return nil
+        }
+    }
 
-	public func rawString(_ options: [writingOptionsKeys: Any]) -> String? {
-		let encoding = options[.encoding] as? String.Encoding ?? String.Encoding.utf8
-		let maxObjectDepth = options[.maxObjextDepth] as? Int ?? 10
-		do {
-			return try _rawString(encoding, options: options, maxObjectDepth: maxObjectDepth)
-		} catch {
-			print("Could not serialize object to JSON because:", error.localizedDescription)
-			return nil
-		}
-	}
+    public func rawString(_ options: [writingOptionsKeys: Any]) -> String? {
+        let encoding = options[.encoding] as? String.Encoding ?? String.Encoding.utf8
+        let maxObjectDepth = options[.maxObjextDepth] as? Int ?? 10
+        do {
+            return try _rawString(encoding, options: options, maxObjectDepth: maxObjectDepth)
+        } catch {
+            print("Could not serialize object to JSON because:", error.localizedDescription)
+            return nil
+        }
+    }
 
-	fileprivate func _rawString(_ encoding: String.Encoding = .utf8, options: [writingOptionsKeys: Any], maxObjectDepth: Int = 10) throws -> String? {
+    fileprivate func _rawString(_ encoding: String.Encoding = .utf8, options: [writingOptionsKeys: Any], maxObjectDepth: Int = 10) throws -> String? {
         guard maxObjectDepth > 0 else { throw SwiftyJSONError.invalidJSON }
         switch self.type {
         case .dictionary:
-			do {
-				if !(options[.castNilToNSNull] as? Bool ?? false) {
-					let jsonOption = options[.jsonSerialization] as? JSONSerialization.WritingOptions ?? JSONSerialization.WritingOptions.prettyPrinted
-					let data = try self.rawData(options: jsonOption)
-					return String(data: data, encoding: encoding)
-				}
+            do {
+                if !(options[.castNilToNSNull] as? Bool ?? false) {
+                    let jsonOption = options[.jsonSerialization] as? JSONSerialization.WritingOptions ?? JSONSerialization.WritingOptions.prettyPrinted
+                    let data = try self.rawData(options: jsonOption)
+                    return String(data: data, encoding: encoding)
+                }
 
-				guard let dict = self.object as? [String: Any?] else {
-					return nil
-				}
-				let body = try dict.keys.map { key throws -> String in
-					guard let value = dict[key] else {
-						return "\"\(key)\": null"
-					}
-					guard let unwrappedValue = value else {
-						return "\"\(key)\": null"
-					}
+                guard let dict = self.object as? [String: Any?] else {
+                    return nil
+                }
+                let body = try dict.keys.map { key throws -> String in
+                    guard let value = dict[key] else {
+                        return "\"\(key)\": null"
+                    }
+                    guard let unwrappedValue = value else {
+                        return "\"\(key)\": null"
+                    }
 
-					let nestedValue = JSON(unwrappedValue)
-					guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
-						throw SwiftyJSONError.elementTooDeep
-					}
-					if nestedValue.type == .string {
-						return "\"\(key)\": \"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
-					} else {
-						return "\"\(key)\": \(nestedString)"
-					}
-				}
+                    let nestedValue = JSON(unwrappedValue)
+                    guard let nestedString = try nestedValue._rawString(encoding, options: options, maxObjectDepth: maxObjectDepth - 1) else {
+                        throw SwiftyJSONError.elementTooDeep
+                    }
+                    if nestedValue.type == .string {
+                        return "\"\(key)\": \"\(nestedString.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\""))\""
+                    } else {
+                        return "\"\(key)\": \(nestedString)"
+                    }
+                }
 
-				return "{\(body.joined(separator: ","))}"
-			} catch _ {
-				return nil
-			}
+                return "{\(body.joined(separator: ","))}"
+            } catch _ {
+                return nil
+            }
         case .array:
             do {
-				if !(options[.castNilToNSNull] as? Bool ?? false) {
-					let jsonOption = options[.jsonSerialization] as? JSONSerialization.WritingOptions ?? JSONSerialization.WritingOptions.prettyPrinted
-					let data = try self.rawData(options: jsonOption)
-					return String(data: data, encoding: encoding)
-				}
+                if !(options[.castNilToNSNull] as? Bool ?? false) {
+                    let jsonOption = options[.jsonSerialization] as? JSONSerialization.WritingOptions ?? JSONSerialization.WritingOptions.prettyPrinted
+                    let data = try self.rawData(options: jsonOption)
+                    return String(data: data, encoding: encoding)
+                }
 
                 guard let array = self.object as? [Any?] else {
                     return nil
@@ -1410,10 +1410,10 @@ func >= (lhs: NSNumber, rhs: NSNumber) -> Bool {
 }
 
 public enum writingOptionsKeys {
-	case jsonSerialization
-	case castNilToNSNull
-	case maxObjextDepth
-	case encoding
+    case jsonSerialization
+    case castNilToNSNull
+    case maxObjextDepth
+    case encoding
 }
 
 // MARK: - JSON: Codable

@@ -26,9 +26,9 @@ import Foundation
 import UIKit
 
 open class IQTitleBarButtonItem: IQBarButtonItem {
-   
+
     @objc open var titleFont : UIFont? {
-    
+
         didSet {
             if let unwrappedFont = titleFont {
                 titleButton?.titleLabel?.font = unwrappedFont
@@ -43,14 +43,14 @@ open class IQTitleBarButtonItem: IQBarButtonItem {
                 titleButton?.setTitle(title, for: .normal)
         }
     }
-    
+
     /**
      titleColor to be used for displaying button text when displaying title (disabled state).
      */
     @objc open var titleColor : UIColor? {
 
         didSet {
-            
+
             if let color = titleColor {
                 titleButton?.setTitleColor(color, for:.disabled)
             } else {
@@ -58,14 +58,14 @@ open class IQTitleBarButtonItem: IQBarButtonItem {
             }
         }
     }
-    
+
     /**
      selectableTitleColor to be used for displaying button text when button is enabled.
      */
     @objc open var selectableTitleColor : UIColor? {
-        
+
         didSet {
-            
+
             if let color = selectableTitleColor {
                 titleButton?.setTitleColor(color, for:.normal)
             } else {
@@ -80,7 +80,7 @@ open class IQTitleBarButtonItem: IQBarButtonItem {
     @objc override open var invocation : IQInvocation? {
 
         didSet {
-            
+
             if let target = invocation?.target, let action = invocation?.action {
                 self.isEnabled = true
                 titleButton?.isEnabled = true
@@ -99,14 +99,14 @@ open class IQTitleBarButtonItem: IQBarButtonItem {
     override init() {
         super.init()
     }
-    
+
     @objc public convenience init(title : String?) {
 
         self.init(title: nil, style: .plain, target: nil, action: nil)
-        
+
         _titleView = UIView()
         _titleView?.backgroundColor = UIColor.clear
-        
+
         titleButton = UIButton(type: .system)
         titleButton?.isEnabled = false
         titleButton?.titleLabel?.numberOfLines = 3
@@ -118,10 +118,10 @@ open class IQTitleBarButtonItem: IQBarButtonItem {
         titleFont = UIFont.systemFont(ofSize: 13.0)
         titleButton?.titleLabel?.font = self.titleFont
         _titleView?.addSubview(titleButton!)
-        
+
 #if swift(>=3.2)
         if #available(iOS 11, *) {
-            
+
             var layoutDefaultLowPriority : UILayoutPriority
             var layoutDefaultHighPriority : UILayoutPriority
 
@@ -134,13 +134,13 @@ open class IQTitleBarButtonItem: IQBarButtonItem {
                 layoutDefaultLowPriority = UILayoutPriorityDefaultLow-1
                 layoutDefaultHighPriority = UILayoutPriorityDefaultHigh-1
             #endif
-            
+
             _titleView?.translatesAutoresizingMaskIntoConstraints = false
             _titleView?.setContentHuggingPriority(layoutDefaultLowPriority, for: .vertical)
             _titleView?.setContentHuggingPriority(layoutDefaultLowPriority, for: .horizontal)
             _titleView?.setContentCompressionResistancePriority(layoutDefaultHighPriority, for: .vertical)
             _titleView?.setContentCompressionResistancePriority(layoutDefaultHighPriority, for: .horizontal)
-            
+
             titleButton?.translatesAutoresizingMaskIntoConstraints = false
             titleButton?.setContentHuggingPriority(layoutDefaultLowPriority, for: .vertical)
             titleButton?.setContentHuggingPriority(layoutDefaultLowPriority, for: .horizontal)
@@ -151,7 +151,7 @@ open class IQTitleBarButtonItem: IQBarButtonItem {
             let bottom = NSLayoutConstraint.init(item: titleButton!, attribute: .bottom, relatedBy: .equal, toItem: _titleView, attribute: .bottom, multiplier: 1, constant: 0)
             let leading = NSLayoutConstraint.init(item: titleButton!, attribute: .leading, relatedBy: .equal, toItem: _titleView, attribute: .leading, multiplier: 1, constant: 0)
             let trailing = NSLayoutConstraint.init(item: titleButton!, attribute: .trailing, relatedBy: .equal, toItem: _titleView, attribute: .trailing, multiplier: 1, constant: 0)
-            
+
             _titleView?.addConstraints([top,bottom,leading,trailing])
         } else {
             _titleView?.autoresizingMask = [.flexibleWidth,.flexibleHeight]
@@ -168,7 +168,7 @@ open class IQTitleBarButtonItem: IQBarButtonItem {
     @objc required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     deinit {
         customView = nil
         titleButton?.removeTarget(nil, action: nil, for: .touchUpInside)

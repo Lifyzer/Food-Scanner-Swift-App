@@ -68,7 +68,7 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
      * the front of the queue.
      */
     SDWebImageHighPriority = 1 << 8,
-    
+
     /**
      * By default, placeholder images are loaded while the image is loading. This flag will delay the loading
      * of the placeholder image until after the image has finished loading.
@@ -81,33 +81,33 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
      * Use this flag to transform them anyway.
      */
     SDWebImageTransformAnimatedImage = 1 << 10,
-    
+
     /**
      * By default, image is added to the imageView after download. But in some cases, we want to
      * have the hand before setting the image (apply a filter or add it with cross-fade animation for instance)
      * Use this flag if you want to manually set the image in the completion when success
      */
     SDWebImageAvoidAutoSetImage = 1 << 11,
-    
+
     /**
      * By default, images are decoded respecting their original size. On iOS, this flag will scale down the
      * images to a size compatible with the constrained memory of devices.
      * If `SDWebImageProgressiveDownload` flag is set the scale down is deactivated.
      */
     SDWebImageScaleDownLargeImages = 1 << 12,
-    
+
     /**
      * By default, we do not query disk data when the image is cached in memory. This mask can force to query disk data at the same time.
      * This flag is recommend to be used with `SDWebImageQueryDiskSync` to ensure the image is loaded in the same runloop.
      */
     SDWebImageQueryDataWhenInMemory = 1 << 13,
-    
+
     /**
      * By default, we query the memory cache synchronously, disk cache asynchronously. This mask can force to query disk cache synchronously to ensure that image is loaded in the same runloop.
      * This flag can avoid flashing during cell reuse if you disable memory cache or in some other cases.
      */
     SDWebImageQueryDiskSync = 1 << 14,
-    
+
     /**
      * By default, when the cache missed, the image is download from the network. This flag can prevent network to load from cache only.
      */
@@ -257,7 +257,7 @@ SDWebImageManager.sharedManager.cacheKeyFilter = ^(NSURL * _Nullable url) {
  * @param completedBlock A block called when operation has been completed.
  *
  *   This parameter is required.
- * 
+ *
  *   This block has no return value and takes the requested UIImage as first parameter and the NSData representation as second parameter.
  *   In case of error the image parameter is nil and the third parameter may contain an NSError.
  *
@@ -302,7 +302,7 @@ SDWebImageManager.sharedManager.cacheKeyFilter = ^(NSURL * _Nullable url) {
  *
  *  @param url              image url
  *  @param completionBlock  the block to be executed when the check is finished
- *  
+ *
  *  @note the completion block is always executed on the main queue
  */
 - (void)cachedImageExistsForURL:(nullable NSURL *)url

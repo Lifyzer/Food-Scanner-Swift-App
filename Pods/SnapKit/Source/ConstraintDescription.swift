@@ -29,7 +29,7 @@
 
 
 public class ConstraintDescription {
-    
+
     internal let item: LayoutConstraintItem
     internal var attributes: ConstraintAttributes
     internal var relation: ConstraintRelation? = nil
@@ -46,7 +46,7 @@ public class ConstraintDescription {
             return nil
         }
         let from = ConstraintItem(target: self.item, attributes: self.attributes)
-        
+
         return Constraint(
             from: from,
             to: related,
@@ -58,12 +58,12 @@ public class ConstraintDescription {
             priority: self.priority
         )
     }()
-    
+
     // MARK: Initialization
-    
+
     internal init(item: LayoutConstraintItem, attributes: ConstraintAttributes) {
         self.item = item
         self.attributes = attributes
     }
-    
+
 }

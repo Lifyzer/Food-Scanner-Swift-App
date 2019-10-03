@@ -29,7 +29,7 @@
 
 
 public class LayoutConstraint : NSLayoutConstraint {
-    
+
     public var label: String? {
         get {
             return self.identifier
@@ -38,9 +38,9 @@ public class LayoutConstraint : NSLayoutConstraint {
             self.identifier = newValue
         }
     }
-    
+
     internal weak var constraint: Constraint? = nil
-    
+
 }
 
 internal func ==(lhs: LayoutConstraint, rhs: LayoutConstraint) -> Bool {

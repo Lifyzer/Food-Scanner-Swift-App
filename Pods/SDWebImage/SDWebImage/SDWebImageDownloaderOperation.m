@@ -150,7 +150,7 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
         if (!session) {
             NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
             sessionConfig.timeoutIntervalForRequest = 15;
-            
+
             /**
              *  Create the session for this task
              *  We send nil as delegate queue so that the session creates a serial operation queue for performing all delegate
@@ -161,7 +161,7 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
                                                delegateQueue:nil];
             self.ownedSession = session;
         }
-        
+
         if (self.options & SDWebImageDownloaderIgnoreCachedResponse) {
             // Grab the cached data for later check
             NSURLCache *URLCache = session.configuration.URLCache;
@@ -177,7 +177,7 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
                 self.cachedData = cachedResponse.data;
             }
         }
-        
+
         self.dataTask = [session dataTaskWithRequest:self.request];
         self.executing = YES;
     }
@@ -257,7 +257,7 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
     [self.callbackBlocks removeAllObjects];
     UNLOCK(self.callbacksLock);
     self.dataTask = nil;
-    
+
     if (self.ownedSession) {
         [self.ownedSession invalidateAndCancel];
         self.ownedSession = nil;
@@ -298,7 +298,7 @@ didReceiveResponse:(NSURLResponse *)response
     if (statusCode == 304 && !self.cachedData) {
         valid = NO;
     }
-    
+
     if (valid) {
         for (SDWebImageDownloaderProgressBlock progressBlock in [self callbacksForKey:kProgressCallbackKey]) {
             progressBlock(0, expected, self.request.URL);
@@ -307,12 +307,12 @@ didReceiveResponse:(NSURLResponse *)response
         // Status code invalid and marked as cancelled. Do not call `[self.dataTask cancel]` which may mass up URLSession life cycle
         disposition = NSURLSessionResponseCancel;
     }
-    
+
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:SDWebImageDownloadReceiveResponseNotification object:weakSelf];
     });
-    
+
     if (completionHandler) {
         completionHandler(disposition);
     }
@@ -331,7 +331,7 @@ didReceiveResponse:(NSURLResponse *)response
         const NSInteger totalSize = imageData.length;
         // Get the finish status
         BOOL finished = (totalSize >= self.expectedSize);
-        
+
         if (!self.progressiveCoder) {
             // We need to create a new instance for progressive decoding to avoid conflicts
             for (id<SDWebImageCoder>coder in [SDWebImageCodersManager sharedInstance].coders) {
@@ -342,7 +342,7 @@ didReceiveResponse:(NSURLResponse *)response
                 }
             }
         }
-        
+
         // progressive decode the image in coder queue
         dispatch_async(self.coderQueue, ^{
             UIImage *image = [self.progressiveCoder incrementallyDecodedImageWithData:imageData finished:finished];
@@ -352,9 +352,9 @@ didReceiveResponse:(NSURLResponse *)response
                 if (self.shouldDecompressImages) {
                     image = [[SDWebImageCodersManager sharedInstance] decompressedImageWithImage:image data:&imageData options:@{SDWebImageCoderScaleDownLargeImagesKey: @(NO)}];
                 }
-                
+
                 // We do not keep the progressive decoding image even when `finished`=YES. Because they are for view rendering but not take full function from downloader options. And some coders implementation may not keep consistent between progressive decoding and normal decoding.
-                
+
                 [self callCompletionBlocksWithImage:image imageData:nil error:nil finished:NO];
             }
         });
@@ -369,7 +369,7 @@ didReceiveResponse:(NSURLResponse *)response
           dataTask:(NSURLSessionDataTask *)dataTask
  willCacheResponse:(NSCachedURLResponse *)proposedResponse
  completionHandler:(void (^)(NSCachedURLResponse *cachedResponse))completionHandler {
-    
+
     NSCachedURLResponse *cachedResponse = proposedResponse;
 
     if (!(self.options & SDWebImageDownloaderUseNSURLCache)) {
@@ -394,7 +394,7 @@ didReceiveResponse:(NSURLResponse *)response
             }
         });
     }
-    
+
     // make sure to call `[self done]` to mark operation as finished
     if (error) {
         [self callCompletionBlocksWithError:error];
@@ -419,7 +419,7 @@ didReceiveResponse:(NSURLResponse *)response
                         UIImage *image = [[SDWebImageCodersManager sharedInstance] decodedImageWithData:imageData];
                         NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:self.request.URL];
                         image = [self scaledImageForKey:key image:image];
-                        
+
                         BOOL shouldDecode = YES;
                         // Do not force decoding animated GIFs and WebPs
                         if (image.images) {
@@ -432,7 +432,7 @@ didReceiveResponse:(NSURLResponse *)response
                             }
 #endif
                         }
-                        
+
                         if (shouldDecode) {
                             if (self.shouldDecompressImages) {
                                 BOOL shouldScaleDown = self.options & SDWebImageDownloaderScaleDownLargeImages;
@@ -459,10 +459,10 @@ didReceiveResponse:(NSURLResponse *)response
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
-    
+
     NSURLSessionAuthChallengeDisposition disposition = NSURLSessionAuthChallengePerformDefaultHandling;
     __block NSURLCredential *credential = nil;
-    
+
     if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
         if (!(self.options & SDWebImageDownloaderAllowInvalidSSLCertificates)) {
             disposition = NSURLSessionAuthChallengePerformDefaultHandling;
@@ -482,7 +482,7 @@ didReceiveResponse:(NSURLResponse *)response
             disposition = NSURLSessionAuthChallengeCancelAuthenticationChallenge;
         }
     }
-    
+
     if (completionHandler) {
         completionHandler(disposition, credential);
     }

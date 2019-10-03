@@ -58,8 +58,8 @@
                                         completed:(nullable SDExternalCompletionBlock)completedBlock {
     NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:url];
     UIImage *lastPreviousCachedImage = [[SDImageCache sharedImageCache] imageFromCacheForKey:key];
-    
-    [self sd_setImageWithURL:url placeholderImage:lastPreviousCachedImage ?: placeholder options:options progress:progressBlock completed:completedBlock];    
+
+    [self sd_setImageWithURL:url placeholderImage:lastPreviousCachedImage ?: placeholder options:options progress:progressBlock completed:completedBlock];
 }
 
 #if SD_UIKIT
@@ -69,7 +69,7 @@
 - (void)sd_setAnimationImagesWithURLs:(nonnull NSArray<NSURL *> *)arrayOfURLs {
     [self sd_cancelCurrentAnimationImagesLoad];
     NSPointerArray *operationsArray = [self sd_animationOperationArray];
-    
+
     [arrayOfURLs enumerateObjectsUsingBlock:^(NSURL *logoImageURL, NSUInteger idx, BOOL * _Nonnull stop) {
         __weak __typeof(self) wself = self;
         id <SDWebImageOperation> operation = [[SDWebImageManager sharedManager] loadImageWithURL:logoImageURL options:0 progress:nil completed:^(UIImage *image, NSData *data, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
@@ -82,7 +82,7 @@
                     if (!currentImages) {
                         currentImages = [[NSMutableArray alloc] init];
                     }
-                    
+
                     // We know what index objects should be at when they are returned so
                     // we will put the object at the index, filling any empty indexes
                     // with the image that was returned too "early". These images will
@@ -90,7 +90,7 @@
                     while ([currentImages count] < idx) {
                         [currentImages addObject:image];
                     }
-                    
+
                     currentImages[idx] = image;
 
                     sself.animationImages = currentImages;

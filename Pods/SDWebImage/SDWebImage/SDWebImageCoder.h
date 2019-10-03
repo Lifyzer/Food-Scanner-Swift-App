@@ -42,7 +42,7 @@ CG_EXTERN BOOL SDCGImageRefContainsAlpha(_Nullable CGImageRef imageRef);
 #pragma mark - Decoding
 /**
  Returns YES if this coder can decode some data. Otherwise, the data should be passed to another coder.
- 
+
  @param data The image data so we can look at it
  @return YES if this coder can decode the data, NO otherwise
  */
@@ -72,7 +72,7 @@ CG_EXTERN BOOL SDCGImageRefContainsAlpha(_Nullable CGImageRef imageRef);
 
 /**
  Returns YES if this coder can encode some image. Otherwise, it should be passed to another coder.
- 
+
  @param format The image format
  @return YES if this coder can encode the image, NO otherwise
  */
@@ -100,7 +100,7 @@ CG_EXTERN BOOL SDCGImageRefContainsAlpha(_Nullable CGImageRef imageRef);
 @required
 /**
  Returns YES if this coder can incremental decode some data. Otherwise, it should be passed to another coder.
- 
+
  @param data The image data so we can look at it
  @return YES if this coder can decode the data, NO otherwise
  */
@@ -108,7 +108,7 @@ CG_EXTERN BOOL SDCGImageRefContainsAlpha(_Nullable CGImageRef imageRef);
 
 /**
  Incremental decode the image data to image.
- 
+
  @param data The image data has been downloaded so far
  @param finished Whether the download has finished
  @warning because incremental decoding need to keep the decoded context, we will alloc a new instance with the same class for each download operation to avoid conflicts

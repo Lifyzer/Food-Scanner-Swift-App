@@ -82,7 +82,7 @@ static inline NSString * backgroundImageOperationKeyForState(UIControlState stat
     } else {
         self.sd_imageURLStorage[imageURLKeyForState(state)] = url;
     }
-    
+
     __weak typeof(self)weakSelf = self;
     [self sd_internalSetImageWithURL:url
                     placeholderImage:placeholder
@@ -99,11 +99,11 @@ static inline NSString * backgroundImageOperationKeyForState(UIControlState stat
 
 - (nullable NSURL *)sd_currentBackgroundImageURL {
     NSURL *url = self.sd_imageURLStorage[backgroundImageURLKeyForState(self.state)];
-    
+
     if (!url) {
         url = self.sd_imageURLStorage[backgroundImageURLKeyForState(UIControlStateNormal)];
     }
-    
+
     return url;
 }
 
@@ -141,7 +141,7 @@ static inline NSString * backgroundImageOperationKeyForState(UIControlState stat
     } else {
         self.sd_imageURLStorage[backgroundImageURLKeyForState(state)] = url;
     }
-    
+
     __weak typeof(self)weakSelf = self;
     [self sd_internalSetImageWithURL:url
                     placeholderImage:placeholder

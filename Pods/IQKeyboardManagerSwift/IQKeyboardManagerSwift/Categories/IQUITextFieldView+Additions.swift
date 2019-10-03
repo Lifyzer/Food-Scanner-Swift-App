@@ -44,7 +44,7 @@ public extension UIView {
      */
     @objc public var keyboardDistanceFromTextField: CGFloat {
         get {
-            
+
             if let aValue = objc_getAssociatedObject(self, &kIQKeyboardDistanceFromTextField) as? CGFloat {
                 return aValue
             } else {
@@ -55,13 +55,13 @@ public extension UIView {
             objc_setAssociatedObject(self, &kIQKeyboardDistanceFromTextField, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     /**
      If shouldIgnoreSwitchingByNextPrevious is true then library will ignore this textField/textView while moving to other textField/textView using keyboard toolbar next previous buttons. Default is false
      */
     @objc public var ignoreSwitchingByNextPrevious: Bool {
         get {
-            
+
             if let aValue = objc_getAssociatedObject(self, &kIQIgnoreSwitchingByNextPrevious) as? Bool {
                 return aValue
             } else {
@@ -72,13 +72,13 @@ public extension UIView {
             objc_setAssociatedObject(self, &kIQIgnoreSwitchingByNextPrevious, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
 //    /**
 //     Override Enable/disable managing distance between keyboard and textField behaviour for this particular textField.
 //     */
 //    @objc public var enableMode: IQEnableMode {
 //        get {
-//            
+//
 //            if let savedMode = objc_getAssociatedObject(self, &kIQKeyboardEnableMode) as? IQEnableMode {
 //                return savedMode
 //            } else {
@@ -89,13 +89,13 @@ public extension UIView {
 //            objc_setAssociatedObject(self, &kIQKeyboardEnableMode, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 //        }
 //    }
-    
+
     /**
      Override resigns Keyboard on touching outside of UITextField/View behaviour for this particular textField.
      */
     @objc public var shouldResignOnTouchOutsideMode: IQEnableMode {
         get {
-            
+
             if let savedMode = objc_getAssociatedObject(self, &kIQKeyboardShouldResignOnTouchOutsideMode) as? IQEnableMode {
                 return savedMode
             } else {
