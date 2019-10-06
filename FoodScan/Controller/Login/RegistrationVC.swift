@@ -100,7 +100,6 @@ class RegistrationVC: UIViewController {
 
                 }else {
                     self.generateAlertWithOkButton(text: message!)
-//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
 
             })
@@ -109,7 +108,6 @@ class RegistrationVC: UIViewController {
         else
         {
             self.generateAlertWithOkButton(text: no_internet_connection)
-//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
     func getGUID(){
@@ -139,37 +137,28 @@ class RegistrationVC: UIViewController {
         else
         {
             self.generateAlertWithOkButton(text: no_internet_connection)
-//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
 
     }
     func ValidateField() -> Bool {
         if !txtFullName.text!.isValid(){
-             self.generateAlertWithOkButton(text: no_internet_connection)
-//            showBanner(title: "", subTitle: please_enter_full_name, bannerStyle: .danger)
-        }
-        if !txtEmail.text!.isValid(){
+             self.generateAlertWithOkButton(text: please_enter_full_name)
+        }else if !txtEmail.text!.isValid(){
              self.generateAlertWithOkButton(text: please_enter_email)
-//            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
         }else if !txtEmail.text!.isValidEmail()  {
              self.generateAlertWithOkButton(text: please_enter_valid_email)
-//             showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
         }else if !txtPassword.text!.isValid(){
              self.generateAlertWithOkButton(text: please_enter_password)
-//            showBanner(title: "", subTitle: please_enter_password, bannerStyle: .danger)
         }else if !txtCmfPassword.text!.isValid(){
              self.generateAlertWithOkButton(text: please_enter_confirm_password)
-//             showBanner(title: "", subTitle: please_enter_confirm_password, bannerStyle: .danger)
         }else if txtPassword.text != txtCmfPassword.text{
              self.generateAlertWithOkButton(text: password_and_confirmpass_is_different)
-//            showBanner(title: "", subTitle: password_and_confirmpass_is_different, bannerStyle: .danger)
         }else if isAcceptTOS == false{
              self.generateAlertWithOkButton(text: Accept_Terms_conditions)
-//            showBanner(title: "", subTitle: Accept_Terms_conditions, bannerStyle: .danger)
         } else {
             return true
-
         }
+        
         return false
     }
 

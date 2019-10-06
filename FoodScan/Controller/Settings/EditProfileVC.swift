@@ -74,8 +74,7 @@ class EditProfileVC: UIViewController {
             }
             else
             {
-                self.generateAlertWithOkButton(text: no_internet_connection)
-//                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
             }
         }
     }
