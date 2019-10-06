@@ -132,6 +132,7 @@ class ProfileVC: UIViewController {
             if(isLoader){
                 showIndicator(view: self.view)
             }
+
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetAllUserFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 if(isLoader){
                     self.hideIndicator(view: self.view)}
@@ -155,22 +156,15 @@ class ProfileVC: UIViewController {
                     }
                     self.refresher.endRefreshing()
                 }else {
-                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
-//                    self.generateAlertWithOkButton(text:message!)
-
-//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                   showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
                 }
                 })
             }
             else
             {
-                self.generateAlertWithOkButton(text:no_internet_connection)
-
-//                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
             }
         }
-
-
 }
 
 //MARK:- Table - Delegate - DataSource
