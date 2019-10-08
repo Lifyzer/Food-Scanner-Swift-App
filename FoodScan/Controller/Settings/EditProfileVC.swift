@@ -59,38 +59,27 @@ class EditProfileVC: UIViewController {
                             UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
                             UserDefaults.standard.set(APP_DELEGATE.objUser?.userId, forKey: kUserId)
                         }
-                        let alert = UIAlertController(title: APPNAME, message: profile_change_success,preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK",
-                                                      style: .default,
-                                                      handler: {(_: UIAlertAction!) in
-                                                        self.navigationController?.popViewController(animated: true)
-                        }))
-                        self.present(alert, animated: true, completion: nil)
-                    }else {
-                        self.generateAlertWithOkButton(text: message!)
-//                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
+                        showBanner(title: "", subTitle: profile_change_success, bannerStyle: .success)
+                    } else {
+                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
                 })
             }
             else
             {
-                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
+                self.generateAlertWithOkButton(text: no_internet_connection)
             }
         }
     }
 
     func ValidateField() -> Bool {
-
-        if !txtFullName.text!.isValid(){
+        if !txtFullName.text!.isValid() {
             self.generateAlertWithOkButton(text: please_enter_full_name)
-//            showBanner(title: "", subTitle: please_enter_full_name, bannerStyle: .danger)
-        }else if !txtEmailId.text!.isValidEmail(){
+        } else if !txtEmailId.text!.isValidEmail() {
             self.generateAlertWithOkButton(text: please_enter_email)
-//            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
-        }else if !txtEmailId.text!.isValidEmail(){
+        } else if !txtEmailId.text!.isValidEmail() {
             self.generateAlertWithOkButton(text: please_enter_valid_email)
-//            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
-        }else {
+        } else {
             return true
         }
         return false
