@@ -67,19 +67,15 @@ class ChangePasswordVC: UIViewController {
 
     func ValidateField() -> Bool {
 
-        if !txtCurrentPwd.text!.isValid(){
+        if !txtCurrentPwd.text!.isValid() {
             self.generateAlertWithOkButton(text: please_enter_current_password)
-//            showBanner(title: "", subTitle: please_enter_current_password, bannerStyle: .danger)
-        }else if !txtNewPwd.text!.isValid(){
+        } else if !txtNewPwd.text!.isValid() {
             self.generateAlertWithOkButton(text: please_enter_new_password)
-//            showBanner(title: "", subTitle: please_enter_new_password, bannerStyle: .danger)
-        }else if !txtConfirmPwd.text!.isValid(){
+        } else if !txtConfirmPwd.text!.isValid() {
             self.generateAlertWithOkButton(text: please_enter_confirm_password)
-//            showBanner(title: "", subTitle: please_enter_confirm_password, bannerStyle: .danger)
-        }else if txtNewPwd.text != txtConfirmPwd.text{
+        } else if txtNewPwd.text != txtConfirmPwd.text {
             self.generateAlertWithOkButton(text: password_and_confirmpass_is_different)
-//            showBanner(title: "", subTitle: password_and_confirmpass_is_different, bannerStyle: .danger)
-        }else {
+        } else {
             return true
         }
         return false

@@ -69,13 +69,11 @@ class ForgotPasswordVC: UIViewController {
     }
 
     func ValidateField() -> Bool {
-        if !txtEmail.text!.isValid(){
+        if !txtEmail.text!.isValid() {
             self.generateAlertWithOkButton(text: please_enter_email)
-//            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
-        }else if !txtEmail.text!.isValidEmail(){
+        } else if !txtEmail.text!.isValidEmail() {
             self.generateAlertWithOkButton(text: please_enter_valid_email)
-//            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
-        }else {
+        } else {
             return true
         }
         return false
