@@ -209,7 +209,7 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
                 cell.productType.setTitle("\(Poor)", for: .normal)
                 cell.productType.setTitleColor(UIColor(red:  230/255, green: 0/255, blue: 20/255, alpha: 1.0), for: .normal)
                 cell.productType.setImage(UIImage(named: "dot_red_small"), for: .normal)
-            }else {
+            } else {
                 cell.productType.setTitle("\(Excellent)", for: .normal)
                 cell.productType.setTitleColor(UIColor(red:  85/255, green: 165/255, blue: 70/255, alpha: 1.0), for: .normal)
                 cell.productType.setImage(UIImage(named: "dot_green_small"), for: .normal)

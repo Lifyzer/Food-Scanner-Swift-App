@@ -11,7 +11,7 @@ import UIKit
 class SettingsVC: UIViewController {
 
     enum SettingsItems: Int {
-        case EditProfile=0 , ChangePassword, TermsCondition
+        case EditProfile = 0 , ChangePassword, TermsCondition
         case totalCount = 3
     }
     @IBOutlet var tableSettings: UITableView!

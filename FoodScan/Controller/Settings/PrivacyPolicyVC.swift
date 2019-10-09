@@ -27,7 +27,4 @@ class PrivacyPolicyVC: UIViewController, WKUIDelegate {
         self.navigationController?.popViewController(animated: true)
     }
 
-
-
-
 }

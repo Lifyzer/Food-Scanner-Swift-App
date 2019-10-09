@@ -208,7 +208,6 @@ extension ScanFoodVC {
         let calculatedFrame = CGRect(x: 0, y: CGFloat((height - cropSize.height)/2.0), width: cropSize.width, height: cropSize.height)
         let scaledCGImage = context?.makeImage()?.cropping(to: calculatedFrame)
 
-
         return UIImage(cgImage: scaledCGImage!)
     }
 
