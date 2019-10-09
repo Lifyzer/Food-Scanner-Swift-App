@@ -69,7 +69,8 @@ func checkSecurity() {
 
 func isTokenExpired() -> Bool {
 
-    return false
+    //  Disable "Token Expired" func
+    return false // Temporary stop function
 
     if UserDefaults.standard.bool(forKey: kLogIn) && (UserDefaults.standard.value(forKey: kUserToken) != nil) {
         var secretKey:String = String()
