@@ -76,6 +76,7 @@ class ForgotPasswordVC: UIViewController {
         } else {
             return true
         }
+
         return false
     }
 

@@ -73,6 +73,7 @@ class LoginVC: UIViewController {
 
         }
     }
+
     func getGUID(){
 
         let GUID = UserDefaults.standard.value(forKey: kUserGUID)

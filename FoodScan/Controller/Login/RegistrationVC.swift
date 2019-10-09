@@ -110,6 +110,7 @@ class RegistrationVC: UIViewController {
             self.generateAlertWithOkButton(text: no_internet_connection)
         }
     }
+
     func getGUID(){
 
         let GUID = UserDefaults.standard.value(forKey: kUserGUID)
