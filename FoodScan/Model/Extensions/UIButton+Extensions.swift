@@ -29,7 +29,7 @@ extension UIButton {
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(kCTKernAttributeName as NSAttributedString.Key,
                                       value: spacing,
-                                      range: NSRange(location: 0, length: text.characters.count))
+                                      range: NSRange(location: 0, length: text.count))
         self.setAttributedTitle(attributedString, for: .normal)
     }
 }
