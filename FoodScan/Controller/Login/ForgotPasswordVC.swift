@@ -54,9 +54,8 @@ class ForgotPasswordVC: UIViewController {
                                                     self.navigationController?.popViewController(animated: true)
                     }))
                     self.present(alert, animated: true, completion: nil)
-                }else {
+                } else {
                     self.generateAlertWithOkButton(text: message!)
-//                    showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                 }
             })
             }
@@ -64,7 +63,6 @@ class ForgotPasswordVC: UIViewController {
         else
         {
             self.generateAlertWithOkButton(text: no_internet_connection)
-//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
 

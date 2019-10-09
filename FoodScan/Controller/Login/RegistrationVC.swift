@@ -141,28 +141,27 @@ class RegistrationVC: UIViewController {
         }
 
     }
+
     func ValidateField() -> Bool {
-        if !txtFullName.text!.isValid(){
+        if !txtFullName.text!.isValid() {
              self.generateAlertWithOkButton(text: please_enter_full_name)
-        }else if !txtEmail.text!.isValid(){
+        } else if !txtEmail.text!.isValid() {
              self.generateAlertWithOkButton(text: please_enter_email)
-        }else if !txtEmail.text!.isValidEmail()  {
+        } else if !txtEmail.text!.isValidEmail() {
              self.generateAlertWithOkButton(text: please_enter_valid_email)
-        }else if !txtPassword.text!.isValid(){
+        } else if !txtPassword.text!.isValid() {
              self.generateAlertWithOkButton(text: please_enter_password)
-        }else if !txtCmfPassword.text!.isValid(){
+        } else if !txtCmfPassword.text!.isValid() {
              self.generateAlertWithOkButton(text: please_enter_confirm_password)
-        }else if txtPassword.text != txtCmfPassword.text{
+        } else if txtPassword.text != txtCmfPassword.text {
              self.generateAlertWithOkButton(text: password_and_confirmpass_is_different)
-        }else if isAcceptTOS == false{
+        } else if isAcceptTOS == false {
              self.generateAlertWithOkButton(text: Accept_Terms_conditions)
         } else {
             return true
         }
-        
+
         return false
     }
-
-
 
 }
