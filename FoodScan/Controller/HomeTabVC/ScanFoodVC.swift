@@ -54,22 +54,23 @@ class ScanFoodVC: UIViewController {
                 return
             }
 
-            self.stillImageOutput.captureStillImageAsynchronously(from: capturedType) { [weak self] optionalBuffer, error -> Void in
-                guard let buffer = optionalBuffer else {
+            self.stillImageOutput.captureStillImageAsynchronously(from: capturedType) {
+                optionalBuffer, error -> Void in guard let buffer = optionalBuffer else {
                     return
                 }
 
-                let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer)
-                let image = UIImage(data: imageData!)
+                AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer)
 
-                let croppedImage = self?.prepareImageForCrop(using: image!)
+//                let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer)
+//                let image = UIImage(data: imageData!)
+
+//                let croppedImage = self?.prepareImageForCrop(using: image!)
 //                self?.ocrInstance.recognize(croppedImage!) { [weak self] recognizedString in
 //                    DispatchQueue.main.async {
 //                        self?.label.text = recognizedString
 //                        print(self?.ocrInstance.currentOCRRecognizedBlobs ?? "Recoginzed Blob is empty")
 //                    }
 //                }
-
             }
         }
     }
