@@ -45,8 +45,6 @@ let Poor = "Poor"
 let Organic = "Organic"
 let not_Organic = "Not Organic"
 
-//MARK:- Message Constant
-let NOINTERNETALERT = "No Internet connection. Please try again later"
 let please_enter_password = "Please enter password"
 let please_enter_confirm_password = "Please enter confirm password"
 let please_enter_username = "Please enter username"
