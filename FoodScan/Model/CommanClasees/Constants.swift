@@ -63,7 +63,7 @@ let logout_conformation = "Are you sure you want to logout from FoodScan app?"
 
 let password_and_confirmpass_is_different = "Password and Confirm password do not match"
 let something_went_wrong = "Something went wrong. Please try again later"
-let no_internet_connection = "No Internet connection. Please try again later"
+let no_internet_connection = "No Network Connection"
 let password_length_error = "Password length should be at least 5 characters"
 let Loading_msg = "Loading..."
 let Processing_msg = "Processing..."
