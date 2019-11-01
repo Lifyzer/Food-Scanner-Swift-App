@@ -21,6 +21,8 @@ target 'FoodScan' do
     pod 'Firebase/Core'
     pod 'Firebase/MLVision'
     pod 'Firebase/MLVisionTextModel'
+    
+    pod 'Cosmos', '~> 20.0'
 
 #pod 'TesseractOCRSDKiOS', '4.0.1'
   target 'FoodScanTests' do

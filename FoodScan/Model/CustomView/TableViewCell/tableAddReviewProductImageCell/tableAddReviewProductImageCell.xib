@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="138" id="KGk-i7-Jjw" customClass="tableAddReviewProductImageCell" customModule="FoodScan" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="327" height="138"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="327" height="137.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dto-Hz-Icl">
+                        <rect key="frame" x="0.0" y="0.0" width="327" height="137.5"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="food_place_holder" translatesAutoresizingMaskIntoConstraints="NO" id="Oyu-QW-yHJ">
+                                <rect key="frame" x="109" y="14" width="109" height="110"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="width" secondItem="Dto-Hz-Icl" secondAttribute="width" multiplier="1/3" id="AI1-4I-pSi"/>
+                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="height" secondItem="Dto-Hz-Icl" secondAttribute="height" multiplier="0.8" id="CT9-Ki-nlv"/>
+                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="centerX" secondItem="Dto-Hz-Icl" secondAttribute="centerX" id="Dcp-Qk-2qX"/>
+                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="centerY" secondItem="Dto-Hz-Icl" secondAttribute="centerY" id="jWl-kN-ldG"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Dto-Hz-Icl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Fpy-RU-q44"/>
+                    <constraint firstItem="Dto-Hz-Icl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Q4g-OP-dTC"/>
+                    <constraint firstAttribute="trailing" secondItem="Dto-Hz-Icl" secondAttribute="trailing" id="RrV-TS-O6p"/>
+                    <constraint firstAttribute="bottom" secondItem="Dto-Hz-Icl" secondAttribute="bottom" id="tQv-HY-nD3"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="imgFood" destination="Oyu-QW-yHJ" id="0TE-t6-odY"/>
+            </connections>
+            <point key="canvasLocation" x="42.753623188405797" y="85.714285714285708"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="food_place_holder" width="78" height="71.5"/>
+    </resources>
+</document>

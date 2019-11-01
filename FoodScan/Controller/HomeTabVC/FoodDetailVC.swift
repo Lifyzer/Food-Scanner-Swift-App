@@ -25,7 +25,8 @@ class FoodDetailVC: UIViewController {
     @IBOutlet weak var tableContentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableProductDetails: UITableView!
     @IBOutlet weak var btnShare: UIButton!
-
+    @IBOutlet weak var btnAddReview: UIButton!
+    
     var objProduct : WSProduct!
     var arrDetails : NSMutableArray = NSMutableArray()
     var arrTitle : NSMutableArray = NSMutableArray()
@@ -44,7 +45,6 @@ class FoodDetailVC: UIViewController {
     //MARK: Functions
     func SetFoodDetails() {
         btnFav.layer.cornerRadius = btnFav.frame.height / 2
-//        tableDetails.tableHeaderView = vwHeader
         lblProduct.text = objProduct.productName
         let isHealthy : String = objProduct.isHealthy ?? ""
         if isHealthy != "" && isHealthy.count > 0{
@@ -160,7 +160,12 @@ class FoodDetailVC: UIViewController {
         self.present(activityViewController, animated: true, completion: nil)
         print("Share product details")
     }
-
+    
+    //MARK: Button actions
+    @IBAction func btnAddReviewAction(_ sender: Any) {
+        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     @IBAction func btnShare(_ sender: Any) {
         shareFoodDetails()
     }
@@ -170,24 +175,17 @@ class FoodDetailVC: UIViewController {
         if checkLoginAlert()
         {
             sender.isSelected = !sender.isSelected
-            if sender.isSelected
-            {
+            if sender.isSelected{
                 btnFav.setImage(IMG_FAV, for: .normal)
-            }
-            else
-            {
+            } else{
                 btnFav.setImage(IMG_UNFAV, for: .normal)
             }
-            if objProduct.isFavourite.asStringOrEmpty() == "0"
-            {
+            
+            if objProduct.isFavourite.asStringOrEmpty() == "0"{
                 AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
-            }
-            else if objProduct.isFavourite.asStringOrEmpty() == "1"
-            {
+            }else if objProduct.isFavourite.asStringOrEmpty() == "1"{
                 AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
-            }
-            else
-            {
+            }else{
                 AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
             }
         }
@@ -220,20 +218,7 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if tableView == tableProductDetails
-//        {
-//            let ingreText = objProduct.ingredients.asStringOrEmpty()
-//            var height:CGFloat = 0.0
-//            if ingreText != ""
-//            {
-//                let lbl = UILabel()
-//                lbl.text = ingreText
-////                lbl.sizeToFit()
-//                height = CGFloat(lbl.frame.height) + 50.0
-//            }
-//            let tableheight  = CGFloat(75 * (arrDetails.count - 1) + 40)
-//            return CGFloat(tableheight + height)
-//        }
+
         let objTitle = arrTitle[indexPath.row]
         if "\(objTitle)" == "Ingredients"
         {

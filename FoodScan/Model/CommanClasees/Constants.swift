@@ -73,6 +73,9 @@ let You_have_successfully_login = "You have successfully registered"
 let Accept_Terms_conditions = "Please accept terms and conditions"
 
 let please_enter_product_name = "Please enter product name"
+let add_review_title_placeholder = "Headline for your review"
+let add_review_desc_placeholder = "Tell us what you like or dislike about this product."
+
 
 //let kLogIn = "Login"
 let kUserId = "UserId"
