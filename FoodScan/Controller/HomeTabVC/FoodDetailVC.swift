@@ -11,6 +11,14 @@ let iDtableFoodCell = "tableFoodCell"
 let IMG_FAV = UIImage(named: "unfav_white_icon")
 let IMG_UNFAV = UIImage(named: "fav_white_icon")
 
+
+enum ReviewItems: Int {
+    case userReview = 0
+    case custReviews
+    case reviewList
+    static var count: Int { return ReviewItems.reviewList.rawValue + 1}
+}
+
 class FoodDetailVC: UIViewController {
     @IBOutlet var tableDetails: UITableView!
 
@@ -26,11 +34,17 @@ class FoodDetailVC: UIViewController {
     @IBOutlet weak var tableProductDetails: UITableView!
     @IBOutlet weak var btnShare: UIButton!
     @IBOutlet weak var btnAddReview: UIButton!
+    @IBOutlet weak var tableReview: UITableView!
+    
+    @IBOutlet weak var tableProductdetailsHeight: NSLayoutConstraint!
+    @IBOutlet weak var tableReviewHeight: NSLayoutConstraint!
     
     var objProduct : WSProduct!
     var arrDetails : NSMutableArray = NSMutableArray()
     var arrTitle : NSMutableArray = NSMutableArray()
     var arrImages : [UIImage] = [UIImage]()
+    var arrReviewList : NSMutableArray = NSMutableArray()
+    var isUserReview = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +84,12 @@ class FoodDetailVC: UIViewController {
         }
     }
 
-    func setupUI(){
+    func setupUI()
+    {
+        tableReview.register(tableReviewCell.nib, forCellReuseIdentifier: tableReviewCell.reuseIdentifier)
+        tableReview.register(tableCustomerReviewCell.nib, forCellReuseIdentifier: tableCustomerReviewCell.reuseIdentifier)
+        tableReview.register(tableUserReviewCell.nib, forCellReuseIdentifier: tableUserReviewCell.reuseIdentifier)
+
         btnFav.setImage(IMG_UNFAV, for: .normal)
         btnFav.setImage(IMG_FAV, for: .selected)
         if objProduct.isFavourite.asStringOrEmpty() == "0"
@@ -108,8 +127,11 @@ class FoodDetailVC: UIViewController {
         // Set scrollview
         scrollWidth.constant = self.view.frame.width
         self.tableProductDetails.layoutIfNeeded()
+        self.tableReview.layoutIfNeeded()
         self.vwHeader.layoutIfNeeded()
-        contentHeight.constant = self.tableProductDetails.contentSize.height + vwHeader.frame.height + 40
+        self.tableProductdetailsHeight.constant = self.tableProductDetails.contentSize.height
+        self.tableReviewHeight.constant = self.tableReview.contentSize.height
+        contentHeight.constant = self.tableProductDetails.contentSize.height + vwHeader.frame.height + 40 + self.tableReview.contentSize.height
         tableProductDetails.tableFooterView = UIView()
         self.view.layoutIfNeeded()
     }
@@ -163,8 +185,9 @@ class FoodDetailVC: UIViewController {
     
     //MARK: Button actions
     @IBAction func btnAddReviewAction(_ sender: Any) {
-        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.scrollView.scrollToView(view: self.tableReview, animated: true)
+        //        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func btnShare(_ sender: Any) {
         shareFoodDetails()
@@ -210,15 +233,22 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
 
     //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if tableView == tableProductDetails
-//        {
-//            return 1
-//        }
+        if tableView == tableReview
+        {
+            if isUserReview
+            {
+                return 5 + ReviewItems.count
+            }
+            return 5 + (ReviewItems.count - 1)
+        }
         return arrDetails.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
+        if tableView == tableReview
+        {
+            return UITableView.automaticDimension
+        }
         let objTitle = arrTitle[indexPath.row]
         if "\(objTitle)" == "Ingredients"
         {
@@ -228,7 +258,33 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        let row = indexPath.row
+        if tableView == tableReview
+        {
+            if isUserReview && row == 0
+            {
+                let cell = tableView.dequeueReusableCell(withIdentifier: tableUserReviewCell.reuseIdentifier, for: indexPath) as! tableUserReviewCell
+//                cell.lblTitle.text = "User Reviww"
+                return cell
+            }
+            else if !isUserReview && row == 0
+            {
+                let cell = tableView.dequeueReusableCell(withIdentifier: tableCustomerReviewCell.reuseIdentifier, for: indexPath) as! tableCustomerReviewCell
+                cell.lblTitle.text = "Customer Reviww"
+                return cell
+            }
+            else if isUserReview && row == 1
+            {
+                let cell = tableView.dequeueReusableCell(withIdentifier: tableCustomerReviewCell.reuseIdentifier, for: indexPath) as! tableCustomerReviewCell
+                cell.lblTitle.text = "Customer Reviww"
+                return cell
+            }
+            else
+            {
+                let cell = tableView.dequeueReusableCell(withIdentifier: tableReviewCell.reuseIdentifier, for: indexPath) as! tableReviewCell
+                return cell
+            }
+        }
         let objTitle = arrTitle[indexPath.row]
         let objDetails = arrDetails[indexPath.row]
         let objImg = arrImages[indexPath.row]
@@ -253,6 +309,7 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
             return cell
         }
     }
+
 }
 //MARK: API related stuff
 extension FoodDetailVC
@@ -278,4 +335,32 @@ extension FoodDetailVC
 //            }
 //        })
 //    }
+}
+
+extension UIScrollView {
+    
+    // Scroll to a specific view so that it's top is at the top our scrollview
+    func scrollToView(view:UIView, animated: Bool) {
+        if let origin = view.superview {
+            // Get the Y position of your child view
+            let childStartPoint = origin.convert(view.frame.origin, to: self)
+            // Scroll to a rectangle starting at the Y of your subview, with a height of the scrollview
+            self.scrollRectToVisible(CGRect(x:0, y:childStartPoint.y,width: 1,height: self.frame.height), animated: animated)
+        }
+    }
+    
+    // Bonus: Scroll to top
+    func scrollToTop(animated: Bool) {
+        let topOffset = CGPoint(x: 0, y: -contentInset.top)
+        setContentOffset(topOffset, animated: animated)
+    }
+    
+    // Bonus: Scroll to bottom
+    func scrollToBottom() {
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + contentInset.bottom)
+        if(bottomOffset.y > 0) {
+            setContentOffset(bottomOffset, animated: true)
+        }
+    }
+    
 }

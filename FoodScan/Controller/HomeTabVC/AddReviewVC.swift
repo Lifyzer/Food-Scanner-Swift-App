@@ -118,8 +118,8 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
         case .ProductDetails,.reviewTitle,.reviewDesc:
             return UITableView.automaticDimension
         }
-       
     }
+    
 }
 
 //MARK: TextView Method
@@ -150,5 +150,13 @@ extension AddReviewVC: UITextViewDelegate {
         {
             addReviewData.desc = ""
         }
+    }
+}
+//MARK: API Related stuff
+extension AddReviewVC
+{
+    func addReviewAPI()
+    {
+        
     }
 }

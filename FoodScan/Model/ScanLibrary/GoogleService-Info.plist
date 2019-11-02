@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>957666457847-alp5euaj57idoeepun16avaohsb6hqbk.apps.googleusercontent.com</string>
+	<string>997867500819-lsa4mbh5nstmbcbfmloet8gpdunrv8uu.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.957666457847-alp5euaj57idoeepun16avaohsb6hqbk</string>
+	<string>com.googleusercontent.apps.997867500819-lsa4mbh5nstmbcbfmloet8gpdunrv8uu</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA74jXJOxXUzaIurfDKnObihVMgo5oT1sY</string>
+	<string>AIzaSyAtN_In_M5Gs_in_7MOF6hmPNfTqhlbqSo</string>
 	<key>GCM_SENDER_ID</key>
-	<string>957666457847</string>
+	<string>997867500819</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.foodscan</string>
+	<string>healthyfood.lifyzer</string>
 	<key>PROJECT_ID</key>
-	<string>foodscan-8e823</string>
+	<string>lifyzer</string>
 	<key>STORAGE_BUCKET</key>
-	<string>foodscan-8e823.appspot.com</string>
+	<string>lifyzer.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:957666457847:ios:fb0bdb3398c79094</string>
+	<string>1:997867500819:ios:55b582378b923bff9cd6e6</string>
 	<key>DATABASE_URL</key>
-	<string>https://foodscan-8e823.firebaseio.com</string>
+	<string>https://lifyzer.firebaseio.com</string>
 </dict>
 </plist>

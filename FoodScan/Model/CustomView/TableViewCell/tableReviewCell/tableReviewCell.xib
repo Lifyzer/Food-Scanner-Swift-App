@@ -97,6 +97,7 @@
                     <constraint firstAttribute="bottom" secondItem="K0c-Fv-oOU" secondAttribute="bottom" constant="8" id="izi-mP-Sro"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="lblReviewDate" destination="SmJ-rl-rHD" id="0bU-UT-HIy"/>

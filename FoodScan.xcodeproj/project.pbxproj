@@ -65,7 +65,6 @@
 		00F49E8E220C3CF80053829D /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F49E8D220C3CF80053829D /* ProfileVC.swift */; };
 		00F49E91220C42C60053829D /* aribl_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00F49E8F220C42C60053829D /* aribl_bold.ttf */; };
 		00F49E92220C42C60053829D /* arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00F49E90220C42C60053829D /* arial.ttf */; };
-		5B033A1D22674AAA00BB3BB4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B033A1C22674AAA00BB3BB4 /* GoogleService-Info.plist */; };
 		5B191D182268464100E1DF1F /* VideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B191D162268464100E1DF1F /* VideoCapture.swift */; };
 		5B191D192268464100E1DF1F /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B191D172268464100E1DF1F /* DrawingView.swift */; };
 		5B31570C2236395600EC0674 /* ScanProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3157062236395600EC0674 /* ScanProductVC.swift */; };
@@ -90,6 +89,9 @@
 		5BD70D90223A5AE4006A2FED /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 5BD70D8F223A5AE4006A2FED /* tessdata */; };
 		61846A2D52474EADAE441785 /* Pods_FoodScanUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6437C1DDDE7C43328928100 /* Pods_FoodScanUITests.framework */; };
 		62DF5F6CF0F46806D747BE2B /* Pods_FoodScanTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB3CAEA3AC246C91EACCAE3 /* Pods_FoodScanTests.framework */; };
+		F53CBEC0236D3BD000EF990C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F53CBEBF236D3BD000EF990C /* GoogleService-Info.plist */; };
+		F53CBEC4236D75BB00EF990C /* tableUserReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53CBEC2236D75BB00EF990C /* tableUserReviewCell.swift */; };
+		F53CBEC5236D75BB00EF990C /* tableUserReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F53CBEC3236D75BB00EF990C /* tableUserReviewCell.xib */; };
 		F580722A236BF216007343A1 /* tableCustomerReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5807228236BF216007343A1 /* tableCustomerReviewCell.swift */; };
 		F580722B236BF216007343A1 /* tableCustomerReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5807229236BF216007343A1 /* tableCustomerReviewCell.xib */; };
 		F580722F236C0B47007343A1 /* tableReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F580722D236C0B47007343A1 /* tableReviewCell.swift */; };
@@ -205,7 +207,6 @@
 		05DC2638BAE3C9295B5EE7F9 /* Pods_FoodScan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FoodScan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E036C6BCE594D37132A6222 /* Pods-FoodScanUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodScanUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FoodScanUITests/Pods-FoodScanUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		26790217F0ED89AE686C1045 /* Pods-FoodScanTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodScanTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FoodScanTests/Pods-FoodScanTests.release.xcconfig"; sourceTree = "<group>"; };
-		5B033A1C22674AAA00BB3BB4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5B191D162268464100E1DF1F /* VideoCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCapture.swift; sourceTree = "<group>"; };
 		5B191D172268464100E1DF1F /* DrawingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		5B3157062236395600EC0674 /* ScanProductVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanProductVC.swift; sourceTree = "<group>"; };
@@ -232,6 +233,9 @@
 		A6437C1DDDE7C43328928100 /* Pods_FoodScanUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FoodScanUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA4F320BB27267C17E50B180 /* Pods-FoodScan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodScan.release.xcconfig"; path = "Pods/Target Support Files/Pods-FoodScan/Pods-FoodScan.release.xcconfig"; sourceTree = "<group>"; };
 		EC825949BC7F68DDFB10BA90 /* Pods-FoodScan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodScan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FoodScan/Pods-FoodScan.debug.xcconfig"; sourceTree = "<group>"; };
+		F53CBEBF236D3BD000EF990C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F53CBEC2236D75BB00EF990C /* tableUserReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableUserReviewCell.swift; sourceTree = "<group>"; };
+		F53CBEC3236D75BB00EF990C /* tableUserReviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableUserReviewCell.xib; sourceTree = "<group>"; };
 		F5807228236BF216007343A1 /* tableCustomerReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableCustomerReviewCell.swift; sourceTree = "<group>"; };
 		F5807229236BF216007343A1 /* tableCustomerReviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableCustomerReviewCell.xib; sourceTree = "<group>"; };
 		F580722D236C0B47007343A1 /* tableReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableReviewCell.swift; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 		002E09A8221686D900252764 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				F53CBEC1236D759B00EF990C /* tableUserReviewCell */,
 				F5BC6EC7236C135100817310 /* tableAddReviewDescCell */,
 				F5BC6EC2236C133000817310 /* tableAddReviewTitleCell */,
 				F5BC6EBD236C126000817310 /* tableAddReviewProductDetailsCell */,
@@ -555,9 +560,9 @@
 		5B033A1E22674BB600BB3BB4 /* ScanLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				F53CBEBF236D3BD000EF990C /* GoogleService-Info.plist */,
 				5B191D172268464100E1DF1F /* DrawingView.swift */,
 				5B191D162268464100E1DF1F /* VideoCapture.swift */,
-				5B033A1C22674AAA00BB3BB4 /* GoogleService-Info.plist */,
 			);
 			path = ScanLibrary;
 			sourceTree = "<group>";
@@ -610,6 +615,15 @@
 				FEB9054D3055F0ACDA42DC9F /* Pods-FoodScanUITests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		F53CBEC1236D759B00EF990C /* tableUserReviewCell */ = {
+			isa = PBXGroup;
+			children = (
+				F53CBEC2236D75BB00EF990C /* tableUserReviewCell.swift */,
+				F53CBEC3236D75BB00EF990C /* tableUserReviewCell.xib */,
+			);
+			path = tableUserReviewCell;
 			sourceTree = "<group>";
 		};
 		F5807227236BF15F007343A1 /* tableCustomerReviewCell */ = {
@@ -781,10 +795,10 @@
 				5BD70D90223A5AE4006A2FED /* tessdata in Resources */,
 				5B63EC842296729700E59FE7 /* isSuccessIcon.png in Resources */,
 				F5BC6EC1236C128400817310 /* tableAddReviewProductDetailsCell.xib in Resources */,
+				F53CBEC0236D3BD000EF990C /* GoogleService-Info.plist in Resources */,
 				5B63EC812296729700E59FE7 /* isInfoIcon.png in Resources */,
 				5B63EC882296729700E59FE7 /* isWarningIcon@2x.png in Resources */,
 				5B63EC822296729700E59FE7 /* isInfoIcon@2x.png in Resources */,
-				5B033A1D22674AAA00BB3BB4 /* GoogleService-Info.plist in Resources */,
 				F5807230236C0B47007343A1 /* tableReviewCell.xib in Resources */,
 				5B63EC862296729700E59FE7 /* isSuccessIcon@3x.png in Resources */,
 				00F49D83220C0FCA0053829D /* Login.storyboard in Resources */,
@@ -794,6 +808,7 @@
 				00F49D50220C059E0053829D /* Assets.xcassets in Resources */,
 				5B63EC852296729700E59FE7 /* isSuccessIcon@2x.png in Resources */,
 				5B63EC832296729700E59FE7 /* isInfoIcon@3x.png in Resources */,
+				F53CBEC5236D75BB00EF990C /* tableUserReviewCell.xib in Resources */,
 				00F49D7E220C0C6F0053829D /* LaunchScreen.storyboard in Resources */,
 				5B63EC802296729700E59FE7 /* isErrorIcon@3x.png in Resources */,
 				00F49D86220C0FF80053829D /* Settings.storyboard in Resources */,
@@ -961,6 +976,7 @@
 				0044740B221296E8004C98C9 /* UITableView.swift in Sources */,
 				004473DD2212945D004C98C9 /* EditProfileVC.swift in Sources */,
 				00447409221296E8004C98C9 /* UILable+Extensions.swift in Sources */,
+				F53CBEC4236D75BB00EF990C /* tableUserReviewCell.swift in Sources */,
 				00F49E7D220C11310053829D /* Constants.swift in Sources */,
 				00F49E84220C29280053829D /* RegistrationVC.swift in Sources */,
 				0069BA632213E651008DD907 /* WebServicesCollection.swift in Sources */,

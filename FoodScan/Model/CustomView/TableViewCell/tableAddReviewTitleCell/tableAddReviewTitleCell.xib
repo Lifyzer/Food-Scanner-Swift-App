@@ -84,7 +84,7 @@
                     <constraint firstAttribute="trailing" secondItem="WMv-t9-fIe" secondAttribute="trailing" id="iOc-9e-sPf"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.8525235445205479" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" red="0.81960784313725488" green="0.81960784313725488" blue="0.81960784313725488" alpha="0.5" colorSpace="calibratedRGB"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="lblTitle" destination="lp0-aV-TI8" id="dhQ-wK-Llm"/>
