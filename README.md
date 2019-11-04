@@ -2,6 +2,8 @@
 
 ![Healthy Food, Healthy Pineapple](extras/assets/pineapple-healthy-food.svg)
 
+*🍎 The native [iOS Food Scanner App](https://apps.apple.com/app/longer-life-lifyzer-food-scan/id1466196809) 🥕*
+
 
 ### About Lifyzer, Healthy Food Scanner 🍳
 
