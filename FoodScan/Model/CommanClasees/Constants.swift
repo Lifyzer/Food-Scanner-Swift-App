@@ -76,6 +76,9 @@ let please_enter_product_name = "Please enter product name"
 let add_review_title_placeholder = "Headline for your review"
 let add_review_desc_placeholder = "Tell us what you like or dislike about this product."
 
+let please_enter_review_title = "Please enter title"
+let please_enter_review_desc = "Please enter description"
+
 
 //let kLogIn = "Login"
 let kUserId = "UserId"

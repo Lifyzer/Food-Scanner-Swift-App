@@ -37,6 +37,7 @@ let APIChangePassword = "\(SERVER_URL)\(WEBSERVICE_PATH)ChangePassword"
 let APIEditProfile = "\(SERVER_URL)\(WEBSERVICE_PATH)EditProfile"
 let APItestEncryption = "\(SERVER_URL)\(WEBSERVICE_PATH)testEncryption"
 let APIForgotPassword = "\(SERVER_URL)\(WEBSERVICE_PATH)ForgotPassword"
+let APIAddReview = "\(SERVER_URL)\(WEBSERVICE_PATH)addReview"
 
 //Model
 let WSUSER = "User"
@@ -63,6 +64,9 @@ let WS_KGuid = "guid"
 let WS_KProduct = "product"
 let WS_KHistory = "history"
 let WS_FLAG = "flag"
+let WS_RATTING = "ratting"
+let WS_TITLE = "title"
+let WS_DESC = "desc"
 
 var arrayFavouriteProducts:[WSProduct] = [WSProduct]()
 

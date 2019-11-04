@@ -185,9 +185,13 @@ class FoodDetailVC: UIViewController {
     
     //MARK: Button actions
     @IBAction func btnAddReviewAction(_ sender: Any) {
-        self.scrollView.scrollToView(view: self.tableReview, animated: true)
-        //        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-//        self.navigationController?.pushViewController(vc, animated: true)
+        //Scroll to review list
+//        self.scrollView.scrollToView(view: self.tableReview, animated: true)
+        
+        //Redirect to add revie screen
+        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+        vc.objProduct = self.objProduct
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func btnShare(_ sender: Any) {
         shareFoodDetails()

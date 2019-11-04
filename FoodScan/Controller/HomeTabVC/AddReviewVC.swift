@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SwiftyJSON
 
 enum AddReviewItems: Int {
     case productImage = 0
@@ -17,9 +17,11 @@ enum AddReviewItems: Int {
     static var count: Int { return AddReviewItems.reviewDesc.rawValue + 1}
 }
 struct AddReviewData {
+    var product_name = ""
+    var product_image = ""
     var user_id = ""
     var product_id = ""
-    var ratting = 0
+    var ratting = Double()
     var title = ""
     var desc = ""
     var is_testdata = ""
@@ -31,6 +33,7 @@ class AddReviewVC: UIViewController {
     @IBOutlet weak var tableAddReview: UITableView!
     
     var addReviewData = AddReviewData()
+    var objProduct : WSProduct!
     
     
     override func viewDidLoad() {
@@ -44,7 +47,10 @@ class AddReviewVC: UIViewController {
     }
     
     @IBAction func btnAddReviewAction(_ sender: Any) {
-        
+        if ValidateField()
+        {
+            addReviewAPI()
+        }
     }
     
 }
@@ -57,6 +63,8 @@ extension AddReviewVC
         tableAddReview.register(tableAddReviewProductDetailsCell.nib, forCellReuseIdentifier: tableAddReviewProductDetailsCell.reuseIdentifier)
         tableAddReview.register(tableAddReviewTitleCell.nib, forCellReuseIdentifier: tableAddReviewTitleCell.reuseIdentifier)
         tableAddReview.register(tableAddReviewDescCell.nib, forCellReuseIdentifier: tableAddReviewDescCell.reuseIdentifier)
+        addReviewData.product_image = objProduct.productImage.asStringOrEmpty()
+        addReviewData.product_name = objProduct.productName.asStringOrEmpty()
     }
 
     @objc func textfieldEditingChanged(textfield : UITextField)
@@ -68,7 +76,16 @@ extension AddReviewVC
         case .reviewTitle:
             addReviewData.title = textfield.text!
         }
-        
+    }
+    func ValidateField() -> Bool {
+        if !addReviewData.title.isValid() {
+            showBanner(title: "", subTitle: please_enter_review_title, bannerStyle: .danger)
+        } else if !addReviewData.desc.isValid() {
+            showBanner(title: "", subTitle: please_enter_review_desc, bannerStyle: .danger)
+        }else {
+            return true
+        }
+        return false
     }
 }
  //MARK: Tableview Method
@@ -83,9 +100,19 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
         switch AddReviewItems.init(rawValue:row)! {
         case .productImage:
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewProductImageCell.reuseIdentifier, for: indexPath) as! tableAddReviewProductImageCell
+            if addReviewData.product_image != ""{
+                cell.imgFood.sd_setImage(with: URL(string: addReviewData.product_image), placeholderImage: UIImage(named: "food_place_holder"))
+            }else{
+                cell.imgFood.image = UIImage(named: "food_place_holder")
+            }
+            
             return cell
         case .ProductDetails:
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewProductDetailsCell.reuseIdentifier, for: indexPath) as! tableAddReviewProductDetailsCell
+            cell.lblTitle.text = objProduct.productName.asStringOrEmpty()
+            cell.viewRatting.didFinishTouchingCosmos = { rating in
+                self.addReviewData.ratting = rating
+            }
             return cell
         case .reviewTitle:
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewTitleCell.reuseIdentifier, for: indexPath) as! tableAddReviewTitleCell
@@ -96,13 +123,11 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
         case .reviewDesc:
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewDescCell.reuseIdentifier, for: indexPath) as! tableAddReviewDescCell
             cell.txtDescription.delegate = self
-            if addReviewData.desc == ""
-            {
-                 cell.txtDescription.text = addReviewData.desc
-            }
-            else
-            {
+            if addReviewData.desc == ""{
                  cell.txtDescription.text = add_review_desc_placeholder
+            }
+            else{
+                 cell.txtDescription.text = addReviewData.desc
             }
            
            
@@ -157,6 +182,36 @@ extension AddReviewVC
 {
     func addReviewAPI()
     {
-        
+        if Connectivity.isConnectedToInternet
+        {
+            let param:NSMutableDictionary = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+                                             WS_KProduct_id:objProduct.productId.asStringOrEmpty(),
+                                             WS_RATTING: addReviewData.ratting,
+                                             WS_TITLE:addReviewData.title,
+                                             WS_DESC:addReviewData.desc,]
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                param.addEntries(from: data1)
+            }
+            print("===== Hisroty Param =======",param)
+            
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddReview, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+               
+                if response != nil
+                {
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+                    self.navigationController?.popViewController(animated: true)
+                    
+                }else {
+                   
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+                }
+               
+            })
+        }
+        else
+        {
+            SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
+        }
     }
 }
