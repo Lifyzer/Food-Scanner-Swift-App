@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Cosmos
+
 let iDtableFoodCell = "tableFoodCell"
 let IMG_FAV = UIImage(named: "unfav_white_icon")
 let IMG_UNFAV = UIImage(named: "fav_white_icon")
@@ -28,16 +30,18 @@ class FoodDetailVC: UIViewController {
     @IBOutlet var btnCategory: UIButton!
     @IBOutlet var vwHeader : UIView!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var scrollWidth: NSLayoutConstraint!
-    @IBOutlet weak var contentHeight: NSLayoutConstraint!
-    @IBOutlet weak var tableContentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableProductDetails: UITableView!
     @IBOutlet weak var btnShare: UIButton!
     @IBOutlet weak var btnAddReview: UIButton!
     @IBOutlet weak var tableReview: UITableView!
+    @IBOutlet weak var lblTotalReviews: UILabel!
     
+    @IBOutlet weak var scrollWidth: NSLayoutConstraint!
+    @IBOutlet weak var contentHeight: NSLayoutConstraint!
+    @IBOutlet weak var tableContentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableProductdetailsHeight: NSLayoutConstraint!
     @IBOutlet weak var tableReviewHeight: NSLayoutConstraint!
+    @IBOutlet weak var viewRatting: CosmosView!
     
     var objProduct : WSProduct!
     var arrDetails : NSMutableArray = NSMutableArray()
@@ -92,27 +96,21 @@ class FoodDetailVC: UIViewController {
 
         btnFav.setImage(IMG_UNFAV, for: .normal)
         btnFav.setImage(IMG_FAV, for: .selected)
-        if objProduct.isFavourite.asStringOrEmpty() == "0"
-        {
+        if objProduct.isFavourite.asStringOrEmpty() == "0"{
             btnFav.isSelected = false //0
-        }
-        else if objProduct.isFavourite.asStringOrEmpty() == "1"
-        {
+        }else if objProduct.isFavourite.asStringOrEmpty() == "1"{
             btnFav.isSelected = true//1
-        }
-        else
-        {
+        }else{
             btnFav.isSelected = false
         }
+        
         let imageURL = URL(string: objProduct.productImage ?? "")
-        if imageURL != nil
-        {
+        if imageURL != nil{
             imgProduct.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "food_place_holder"))
-        }
-        else
-        {
+        }else{
             imgProduct.image = UIImage(named: "food_place_holder")
         }
+        
         let objFood = objProduct
         CheckDetails(string: objFood?.protein, key: "Protein",img: "Protein")
         CheckDetails(string: objFood?.sugar, key: "Sugar",img: "Sugar")
@@ -124,6 +122,28 @@ class FoodDetailVC: UIViewController {
         CheckDetails(string: objFood?.carbohydrate, key: "Carbohydrate",img: "Carbohydrate")
         CheckDetails(string: objFood?.dietaryFiber, key: "Dietary Fiber",img: "DietaryFiber")
 
+        viewRatting.settings.updateOnTouch = false
+        viewRatting.settings.fillMode = .half
+        
+        let avgReview = objProduct.avgReview
+        if let avg = avgReview{
+            viewRatting.rating = Double(avg)!
+        }
+        let totalReview = objProduct.totalReview
+        if let reviews = totalReview{
+           
+            lblTotalReviews.text = Int(reviews)?.withCommas()
+        }
+        else
+        {
+            lblTotalReviews.text = ""
+        }
+        
+        
+       
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        self.viewRatting.addGestureRecognizer(tapGesture)
+        
         // Set scrollview
         scrollWidth.constant = self.view.frame.width
         self.tableProductDetails.layoutIfNeeded()
@@ -134,8 +154,13 @@ class FoodDetailVC: UIViewController {
         contentHeight.constant = self.tableProductDetails.contentSize.height + vwHeader.frame.height + 40 + self.tableReview.contentSize.height
         tableProductDetails.tableFooterView = UIView()
         self.view.layoutIfNeeded()
+        
     }
 
+    @objc func tapAction()
+    {
+         self.scrollView.scrollToView(view: self.tableReview, animated: true)
+    }
     func CheckDetails(string:String?,key:String,img:String){
         if (string.asStringOrEmpty() != "" && (string.asStringOrEmpty()) != "0")
         {
@@ -145,9 +170,7 @@ class FoodDetailVC: UIViewController {
         }
     }
 
-    @IBAction func buttonBackClicked(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
+    
     func apicall(){
         if objProduct.isFavourite.aIntOrEmpty() == 0
         {
@@ -184,6 +207,10 @@ class FoodDetailVC: UIViewController {
     }
     
     //MARK: Button actions
+    @IBAction func buttonBackClicked(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @IBAction func btnAddReviewAction(_ sender: Any) {
         //Scroll to review list
 //        self.scrollView.scrollToView(view: self.tableReview, animated: true)
@@ -367,4 +394,11 @@ extension UIScrollView {
         }
     }
     
+}
+extension Int {
+    func withCommas() -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        return numberFormatter.string(from: NSNumber(value:self))!
+    }
 }

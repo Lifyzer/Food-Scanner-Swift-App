@@ -67,6 +67,9 @@ let WS_FLAG = "flag"
 let WS_RATTING = "ratting"
 let WS_TITLE = "title"
 let WS_DESC = "desc"
+let WS_IS_TEST = "is_testdata"
+
+let IS_TESTDATA = "1"
 
 var arrayFavouriteProducts:[WSProduct] = [WSProduct]()
 

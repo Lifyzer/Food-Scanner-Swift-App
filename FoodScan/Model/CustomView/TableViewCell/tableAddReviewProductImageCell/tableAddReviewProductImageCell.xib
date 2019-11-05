@@ -22,24 +22,24 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dto-Hz-Icl">
                         <rect key="frame" x="0.0" y="0.0" width="327" height="137.5"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="food_place_holder" translatesAutoresizingMaskIntoConstraints="NO" id="Oyu-QW-yHJ">
-                                <rect key="frame" x="109" y="14" width="109" height="110"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="food_place_holder" translatesAutoresizingMaskIntoConstraints="NO" id="Oyu-QW-yHJ">
+                                <rect key="frame" x="0.0" y="0.0" width="327" height="137.5"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="width" secondItem="Dto-Hz-Icl" secondAttribute="width" multiplier="1/3" id="AI1-4I-pSi"/>
-                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="height" secondItem="Dto-Hz-Icl" secondAttribute="height" multiplier="0.8" id="CT9-Ki-nlv"/>
-                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="centerX" secondItem="Dto-Hz-Icl" secondAttribute="centerX" id="Dcp-Qk-2qX"/>
-                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="centerY" secondItem="Dto-Hz-Icl" secondAttribute="centerY" id="jWl-kN-ldG"/>
+                            <constraint firstAttribute="trailing" secondItem="Oyu-QW-yHJ" secondAttribute="trailing" id="8cQ-5Z-aOx"/>
+                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="top" secondItem="Dto-Hz-Icl" secondAttribute="top" id="Xlo-vh-Dcz"/>
+                            <constraint firstItem="Oyu-QW-yHJ" firstAttribute="leading" secondItem="Dto-Hz-Icl" secondAttribute="leading" id="aho-Bj-UWk"/>
+                            <constraint firstAttribute="bottom" secondItem="Oyu-QW-yHJ" secondAttribute="bottom" id="eqr-Q8-S8R"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Dto-Hz-Icl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Fpy-RU-q44"/>
-                    <constraint firstItem="Dto-Hz-Icl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Q4g-OP-dTC"/>
-                    <constraint firstAttribute="trailing" secondItem="Dto-Hz-Icl" secondAttribute="trailing" id="RrV-TS-O6p"/>
-                    <constraint firstAttribute="bottom" secondItem="Dto-Hz-Icl" secondAttribute="bottom" id="tQv-HY-nD3"/>
+                    <constraint firstItem="Dto-Hz-Icl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="6ht-0n-bZa"/>
+                    <constraint firstItem="Dto-Hz-Icl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="OHQ-Iw-VyJ"/>
+                    <constraint firstAttribute="trailing" secondItem="Dto-Hz-Icl" secondAttribute="trailing" id="b6i-0O-SvC"/>
+                    <constraint firstAttribute="bottom" secondItem="Dto-Hz-Icl" secondAttribute="bottom" id="kxR-7t-Hxc"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

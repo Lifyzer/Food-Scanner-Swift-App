@@ -36,19 +36,19 @@
                                 <rect key="frame" x="23" y="61.5" width="361" height="50"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rt5-jY-VTZ">
-                                        <rect key="frame" x="5" y="5" width="351" height="40"/>
+                                        <rect key="frame" x="8" y="5" width="345" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="V8k-Hv-Yxw"/>
                                         </constraints>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="17"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Rt5-jY-VTZ" secondAttribute="trailing" constant="5" id="9AA-Wu-BYJ"/>
-                                    <constraint firstItem="Rt5-jY-VTZ" firstAttribute="leading" secondItem="0Pj-ON-iHE" secondAttribute="leading" constant="5" id="Jpg-3C-7WH"/>
+                                    <constraint firstAttribute="trailing" secondItem="Rt5-jY-VTZ" secondAttribute="trailing" constant="8" id="9AA-Wu-BYJ"/>
+                                    <constraint firstItem="Rt5-jY-VTZ" firstAttribute="leading" secondItem="0Pj-ON-iHE" secondAttribute="leading" constant="8" id="Jpg-3C-7WH"/>
                                     <constraint firstAttribute="bottom" secondItem="Rt5-jY-VTZ" secondAttribute="bottom" constant="5" id="Vm8-od-s7f"/>
                                     <constraint firstItem="Rt5-jY-VTZ" firstAttribute="top" secondItem="0Pj-ON-iHE" secondAttribute="top" constant="5" id="sEs-sT-a2q"/>
                                 </constraints>

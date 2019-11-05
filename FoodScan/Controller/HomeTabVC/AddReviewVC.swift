@@ -47,8 +47,7 @@ class AddReviewVC: UIViewController {
     }
     
     @IBAction func btnAddReviewAction(_ sender: Any) {
-        if ValidateField()
-        {
+        if ValidateField(){
             addReviewAPI()
         }
     }
@@ -78,11 +77,13 @@ extension AddReviewVC
         }
     }
     func ValidateField() -> Bool {
-        if !addReviewData.title.isValid() {
+        if self.addReviewData.ratting == 0{
+            showBanner(title: "", subTitle: please_select_ratting, bannerStyle: .danger)
+        }else if !addReviewData.title.isValid() {
             showBanner(title: "", subTitle: please_enter_review_title, bannerStyle: .danger)
-        } else if !addReviewData.desc.isValid() {
+        }else if !addReviewData.desc.isValid() {
             showBanner(title: "", subTitle: please_enter_review_desc, bannerStyle: .danger)
-        }else {
+        }else{
             return true
         }
         return false
@@ -109,7 +110,14 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
             return cell
         case .ProductDetails:
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewProductDetailsCell.reuseIdentifier, for: indexPath) as! tableAddReviewProductDetailsCell
+            cell.viewRatting.settings.fillMode = .half
+            cell.viewRatting.settings.minTouchRating = 0
             cell.lblTitle.text = objProduct.productName.asStringOrEmpty()
+            cell.lblSubTitle.text  = ""
+            if self.addReviewData.ratting == 0
+            {
+                self.addReviewData.ratting = cell.viewRatting.rating
+            }
             cell.viewRatting.didFinishTouchingCosmos = { rating in
                 self.addReviewData.ratting = rating
             }
@@ -117,7 +125,8 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
         case .reviewTitle:
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewTitleCell.reuseIdentifier, for: indexPath) as! tableAddReviewTitleCell
             cell.txtTitle.text = addReviewData.title
-            cell.txtTitle.placeholder = add_review_title_placeholder
+            cell.txtTitle.tag = row
+            cell.txtTitle.attributedPlaceholder = NSAttributedString(string: add_review_title_placeholder,attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
             cell.txtTitle.addTarget(self, action: #selector(textfieldEditingChanged(textfield:)), for: .editingChanged)
             return cell
         case .reviewDesc:
@@ -148,12 +157,20 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
 }
 
 //MARK: TextView Method
-extension AddReviewVC: UITextViewDelegate {
+extension AddReviewVC: UITextViewDelegate
+{
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text != "" && addReviewData.desc == ""{
+            textView.text = addReviewData.desc
+            textView.textColor = UIColor.darkGray
+        }
+    }
     
     func textViewDidChange(_ textView: UITextView)
     {
         if textView.text != ""{
             addReviewData.desc = textView.text
+            textView.textColor = UIColor.darkGray
             UIView.performWithoutAnimation {
                 self.tableAddReview.beginUpdates()
                 self.tableAddReview.endUpdates()
@@ -162,7 +179,6 @@ extension AddReviewVC: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
         if text == "\n" {
             textView.resignFirstResponder()
             return false
@@ -174,6 +190,8 @@ extension AddReviewVC: UITextViewDelegate {
         if textView.text == ""
         {
             addReviewData.desc = ""
+            textView.text = add_review_desc_placeholder
+            textView.textColor = UIColor.lightGray
         }
     }
 }
@@ -188,23 +206,23 @@ extension AddReviewVC
                                              WS_KProduct_id:objProduct.productId.asStringOrEmpty(),
                                              WS_RATTING: addReviewData.ratting,
                                              WS_TITLE:addReviewData.title,
-                                             WS_DESC:addReviewData.desc,]
+                                             WS_DESC:addReviewData.desc,
+                                             WS_IS_TEST: IS_TESTDATA]
             includeSecurityCredentials {(data) in
                 let data1 = data as! [AnyHashable : Any]
                 param.addEntries(from: data1)
             }
-            print("===== Hisroty Param =======",param)
+            print("===== Add Review Param =======",param)
             
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddReview, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                
                 if response != nil
                 {
-                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
                     self.navigationController?.popViewController(animated: true)
                     
                 }else {
                    
-                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
                 }
                
             })

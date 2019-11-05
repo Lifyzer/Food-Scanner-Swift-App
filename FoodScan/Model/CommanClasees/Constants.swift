@@ -78,6 +78,7 @@ let add_review_desc_placeholder = "Tell us what you like or dislike about this p
 
 let please_enter_review_title = "Please enter title"
 let please_enter_review_desc = "Please enter description"
+let please_select_ratting = "Please give a ratting"
 
 
 //let kLogIn = "Login"
