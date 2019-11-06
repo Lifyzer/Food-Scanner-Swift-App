@@ -34,6 +34,7 @@ class AddReviewVC: UIViewController {
     
     var addReviewData = AddReviewData()
     var objProduct : WSProduct!
+    var isEditReview = false
     
     
     override func viewDidLoad() {

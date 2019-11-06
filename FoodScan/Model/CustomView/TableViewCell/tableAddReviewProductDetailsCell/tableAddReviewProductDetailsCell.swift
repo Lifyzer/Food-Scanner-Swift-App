@@ -18,6 +18,7 @@ class tableAddReviewProductDetailsCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        viewRatting.settings.fillMode = .half
 
     }
 

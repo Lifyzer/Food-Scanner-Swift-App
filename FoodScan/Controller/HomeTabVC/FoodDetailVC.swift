@@ -8,6 +8,8 @@
 
 import UIKit
 import Cosmos
+import Popover
+import SwiftyJSON
 
 let iDtableFoodCell = "tableFoodCell"
 let IMG_FAV = UIImage(named: "unfav_white_icon")
@@ -49,6 +51,12 @@ class FoodDetailVC: UIViewController {
     var arrImages : [UIImage] = [UIImage]()
     var arrReviewList : NSMutableArray = NSMutableArray()
     var isUserReview = true
+    var offSet : Int = 0
+    var noOfRecords  = REQ_NO_OF_RECORD
+    var arrUserReview : [UserReview] = [UserReview]()
+    var arrCustReview : [CustomerReview] = [CustomerReview]()
+    var objReview:WSReview?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,12 +146,17 @@ class FoodDetailVC: UIViewController {
         {
             lblTotalReviews.text = ""
         }
-        
-        
-       
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
         self.viewRatting.addGestureRecognizer(tapGesture)
         
+        setupScrollview()
+        
+        self.tableReview.isHidden = true
+        self.getReviewListAPI(isLoader:true)
+    }
+
+    @objc func setupScrollview()
+    {
         // Set scrollview
         scrollWidth.constant = self.view.frame.width
         self.tableProductDetails.layoutIfNeeded()
@@ -154,9 +167,7 @@ class FoodDetailVC: UIViewController {
         contentHeight.constant = self.tableProductDetails.contentSize.height + vwHeader.frame.height + 40 + self.tableReview.contentSize.height
         tableProductDetails.tableFooterView = UIView()
         self.view.layoutIfNeeded()
-        
     }
-
     @objc func tapAction()
     {
          self.scrollView.scrollToView(view: self.tableReview, animated: true)
@@ -169,19 +180,13 @@ class FoodDetailVC: UIViewController {
             arrImages.append(UIImage(named: img)!)
         }
     }
-
     
     func apicall(){
-        if objProduct.isFavourite.aIntOrEmpty() == 0
-        {
+        if objProduct.isFavourite.aIntOrEmpty() == 0{
             objProduct.isFavourite = 1
-        }
-        else if objProduct.isFavourite.aIntOrEmpty() == 1
-        {
+        }else if objProduct.isFavourite.aIntOrEmpty() == 1{
             objProduct.isFavourite = 0
-        }
-        else
-        {
+        }else{
             objProduct.isFavourite = 1
         }
     }
@@ -205,8 +210,50 @@ class FoodDetailVC: UIViewController {
         self.present(activityViewController, animated: true, completion: nil)
         print("Share product details")
     }
+    @objc func redirectToaddReview()
+    {
+        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+        vc.objProduct = self.objProduct
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func loadMoreRequest()
+    {
+            self.offSet = arrCustReview.count //offSet +
+            getReviewListAPI(isLoader: false)
+    }
     
+  
     //MARK: Button actions
+      @objc func btnMoreActionOnReview(sender:UIButton)
+      {
+            //Show popup for edit and delete review => NOTE : used popover library for this
+            let arr = Bundle.main.loadNibNamed(tableEditReviewCell.reuseIdentifier, owner: nil, options: nil)
+            let appView = arr?.first as! tableEditReviewCell
+//            appView.frame = CGRect(x: sender.frame.origin.x, y: sender.frame.origin.y, width:150, height:90)
+            appView.btnEdit.addTarget(self, action: #selector(btnEditReview(sender:)), for: .touchUpInside)
+            appView.btnDelete.addTarget(self, action: #selector(btnDeleteReview), for: .touchUpInside)
+            let options = [.type(.auto),
+                           .animationIn(0.3),
+                           .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
+            let popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
+            popover.show(appView.contentView, fromView: sender)
+            
+        }
+        @objc func btnEditReview(sender:UIButton)
+        {
+            print("===Edit Review===")
+
+    //       let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+    //        vc.objProduct = self.objProduct
+    //        vc.isEditReview = true
+    //        self.navigationController?.pushViewController(vc, animated: true)
+        }
+        @objc func btnDeleteReview(sender:UIButton)
+        {
+          print("===Delete Review===")
+        }
+        
+    
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -219,6 +266,7 @@ class FoodDetailVC: UIViewController {
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
         vc.objProduct = self.objProduct
         self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     @IBAction func btnShare(_ sender: Any) {
         shareFoodDetails()
@@ -266,11 +314,25 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == tableReview
         {
-            if isUserReview
-            {
-                return 5 + ReviewItems.count
+            if arrUserReview.count > 0 && arrCustReview.count > 0{
+                 return arrUserReview.count + arrCustReview.count + 1
+            }else if arrUserReview.count == 0 && arrCustReview.count > 0 {
+                return arrCustReview.count + 1
+            }else{
+                return 0
             }
-            return 5 + (ReviewItems.count - 1)
+//            if isUserReview{
+//                if arrUserReview.count > 0{
+//                    return arrUserReview.count + arrCustReview.count + 1 //1 + ReviewItems.count
+//                }
+//                return 0
+//            }
+//            else if arrCustReview.count > 0{
+//                return arrCustReview.count + (ReviewItems.count - 1)
+//            }else{
+//                return 0
+//            }
+            
         }
         return arrDetails.count
     }
@@ -292,27 +354,89 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
         let row = indexPath.row
         if tableView == tableReview
         {
+            
             if isUserReview && row == 0
             {
+                let objUserReview = arrUserReview[0]
                 let cell = tableView.dequeueReusableCell(withIdentifier: tableUserReviewCell.reuseIdentifier, for: indexPath) as! tableUserReviewCell
-//                cell.lblTitle.text = "User Reviww"
+                let userName = objUserReview.firstName.asStringOrEmpty() + " " + objUserReview.lastName.asStringOrEmpty()
+                cell.lblReviewUserName.text = userName
+                if let ratting = objUserReview.ratting{
+                   cell.viewRatting.rating = Double(ratting)!
+                }else
+                {
+                    cell.viewRatting.rating = 0.0
+                }
+                cell.lblReviewDate.text = objUserReview.modifiedDate.asStringOrEmpty()
+                cell.lblReviewTime.text = "12.00 pm"
+                cell.lblReviewTitle.text = objUserReview.title.asStringOrEmpty()
+                cell.lblReviewDescription.text = objUserReview.descriptionValue.asStringOrEmpty()
+                
+                
+                cell.btnMore.addTarget(self, action: #selector(btnMoreActionOnReview), for: .touchUpInside)
                 return cell
             }
-            else if !isUserReview && row == 0
+            else if (!isUserReview && row == 0) || (isUserReview && row == 1)
             {
                 let cell = tableView.dequeueReusableCell(withIdentifier: tableCustomerReviewCell.reuseIdentifier, for: indexPath) as! tableCustomerReviewCell
-                cell.lblTitle.text = "Customer Reviww"
+                if let ratting = self.objReview?.avgReview{
+                    cell.viewRatting.rating = Double(ratting)!
+                    cell.lblReviewDetails.text = "\(ratting) out of 5"
+                }else{
+                    cell.viewRatting.rating = 0.0
+                    cell.lblReviewDetails.text = "0 out of 5"
+                }
+                let totalReview = objProduct.totalReview
+                if let reviews = totalReview{
+                   
+                    cell.lblTotalReviews.text = Int(reviews)?.withCommas()
+                }
+                else
+                {
+                    cell.lblTotalReviews.text = ""
+                }
+                
+                if isUserReview{
+                    cell.btnWriteReview.isHidden = true
+                }else{
+                    cell.btnWriteReview.isHidden = false
+                    cell.btnWriteReview.addTarget(self, action: #selector(redirectToaddReview), for: .touchUpInside)
+                }
                 return cell
             }
-            else if isUserReview && row == 1
-            {
-                let cell = tableView.dequeueReusableCell(withIdentifier: tableCustomerReviewCell.reuseIdentifier, for: indexPath) as! tableCustomerReviewCell
-                cell.lblTitle.text = "Customer Reviww"
-                return cell
-            }
+//            else if isUserReview && row == 1
+//            {
+//                let objCustReview = arrCust[indexPath.row]
+//                let cell = tableView.dequeueReusableCell(withIdentifier: tableCustomerReviewCell.reuseIdentifier, for: indexPath) as! tableCustomerReviewCell
+////                cell.lblTitle.text = "Customer Reviww"
+//                return cell
+//            }
             else
             {
+                var objReview : CustomerReview?
+                if isUserReview
+                {
+                    objReview = arrCustReview[indexPath.row - 2]
+                }
+                else
+                {
+                    objReview = arrCustReview[indexPath.row - 1]
+                }
+//                let objReview = arrCustReview[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: tableReviewCell.reuseIdentifier, for: indexPath) as! tableReviewCell
+                let userName = (objReview?.firstName.asStringOrEmpty() ?? "") + " " + (objReview?.lastName.asStringOrEmpty() ?? "")
+                cell.lblReviewUserName.text = userName
+                if let ratting = objReview?.ratting{
+                   cell.viewRatting.rating = Double(ratting)!
+                }else
+                {
+                    cell.viewRatting.rating = 0.0
+                }
+                cell.lblReviewDate.text = objReview?.modifiedDate.asStringOrEmpty()
+                cell.lblReviewTime.text = "12.00 pm"
+                cell.lblReviewTitle.text = objReview?.title.asStringOrEmpty()
+                cell.lblReviewDescription.text = objReview?.descriptionValue.asStringOrEmpty()
+                
                 return cell
             }
         }
@@ -340,34 +464,94 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
             return cell
         }
     }
-
 }
+//MARK: Scrollview delegate
+extension FoodDetailVC : UIScrollViewDelegate
+{
+
+    //update loadControl when user scrolls de tableView
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.loadControl?.update()
+    }
+    //load more tableView data
+    @objc func loadMore(sender: AnyObject?) {
+        loadMoreRequest()
+    }
+}
+
+
 //MARK: API related stuff
 extension FoodDetailVC
 {
-//    func AddRemoveFromFavouriteAPI(isFavourite : String)
-//    {
-//        let userToken = UserDefaults.standard.string(forKey: kTempToken)
-//        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-//        let param:NSMutableDictionary = [
-//            WS_KProduct_id:objProduct.id.asStringOrEmpty(),
-//            WS_KIs_favourite:isFavourite,
-//            WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-//            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-//            WS_KSecret_key:userToken ?? ""]
-//        showIndicator(view: self.view)
-//        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddToFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-//            self.hideIndicator(view: self.view)
-//            if response != nil
-//            {
-//                showBanner(title: "", subTitle: message!, bannerStyle:.danger)
-//            }else {
-//                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-//            }
-//        })
-//    }
-}
+    func getReviewListAPI(isLoader : Bool)
+    {
+        
+        if Connectivity.isConnectedToInternet
+        {
+           if isLoader{
+           showIndicator(view: self.view)}
+           let param:NSMutableDictionary = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+                                            WS_KProduct_id:objProduct.productId.asStringOrEmpty(),
+                                            WS_KFrom_index:offSet,
+                                            WS_KTo_index:noOfRecords,
+                                            WS_IS_TEST: IS_TESTDATA]
+           includeSecurityCredentials {(data) in
+               let data1 = data as! [AnyHashable : Any]
+               param.addEntries(from: data1)
+           }
+           print("===== Review list Param =======",param)
+           
+           HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIReviewList, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+              
+             if(isLoader){
+                self.hideIndicator(view: self.view)}
+            
+               if response != nil
+               {
+                    self.tableReview.isHidden = false
+                    let objData = JSON(response!)[WS_DATA]
+                    let objUserReview = JSON(objData[WS_USER_REVIEW])
+                    let objCustReview = JSON(objData[WS_CUST_REVIEW])
+                
+//                    let objReview  = objData.to(type: WSReview.self) as! WSReview
+                    self.objReview = objData.to(type: WSReview.self) as? WSReview
+                    let arrayUserReview  = objUserReview.to(type: UserReview.self) as! [UserReview]
+                    let arrayCustReview  = objCustReview.to(type: CustomerReview.self) as! [CustomerReview]
 
+                    self.arrUserReview = arrayUserReview
+                    self.arrCustReview  = arrayCustReview
+                
+                     if arrayUserReview.count > 0{
+                        self.isUserReview = true
+                    }else{
+                        self.isUserReview = false
+                    }
+                    if arrayCustReview.count > 0{
+                        if self.offSet == 0 {
+                            self.arrCustReview.removeAll()
+                            self.arrCustReview = arrayCustReview
+                        }else{
+                            self.arrCustReview.append(contentsOf: arrayCustReview)
+                        }
+                        self.tableReview.loadControl?.endLoading()
+                    }
+                    self.tableReview.reloadData()
+                    self.setupScrollview()
+               }else {
+                  
+                   SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
+               }
+              
+           })
+        }
+        else
+        {
+           SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
+        }
+    }
+}
+//========================================================================================
+//MARK: UIScrollView extention => Scroll to review list
 extension UIScrollView {
     
     // Scroll to a specific view so that it's top is at the top our scrollview
@@ -395,6 +579,7 @@ extension UIScrollView {
     }
     
 }
+//MARK: Int extention => show reviews value with commas
 extension Int {
     func withCommas() -> String {
         let numberFormatter = NumberFormatter()

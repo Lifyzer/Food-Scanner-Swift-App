@@ -96,6 +96,7 @@ PODS:
   - NotificationBannerSwift (1.7.3):
     - MarqueeLabel/Swift (~> 3.2.0)
     - SnapKit (~> 4.0.1)
+  - Popover (1.2.2)
   - Protobuf (3.6.1)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
@@ -114,6 +115,7 @@ DEPENDENCIES:
   - Firebase/MLVisionTextModel
   - IQKeyboardManagerSwift
   - NotificationBannerSwift
+  - Popover
   - SDWebImage (~> 4.2)
   - SwiftyJSON
   - UILoadControl
@@ -141,6 +143,7 @@ SPEC REPOS:
     - MarqueeLabel
     - nanopb
     - NotificationBannerSwift
+    - Popover
     - Protobuf
     - SDWebImage
     - SnapKit
@@ -169,12 +172,13 @@ SPEC CHECKSUMS:
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   NotificationBannerSwift: c9f4bc868d78df975ed59c0b2fccdbbe0e863efe
+  Popover: 21e357f86d45c8d9e29a41a4adbca3664d6e511f
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   UILoadControl: e742ddbe4c67ba1f13b00b7d462d4141307d021f
 
-PODFILE CHECKSUM: 8d2f99637d6aa77bf6517145b97189a7ed60c099
+PODFILE CHECKSUM: 61ef36cd960c66f41a57532e677c2d32157124bf
 
 COCOAPODS: 1.7.5

@@ -96,6 +96,11 @@
 		F580722B236BF216007343A1 /* tableCustomerReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5807229236BF216007343A1 /* tableCustomerReviewCell.xib */; };
 		F580722F236C0B47007343A1 /* tableReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F580722D236C0B47007343A1 /* tableReviewCell.swift */; };
 		F5807230236C0B47007343A1 /* tableReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F580722E236C0B47007343A1 /* tableReviewCell.xib */; };
+		F580AD3D23728A6B003D3EE2 /* tableEditReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F580AD3B23728A6B003D3EE2 /* tableEditReviewCell.swift */; };
+		F580AD3E23728A6B003D3EE2 /* tableEditReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F580AD3C23728A6B003D3EE2 /* tableEditReviewCell.xib */; };
+		F580AD462372B8CA003D3EE2 /* UserReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F580AD432372B8C9003D3EE2 /* UserReview.swift */; };
+		F580AD472372B8CA003D3EE2 /* CustomerReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F580AD442372B8CA003D3EE2 /* CustomerReview.swift */; };
+		F580AD482372B8CA003D3EE2 /* WSReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F580AD452372B8CA003D3EE2 /* WSReview.swift */; };
 		F5BC6EB7236C100600817310 /* AddReviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BC6EB6236C100600817310 /* AddReviewVC.swift */; };
 		F5BC6EBB236C125700817310 /* tableAddReviewProductImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BC6EB9236C125700817310 /* tableAddReviewProductImageCell.swift */; };
 		F5BC6EBC236C125700817310 /* tableAddReviewProductImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5BC6EBA236C125700817310 /* tableAddReviewProductImageCell.xib */; };
@@ -240,6 +245,11 @@
 		F5807229236BF216007343A1 /* tableCustomerReviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableCustomerReviewCell.xib; sourceTree = "<group>"; };
 		F580722D236C0B47007343A1 /* tableReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableReviewCell.swift; sourceTree = "<group>"; };
 		F580722E236C0B47007343A1 /* tableReviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableReviewCell.xib; sourceTree = "<group>"; };
+		F580AD3B23728A6B003D3EE2 /* tableEditReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableEditReviewCell.swift; sourceTree = "<group>"; };
+		F580AD3C23728A6B003D3EE2 /* tableEditReviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableEditReviewCell.xib; sourceTree = "<group>"; };
+		F580AD432372B8C9003D3EE2 /* UserReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserReview.swift; sourceTree = "<group>"; };
+		F580AD442372B8CA003D3EE2 /* CustomerReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerReview.swift; sourceTree = "<group>"; };
+		F580AD452372B8CA003D3EE2 /* WSReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WSReview.swift; sourceTree = "<group>"; };
 		F5BC6EB6236C100600817310 /* AddReviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReviewVC.swift; sourceTree = "<group>"; };
 		F5BC6EB9236C125700817310 /* tableAddReviewProductImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableAddReviewProductImageCell.swift; sourceTree = "<group>"; };
 		F5BC6EBA236C125700817310 /* tableAddReviewProductImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableAddReviewProductImageCell.xib; sourceTree = "<group>"; };
@@ -293,6 +303,7 @@
 		002E09A8221686D900252764 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				F580AD3A23728A48003D3EE2 /* tableEditReviewCell */,
 				F53CBEC1236D759B00EF990C /* tableUserReviewCell */,
 				F5BC6EC7236C135100817310 /* tableAddReviewDescCell */,
 				F5BC6EC2236C133000817310 /* tableAddReviewTitleCell */,
@@ -362,6 +373,9 @@
 		0069BA572213E650008DD907 /* WSClasses */ = {
 			isa = PBXGroup;
 			children = (
+				F580AD442372B8CA003D3EE2 /* CustomerReview.swift */,
+				F580AD452372B8CA003D3EE2 /* WSReview.swift */,
+				F580AD432372B8C9003D3EE2 /* UserReview.swift */,
 				00452B05221AD6E9008075DC /* WSProduct.swift */,
 				0069BA792213F11B008DD907 /* WSUser.swift */,
 			);
@@ -456,7 +470,7 @@
 			isa = PBXGroup;
 			children = (
 				5B63EC6D2296729700E59FE7 /* ISMessages */,
-				5B033A1E22674BB600BB3BB4 /* ScanLibrary */,
+				5B033A1E22674BB600BB3BB4 /* Library */,
 				002E09A3221686D900252764 /* CustomView */,
 				0069BA822214183C008DD907 /* CustomClasses */,
 				0069BA532213E650008DD907 /* WebService */,
@@ -557,14 +571,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5B033A1E22674BB600BB3BB4 /* ScanLibrary */ = {
+		5B033A1E22674BB600BB3BB4 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				F53CBEBF236D3BD000EF990C /* GoogleService-Info.plist */,
-				5B191D172268464100E1DF1F /* DrawingView.swift */,
-				5B191D162268464100E1DF1F /* VideoCapture.swift */,
+				F580AD402372A209003D3EE2 /* Popover */,
+				F580AD3F2372A202003D3EE2 /* Scan */,
 			);
-			path = ScanLibrary;
+			path = Library;
 			sourceTree = "<group>";
 		};
 		5B63EC6D2296729700E59FE7 /* ISMessages */ = {
@@ -642,6 +655,32 @@
 				F580722E236C0B47007343A1 /* tableReviewCell.xib */,
 			);
 			path = tableReviewCell;
+			sourceTree = "<group>";
+		};
+		F580AD3A23728A48003D3EE2 /* tableEditReviewCell */ = {
+			isa = PBXGroup;
+			children = (
+				F580AD3B23728A6B003D3EE2 /* tableEditReviewCell.swift */,
+				F580AD3C23728A6B003D3EE2 /* tableEditReviewCell.xib */,
+			);
+			path = tableEditReviewCell;
+			sourceTree = "<group>";
+		};
+		F580AD3F2372A202003D3EE2 /* Scan */ = {
+			isa = PBXGroup;
+			children = (
+				F53CBEBF236D3BD000EF990C /* GoogleService-Info.plist */,
+				5B191D172268464100E1DF1F /* DrawingView.swift */,
+				5B191D162268464100E1DF1F /* VideoCapture.swift */,
+			);
+			path = Scan;
+			sourceTree = "<group>";
+		};
+		F580AD402372A209003D3EE2 /* Popover */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Popover;
 			sourceTree = "<group>";
 		};
 		F5BC6EB8236C123D00817310 /* tableAddReviewProductImageCell */ = {
@@ -794,6 +833,7 @@
 				00F49E91220C42C60053829D /* aribl_bold.ttf in Resources */,
 				5BD70D90223A5AE4006A2FED /* tessdata in Resources */,
 				5B63EC842296729700E59FE7 /* isSuccessIcon.png in Resources */,
+				F580AD3E23728A6B003D3EE2 /* tableEditReviewCell.xib in Resources */,
 				F5BC6EC1236C128400817310 /* tableAddReviewProductDetailsCell.xib in Resources */,
 				F53CBEC0236D3BD000EF990C /* GoogleService-Info.plist in Resources */,
 				5B63EC812296729700E59FE7 /* isInfoIcon.png in Resources */,
@@ -987,6 +1027,7 @@
 				0069BA9022141B4F008DD907 /* NotificationBannerSwiftHandler.swift in Sources */,
 				00F49D8F220C11170053829D /* AppDelegate.swift in Sources */,
 				0044740F221296E8004C98C9 /* UIView+Nib.swift in Sources */,
+				F580AD482372B8CA003D3EE2 /* WSReview.swift in Sources */,
 				00F49E8E220C3CF80053829D /* ProfileVC.swift in Sources */,
 				F5BC6EC0236C128400817310 /* tableAddReviewProductDetailsCell.swift in Sources */,
 				0069BA852214184A008DD907 /* SecurityHandler.swift in Sources */,
@@ -994,6 +1035,7 @@
 				00447410221296E8004C98C9 /* UIView+ReusableIdentifier.swift in Sources */,
 				00447405221296E8004C98C9 /* UIAlertController+Extensions.swift in Sources */,
 				5B191D192268464100E1DF1F /* DrawingView.swift in Sources */,
+				F580AD462372B8CA003D3EE2 /* UserReview.swift in Sources */,
 				00447408221296E8004C98C9 /* UIDatePicker+Extensions.swift in Sources */,
 				5B31570C2236395600EC0674 /* ScanProductVC.swift in Sources */,
 				003777862217EAA1003D233A /* FoodDetailVC.swift in Sources */,
@@ -1006,6 +1048,7 @@
 				00F49D4E220C05960053829D /* FoodScan.xcdatamodeld in Sources */,
 				004473D822129139004C98C9 /* Design.swift in Sources */,
 				0044740C221296E8004C98C9 /* UITextField+Extensions.swift in Sources */,
+				F580AD3D23728A6B003D3EE2 /* tableEditReviewCell.swift in Sources */,
 				004473FE221296E8004C98C9 /* Audio+Extensions.swift in Sources */,
 				00F49E82220C28F90053829D /* LoginVC.swift in Sources */,
 				0069BA8C22141899008DD907 /* FBEncryptorAES.m in Sources */,
@@ -1013,6 +1056,7 @@
 				F5BC6ECA236C136800817310 /* tableAddReviewDescCell.swift in Sources */,
 				00F49E8C220C3CE20053829D /* ScanFoodVC.swift in Sources */,
 				5B4EC0DC223939E90036F2F9 /* Preview.swift in Sources */,
+				F580AD472372B8CA003D3EE2 /* CustomerReview.swift in Sources */,
 				00F49D8C220C109E0053829D /* HomeTabVC.swift in Sources */,
 				00F49E7F220C11310053829D /* StoryboardDetails.swift in Sources */,
 				00F49E8A220C3CCA0053829D /* HistoryVC.swift in Sources */,

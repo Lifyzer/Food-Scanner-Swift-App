@@ -21,6 +21,8 @@ target 'FoodScan' do
     pod 'Firebase/Core'
     pod 'Firebase/MLVision'
     pod 'Firebase/MLVisionTextModel'
+   
+    pod 'Popover'
     
     pod 'Cosmos', '~> 20.0'
 

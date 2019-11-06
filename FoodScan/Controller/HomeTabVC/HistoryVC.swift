@@ -536,27 +536,12 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             createdDate = "\(objProduct.favouriteCreatedDate ?? "")"
         }else {
             objProduct = arrayHistoryFood[indexPath.row]
-            //            if objProduct.id.asStringOrEmpty() == arrayHistoryFood.last?.id.asStringOrEmpty()
-            //            {
-            //
-            //                indicatorView.isHidden = false
-            //                activityIndicator.startAnimating()
-            //                loadMoreRequest()
-            //                isLoadMore = true
-            //            }
             createdDate = "\(objProduct.historyCreatedDate ?? "")"
         }
 
         if createdDate != "" && createdDate.count > 0{
             //Chnaged on 13/5/2019
             let StrAfterConvert = ConvertDate(format: "yyyy-MM-dd HH:mm:ss", str: createdDate)
-            //            print(dt)
-            //            let df = DateFormatter()
-            //            df.dateFormat = "dd/MM/yyyy"
-            //            let str = df.string(from: dt!)
-            //            print(dt,str)
-            //
-
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yyyy"
             cell.labelDate.text = dateFormatter.string(from: stringToDate(createdDate))//StrAfterConvert

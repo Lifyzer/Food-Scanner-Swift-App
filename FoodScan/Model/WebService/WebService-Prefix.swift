@@ -38,6 +38,10 @@ let APIEditProfile = "\(SERVER_URL)\(WEBSERVICE_PATH)EditProfile"
 let APItestEncryption = "\(SERVER_URL)\(WEBSERVICE_PATH)testEncryption"
 let APIForgotPassword = "\(SERVER_URL)\(WEBSERVICE_PATH)ForgotPassword"
 let APIAddReview = "\(SERVER_URL)\(WEBSERVICE_PATH)addReview"
+let APIEditReview = "\(SERVER_URL)\(WEBSERVICE_PATH)updateReview"
+let APIDeleteReview = "\(SERVER_URL)\(WEBSERVICE_PATH)deleteReview"
+let APIReviewList = "\(SERVER_URL)\(WEBSERVICE_PATH)getReviewList"
+
 
 //Model
 let WSUSER = "User"
@@ -63,6 +67,12 @@ let WS_KNew_password = "new_password"
 let WS_KGuid = "guid"
 let WS_KProduct = "product"
 let WS_KHistory = "history"
+
+//Review
+let WS_DATA = "data"
+let WS_USER_REVIEW = "user_review"
+let WS_CUST_REVIEW = "customer_review"
+
 let WS_FLAG = "flag"
 let WS_RATTING = "ratting"
 let WS_TITLE = "title"

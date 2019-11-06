@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-public final class WSUser: NSObject, NSCoding, JSONable {
+public final class WSUser: NSObject,NSCoding,JSONable {
 
   // MARK: Declaration for string constants to be used to decode and also serialize.
   private struct SerializationKeys {
