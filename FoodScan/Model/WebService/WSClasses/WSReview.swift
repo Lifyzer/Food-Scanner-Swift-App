@@ -17,6 +17,11 @@ public final class WSReview: NSObject,NSCoding,JSONable {
     static let userReview = "user_review"
     static let customerReview = "customer_review"
     static let avgReview = "avg_review"
+    static let totalCustomerReview = "total_cust_review"
+    static let avgCustomerReview = "avg_cust_review"
+    static let totalRatting = "total_ratting"
+
+
   }
 
   // MARK: Properties
@@ -25,6 +30,9 @@ public final class WSReview: NSObject,NSCoding,JSONable {
   public var userReview: [UserReview]?
   public var customerReview: [CustomerReview]?
   public var avgReview: String?
+  public var totalCustomerReview: String?
+  public var avgCustomerReview: String?
+  public var totalRatting: String?
 
   // MARK: SwiftyJSON Initializers
   /// Initiates the instance based on the object.
@@ -44,6 +52,9 @@ public final class WSReview: NSObject,NSCoding,JSONable {
         if let items = json[SerializationKeys.userReview].array { userReview = items.map { UserReview(parameter: $0) } }
         if let items = json[SerializationKeys.customerReview].array { customerReview = items.map { CustomerReview(parameter: $0) } }
     avgReview = json[SerializationKeys.avgReview].string
+    totalCustomerReview = json[SerializationKeys.totalCustomerReview].string
+    avgCustomerReview = json[SerializationKeys.avgCustomerReview].string
+    totalRatting = json[SerializationKeys.totalRatting].string
   }
 
   /// Generates description of the object in the form of a NSDictionary.
@@ -56,6 +67,9 @@ public final class WSReview: NSObject,NSCoding,JSONable {
     if let value = userReview { dictionary[SerializationKeys.userReview] = value.map { $0.dictionaryRepresentation() } }
     if let value = customerReview { dictionary[SerializationKeys.customerReview] = value.map { $0.dictionaryRepresentation() } }
     if let value = avgReview { dictionary[SerializationKeys.avgReview] = value }
+    if let value = totalCustomerReview { dictionary[SerializationKeys.totalCustomerReview] = value }
+    if let value = avgCustomerReview { dictionary[SerializationKeys.avgCustomerReview] = value }
+    if let value = totalRatting { dictionary[SerializationKeys.totalRatting] = value }
     return dictionary
   }
 
@@ -66,6 +80,9 @@ public final class WSReview: NSObject,NSCoding,JSONable {
     self.userReview = aDecoder.decodeObject(forKey: SerializationKeys.userReview) as? [UserReview]
     self.customerReview = aDecoder.decodeObject(forKey: SerializationKeys.customerReview) as? [CustomerReview]
     self.avgReview = aDecoder.decodeObject(forKey: SerializationKeys.avgReview) as? String
+    self.totalCustomerReview = aDecoder.decodeObject(forKey: SerializationKeys.totalCustomerReview) as? String
+    self.avgCustomerReview = aDecoder.decodeObject(forKey: SerializationKeys.avgCustomerReview) as? String
+    self.totalRatting = aDecoder.decodeObject(forKey: SerializationKeys.totalRatting) as? String
   }
 
   public func encode(with aCoder: NSCoder) {
@@ -74,6 +91,9 @@ public final class WSReview: NSObject,NSCoding,JSONable {
     aCoder.encode(userReview, forKey: SerializationKeys.userReview)
     aCoder.encode(customerReview, forKey: SerializationKeys.customerReview)
     aCoder.encode(avgReview, forKey: SerializationKeys.avgReview)
+    aCoder.encode(totalCustomerReview, forKey: SerializationKeys.totalCustomerReview)
+    aCoder.encode(avgCustomerReview, forKey: SerializationKeys.avgCustomerReview)
+    aCoder.encode(totalRatting, forKey: SerializationKeys.totalRatting)
   }
 
 }

@@ -18,11 +18,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Review" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDU-wf-0yE">
-                        <rect key="frame" x="15" y="10" width="119" height="26"/>
+                        <rect key="frame" x="15" y="10" width="130.5" height="26"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="26" id="xfz-s8-fI4"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="20"/>
+                        <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="22"/>
                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -30,47 +30,50 @@
                         <rect key="frame" x="15" y="51" width="439" height="166"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="John Munro" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Uk-As-mxy">
-                                <rect key="frame" x="0.0" y="8" width="97.5" height="19"/>
-                                <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="17"/>
+                                <rect key="frame" x="0.0" y="8" width="90" height="19"/>
+                                <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11 October 2019" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JoB-JZ-Rkh">
-                                <rect key="frame" x="133.5" y="42" width="96" height="15"/>
+                                <rect key="frame" x="98" y="39" width="96" height="15"/>
                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="13"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bH9-bW-GxR" customClass="CosmosView" customModule="Cosmos">
-                                <rect key="frame" x="0.0" y="42" width="125.5" height="15"/>
+                                <rect key="frame" x="0.0" y="39" width="90" height="15"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="AYi-oS-JHx"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="starSize">
-                                        <real key="value" value="16"/>
+                                        <real key="value" value="18"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="rating">
                                         <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="updateOnTouch" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Awesome product for all category" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAM-Nl-ePO">
-                                <rect key="frame" x="0.0" y="65" width="431" height="16"/>
+                                <rect key="frame" x="0.0" y="62" width="431" height="16"/>
                                 <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="14"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="hdf d  fjddsjf jsdhfjsfhsdf sfsd fdsfdjfjdfdfdfhfdf ds fds fjdsfds fd s fd fdhshj" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf1-Ob-2J3">
-                                <rect key="frame" x="0.0" y="89" width="431" height="72"/>
+                                <rect key="frame" x="0.0" y="86" width="431" height="72"/>
                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="13"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lH-i0-0I9">
-                                <rect key="frame" x="379.5" y="39.5" width="51.5" height="20"/>
+                                <rect key="frame" x="379.5" y="36.5" width="51.5" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="Tng-Cb-Yh8"/>
                                 </constraints>
@@ -78,12 +81,13 @@
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aR-3G-Gp7">
-                                <rect key="frame" x="403" y="5" width="36" height="25"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aR-3G-Gp7">
+                                <rect key="frame" x="409" y="5" width="30" height="25"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="J9b-8R-LW6"/>
                                     <constraint firstAttribute="height" constant="25" id="u8g-WB-BfH"/>
                                 </constraints>
-                                <state key="normal" title="More"/>
+                                <state key="normal" image="more"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -92,12 +96,11 @@
                             <constraint firstItem="kAM-Nl-ePO" firstAttribute="top" secondItem="bH9-bW-GxR" secondAttribute="bottom" constant="8" id="8uc-Qa-WKb"/>
                             <constraint firstItem="JoB-JZ-Rkh" firstAttribute="leading" secondItem="bH9-bW-GxR" secondAttribute="trailing" constant="8" id="B6D-qP-QFT"/>
                             <constraint firstItem="gf1-Ob-2J3" firstAttribute="leading" secondItem="kAM-Nl-ePO" secondAttribute="leading" id="G37-6S-4kc"/>
-                            <constraint firstItem="bH9-bW-GxR" firstAttribute="top" secondItem="4Uk-As-mxy" secondAttribute="bottom" constant="15" id="H6D-d5-anE"/>
-                            <constraint firstItem="bH9-bW-GxR" firstAttribute="width" secondItem="e7D-DU-WEj" secondAttribute="width" multiplier="1/3.5" id="HcB-lZ-f7f"/>
+                            <constraint firstItem="bH9-bW-GxR" firstAttribute="top" secondItem="4Uk-As-mxy" secondAttribute="bottom" constant="12" id="H6D-d5-anE"/>
                             <constraint firstItem="bH9-bW-GxR" firstAttribute="leading" secondItem="4Uk-As-mxy" secondAttribute="leading" id="RXI-Ue-Pma"/>
                             <constraint firstAttribute="trailing" secondItem="3aR-3G-Gp7" secondAttribute="trailing" id="YZx-bz-nJs"/>
                             <constraint firstItem="4Uk-As-mxy" firstAttribute="top" secondItem="e7D-DU-WEj" secondAttribute="top" constant="8" id="bP3-Xg-s4Q"/>
-                            <constraint firstAttribute="bottom" secondItem="gf1-Ob-2J3" secondAttribute="bottom" constant="5" id="bXI-2p-Ccu"/>
+                            <constraint firstAttribute="bottom" secondItem="gf1-Ob-2J3" secondAttribute="bottom" constant="8" id="bXI-2p-Ccu"/>
                             <constraint firstItem="JoB-JZ-Rkh" firstAttribute="height" secondItem="bH9-bW-GxR" secondAttribute="height" id="btf-OP-dUN"/>
                             <constraint firstItem="JoB-JZ-Rkh" firstAttribute="centerY" secondItem="bH9-bW-GxR" secondAttribute="centerY" id="eLh-KJ-0B0"/>
                             <constraint firstItem="3aR-3G-Gp7" firstAttribute="centerY" secondItem="4Uk-As-mxy" secondAttribute="centerY" id="exs-EF-zaJ"/>
@@ -112,7 +115,7 @@
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PjY-vh-Y50">
                         <rect key="frame" x="0.0" y="217" width="469" height="5"/>
-                        <color key="backgroundColor" white="0.84999999999999998" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.69999999999999996" alpha="0.50438784246575341" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="5" id="Dih-t9-OJw"/>
                         </constraints>
@@ -145,4 +148,7 @@
             <point key="canvasLocation" x="-188" y="23"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="more" width="3" height="13"/>
+    </resources>
 </document>

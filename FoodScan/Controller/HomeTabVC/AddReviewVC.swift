@@ -35,6 +35,7 @@ class AddReviewVC: UIViewController {
     var addReviewData = AddReviewData()
     var objProduct : WSProduct!
     var isEditReview = false
+    var objUserReview : UserReview?
     
     
     override func viewDidLoad() {
@@ -49,7 +50,12 @@ class AddReviewVC: UIViewController {
     
     @IBAction func btnAddReviewAction(_ sender: Any) {
         if ValidateField(){
-            addReviewAPI()
+            if isEditReview{
+                editReviewAPI()
+            }else{
+                addReviewAPI()
+            }
+            
         }
     }
     
@@ -65,6 +71,21 @@ extension AddReviewVC
         tableAddReview.register(tableAddReviewDescCell.nib, forCellReuseIdentifier: tableAddReviewDescCell.reuseIdentifier)
         addReviewData.product_image = objProduct.productImage.asStringOrEmpty()
         addReviewData.product_name = objProduct.productName.asStringOrEmpty()
+        if isEditReview
+        {
+            setupUserEditReviewData()
+        }
+    }
+    func setupUserEditReviewData()
+    {
+        addReviewData.title = objUserReview!.title.asStringOrEmpty()
+        addReviewData.desc = objUserReview!.descriptionValue.asStringOrEmpty()
+        if let ratting = objUserReview!.ratting{
+            addReviewData.ratting = Double(ratting)!
+        }else{
+            addReviewData.ratting = 0.0
+        }
+        tableAddReview.reloadData()
     }
 
     @objc func textfieldEditingChanged(textfield : UITextField)
@@ -78,7 +99,7 @@ extension AddReviewVC
         }
     }
     func ValidateField() -> Bool {
-        if self.addReviewData.ratting == 0{
+        if self.addReviewData.ratting == 0.0{
             showBanner(title: "", subTitle: please_select_ratting, bannerStyle: .danger)
         }else if !addReviewData.title.isValid() {
             showBanner(title: "", subTitle: please_enter_review_title, bannerStyle: .danger)
@@ -107,7 +128,6 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
             }else{
                 cell.imgFood.image = UIImage(named: "food_place_holder")
             }
-            
             return cell
         case .ProductDetails:
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewProductDetailsCell.reuseIdentifier, for: indexPath) as! tableAddReviewProductDetailsCell
@@ -115,12 +135,10 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
             cell.viewRatting.settings.minTouchRating = 0
             cell.lblTitle.text = objProduct.productName.asStringOrEmpty()
             cell.lblSubTitle.text  = ""
-            if self.addReviewData.ratting == 0
-            {
-                self.addReviewData.ratting = cell.viewRatting.rating
-            }
+            cell.viewRatting.rating = self.addReviewData.ratting
             cell.viewRatting.didFinishTouchingCosmos = { rating in
                 self.addReviewData.ratting = rating
+                cell.viewRatting.rating = self.addReviewData.ratting
             }
             return cell
         case .reviewTitle:
@@ -134,13 +152,12 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewDescCell.reuseIdentifier, for: indexPath) as! tableAddReviewDescCell
             cell.txtDescription.delegate = self
             if addReviewData.desc == ""{
-                 cell.txtDescription.text = add_review_desc_placeholder
+                cell.txtDescription.text = add_review_desc_placeholder
+                cell.txtDescription.textColor = UIColor.lightGray
+            }else{
+                cell.txtDescription.text = addReviewData.desc
+                cell.txtDescription.textColor = UIColor.darkGray
             }
-            else{
-                 cell.txtDescription.text = addReviewData.desc
-            }
-           
-           
             return cell
         }
     }
@@ -203,6 +220,7 @@ extension AddReviewVC
     {
         if Connectivity.isConnectedToInternet
         {
+            self.showIndicator(view: self.view)
             let param:NSMutableDictionary = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
                                              WS_KProduct_id:objProduct.productId.asStringOrEmpty(),
                                              WS_RATTING: addReviewData.ratting,
@@ -214,18 +232,44 @@ extension AddReviewVC
                 param.addEntries(from: data1)
             }
             print("===== Add Review Param =======",param)
-            
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddReview, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-               
-                if response != nil
-                {
+                self.hideIndicator(view: self.view)
+                if response != nil {
                     self.navigationController?.popViewController(animated: true)
-                    
                 }else {
-                   
                     SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
                 }
-               
+            })
+        }
+        else
+        {
+            SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
+        }
+    }
+    
+    func editReviewAPI()
+    {
+        if Connectivity.isConnectedToInternet
+        {
+            self.showIndicator(view: self.view)
+            let param:NSMutableDictionary = [WS_REVIEWID : objUserReview?.id.asStringOrEmpty() ?? "",
+                                             WS_RATTING: addReviewData.ratting,
+                                             WS_TITLE:addReviewData.title,
+                                             WS_DESC:addReviewData.desc,
+                                             WS_IS_TEST: IS_TESTDATA]
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                param.addEntries(from: data1)
+            }
+            print("===== Edit Review Param =======",param)
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIEditReview, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                self.hideIndicator(view: self.view)
+                if response != nil {
+                    self.isEditReview = false
+                    self.navigationController?.popViewController(animated: true)
+                }else {
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
+                }
             })
         }
         else

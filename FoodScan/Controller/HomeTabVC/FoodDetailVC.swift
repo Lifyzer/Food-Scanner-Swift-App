@@ -10,6 +10,7 @@ import UIKit
 import Cosmos
 import Popover
 import SwiftyJSON
+import UILoadControl
 
 let iDtableFoodCell = "tableFoodCell"
 let IMG_FAV = UIImage(named: "unfav_white_icon")
@@ -21,6 +22,11 @@ enum ReviewItems: Int {
     case custReviews
     case reviewList
     static var count: Int { return ReviewItems.reviewList.rawValue + 1}
+}
+
+enum SubDetailsItems: Int {
+    case Protein=0 , Sugar, Salt, Ingredients, Fat, Calories, SaturatedFats, Carbohydrate, DietaryFiber
+    case totalCount = 9
 }
 
 class FoodDetailVC: UIViewController {
@@ -37,13 +43,16 @@ class FoodDetailVC: UIViewController {
     @IBOutlet weak var btnAddReview: UIButton!
     @IBOutlet weak var tableReview: UITableView!
     @IBOutlet weak var lblTotalReviews: UILabel!
+    @IBOutlet weak var viewRatting: CosmosView!
+    @IBOutlet weak var viewGiveReview: UIView!
     
+    @IBOutlet weak var btnGiveReview: UIButton!
     @IBOutlet weak var scrollWidth: NSLayoutConstraint!
     @IBOutlet weak var contentHeight: NSLayoutConstraint!
     @IBOutlet weak var tableContentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableProductdetailsHeight: NSLayoutConstraint!
     @IBOutlet weak var tableReviewHeight: NSLayoutConstraint!
-    @IBOutlet weak var viewRatting: CosmosView!
+    @IBOutlet weak var viewGiveReviewHeight: NSLayoutConstraint!
     
     var objProduct : WSProduct!
     var arrDetails : NSMutableArray = NSMutableArray()
@@ -56,18 +65,22 @@ class FoodDetailVC: UIViewController {
     var arrUserReview : [UserReview] = [UserReview]()
     var arrCustReview : [CustomerReview] = [CustomerReview]()
     var objReview:WSReview?
+    var popover = Popover()
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         SetFoodDetails()
         setupUI()
 
     }
-    enum SubDetailsItems: Int {
-        case Protein=0 , Sugar, Salt, Ingredients, Fat, Calories, SaturatedFats, Carbohydrate, DietaryFiber
-        case totalCount = 9
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tableReview.isHidden = true
+        self.scrollView.scrollToTop(animated: false)
+        self.offSet = 0
+        self.getReviewListAPI(isLoader:true)
     }
+    
     //MARK: Functions
     func SetFoodDetails() {
         btnFav.layer.cornerRadius = btnFav.frame.height / 2
@@ -98,6 +111,11 @@ class FoodDetailVC: UIViewController {
 
     func setupUI()
     {
+        
+        tableReview.loadControl = UILoadControl(target: self, action: #selector(loadMore(sender:)))
+        tableReview.loadControl?.heightLimit = 0.0//100.0
+        tableReview.loadControl?.isHidden = true
+        
         tableReview.register(tableReviewCell.nib, forCellReuseIdentifier: tableReviewCell.reuseIdentifier)
         tableReview.register(tableCustomerReviewCell.nib, forCellReuseIdentifier: tableCustomerReviewCell.reuseIdentifier)
         tableReview.register(tableUserReviewCell.nib, forCellReuseIdentifier: tableUserReviewCell.reuseIdentifier)
@@ -132,10 +150,19 @@ class FoodDetailVC: UIViewController {
 
         viewRatting.settings.updateOnTouch = false
         viewRatting.settings.fillMode = .half
-        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        self.viewRatting.addGestureRecognizer(tapGesture)
+        setupRattingDetails()
+    }
+    func setupRattingDetails()
+    {
         let avgReview = objProduct.avgReview
         if let avg = avgReview{
-            viewRatting.rating = Double(avg)!
+            if avg != ""
+            {
+                 viewRatting.rating = Double(avg)!
+            }
+           
         }
         let totalReview = objProduct.totalReview
         if let reviews = totalReview{
@@ -146,28 +173,40 @@ class FoodDetailVC: UIViewController {
         {
             lblTotalReviews.text = ""
         }
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
-        self.viewRatting.addGestureRecognizer(tapGesture)
-        
-        setupScrollview()
-        
-        self.tableReview.isHidden = true
-        self.getReviewListAPI(isLoader:true)
     }
 
     @objc func setupScrollview()
     {
         // Set scrollview
-        scrollWidth.constant = self.view.frame.width
-        self.tableProductDetails.layoutIfNeeded()
-        self.tableReview.layoutIfNeeded()
-        self.vwHeader.layoutIfNeeded()
-        self.tableProductdetailsHeight.constant = self.tableProductDetails.contentSize.height
-        self.tableReviewHeight.constant = self.tableReview.contentSize.height
-        contentHeight.constant = self.tableProductDetails.contentSize.height + vwHeader.frame.height + 40 + self.tableReview.contentSize.height
+//        scrollWidth.constant = self.view.frame.width
+//        self.tableProductDetails.layoutIfNeeded()
+//        self.tableReview.layoutIfNeeded()
+//        self.vwHeader.layoutIfNeeded()
+//        self.tableProductdetailsHeight.constant = self.tableProductDetails.contentSize.height
+//        self.tableReviewHeight.constant = self.tableReview.contentSize.height
+//        contentHeight.constant = self.tableProductDetails.contentSize.height + vwHeader.frame.height + 40 + self.tableReview.contentSize.height
+//        tableProductDetails.tableFooterView = UIView()
+//        self.view.layoutIfNeeded()
+        
         tableProductDetails.tableFooterView = UIView()
         self.view.layoutIfNeeded()
+        scrollWidth.constant = self.view.frame.width
+        self.tableProductdetailsHeight.constant = self.tableProductDetails.contentSize.height
+        self.tableReviewHeight.constant = self.tableReview.contentSize.height
+         contentHeight.constant = self.tableProductdetailsHeight.constant + vwHeader.frame.height + 50 + self.tableReviewHeight.constant
+        self.view.layoutIfNeeded()
     }
+    func CountDateTime(dateString:String) -> (String,String)
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM yyyy"
+        let reviewDate = dateFormatter.string(from: stringToDate(dateString))
+       
+        dateFormatter.dateFormat = "hh:mm a"
+        let reviewTime = dateFormatter.string(from: stringToDate(dateString))
+        return (reviewDate,reviewTime)
+    }
+    
     @objc func tapAction()
     {
          self.scrollView.scrollToView(view: self.tableReview, animated: true)
@@ -218,56 +257,72 @@ class FoodDetailVC: UIViewController {
     }
     func loadMoreRequest()
     {
-            self.offSet = arrCustReview.count //offSet +
+        if isUserReview == false{
+            self.offSet = arrCustReview.count
             getReviewListAPI(isLoader: false)
+        }
+       
     }
     
   
     //MARK: Button actions
-      @objc func btnMoreActionOnReview(sender:UIButton)
-      {
-            //Show popup for edit and delete review => NOTE : used popover library for this
-            let arr = Bundle.main.loadNibNamed(tableEditReviewCell.reuseIdentifier, owner: nil, options: nil)
-            let appView = arr?.first as! tableEditReviewCell
-//            appView.frame = CGRect(x: sender.frame.origin.x, y: sender.frame.origin.y, width:150, height:90)
-            appView.btnEdit.addTarget(self, action: #selector(btnEditReview(sender:)), for: .touchUpInside)
-            appView.btnDelete.addTarget(self, action: #selector(btnDeleteReview), for: .touchUpInside)
-            let options = [.type(.auto),
-                           .animationIn(0.3),
-                           .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
-            let popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
-            popover.show(appView.contentView, fromView: sender)
-            
-        }
-        @objc func btnEditReview(sender:UIButton)
-        {
-            print("===Edit Review===")
-
-    //       let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-    //        vc.objProduct = self.objProduct
-    //        vc.isEditReview = true
-    //        self.navigationController?.pushViewController(vc, animated: true)
-        }
-        @objc func btnDeleteReview(sender:UIButton)
-        {
-          print("===Delete Review===")
+    @IBAction func btnGiveReviewAction(_ sender: Any) {
+        //Redirect to add revie screen
+        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+        vc.objProduct = self.objProduct
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+  @objc func btnMoreActionOnReview(sender:UIButton)
+  {
+        //Show popup for edit and delete review => NOTE : used popover library for this
+        let arr = Bundle.main.loadNibNamed(tableEditReviewCell.reuseIdentifier, owner: nil, options: nil)
+        let appView = arr?.first as! tableEditReviewCell
+        appView.btnEdit.addTarget(self, action: #selector(btnEditReviewAction(sender:)), for: .touchUpInside)
+        appView.btnDelete.addTarget(self, action: #selector(btnDeleteReviewAction(sender:)), for: .touchUpInside)
+        let options = [.type(.auto),
+                       .animationIn(0.3),
+                       .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
+        popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
+        
+        popover.show(appView.contentView, fromView: sender)
+        
+    }
+    @objc func btnEditReviewAction(sender:UIButton)
+    {
+        print("===Edit Review===")
+        popover.dismiss()
+        popover.didDismissHandler = {
+            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+            vc.objProduct = self.objProduct
+            vc.isEditReview = true
+            vc.objUserReview = self.arrUserReview.first
+            self.navigationController?.pushViewController(vc, animated: true)
         }
         
+        
+    }
+    @objc func btnDeleteReviewAction(sender:UIButton)
+    {
+        print("===Delete Review===")
+        popover.dismiss()
+        popover.didDismissHandler = {
+            self.deleteReviewAPI()
+        }
+    }
     
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func btnAddReviewAction(_ sender: Any) {
-        //Scroll to review list
-//        self.scrollView.scrollToView(view: self.tableReview, animated: true)
-        
+      
         //Redirect to add revie screen
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
         vc.objProduct = self.objProduct
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
+    
     @IBAction func btnShare(_ sender: Any) {
         shareFoodDetails()
     }
@@ -314,25 +369,21 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == tableReview
         {
-            if arrUserReview.count > 0 && arrCustReview.count > 0{
-                 return arrUserReview.count + arrCustReview.count + 1
+            if arrUserReview.count > 0 || arrCustReview.count > 0{
+                if arrCustReview.count == 0
+                {
+                     return arrUserReview.count
+                }
+                else
+                {
+                    return arrUserReview.count + arrCustReview.count + 1
+                }
+                 
             }else if arrUserReview.count == 0 && arrCustReview.count > 0 {
                 return arrCustReview.count + 1
             }else{
                 return 0
             }
-//            if isUserReview{
-//                if arrUserReview.count > 0{
-//                    return arrUserReview.count + arrCustReview.count + 1 //1 + ReviewItems.count
-//                }
-//                return 0
-//            }
-//            else if arrCustReview.count > 0{
-//                return arrCustReview.count + (ReviewItems.count - 1)
-//            }else{
-//                return 0
-//            }
-            
         }
         return arrDetails.count
     }
@@ -363,12 +414,13 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
                 cell.lblReviewUserName.text = userName
                 if let ratting = objUserReview.ratting{
                    cell.viewRatting.rating = Double(ratting)!
-                }else
-                {
+                }else{
                     cell.viewRatting.rating = 0.0
                 }
-                cell.lblReviewDate.text = objUserReview.modifiedDate.asStringOrEmpty()
-                cell.lblReviewTime.text = "12.00 pm"
+                
+                let reviewDateTime = CountDateTime(dateString: objUserReview.modifiedDate.asStringOrEmpty())
+                cell.lblReviewDate.text = reviewDateTime.0
+                cell.lblReviewTime.text =  reviewDateTime.1
                 cell.lblReviewTitle.text = objUserReview.title.asStringOrEmpty()
                 cell.lblReviewDescription.text = objUserReview.descriptionValue.asStringOrEmpty()
                 
@@ -379,20 +431,22 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
             else if (!isUserReview && row == 0) || (isUserReview && row == 1)
             {
                 let cell = tableView.dequeueReusableCell(withIdentifier: tableCustomerReviewCell.reuseIdentifier, for: indexPath) as! tableCustomerReviewCell
-                if let ratting = self.objReview?.avgReview{
+                if let ratting = self.objReview?.avgCustomerReview{
                     cell.viewRatting.rating = Double(ratting)!
                     cell.lblReviewDetails.text = "\(ratting) out of 5"
                 }else{
                     cell.viewRatting.rating = 0.0
                     cell.lblReviewDetails.text = "0 out of 5"
                 }
-                let totalReview = objProduct.totalReview
+                let totalReview =  self.objReview?.totalCustomerReview
                 if let reviews = totalReview{
-                   
-                    cell.lblTotalReviews.text = Int(reviews)?.withCommas()
-                }
-                else
-                {
+                    let temp = Int(reviews)!
+                    if temp > 1{
+                        cell.lblTotalReviews.text = (Int(reviews)?.withCommas() ?? "") + " reviews"
+                    }else{
+                        cell.lblTotalReviews.text = (Int(reviews)?.withCommas() ?? "") + " review"
+                    }
+                }else{
                     cell.lblTotalReviews.text = ""
                 }
                 
@@ -404,39 +458,27 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
                 }
                 return cell
             }
-//            else if isUserReview && row == 1
-//            {
-//                let objCustReview = arrCust[indexPath.row]
-//                let cell = tableView.dequeueReusableCell(withIdentifier: tableCustomerReviewCell.reuseIdentifier, for: indexPath) as! tableCustomerReviewCell
-////                cell.lblTitle.text = "Customer Reviww"
-//                return cell
-//            }
             else
             {
                 var objReview : CustomerReview?
-                if isUserReview
-                {
+                if isUserReview{
                     objReview = arrCustReview[indexPath.row - 2]
-                }
-                else
-                {
+                }else{
                     objReview = arrCustReview[indexPath.row - 1]
                 }
-//                let objReview = arrCustReview[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: tableReviewCell.reuseIdentifier, for: indexPath) as! tableReviewCell
                 let userName = (objReview?.firstName.asStringOrEmpty() ?? "") + " " + (objReview?.lastName.asStringOrEmpty() ?? "")
                 cell.lblReviewUserName.text = userName
                 if let ratting = objReview?.ratting{
                    cell.viewRatting.rating = Double(ratting)!
-                }else
-                {
+                }else{
                     cell.viewRatting.rating = 0.0
                 }
-                cell.lblReviewDate.text = objReview?.modifiedDate.asStringOrEmpty()
-                cell.lblReviewTime.text = "12.00 pm"
+                let reviewDateTime = CountDateTime(dateString: objReview!.modifiedDate.asStringOrEmpty())
+                cell.lblReviewDate.text = reviewDateTime.0
+                cell.lblReviewTime.text =  reviewDateTime.1
                 cell.lblReviewTitle.text = objReview?.title.asStringOrEmpty()
                 cell.lblReviewDescription.text = objReview?.descriptionValue.asStringOrEmpty()
-                
                 return cell
             }
         }
@@ -483,6 +525,49 @@ extension FoodDetailVC : UIScrollViewDelegate
 //MARK: API related stuff
 extension FoodDetailVC
 {
+    func deleteReviewAPI()
+    {
+        if Connectivity.isConnectedToInternet
+        {
+            self.showIndicator(view: self.view)
+            let param:NSMutableDictionary = [WS_REVIEWID :arrUserReview.first?.id.asStringOrEmpty() ?? "",
+                                             WS_IS_TEST: IS_TESTDATA]
+            includeSecurityCredentials {(data) in
+                let data1 = data as! [AnyHashable : Any]
+                param.addEntries(from: data1)
+            }
+            print("===== Edit Review Param =======",param)
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIDeleteReview, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                self.hideIndicator(view: self.view)
+                if response != nil {
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
+                    
+                    self.isUserReview = false
+                    let totalReview = Int(self.objProduct.totalReview!)! - 1
+                    let totalRatting = Float(self.objReview!.totalRatting.asStringOrEmpty())!.rounded(.down)
+                    let userRatting = Float(self.arrUserReview.first!.ratting.asStringOrEmpty())!.rounded(.down)
+                    let finalratting = totalRatting - userRatting
+                    self.objProduct.avgReview = "\(finalratting/Float(totalReview))"
+                    self.objProduct.totalReview = "\(totalReview)"
+                    self.arrUserReview.removeAll()
+                    self.setupRattingDetails()
+                    self.tableReview.reloadData()
+                    DispatchQueue.main.async {
+                        self.view.layoutIfNeeded()
+                        self.tableReviewHeight.constant = self.tableReview.contentSize.height
+                        self.contentHeight.constant = self.tableProductdetailsHeight.constant + self.vwHeader.frame.height + 50 + self.tableReviewHeight.constant
+                        self.view.layoutIfNeeded()
+                    }
+                }else {
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
+                }
+            })
+        }
+        else
+        {
+            SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
+        }
+    }
     func getReviewListAPI(isLoader : Bool)
     {
         
@@ -513,14 +598,16 @@ extension FoodDetailVC
                     let objUserReview = JSON(objData[WS_USER_REVIEW])
                     let objCustReview = JSON(objData[WS_CUST_REVIEW])
                 
-//                    let objReview  = objData.to(type: WSReview.self) as! WSReview
                     self.objReview = objData.to(type: WSReview.self) as? WSReview
                     let arrayUserReview  = objUserReview.to(type: UserReview.self) as! [UserReview]
                     let arrayCustReview  = objCustReview.to(type: CustomerReview.self) as! [CustomerReview]
 
                     self.arrUserReview = arrayUserReview
                     self.arrCustReview  = arrayCustReview
-                
+                    self.objProduct.avgReview = self.objReview?.avgReview.asStringOrEmpty()
+                    self.objProduct.totalReview = self.objReview?.totalReview.asStringOrEmpty()
+                    self.setupRattingDetails()
+                    
                      if arrayUserReview.count > 0{
                         self.isUserReview = true
                     }else{
@@ -535,8 +622,27 @@ extension FoodDetailVC
                         }
                         self.tableReview.loadControl?.endLoading()
                     }
+                 
+                    if self.arrUserReview.count == 0 && self.arrCustReview.count == 0
+                    {
+                        self.viewGiveReview.isHidden = false
+                        self.viewGiveReviewHeight.constant = 44.0
+                        self.btnGiveReview.isHidden = false
+                    }
+                    else
+                    {
+                        self.viewGiveReview.isHidden = true
+                        self.viewGiveReviewHeight.constant = 0.0
+                        self.btnGiveReview.isHidden = true
+                    }
                     self.tableReview.reloadData()
-                    self.setupScrollview()
+                    DispatchQueue.main.async {
+                       
+                        self.view.layoutIfNeeded()
+                        self.tableReviewHeight.constant = self.tableReview.contentSize.height
+                        self.contentHeight.constant = self.tableProductdetailsHeight.constant + self.vwHeader.frame.height + 50 + self.tableReviewHeight.constant
+                        self.view.layoutIfNeeded()
+                    }
                }else {
                   
                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
