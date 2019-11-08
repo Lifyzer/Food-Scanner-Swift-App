@@ -31,12 +31,17 @@ class AddReviewVC: UIViewController {
 
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var tableAddReview: UITableView!
+    @IBOutlet weak var btnSubmit: UIButton!
     
     var addReviewData = AddReviewData()
     var objProduct : WSProduct!
     var isEditReview = false
     var objUserReview : UserReview?
-    
+    var btnSubmitText = "Submit"
+    var btnUpdateText = "Update"
+    var lblSubmitText = "Add Review"
+    var lblUpdateText = "Edit Review"
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,13 +76,17 @@ extension AddReviewVC
         tableAddReview.register(tableAddReviewDescCell.nib, forCellReuseIdentifier: tableAddReviewDescCell.reuseIdentifier)
         addReviewData.product_image = objProduct.productImage.asStringOrEmpty()
         addReviewData.product_name = objProduct.productName.asStringOrEmpty()
-        if isEditReview
-        {
+        if isEditReview{
             setupUserEditReviewData()
+        }else{
+            lblTitle.text = lblSubmitText
+            btnSubmit.setTitle(btnSubmitText, for: .normal)
         }
     }
     func setupUserEditReviewData()
     {
+        lblTitle.text = lblUpdateText
+        btnSubmit.setTitle(btnUpdateText, for: .normal)
         addReviewData.title = objUserReview!.title.asStringOrEmpty()
         addReviewData.desc = objUserReview!.descriptionValue.asStringOrEmpty()
         if let ratting = objUserReview!.ratting{
