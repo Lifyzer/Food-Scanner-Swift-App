@@ -171,6 +171,10 @@ class FoodDetailVC: UIViewController {
             if avg != ""{
                  viewRatting.rating = Double(avg)!
             }
+            else
+            {
+                viewRatting.rating = 0.0
+            }
         }
         let totalReview = objProduct.totalReview
         if let reviews = totalReview{
@@ -179,11 +183,21 @@ class FoodDetailVC: UIViewController {
             lblTotalReviews.text = ""
         }
         //Add Gesture on Rtting view => that will scroll to review list.
-        if viewRatting.rating != 0.0
-        {
+        if viewRatting.rating != 0.0{
+            self.viewRatting.settings.updateOnTouch = false
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
             self.viewRatting.addGestureRecognizer(tapGesture)
+        }else{
+            self.viewRatting.settings.updateOnTouch = true
         }
+        viewRatting.didFinishTouchingCosmos = { rating in
+            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+            vc.objProduct = self.objProduct
+            vc.addReviewData.ratting = self.viewRatting.rating
+            self.viewRatting.rating = 0.0
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+            
         
     }
 
@@ -219,11 +233,18 @@ class FoodDetailVC: UIViewController {
     
     @objc func tapAction()
     {
-        UIView.animate(withDuration: 1.0, animations: {
+//        if viewRatting.rating != 0.0
+//        {
+            UIView.animate(withDuration: 1.0, animations: {
+                       self.scrollView.scrollToView(view: self.tableReview, animated: false)
 
-            self.scrollView.scrollToView(view: self.tableReview, animated: false)
-
-        })
+                   })
+//        }
+//        else
+//        {
+//            self.viewRatting.settings.updateOnTouch = true
+//        }
+       
          
     }
     func CheckDetails(string:String?,key:String,img:String){
@@ -276,6 +297,12 @@ class FoodDetailVC: UIViewController {
         self.getReviewListAPI(isLoader: false)
     }
     
+    func RedirectToAddReviewScreen()
+    {
+        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+               vc.objProduct = self.objProduct
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
   
     //MARK: Button actions
     @IBAction func btnGiveReviewAction(_ sender: Any) {
@@ -292,7 +319,8 @@ class FoodDetailVC: UIViewController {
         let appView = arr?.first as! tableEditReviewCell
         appView.btnEdit.addTarget(self, action: #selector(btnEditReviewAction(sender:)), for: .touchUpInside)
         appView.btnDelete.addTarget(self, action: #selector(btnDeleteReviewAction(sender:)), for: .touchUpInside)
-        let options = [.type(.auto),
+    let options = [.type(.auto),
+                   .cornerRadius(5.0),
                        .animationIn(0.3),
                        .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
         popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
@@ -329,9 +357,7 @@ class FoodDetailVC: UIViewController {
     @IBAction func btnAddReviewAction(_ sender: Any) {
       
         //Redirect to add revie screen
-        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-        vc.objProduct = self.objProduct
-        self.navigationController?.pushViewController(vc, animated: true)
+        RedirectToAddReviewScreen()
     }
     
     @IBAction func btnShare(_ sender: Any) {
@@ -475,8 +501,6 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
                 cell.lblReviewTime.text =  reviewDateTime.1
                 cell.lblReviewTitle.text = objUserReview.title.asStringOrEmpty()
                 cell.lblReviewDescription.text = objUserReview.descriptionValue.asStringOrEmpty()
-                
-                
                 cell.btnMore.addTarget(self, action: #selector(btnMoreActionOnReview), for: .touchUpInside)
                 return cell
             }
@@ -513,12 +537,6 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
             else
             {
                 var objReview : CustomerReview?
-//                if isUserReview{
-//                    objReview = arrCustReview[indexPath.row - 2]
-//                }else{
-//                    objReview = arrCustReview[indexPath.row - 1]
-//                }
-                
                 objReview = arrCustReview[indexPath.row]
                 let cell = tableView.dequeueReusableCell(withIdentifier: tableReviewCell.reuseIdentifier, for: indexPath) as! tableReviewCell
                 let userName = (objReview?.firstName.asStringOrEmpty() ?? "") + " " + (objReview?.lastName.asStringOrEmpty() ?? "")

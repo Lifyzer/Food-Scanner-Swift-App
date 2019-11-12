@@ -23,7 +23,7 @@ struct AddReviewData {
     var product_id = ""
     var ratting = Double()
     var title = ""
-    var desc = ""
+    var desc = String()
     var is_testdata = ""
 }
 
@@ -214,6 +214,7 @@ extension AddReviewVC: UITextViewDelegate
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        print("DESC",textView.text)
         if textView.text == ""
         {
             addReviewData.desc = ""
@@ -222,14 +223,35 @@ extension AddReviewVC: UITextViewDelegate
         }
     }
 }
+
+extension String {
+    var jsonStringRedecoded: String? {
+        let data = ("\""+self+"\"").data(using: .utf8)!
+        let result = try! JSONSerialization.jsonObject(with: data, options: .allowFragments) as! String
+        return result
+    }
+}
 //MARK: API Related stuff
 extension AddReviewVC
 {
+    func encode(_ s: String) -> String {
+        let data = s.data(using: .nonLossyASCII, allowLossyConversion: true)!
+        return String(data: data, encoding: .utf8)!
+    }
+    
+    func decode(_ s: String) -> String? {
+        let data = s.data(using: .utf8)!
+        return String(data: data, encoding: .nonLossyASCII)
+    }
+   
     func addReviewAPI()
     {
         if Connectivity.isConnectedToInternet
         {
             self.showIndicator(view: self.view)
+            
+            
+            addReviewData.desc = (addReviewData.desc.jsonStringRedecoded!)
             let param:NSMutableDictionary = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
                                              WS_KProduct_id:objProduct.productId.asStringOrEmpty(),
                                              WS_RATTING: addReviewData.ratting,
@@ -261,17 +283,23 @@ extension AddReviewVC
         if Connectivity.isConnectedToInternet
         {
             self.showIndicator(view: self.view)
-            let param:NSMutableDictionary = [WS_REVIEWID : objUserReview?.id.asStringOrEmpty() ?? "",
+//            addReviewData.desc = (addReviewData.desc.jsonStringRedecoded!)
+            var param:[String:Any] = [WS_REVIEWID : objUserReview?.id.asStringOrEmpty() ?? "",
                                              WS_RATTING: addReviewData.ratting,
                                              WS_TITLE:addReviewData.title,
                                              WS_DESC:addReviewData.desc,
                                              WS_IS_TEST: IS_TESTDATA]
+            
             includeSecurityCredentials {(data) in
                 let data1 = data as! [AnyHashable : Any]
-                param.addEntries(from: data1)
+                for i in data1
+                {
+                    param.updateValue(i.value, forKey: i.key as! String)
+                }
+                //param.addEntries(from: data1)
             }
             print("===== Edit Review Param =======",param)
-            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIEditReview, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIEditReview, parameters: param as NSDictionary, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 self.hideIndicator(view: self.view)
                 if response != nil {
                     self.isEditReview = false
