@@ -1182,15 +1182,15 @@
                                                         </state>
                                                     </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0r-kS-GMF" customClass="CosmosView" customModule="Cosmos">
-                                                        <rect key="frame" x="10" y="229.66666666666669" width="120" height="20"/>
+                                                        <rect key="frame" x="10" y="229.66666666666669" width="130" height="20"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="120" id="Vaq-rC-4Rl"/>
+                                                            <constraint firstAttribute="width" constant="130" id="Vaq-rC-4Rl"/>
                                                             <constraint firstAttribute="height" constant="20" id="x2x-bM-6kC"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="starSize">
-                                                                <real key="value" value="20"/>
+                                                                <real key="value" value="23"/>
                                                             </userDefinedRuntimeAttribute>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="rating">
                                                                 <real key="value" value="0.0"/>
@@ -1198,7 +1198,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="bdjfb" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hF-xR-dpG">
-                                                        <rect key="frame" x="145" y="229.66666666666669" width="259" height="20"/>
+                                                        <rect key="frame" x="155" y="229.66666666666669" width="249" height="20"/>
                                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>

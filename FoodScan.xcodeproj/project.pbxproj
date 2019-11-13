@@ -89,7 +89,6 @@
 		5BD70D90223A5AE4006A2FED /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 5BD70D8F223A5AE4006A2FED /* tessdata */; };
 		61846A2D52474EADAE441785 /* Pods_FoodScanUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6437C1DDDE7C43328928100 /* Pods_FoodScanUITests.framework */; };
 		62DF5F6CF0F46806D747BE2B /* Pods_FoodScanTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB3CAEA3AC246C91EACCAE3 /* Pods_FoodScanTests.framework */; };
-		F53CBEC0236D3BD000EF990C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F53CBEBF236D3BD000EF990C /* GoogleService-Info.plist */; };
 		F53CBEC4236D75BB00EF990C /* tableUserReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53CBEC2236D75BB00EF990C /* tableUserReviewCell.swift */; };
 		F53CBEC5236D75BB00EF990C /* tableUserReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F53CBEC3236D75BB00EF990C /* tableUserReviewCell.xib */; };
 		F580722A236BF216007343A1 /* tableCustomerReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5807228236BF216007343A1 /* tableCustomerReviewCell.swift */; };
@@ -110,6 +109,7 @@
 		F5BC6EC6236C134A00817310 /* tableAddReviewTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5BC6EC4236C134900817310 /* tableAddReviewTitleCell.xib */; };
 		F5BC6ECA236C136800817310 /* tableAddReviewDescCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BC6EC8236C136800817310 /* tableAddReviewDescCell.swift */; };
 		F5BC6ECB236C136800817310 /* tableAddReviewDescCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5BC6EC9236C136800817310 /* tableAddReviewDescCell.xib */; };
+		F5C862E4237C1F34002E544F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5C862E3237C1F34002E544F /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -238,7 +238,6 @@
 		A6437C1DDDE7C43328928100 /* Pods_FoodScanUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FoodScanUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA4F320BB27267C17E50B180 /* Pods-FoodScan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodScan.release.xcconfig"; path = "Pods/Target Support Files/Pods-FoodScan/Pods-FoodScan.release.xcconfig"; sourceTree = "<group>"; };
 		EC825949BC7F68DDFB10BA90 /* Pods-FoodScan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodScan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FoodScan/Pods-FoodScan.debug.xcconfig"; sourceTree = "<group>"; };
-		F53CBEBF236D3BD000EF990C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F53CBEC2236D75BB00EF990C /* tableUserReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableUserReviewCell.swift; sourceTree = "<group>"; };
 		F53CBEC3236D75BB00EF990C /* tableUserReviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableUserReviewCell.xib; sourceTree = "<group>"; };
 		F5807228236BF216007343A1 /* tableCustomerReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableCustomerReviewCell.swift; sourceTree = "<group>"; };
@@ -259,6 +258,7 @@
 		F5BC6EC4236C134900817310 /* tableAddReviewTitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableAddReviewTitleCell.xib; sourceTree = "<group>"; };
 		F5BC6EC8236C136800817310 /* tableAddReviewDescCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableAddReviewDescCell.swift; sourceTree = "<group>"; };
 		F5BC6EC9236C136800817310 /* tableAddReviewDescCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = tableAddReviewDescCell.xib; sourceTree = "<group>"; };
+		F5C862E3237C1F34002E544F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FEB9054D3055F0ACDA42DC9F /* Pods-FoodScanUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodScanUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FoodScanUITests/Pods-FoodScanUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -669,7 +669,7 @@
 		F580AD3F2372A202003D3EE2 /* Scan */ = {
 			isa = PBXGroup;
 			children = (
-				F53CBEBF236D3BD000EF990C /* GoogleService-Info.plist */,
+				F5C862E3237C1F34002E544F /* GoogleService-Info.plist */,
 				5B191D172268464100E1DF1F /* DrawingView.swift */,
 				5B191D162268464100E1DF1F /* VideoCapture.swift */,
 			);
@@ -835,10 +835,10 @@
 				5B63EC842296729700E59FE7 /* isSuccessIcon.png in Resources */,
 				F580AD3E23728A6B003D3EE2 /* tableEditReviewCell.xib in Resources */,
 				F5BC6EC1236C128400817310 /* tableAddReviewProductDetailsCell.xib in Resources */,
-				F53CBEC0236D3BD000EF990C /* GoogleService-Info.plist in Resources */,
 				5B63EC812296729700E59FE7 /* isInfoIcon.png in Resources */,
 				5B63EC882296729700E59FE7 /* isWarningIcon@2x.png in Resources */,
 				5B63EC822296729700E59FE7 /* isInfoIcon@2x.png in Resources */,
+				F5C862E4237C1F34002E544F /* GoogleService-Info.plist in Resources */,
 				F5807230236C0B47007343A1 /* tableReviewCell.xib in Resources */,
 				5B63EC862296729700E59FE7 /* isSuccessIcon@3x.png in Resources */,
 				00F49D83220C0FCA0053829D /* Login.storyboard in Resources */,
@@ -1254,9 +1254,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = S2A23S7R4S;
 				ENABLE_BITCODE = NO;
@@ -1295,7 +1295,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = healthyfood.lifyzer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = Lifyzer_Dist_Profile;
 				SWIFT_OBJC_BRIDGING_HEADER = "FoodScan/Model/CustomClasses/FBEncrypt/Foodscan-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1311,7 +1311,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = S2A23S7R4S;
 				ENABLE_BITCODE = NO;

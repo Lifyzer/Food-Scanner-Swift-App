@@ -170,9 +170,7 @@ class FoodDetailVC: UIViewController {
         if let avg = avgReview{
             if avg != ""{
                  viewRatting.rating = Double(avg)!
-            }
-            else
-            {
+            }else{
                 viewRatting.rating = 0.0
             }
         }
@@ -185,35 +183,24 @@ class FoodDetailVC: UIViewController {
         //Add Gesture on Rtting view => that will scroll to review list.
         if viewRatting.rating != 0.0{
             self.viewRatting.settings.updateOnTouch = false
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction))
-            self.viewRatting.addGestureRecognizer(tapGesture)
         }else{
             self.viewRatting.settings.updateOnTouch = true
         }
         viewRatting.didFinishTouchingCosmos = { rating in
-            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-            vc.objProduct = self.objProduct
-            vc.addReviewData.ratting = self.viewRatting.rating
-            self.viewRatting.rating = 0.0
-            self.navigationController?.pushViewController(vc, animated: true)
+            if totalReview != "0"{
+                self.tapAction()
+            }else{
+                let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+                vc.objProduct = self.objProduct
+                vc.addReviewData.ratting = self.viewRatting.rating
+                self.viewRatting.rating = 0.0
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
-            
-        
     }
 
     @objc func setupScrollview()
     {
-        // Set scrollview
-//        scrollWidth.constant = self.view.frame.width
-//        self.tableProductDetails.layoutIfNeeded()
-//        self.tableReview.layoutIfNeeded()
-//        self.vwHeader.layoutIfNeeded()
-//        self.tableProductdetailsHeight.constant = self.tableProductDetails.contentSize.height
-//        self.tableReviewHeight.constant = self.tableReview.contentSize.height
-//        contentHeight.constant = self.tableProductDetails.contentSize.height + vwHeader.frame.height + 40 + self.tableReview.contentSize.height
-//        tableProductDetails.tableFooterView = UIView()
-//        self.view.layoutIfNeeded()
-        
         tableProductDetails.tableFooterView = UIView()
         self.view.layoutIfNeeded()
         scrollWidth.constant = self.view.frame.width
@@ -230,22 +217,20 @@ class FoodDetailVC: UIViewController {
         let reviewTime = dateFormatter.string(from: stringToDate(dateString))
         return (reviewDate,reviewTime)
     }
+    @objc func tapReviewAction()
+    {
+        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+        vc.objProduct = self.objProduct
+        vc.addReviewData.ratting = self.viewRatting.rating
+        self.viewRatting.rating = 0.0
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     @objc func tapAction()
     {
-//        if viewRatting.rating != 0.0
-//        {
-            UIView.animate(withDuration: 1.0, animations: {
-                       self.scrollView.scrollToView(view: self.tableReview, animated: false)
-
-                   })
-//        }
-//        else
-//        {
-//            self.viewRatting.settings.updateOnTouch = true
-//        }
-       
-         
+        UIView.animate(withDuration: 1.0, animations: {
+                      self.scrollView.scrollToView(view: self.tableReview, animated: false)
+                  })
     }
     func CheckDetails(string:String?,key:String,img:String){
         if (string.asStringOrEmpty() != "" && (string.asStringOrEmpty()) != "0")
@@ -321,6 +306,7 @@ class FoodDetailVC: UIViewController {
         appView.btnDelete.addTarget(self, action: #selector(btnDeleteReviewAction(sender:)), for: .touchUpInside)
     let options = [.type(.auto),
                    .cornerRadius(5.0),
+
                        .animationIn(0.3),
                        .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
         popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
@@ -338,8 +324,6 @@ class FoodDetailVC: UIViewController {
             vc.objUserReview = self.arrUserReview.first
             self.navigationController?.pushViewController(vc, animated: true)
         }
-        
-        
     }
     @objc func btnDeleteReviewAction(sender:UIButton)
     {
@@ -355,8 +339,7 @@ class FoodDetailVC: UIViewController {
     }
     
     @IBAction func btnAddReviewAction(_ sender: Any) {
-      
-        //Redirect to add revie screen
+        //Redirect to add review screen
         RedirectToAddReviewScreen()
     }
     
@@ -374,7 +357,6 @@ class FoodDetailVC: UIViewController {
             } else{
                 btnFav.setImage(IMG_UNFAV, for: .normal)
             }
-            
             if objProduct.isFavourite.asStringOrEmpty() == "0"{
                 AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
             }else if objProduct.isFavourite.asStringOrEmpty() == "1"{
@@ -389,7 +371,7 @@ class FoodDetailVC: UIViewController {
             alert.addAction(UIAlertAction(title: "LOGIN",
                                           style: .default,
                                           handler: {(_: UIAlertAction!) in
-                                            self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+                self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
             }))
             alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
 
@@ -408,22 +390,6 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
         if tableView == tableReview
         {
             return 3
-//            if isUserReview
-//            {
-//                if arrCustReview.count > 0 {
-//                    return 3
-//                }else{
-//                    return 1
-//                }
-//            }
-//            else
-//            {
-//                if arrCustReview.count > 0
-//                {
-//                    return 2
-//                }
-//                return 0
-//            }
         }
         return 1
     }
@@ -446,22 +412,6 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
             {
                 return arrCustReview.count
             }
-            
-//            if arrUserReview.count > 0 || arrCustReview.count > 0{
-//                if arrCustReview.count == 0
-//                {
-//                     return arrUserReview.count
-//                }
-//                else
-//                {
-//                    return arrUserReview.count + arrCustReview.count + 1
-//                }
-//
-//            }else if arrUserReview.count == 0 && arrCustReview.count > 0 {
-//                return arrCustReview.count + 1
-//            }else{
-//                return 0
-//            }
         }
         return arrDetails.count
     }
