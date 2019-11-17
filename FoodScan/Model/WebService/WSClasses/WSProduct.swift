@@ -44,6 +44,8 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
     static let alcohol = "alcohol"
     static let historyCreatedDate = "history_created_date"
     static let historyId = "history_id"
+    static let totalReview = "total_review"
+    static let avgReview = "avg_review"
   }
 
   // MARK: Properties
@@ -79,6 +81,8 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
   public var alcohol: String?
   public var historyCreatedDate: String?
   public var historyId: String?
+  public var totalReview: String?
+  public var avgReview: String?
 
   // MARK: SwiftyJSON Initializers
   /// Initiates the instance based on the object.
@@ -125,6 +129,9 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
     alcohol = json[SerializationKeys.alcohol].string
     historyId = json[SerializationKeys.historyId].string
     historyCreatedDate = json[SerializationKeys.historyCreatedDate].string
+    totalReview = json[SerializationKeys.totalReview].string
+    avgReview = json[SerializationKeys.avgReview].string
+
   }
 
   /// Generates description of the object in the form of a NSDictionary.
@@ -162,8 +169,11 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
     if let value = userId { dictionary[SerializationKeys.userId] = value }
     if let value = productImage { dictionary[SerializationKeys.productImage] = value }
     if let value = alcohol { dictionary[SerializationKeys.alcohol] = value }
-     if let value = historyId { dictionary[SerializationKeys.historyId] = value }
-     if let value = historyCreatedDate { dictionary[SerializationKeys.historyCreatedDate] = value }
+    if let value = historyId { dictionary[SerializationKeys.historyId] = value }
+    if let value = historyCreatedDate { dictionary[SerializationKeys.historyCreatedDate] = value }
+    if let value = totalReview { dictionary[SerializationKeys.totalReview] = value }
+    if let value = avgReview { dictionary[SerializationKeys.avgReview] = value }
+   
     return dictionary
   }
 
@@ -201,6 +211,8 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
     self.alcohol = aDecoder.decodeObject(forKey: SerializationKeys.alcohol) as? String
      self.historyId = aDecoder.decodeObject(forKey: SerializationKeys.historyId) as? String
      self.historyCreatedDate = aDecoder.decodeObject(forKey: SerializationKeys.historyCreatedDate) as? String
+    self.totalReview = aDecoder.decodeObject(forKey: SerializationKeys.totalReview) as? String
+    self.avgReview = aDecoder.decodeObject(forKey: SerializationKeys.avgReview) as? String
   }
 
   public func encode(with aCoder: NSCoder) {
@@ -236,6 +248,8 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
     aCoder.encode(alcohol, forKey: SerializationKeys.alcohol)
      aCoder.encode(historyId, forKey: SerializationKeys.historyId)
      aCoder.encode(historyCreatedDate, forKey: SerializationKeys.historyCreatedDate)
+    aCoder.encode(totalReview, forKey: SerializationKeys.totalReview)
+    aCoder.encode(avgReview, forKey: SerializationKeys.avgReview)
   }
 
 }

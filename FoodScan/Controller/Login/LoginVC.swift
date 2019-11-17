@@ -122,7 +122,6 @@ class LoginVC: UIViewController {
         } else {
             return true
         }
-
         return false
     }
 }

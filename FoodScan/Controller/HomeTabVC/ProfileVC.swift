@@ -227,7 +227,7 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
         vc.objProduct.isFavourite = 1
 
         self.navigationController?.pushViewController(vc, animated: true)
-//        pushViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC, animation: true)
+
     }
 
     func scrollViewDidEndDecelerating(_ scrollView : UIScrollView) {

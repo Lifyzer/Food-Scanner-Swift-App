@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="145" id="KGk-i7-Jjw" customClass="tableAddReviewProductDetailsCell" customModule="FoodScan" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="337" height="145"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="337" height="144.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zbq-gW-Mrr">
+                        <rect key="frame" x="0.0" y="10" width="337" height="124.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Grenki jd jdnhd " textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lCN-Pz-mRl">
+                                <rect key="frame" x="10" y="10" width="317" height="22.5"/>
+                                <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="20"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flint" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oO0-Jf-Vgd">
+                                <rect key="frame" x="10" y="40.5" width="317" height="34"/>
+                                <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="15"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EQk-ML-STe" customClass="CosmosView" customModule="Cosmos">
+                                <rect key="frame" x="71" y="84.5" width="195" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="t2h-tA-5EV"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                        <real key="value" value="35"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="minTouchRating">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="oO0-Jf-Vgd" firstAttribute="top" secondItem="lCN-Pz-mRl" secondAttribute="bottom" constant="8" id="4sd-hi-Z4I"/>
+                            <constraint firstItem="lCN-Pz-mRl" firstAttribute="leading" secondItem="Zbq-gW-Mrr" secondAttribute="leading" constant="10" id="5nG-qy-iQZ"/>
+                            <constraint firstAttribute="bottom" secondItem="EQk-ML-STe" secondAttribute="bottom" constant="10" id="Jfq-1N-hY7"/>
+                            <constraint firstItem="lCN-Pz-mRl" firstAttribute="top" secondItem="Zbq-gW-Mrr" secondAttribute="top" constant="10" id="Mkv-Mr-eni"/>
+                            <constraint firstAttribute="trailing" secondItem="lCN-Pz-mRl" secondAttribute="trailing" constant="10" id="Uuu-V1-atv"/>
+                            <constraint firstItem="EQk-ML-STe" firstAttribute="top" secondItem="oO0-Jf-Vgd" secondAttribute="bottom" constant="10" id="ahY-P6-ZN0"/>
+                            <constraint firstItem="oO0-Jf-Vgd" firstAttribute="leading" secondItem="lCN-Pz-mRl" secondAttribute="leading" id="b8h-Vq-sDl"/>
+                            <constraint firstItem="oO0-Jf-Vgd" firstAttribute="trailing" secondItem="lCN-Pz-mRl" secondAttribute="trailing" id="lXn-sk-KHS"/>
+                            <constraint firstItem="EQk-ML-STe" firstAttribute="centerX" secondItem="oO0-Jf-Vgd" secondAttribute="centerX" id="ycK-vg-9sf"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Zbq-gW-Mrr" secondAttribute="trailing" id="Fhn-tH-2Q7"/>
+                    <constraint firstItem="Zbq-gW-Mrr" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="hNb-d1-HnL"/>
+                    <constraint firstItem="Zbq-gW-Mrr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="mh9-JQ-qgw"/>
+                    <constraint firstAttribute="bottom" secondItem="Zbq-gW-Mrr" secondAttribute="bottom" constant="10" id="sxk-5P-ZFB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="lblSubTitle" destination="oO0-Jf-Vgd" id="b3W-fn-2Kq"/>
+                <outlet property="lblTitle" destination="lCN-Pz-mRl" id="nSC-Zc-FqW"/>
+                <outlet property="viewBg" destination="Zbq-gW-Mrr" id="q44-eg-oEX"/>
+                <outlet property="viewRatting" destination="EQk-ML-STe" id="qZn-PH-mWL"/>
+            </connections>
+            <point key="canvasLocation" x="16.666666666666668" y="54.575892857142854"/>
+        </tableViewCell>
+    </objects>
+</document>

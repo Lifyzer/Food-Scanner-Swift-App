@@ -67,6 +67,7 @@ public func stringToDate(_ str: String)->Date{
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     dateFormatter.locale = Locale(identifier: "en_us")
     dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+    
     let dt = dateFormatter.date(from: str)
     return dt!
 }

@@ -16,11 +16,14 @@ target 'FoodScan' do
     pod 'UILoadControl'
     pod 'Fabric'
     pod 'Crashlytics'
-
+    pod 'Popover'
+    pod 'Cosmos', '~> 20.0'
+    
 #    Text Recognization
     pod 'Firebase/Core'
     pod 'Firebase/MLVision'
     pod 'Firebase/MLVisionTextModel'
+    
 
 #pod 'TesseractOCRSDKiOS', '4.0.1'
   target 'FoodScanTests' do

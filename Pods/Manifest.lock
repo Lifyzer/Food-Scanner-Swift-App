@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.7.3)
+  - Cosmos (20.0.1)
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - Fabric (1.9.0)
@@ -95,6 +96,7 @@ PODS:
   - NotificationBannerSwift (1.7.3):
     - MarqueeLabel/Swift (~> 3.2.0)
     - SnapKit (~> 4.0.1)
+  - Popover (1.2.2)
   - Protobuf (3.6.1)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
@@ -105,6 +107,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - Cosmos (~> 20.0)
   - Crashlytics
   - Fabric
   - Firebase/Core
@@ -112,6 +115,7 @@ DEPENDENCIES:
   - Firebase/MLVisionTextModel
   - IQKeyboardManagerSwift
   - NotificationBannerSwift
+  - Popover
   - SDWebImage (~> 4.2)
   - SwiftyJSON
   - UILoadControl
@@ -119,6 +123,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Cosmos
     - Crashlytics
     - Fabric
     - Firebase
@@ -138,6 +143,7 @@ SPEC REPOS:
     - MarqueeLabel
     - nanopb
     - NotificationBannerSwift
+    - Popover
     - Protobuf
     - SDWebImage
     - SnapKit
@@ -146,6 +152,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  Cosmos: b47fddf2102bb48580cd3025d9ce0a5c658a65da
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   Firebase: 6df9a6114bc9f106a98fe83d5438d4d9833c2019
@@ -165,12 +172,13 @@ SPEC CHECKSUMS:
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   NotificationBannerSwift: c9f4bc868d78df975ed59c0b2fccdbbe0e863efe
+  Popover: 21e357f86d45c8d9e29a41a4adbca3664d6e511f
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   UILoadControl: e742ddbe4c67ba1f13b00b7d462d4141307d021f
 
-PODFILE CHECKSUM: 8b8985e42ed42badaf1c765af72a1f0569788f7c
+PODFILE CHECKSUM: 61ef36cd960c66f41a57532e677c2d32157124bf
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.5

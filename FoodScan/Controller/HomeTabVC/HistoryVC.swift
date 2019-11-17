@@ -427,6 +427,7 @@ class HistoryVC: UIViewController {
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRemoveProductFromHistory, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 if response != nil
                 {
+                    self.arrayHistoryFood.remove(at: rowId)
                     if(self.arrayHistoryFood.count == 0){
                         self.ShowNoDataMessage()
                     }else {
@@ -536,27 +537,12 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             createdDate = "\(objProduct.favouriteCreatedDate ?? "")"
         }else {
             objProduct = arrayHistoryFood[indexPath.row]
-            //            if objProduct.id.asStringOrEmpty() == arrayHistoryFood.last?.id.asStringOrEmpty()
-            //            {
-            //
-            //                indicatorView.isHidden = false
-            //                activityIndicator.startAnimating()
-            //                loadMoreRequest()
-            //                isLoadMore = true
-            //            }
             createdDate = "\(objProduct.historyCreatedDate ?? "")"
         }
 
         if createdDate != "" && createdDate.count > 0{
             //Chnaged on 13/5/2019
             let StrAfterConvert = ConvertDate(format: "yyyy-MM-dd HH:mm:ss", str: createdDate)
-            //            print(dt)
-            //            let df = DateFormatter()
-            //            df.dateFormat = "dd/MM/yyyy"
-            //            let str = df.string(from: dt!)
-            //            print(dt,str)
-            //
-
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yyyy"
             cell.labelDate.text = dateFormatter.string(from: stringToDate(createdDate))//StrAfterConvert
@@ -616,55 +602,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         APP_DELEGATE.mainNavigationController?.pushViewController(vc, animated: true)
     }
 
-    //    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    //
-    //        if isFav{
-    //            let objProduct: WSProduct =  arrayFavFood[indexPath.row]
-    //            let fav =  UIContextualAction(style: .normal, title: "", handler: { (action,view,completionHandler ) in
-    //                self.RemoveIndex = indexPath.row
-    //                self.AddRemoveFromFavouriteAPI(isFavourite: "0", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
-    //
-    //            })
-    //            let imgFav = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: "fav_icon")
-    //            fav.backgroundColor = UIColor(patternImage: imgFav)
-    //            let configuration = UISwipeActionsConfiguration(actions: [fav])
-    //             configuration.performsFirstActionWithFullSwipe = false
-    //            return configuration
-    //        }
-    //        else {
-    //            let objProduct: WSProduct =  arrayHistoryFood[indexPath.row]
-    //            let delete =  UIContextualAction(style: .destructive, title: "", handler: { (action,view,completionHandler ) in
-    //                self.removeHistory(historyId: objProduct.historyId!,rowId: indexPath.row)
-    //            })
-    //            let img = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: "delete_icon")
-    //            delete.backgroundColor = UIColor(patternImage: img)
-    //            var favStatus : String
-    //            if objProduct.isFavourite == "1"{
-    //                favStatus = "fav_icon"
-    //            }else {
-    //                favStatus = "unfav_icon"
-    //            }
-    //            let fav =  UIContextualAction(style: . normal, title: "", handler: { (action,view,completionHandler ) in
-    //                self.EditIndex = indexPath.row
-    //                if objProduct.isFavourite == "1" {
-    //                    self.AddRemoveFromFavouriteAPI(isFavourite: "0", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
-    //
-    //                }else{
-    //                    self.AddRemoveFromFavouriteAPI(isFavourite: "1", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
-    //
-    //                }
-    //
-    //            })
-    //            let imgFav = SetImageInEditAction(indexPath: indexPath, tableview: tableView, imageName: favStatus)
-    //            fav.backgroundColor = UIColor(patternImage: imgFav)
-    //
-    //            let configuration = UISwipeActionsConfiguration(actions: [fav,delete])
-    //            configuration.performsFirstActionWithFullSwipe = false
-    //            return configuration
-    //        }
-    //    }
-
-
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 
         //        let whitespace = whitespaceString(width:CGFloat(kCellActionWidth) )
