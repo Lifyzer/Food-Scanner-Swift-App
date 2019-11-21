@@ -1447,35 +1447,36 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CnZ-HM-QpM">
-                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="65"/>
+                                                            <rect key="frame" x="10" y="10" width="394" height="45"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1vj-P2-oUD">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="65"/>
-                                                                    <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="17"/>
+                                                                    <rect key="frame" x="3" y="3" width="388" height="35"/>
+                                                                    <color key="backgroundColor" red="0.33333333333333331" green="0.64313725490196072" blue="0.27450980392156865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="20"/>
                                                                     <state key="normal" title="Write review">
-                                                                        <color key="titleColor" red="0.26666666666666666" green="0.69019607843137254" blue="0.35686274509803922" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     </state>
                                                                     <connections>
                                                                         <action selector="btnGiveReviewAction:" destination="Nxa-II-jD3" eventType="touchUpInside" id="YYa-ey-eNh"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                            <color key="backgroundColor" red="0.31372549019607843" green="0.58823529411764708" blue="0.3529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="bottom" secondItem="1vj-P2-oUD" secondAttribute="bottom" id="ANx-uF-5HT"/>
+                                                                <constraint firstAttribute="bottom" secondItem="1vj-P2-oUD" secondAttribute="bottom" constant="3" id="ANx-uF-5HT"/>
                                                                 <constraint firstAttribute="height" id="RVR-it-gwM"/>
-                                                                <constraint firstItem="1vj-P2-oUD" firstAttribute="top" secondItem="CnZ-HM-QpM" secondAttribute="top" id="UKu-cD-nfO"/>
-                                                                <constraint firstItem="1vj-P2-oUD" firstAttribute="leading" secondItem="CnZ-HM-QpM" secondAttribute="leading" id="Yqv-Q9-lYG"/>
-                                                                <constraint firstAttribute="trailing" secondItem="1vj-P2-oUD" secondAttribute="trailing" id="f40-Mb-ZTH"/>
+                                                                <constraint firstItem="1vj-P2-oUD" firstAttribute="top" secondItem="CnZ-HM-QpM" secondAttribute="top" constant="3" id="UKu-cD-nfO"/>
+                                                                <constraint firstItem="1vj-P2-oUD" firstAttribute="leading" secondItem="CnZ-HM-QpM" secondAttribute="leading" constant="3" id="Yqv-Q9-lYG"/>
+                                                                <constraint firstAttribute="trailing" secondItem="1vj-P2-oUD" secondAttribute="trailing" constant="3" id="f40-Mb-ZTH"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="trailing" secondItem="CnZ-HM-QpM" secondAttribute="trailing" id="XBr-ZX-09l"/>
-                                                        <constraint firstItem="CnZ-HM-QpM" firstAttribute="top" secondItem="2vO-do-Ar0" secondAttribute="top" id="kTt-Lf-8w9"/>
-                                                        <constraint firstAttribute="bottom" secondItem="CnZ-HM-QpM" secondAttribute="bottom" id="sZV-qA-Cmd"/>
-                                                        <constraint firstItem="CnZ-HM-QpM" firstAttribute="leading" secondItem="2vO-do-Ar0" secondAttribute="leading" id="t25-O4-UuS"/>
+                                                        <constraint firstAttribute="trailing" secondItem="CnZ-HM-QpM" secondAttribute="trailing" constant="10" id="XBr-ZX-09l"/>
+                                                        <constraint firstItem="CnZ-HM-QpM" firstAttribute="top" secondItem="2vO-do-Ar0" secondAttribute="top" constant="10" id="kTt-Lf-8w9"/>
+                                                        <constraint firstAttribute="bottom" secondItem="CnZ-HM-QpM" secondAttribute="bottom" constant="10" id="sZV-qA-Cmd"/>
+                                                        <constraint firstItem="CnZ-HM-QpM" firstAttribute="leading" secondItem="2vO-do-Ar0" secondAttribute="leading" constant="10" id="t25-O4-UuS"/>
                                                     </constraints>
                                                 </view>
                                                 <connections>
@@ -1549,6 +1550,7 @@
                         <outlet property="viewGiveReview" destination="2vO-do-Ar0" id="0tm-Wx-dqm"/>
                         <outlet property="viewGiveReviewHeight" destination="RVR-it-gwM" id="v43-Ua-DBq"/>
                         <outlet property="viewRatting" destination="r0r-kS-GMF" id="RBc-jN-7MT"/>
+                        <outlet property="viewWriteReview" destination="CnZ-HM-QpM" id="TSp-ha-qhX"/>
                         <outlet property="vwHeader" destination="oTK-50-p11" id="dKa-Wu-MZZ"/>
                     </connections>
                 </viewController>

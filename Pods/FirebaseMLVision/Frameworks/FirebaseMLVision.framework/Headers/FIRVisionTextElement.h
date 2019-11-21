@@ -12,9 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 NS_SWIFT_NAME(VisionTextElement)
 @interface FIRVisionTextElement : NSObject
 
-/**
- * String representation of the text element that was recognized.
- */
+/** String representation of the text element that was recognized. */
 @property(nonatomic, readonly) NSString *text;
 
 /**
@@ -23,11 +21,7 @@ NS_SWIFT_NAME(VisionTextElement)
  */
 @property(nonatomic, readonly) CGRect frame;
 
-/**
- * An array of recognized languages in the text element. On-device text recognizers only detect
- * Latin-based languages, while cloud text recognizers can detect multiple languages. If no
- * languages are recognized, the array is empty.
- */
+/** An array of recognized languages in the text element. (Cloud API only.) */
 @property(nonatomic, readonly) NSArray<FIRVisionTextRecognizedLanguage *> *recognizedLanguages;
 
 /**
@@ -43,9 +37,7 @@ NS_SWIFT_NAME(VisionTextElement)
  */
 @property(nonatomic, readonly, nullable) NSNumber *confidence;
 
-/**
- * Unavailable.
- */
+/** Unavailable. */
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

@@ -1,2 +1,2 @@
 ${PODS_ROOT}/Target Support Files/Pods-FoodScan/Pods-FoodScan-resources.sh
-${PODS_CONFIGURATION_BUILD_DIR}/GoogleMobileVision/GoogleMVTextDetectorResources.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionTextModel/GoogleMVTextDetectorResources.bundle

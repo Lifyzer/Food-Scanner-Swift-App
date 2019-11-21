@@ -53,6 +53,7 @@ class FoodDetailVC: UIViewController {
     @IBOutlet weak var tableProductdetailsHeight: NSLayoutConstraint!
     @IBOutlet weak var tableReviewHeight: NSLayoutConstraint!
     @IBOutlet weak var viewGiveReviewHeight: NSLayoutConstraint!
+    @IBOutlet weak var viewWriteReview: UIView!
     
     var objProduct : WSProduct!
     var arrDetails : NSMutableArray = NSMutableArray()
@@ -88,6 +89,24 @@ class FoodDetailVC: UIViewController {
     }
     
     //MARK: Functions
+    func LoginAlert()
+    {
+        let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
+                                       alert.addAction(UIAlertAction(title: "LOGIN",
+                                                                     style: .default,
+                                                                     handler: {(_: UIAlertAction!) in
+                                                                       self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+       }))
+       alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
+       }))
+       self.present(alert, animated: true, completion: nil)
+    }
+    
+    func SetShadowToButton()
+    {
+        self.viewWriteReview.layer.cornerRadius = 8.0
+        self.btnGiveReview.layer.cornerRadius = 8.0
+    }
     
     func setupReviewTable()
     {
@@ -123,7 +142,7 @@ class FoodDetailVC: UIViewController {
 
     func setupUI()
     {
-        
+        SetShadowToButton()
         scrollView.loadControl = UILoadControl(target: self, action: #selector(loadMore(sender:)))
         scrollView.loadControl?.heightLimit = 0.0//100.0
         scrollView.loadControl?.isHidden = true
@@ -161,8 +180,6 @@ class FoodDetailVC: UIViewController {
         viewRatting.settings.fillMode = .half
         setupRattingDetails()
         setupScrollview()
-        
-        
     }
     func setupRattingDetails()
     {
@@ -188,13 +205,18 @@ class FoodDetailVC: UIViewController {
         }
         viewRatting.didFinishTouchingCosmos = { rating in
             if totalReview != "0"{
-                self.tapAction()
+                
             }else{
-                let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-                vc.objProduct = self.objProduct
-                vc.addReviewData.ratting = self.viewRatting.rating
-                self.viewRatting.rating = 0.0
-                self.navigationController?.pushViewController(vc, animated: true)
+                if self.checkLoginAlert(){
+                         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+                          vc.objProduct = self.objProduct
+                          vc.addReviewData.ratting = self.viewRatting.rating
+                          self.viewRatting.rating = 0.0
+                          self.navigationController?.pushViewController(vc, animated: true)
+               }else{
+                    self.LoginAlert()
+               }
+                
             }
         }
     }
@@ -247,16 +269,17 @@ class FoodDetailVC: UIViewController {
         }else if objProduct.isFavourite.aIntOrEmpty() == 1{
             objProduct.isFavourite = 0
         }else{
+            
             objProduct.isFavourite = 1
         }
     }
+ 
 
     func checkLoginAlert() -> Bool{
          if UserDefaults.standard.bool(forKey: kLogIn){
             return true
-               // self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
         }else {
-          return false
+            return false
        }
     }
     @objc func shareFoodDetails()
@@ -292,9 +315,14 @@ class FoodDetailVC: UIViewController {
     //MARK: Button actions
     @IBAction func btnGiveReviewAction(_ sender: Any) {
         //Redirect to add review screen
-        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-        vc.objProduct = self.objProduct
-        self.navigationController?.pushViewController(vc, animated: true)
+        if checkLoginAlert(){
+           let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+           vc.objProduct = self.objProduct
+           self.navigationController?.pushViewController(vc, animated: true)
+        }else{
+          LoginAlert()
+        }
+        
     }
     
   @objc func btnMoreActionOnReview(sender:UIButton)
@@ -340,8 +368,13 @@ class FoodDetailVC: UIViewController {
     
     @IBAction func btnAddReviewAction(_ sender: Any) {
         //Redirect to add review screen
-        RedirectToAddReviewScreen()
+        if checkLoginAlert(){
+            RedirectToAddReviewScreen()
+        }else{
+           LoginAlert()
+        }
     }
+    
     
     @IBAction func btnShare(_ sender: Any) {
         shareFoodDetails()
@@ -655,7 +688,7 @@ extension FoodDetailVC
                     if self.arrUserReview.count == 0 && self.arrCustReview.count == 0
                     {
                         self.viewGiveReview.isHidden = false
-                        self.viewGiveReviewHeight.constant = 44.0
+                        self.viewGiveReviewHeight.constant = 100.0//54.0
                         self.btnGiveReview.isHidden = false
                     }
                     else
@@ -669,7 +702,9 @@ extension FoodDetailVC
                         self.setupReviewTable()
                     }
                }else {
-                   SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
+                if message != MESSAGE{
+                    SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
+                }
                }
               
            })

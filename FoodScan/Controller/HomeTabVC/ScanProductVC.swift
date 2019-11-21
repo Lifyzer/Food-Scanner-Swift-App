@@ -141,6 +141,7 @@ class ScanProductVC: UIViewController{
 //MARK: Fucntions
 extension ScanProductVC
 {
+    
     func SetScanOption(value:Int) {
         UserDefaults.standard.set( value, forKey: KScanOption)
     }
