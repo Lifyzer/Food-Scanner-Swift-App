@@ -197,11 +197,14 @@ class FoodDetailVC: UIViewController {
         }else{
             lblTotalReviews.text = ""
         }
+        let userId = UserDefaults.standard.string(forKey: kUserId) ?? ""
         //Add Gesture on Rtting view => that will scroll to review list.
-        if viewRatting.rating != 0.0{
+        if viewRatting.rating != 0.0 && userId != "" {
             self.viewRatting.settings.updateOnTouch = false
-        }else{
+        }else if viewRatting.rating == 0.0 && userId != ""{
             self.viewRatting.settings.updateOnTouch = true
+        }else{
+            self.viewRatting.settings.updateOnTouch = false
         }
         viewRatting.didFinishTouchingCosmos = { rating in
             if totalReview != "0"{
@@ -635,8 +638,28 @@ extension FoodDetailVC
         {
            if isLoader{
            showIndicator(view: self.view)}
+            var product_id = ""
+            if let pid = objProduct.productId{
+                if pid != ""{
+                     product_id = pid
+                }else{
+                    if let id = objProduct.id{
+                        if id != ""{
+                             product_id = id
+                        }
+                    }
+                }
+            }
+            else{
+                if let id = objProduct.id{
+                if id != ""{
+                     product_id = id
+                }
+                
+                }
+            }
            let param:NSMutableDictionary = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-                                            WS_KProduct_id:objProduct.productId.asStringOrEmpty(),
+                                            WS_KProduct_id:product_id,
                                             WS_KFrom_index:offSet,
                                             WS_KTo_index:noOfRecords,
                                             WS_IS_TEST: IS_TESTDATA]
@@ -682,17 +705,13 @@ extension FoodDetailVC
                         }else{
                             self.arrCustReview.append(contentsOf: arrayCustReview)
                         }
-                        
                     }
                  
-                    if self.arrUserReview.count == 0 && self.arrCustReview.count == 0
-                    {
+                    if self.arrUserReview.count == 0 && self.arrCustReview.count == 0{
                         self.viewGiveReview.isHidden = false
                         self.viewGiveReviewHeight.constant = 100.0//54.0
                         self.btnGiveReview.isHidden = false
-                    }
-                    else
-                    {
+                    }else{
                         self.viewGiveReview.isHidden = true
                         self.viewGiveReviewHeight.constant = 0.0
                         self.btnGiveReview.isHidden = true
@@ -706,7 +725,6 @@ extension FoodDetailVC
                     SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
                 }
                }
-              
            })
         }
         else

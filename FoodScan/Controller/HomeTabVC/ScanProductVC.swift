@@ -438,9 +438,11 @@ extension ScanProductVC
         textRecognizer.process(visionImage) { (features, error) in
             // this closure is called on main thread
             if error == nil, let features: VisionText = features {
+                print("Success",features)
                 self.drawingView.imageSize = uiImage.size
                 self.drawingView.visionText = features
             } else {
+                print("Failed",features)
                 self.drawingView.imageSize = .zero
                 self.drawingView.visionText = nil
             }
