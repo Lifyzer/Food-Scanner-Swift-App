@@ -206,9 +206,10 @@ class FoodDetailVC: UIViewController {
         }else{
             self.viewRatting.settings.updateOnTouch = false
         }
+        
         viewRatting.didFinishTouchingCosmos = { rating in
             if totalReview != "0"{
-                
+                self.tapAction()
             }else{
                 if self.checkLoginAlert(){
                          let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
@@ -254,8 +255,8 @@ class FoodDetailVC: UIViewController {
     @objc func tapAction()
     {
         UIView.animate(withDuration: 1.0, animations: {
-                      self.scrollView.scrollToView(view: self.tableReview, animated: false)
-                  })
+            self.scrollView.scrollToView(view: self.tableReview, animated: false)
+        })
     }
     func CheckDetails(string:String?,key:String,img:String){
         if (string.asStringOrEmpty() != "" && (string.asStringOrEmpty()) != "0")

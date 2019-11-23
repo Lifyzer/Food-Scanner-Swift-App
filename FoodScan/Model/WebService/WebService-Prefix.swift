@@ -81,7 +81,7 @@ let WS_IS_TEST = "is_testdata"
 let WS_REVIEWID = "review_id"
 
 
-let IS_TESTDATA = "1"
+let IS_TESTDATA = "0"
 
 var arrayFavouriteProducts:[WSProduct] = [WSProduct]()
 

@@ -553,16 +553,16 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="719"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gtY-k6-E3Z" userLabel="view">
-                                                <rect key="frame" x="20" y="210.66666666666669" width="374" height="298"/>
+                                                <rect key="frame" x="20" y="254.33333333333331" width="374" height="210.66666666666669"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Favourite Yet!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vGI-ZN-sHu">
-                                                        <rect key="frame" x="105.00000000000001" y="205" width="164.33333333333337" height="22.666666666666657"/>
+                                                        <rect key="frame" x="105.00000000000001" y="117.6666666666667" width="164.33333333333337" height="22.666666666666671"/>
                                                         <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="20"/>
                                                         <color key="textColor" red="0.33333333329999998" green="0.64705882349999999" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Once you favourite any food, you will see them here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Asb-OC-m1n">
-                                                        <rect key="frame" x="62" y="237.66666666666671" width="250" height="40.333333333333343"/>
+                                                        <rect key="frame" x="62" y="150.33333333333337" width="250" height="40.333333333333343"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="250" id="v1G-LJ-DKd"/>
                                                         </constraints>
@@ -571,7 +571,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Pk-6O-6Li">
-                                                        <rect key="frame" x="101.66666666666669" y="20" width="171" height="175"/>
+                                                        <rect key="frame" x="144.33333333333334" y="20" width="85.666666666666657" height="87.666666666666671"/>
                                                         <state key="normal" image="img_no_fav_data"/>
                                                     </button>
                                                 </subviews>
@@ -958,16 +958,16 @@
                                         <rect key="frame" x="5" y="632" width="404" height="87"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLk-oZ-FXY" userLabel="view">
-                                                <rect key="frame" x="20" y="125.66666666666669" width="364" height="298"/>
+                                                <rect key="frame" x="20" y="169.33333333333331" width="364" height="210.66666666666669"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Favourite Yet!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ID-IG-C8P">
-                                                        <rect key="frame" x="100.00000000000001" y="204.99999999999994" width="164.33333333333337" height="22.666666666666657"/>
+                                                        <rect key="frame" x="100.00000000000001" y="117.6666666666667" width="164.33333333333337" height="22.666666666666671"/>
                                                         <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="20"/>
                                                         <color key="textColor" red="0.33333333329999998" green="0.64705882349999999" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Once you favourite any food, you will see them here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nq4-dZ-DgJ">
-                                                        <rect key="frame" x="57" y="237.66666666666671" width="250" height="40.333333333333343"/>
+                                                        <rect key="frame" x="57" y="150.33333333333331" width="250" height="40.333333333333343"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="250" id="Nw2-d9-c58"/>
                                                         </constraints>
@@ -976,7 +976,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PDZ-61-DKs">
-                                                        <rect key="frame" x="96.666666666666686" y="20" width="171" height="175"/>
+                                                        <rect key="frame" x="139.33333333333334" y="20" width="85.666666666666657" height="87.666666666666671"/>
                                                         <state key="normal" image="img_no_fav_data"/>
                                                     </button>
                                                 </subviews>
@@ -1340,7 +1340,7 @@
                                                                     <rect key="frame" x="10" y="0.0" width="354" height="52"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protein" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BBS-Gy-CMC">
-                                                                            <rect key="frame" x="60" y="8" width="204" height="36"/>
+                                                                            <rect key="frame" x="60" y="8" width="47.666666666666657" height="36"/>
                                                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="15"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
@@ -1353,10 +1353,7 @@
                                                                             <state key="normal" image="protein_icon"/>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l2E-AI-i6Z">
-                                                                            <rect key="frame" x="274" y="8" width="70" height="20"/>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="width" constant="70" id="Pvz-Sq-6ox"/>
-                                                                            </constraints>
+                                                                            <rect key="frame" x="117.66666666666669" y="8" width="226.33333333333331" height="20"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                             <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                                                                             <state key="normal" title="12.1g" image="dot_green_small">
