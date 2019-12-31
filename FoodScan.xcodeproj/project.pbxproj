@@ -805,7 +805,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 00F49D3D220C05960053829D /* Build configuration list for PBXProject "FoodScan" */;
+			buildConfigurationList = 00F49D3D220C05960053829D /* Build configuration list for PBXProject "e" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1443,7 +1443,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00F49D3D220C05960053829D /* Build configuration list for PBXProject "FoodScan" */ = {
+		00F49D3D220C05960053829D /* Build configuration list for PBXProject "e" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00F49D6B220C059E0053829D /* Debug */,
