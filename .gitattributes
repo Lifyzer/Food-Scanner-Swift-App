@@ -1,1 +1,1 @@
-Pods/GoogleMobileVision/TextDetector/Frameworks/TextDetector.framework/TextDetector filter=lfs diff=lfs merge=lfs -text
+Pods/FirebaseMLVisionTextModel/Frameworks/FirebaseMLVisionTextModel.framework/FirebaseMLVisionTextModel filter=lfs diff=lfs merge=lfs -text
