@@ -74,7 +74,7 @@ let Accept_Terms_conditions = "Please accept terms and conditions"
 
 let please_enter_product_name = "Please enter product name"
 let add_review_title_placeholder = "Headline for your review"
-let add_review_desc_placeholder = "Tell us what you like or dislike about this product."
+let add_review_desc_placeholder = "We want to hear your thoughts and feedback!😋" //"Tell us what you like or dislike about this product."
 
 let please_enter_review_title = "Please enter title"
 let please_enter_review_desc = "Please enter description"
