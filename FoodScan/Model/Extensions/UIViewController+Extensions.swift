@@ -80,18 +80,16 @@ extension UIViewController
                     WS_KProduct_id:product_id,
                     WS_KIs_favourite:isFavourite,
                     WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-        //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-        //            WS_KSecret_key:userToken ?? ""]
+                
+                print(param);
+            
                 includeSecurityCredentials {(data) in
                     let data1 = data as! [AnyHashable : Any]
                     param.addEntries(from: data1)
                 }
-
                 showIndicator(view: self.view)
-
                 HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddToFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                     self.hideIndicator(view: self.view)
-
                     if response != nil
                     {
                         if fn != nil

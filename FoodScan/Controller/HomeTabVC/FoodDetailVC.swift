@@ -312,7 +312,7 @@ class FoodDetailVC: UIViewController {
     func RedirectToAddReviewScreen()
     {
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-               vc.objProduct = self.objProduct
+        vc.objProduct = self.objProduct
         self.navigationController?.pushViewController(vc, animated: true)
     }
   
@@ -338,9 +338,8 @@ class FoodDetailVC: UIViewController {
         appView.btnDelete.addTarget(self, action: #selector(btnDeleteReviewAction(sender:)), for: .touchUpInside)
     let options = [.type(.auto),
                    .cornerRadius(5.0),
-
-                       .animationIn(0.3),
-                       .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
+                   .animationIn(0.3),
+                   .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
         popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
         popover.show(appView.contentView, fromView: sender)
         
@@ -653,10 +652,9 @@ extension FoodDetailVC
             }
             else{
                 if let id = objProduct.id{
-                if id != ""{
-                     product_id = id
-                }
-                
+                    if id != ""{
+                         product_id = id
+                    }
                 }
             }
            let param:NSMutableDictionary = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",

@@ -71,6 +71,7 @@ class HttpRequestManager
         ShowNetworkIndicator(xx: true)
 
         alamoFireManager.request(endpointurl, method: .post, parameters: parameters as? Parameters, encoding: encodingType, headers: additionalHeader)
+            
             .responseString(completionHandler: { (response) in
                 print(response)
             })

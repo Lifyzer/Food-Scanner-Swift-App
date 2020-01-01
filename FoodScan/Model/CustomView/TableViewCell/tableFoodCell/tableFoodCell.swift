@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cosmos
 
 class tableFoodCell: UITableViewCell{
 
@@ -20,17 +21,19 @@ class tableFoodCell: UITableViewCell{
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var productCategory: UILabel!
     @IBOutlet weak var labelDate: UILabel!
-
+    @IBOutlet weak var viewRatting: CosmosView!
+    
     @IBOutlet weak var tableProducts: UITableView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
+       
 
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
+        
     }
 
 

@@ -304,16 +304,21 @@ class HistoryVC: UIViewController {
                         }else{
                             self.arrayFavFood.append(contentsOf: tempArray)
                         }
-                        self.tableFav.loadControl?.endLoading()
-                        self.tableFav.reloadData()
+                        
                     }
                     else
                     {
-                        if self.offSet == 0{
-                            self.arrayFavFood.removeAll()
-                            self.tableFav.reloadData()
+                        
+                        if self.offSet == 0 {
+                          self.arrayFavFood.removeAll()
+                          self.arrayFavFood = tempArray
+                        }else{
+                          self.arrayFavFood.append(contentsOf: tempArray)
                         }
                     }
+                    self.tableFav.loadControl?.endLoading()
+                    self.tableFav.reloadData()
+                    
                     if(self.arrayFavFood.count == 0){
                         self.ShowNoDataMessage()
                     }else {
@@ -371,15 +376,16 @@ class HistoryVC: UIViewController {
                         }else{
                             self.arrayHistoryFood.append(contentsOf: tempArray)
                         }
-                        self.tableHistory.loadControl?.endLoading()
-                        self.tableHistory.reloadData()
                     }
                     else
                     {
-                        //                        self.arrayHistoryFood.append(contentsOf: tempArray)
-                        //                         self.tableHistory.loadControl?.endLoading()
-                        //                        self.tableHistory.reloadData()
+                         if self.offSet == 0 {
+                           self.arrayHistoryFood.removeAll()
+                           self.arrayHistoryFood = tempArray
+                         }
                     }
+                    self.tableHistory.loadControl?.endLoading()
+                    self.tableHistory.reloadData()
                     if(self.arrayHistoryFood.count == 0){
                         self.ShowNoDataMessage()
                     }else {
@@ -539,27 +545,31 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             objProduct = arrayHistoryFood[indexPath.row]
             createdDate = "\(objProduct.historyCreatedDate ?? "")"
         }
-
+        let avgReview = objProduct.avgReview
+        cell.viewRatting.settings.fillMode = .half
+        if let avg = avgReview{
+          if avg != ""{
+               cell.viewRatting.rating = Double(avg)!
+          }else{
+              cell.viewRatting.rating = 0.0
+          }
+        }
+       
         if createdDate != "" && createdDate.count > 0{
             //Chnaged on 13/5/2019
             let StrAfterConvert = ConvertDate(format: "yyyy-MM-dd HH:mm:ss", str: createdDate)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yyyy"
             cell.labelDate.text = dateFormatter.string(from: stringToDate(createdDate))//StrAfterConvert
-
-
         }
         let imageURL = URL(string: objProduct.productImage.asStringOrEmpty())
-        if imageURL != nil
-        {
+        if imageURL != nil{
             cell.imgFavouriteFood!.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "food_place_holder"))
-        }
-        else
-        {
+        }else{
             cell.imgFavouriteFood.image = UIImage(named: "food_place_holder")
         }
         cell.productName.text = objProduct.productName.asStringOrEmpty()
-        let isHealthy : String = objProduct.isHealthy.asStringOrEmpty()
+        var isHealthy : String = objProduct.isHealthy.asStringOrEmpty()
         if isHealthy != "" && isHealthy.count > 0{
             if isHealthy == "0" {
                 cell.productType.setTitle("\(Poor)", for: .normal)
@@ -572,7 +582,6 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             }
         }
         cell.btnFav.tag = indexPath.row
-        //        cell.btnFav.addTarget(self, action: #selector(btnFavourite(_:)), for:.touchUpInside)
         cell.selectionStyle = .none
         return cell
 
@@ -583,8 +592,6 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         let dt = dateFormatter.date(from: str)
-
-        //        let dt = dateFormatter.date(from: self.toString(format: format))
         dateFormatter.timeZone = TimeZone.current
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let strAfterConvert = dateFormatter.string(from: dt!)
@@ -604,8 +611,6 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
 
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-
-        //        let whitespace = whitespaceString(width:CGFloat(kCellActionWidth) )
         if isFav{
             let objProduct: WSProduct =  arrayFavFood[indexPath.row]
             let fav = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "") { action, indexPath in
@@ -646,7 +651,6 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
 }
 extension HistoryVC : UIScrollViewDelegate
 {
-
     //update loadControl when user scrolls de tableView
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollView.loadControl?.update()

@@ -25,7 +25,7 @@ let APP_FONT_LIGHT = "Roboto-Light"
 //String Constant
 var DEFAULT_ACCESS_KEY = "nousername"
 let DEVICE_TYPE = "1"
-let REQ_NO_OF_RECORD = "5"
+let REQ_NO_OF_RECORD = "10"
 let NO_OF_RECORD = 5
 let kCellActionWidth = 60
 

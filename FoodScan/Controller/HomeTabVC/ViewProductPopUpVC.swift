@@ -132,7 +132,7 @@ extension ViewProductPopUpVC
                     self.dismiss(animated: false) {
                         self.delegate?.scanFlag(flag: 0)
                         HomeTabVC.sharedHomeTabVC?.navigationController?.generateAlertWithOkButton(text: message!)
-                    }
+                    } 
                 }
             })
         }

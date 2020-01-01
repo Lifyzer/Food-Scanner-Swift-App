@@ -18,6 +18,9 @@ let MESSAGE = "Please try again later."
 //Web Service Path
 let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
 
+//let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
+
+
 //Images Path
 
 //let PATHCATEGORY = "\(SERVER_URL)pg/Bazinga/uploads/sub_categories/"
@@ -80,8 +83,7 @@ let WS_DESC = "desc"
 let WS_IS_TEST = "is_testdata"
 let WS_REVIEWID = "review_id"
 
-
-let IS_TESTDATA = "0"
+let IS_TESTDATA = "1"
 
 var arrayFavouriteProducts:[WSProduct] = [WSProduct]()
 
