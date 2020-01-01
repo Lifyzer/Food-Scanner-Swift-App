@@ -238,11 +238,28 @@ extension AddReviewVC
         if Connectivity.isConnectedToInternet
         {
             self.showIndicator(view: self.view)
-            
+            var product_id = ""
+            if let pid = objProduct.productId{
+                if pid != ""{
+                     product_id = pid
+                }else{
+                    if let id = objProduct.id{
+                        if id != ""{
+                             product_id = id
+                        }
+                    }
+                }
+            }
+            else{
+                if let id = objProduct.id{
+                    if id != ""{
+                         product_id = id
+                    }
+                }
+            }
             let param:NSMutableDictionary = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-                                             WS_KProduct_id:objProduct.productId.asStringOrEmpty(),
+                                             WS_KProduct_id:product_id,
                                              WS_RATTING: addReviewData.ratting,
-//                                             WS_TITLE:addReviewData.title,
                                              WS_DESC:addReviewData.desc,
                                              WS_IS_TEST: IS_TESTDATA]
             includeSecurityCredentials {(data) in
@@ -270,6 +287,7 @@ extension AddReviewVC
         if Connectivity.isConnectedToInternet
         {
             self.showIndicator(view: self.view)
+            
             var param:[String:Any] = [WS_REVIEWID : objUserReview?.id.asStringOrEmpty() ?? "",
                                              WS_RATTING: addReviewData.ratting,
 //                                             WS_TITLE:addReviewData.title,
