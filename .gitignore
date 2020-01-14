@@ -46,6 +46,9 @@ playground.xcworkspace
 #
 # Pods/
 #
+# Large file; Over 267.62MB
+Pods/FirebaseMLVisionTextModel/Frameworks/FirebaseMLVisionTextModel.framework/FirebaseMLVisionTextModel
+#
 # Add this line if you want to avoid checking in source code from the Xcode workspace
 # *.xcworkspace
 
