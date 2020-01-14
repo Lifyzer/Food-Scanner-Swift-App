@@ -110,9 +110,7 @@ extension AddReviewVC
     func ValidateField() -> Bool {
         if self.addReviewData.ratting == 0.0{
             showBanner(title: "", subTitle: please_select_ratting, bannerStyle: .danger)
-        }else if !addReviewData.desc.isValid() {
-            showBanner(title: "", subTitle: please_enter_review_desc, bannerStyle: .danger)
-        }else{
+        } else {
             return true
         }
         return false
