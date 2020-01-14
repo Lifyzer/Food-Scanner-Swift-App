@@ -11,7 +11,7 @@ import UIKit
 
 let APPNAME = "Lifyzer"
 
-let SERVER_URL = "http://lifyzer.com"
+let SERVER_URL = "https://lifyzer.com"
 
 let PRIVACY_POLICY_URL = "https://lifyzer.com/tos.txt"
 
