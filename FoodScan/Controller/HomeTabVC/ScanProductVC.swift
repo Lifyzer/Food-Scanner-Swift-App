@@ -9,20 +9,18 @@
 import UIKit
 import AVFoundation
 import Vision
-//import TesseractOCR
 import SwiftyJSON
 import CoreMedia
 import CoreImage
 import Firebase
 
 
-var selectedScanColor = UIColor(red: 68/255, green: 176/255, blue: 91/255, alpha: 1.0)//(red: 68/255, green: 176/255, blue: 91/255)
+var selectedScanColor = UIColor(red: 68/255, green: 176/255, blue: 91/255, alpha: 1.0)
 var IsScanWithLogin = false
 var ScanParam = NSMutableDictionary()
 var SCANNED_DETAILS = "scanned_product"
 
 class ScanProductVC: UIViewController{
-
 
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var imageView: UIImageView!
@@ -41,7 +39,6 @@ class ScanProductVC: UIViewController{
     var productCode = ""
     var param : NSMutableDictionary?
     var objUser: WSUser?
-
     lazy var vision = Vision.vision()
     lazy var textRecognizer = vision.onDeviceTextRecognizer()
     var videoCapture: VideoCapture!
@@ -62,8 +59,6 @@ class ScanProductVC: UIViewController{
                                       AVMetadataObject.ObjectType.dataMatrix,
                                       AVMetadataObject.ObjectType.interleaved2of5,
                                       AVMetadataObject.ObjectType.qr]
-
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,26 +117,21 @@ class ScanProductVC: UIViewController{
         scanOptions = sender.tag
         SetScanOption(value: scanOptions)
         RefreshScan()
-
     }
 
     @IBAction func btnFlashClicked(_ sender: Any) {
         toggleFlash()
     }
 
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
 
 //MARK: Fucntions
 extension ScanProductVC
 {
-    
     func SetScanOption(value:Int) {
         UserDefaults.standard.set( value, forKey: KScanOption)
     }
@@ -167,6 +157,7 @@ extension ScanProductVC
         case .denied, .restricted: return false
         }
     }
+    
     func RefreshScan()
     {
         if scanOptions == 0
@@ -181,7 +172,6 @@ extension ScanProductVC
                 i.removeFromSuperview()
             }
             self.videoCapture.start()
-
         }
         else
         {
@@ -210,10 +200,8 @@ extension ScanProductVC
             self.videoPreview.isHidden = true
             self.drawingView.isHidden = true
             self.cameraView.isHidden = false
-
         }
     }
-
 
     @objc func tapHandle(_ gesture  :UITapGestureRecognizer)
     {
@@ -270,7 +258,6 @@ extension ScanProductVC
         session.startRunning()
     }
 
-
     func checkLoginAlert()
     {
         if !UserDefaults.standard.bool(forKey: kLogIn){
@@ -281,12 +268,10 @@ extension ScanProductVC
             UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: param!, forKey: SCANNED_DETAILS)
             IsScanWithLogin = true
         }else {
-
             self.param = [
                 WS_KProduct_name:productCode,
                 WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
                 WS_FLAG : 1]
-
             includeSecurityCredentials {(data) in
                 let data1 = data as! [AnyHashable : Any]
                 self.param!.addEntries(from: data1)
@@ -295,6 +280,7 @@ extension ScanProductVC
         }
         GetProductDetailsAPI()
     }
+    
     func toggleFlash()
     {
         guard let device = AVCaptureDevice.default(for: AVMediaType.video) else { return }
@@ -337,10 +323,6 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
             }
             // Get the metadata object.
             let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-            if supportedCodeTypes.contains(metadataObj.type) {
-                print("Detected Code",metadataObj.stringValue)
-            }
-
             self.session.stopRunning()
             if let metadataObject = metadataObjects.first {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
@@ -402,6 +384,7 @@ extension ScanProductVC: VideoCaptureDelegate {
         }
     }
 }
+
 //MARK: Text Scaning
 extension ScanProductVC
 {
@@ -418,7 +401,6 @@ extension ScanProductVC
                     self.resizePreviewLayer()
                 }
             }
-
         }
     }
     func resizePreviewLayer() {
@@ -446,7 +428,6 @@ extension ScanProductVC
                 self.drawingView.imageSize = .zero
                 self.drawingView.visionText = nil
             }
-
             self.isInference = false
         }
     }

@@ -17,7 +17,6 @@ class HistoryVC: UIViewController {
     @IBOutlet var lblNoDataTitle: UILabel!
     @IBOutlet var lblNoDataMsg: UILabel!
     @IBOutlet var btnNoData: UIButton!
-
     @IBOutlet var buttonFav: UIButton!
     @IBOutlet var buttonHistory: UIButton!
     @IBOutlet var vwFav: UIView!
@@ -27,7 +26,6 @@ class HistoryVC: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var tableHistory: UITableView!
     @IBOutlet var tableFav: UITableView!
-
 
     var isFav: Bool = false
     var arrayFavFood = [WSProduct]()
@@ -44,12 +42,11 @@ class HistoryVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupRefreshData()
-
         tableHistory.loadControl = UILoadControl(target: self, action: #selector(loadMore(sender:)))
-        tableHistory.loadControl?.heightLimit = 0.0//100.0
+        tableHistory.loadControl?.heightLimit = 0.0
         tableHistory.loadControl?.isHidden = true
         tableFav.loadControl = UILoadControl(target: self, action: #selector(loadMore(sender:)))
-        tableFav.loadControl?.heightLimit = 0.0//100.0
+        tableFav.loadControl?.heightLimit = 0.0
         tableFav.loadControl?.isHidden = true
         self.tableHistory.tableFooterView = UIView()
         self.tableFav.tableFooterView = UIView()
@@ -76,7 +73,7 @@ class HistoryVC: UIViewController {
         self.refresher.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         self.tableFav!.addSubview(refresher)
     }
-
+    
     @objc func refreshData() {
         self.refresh.beginRefreshing()
         offSet = 0
@@ -125,11 +122,9 @@ class HistoryVC: UIViewController {
     }
 
     //MARK: Functions
-
     func AfterAddRemoveFavAPI()
     {
         if isFav{
-            let objProduct = arrayFavFood[RemoveIndex]
             arrayFavFood.remove(at:RemoveIndex)
             tableFav.reloadData()
             if(self.arrayFavFood.count == 0){
@@ -150,7 +145,7 @@ class HistoryVC: UIViewController {
     func SetImageInEditAction(indexPath : IndexPath,tableview:UITableView,imageName:String) -> UIImage
     {
         let backView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: tableview.frame.size.height))
-        backView.backgroundColor = History_Action_color//UIColor(red: 239/255.0, green: 34/255.0, blue: 91/255.0, alpha: 1.0)
+        backView.backgroundColor = History_Action_color
         let frame = tableview.rectForRow(at: indexPath)
         let myImage = UIImageView(frame: CGRect(x: 20, y: frame.size.height/2-20, width: 30, height: 30))
         myImage.image = UIImage(named: imageName)!
@@ -262,10 +257,10 @@ class HistoryVC: UIViewController {
 
     func loadMoreRequest() {
         if isFav{
-            self.offSet = arrayFavFood.count //offSet +
+            self.offSet = arrayFavFood.count
             getFavFood(isLoader: false)
         }else {
-            self.offSet = arrayHistoryFood.count //offSet +
+            self.offSet = arrayHistoryFood.count
             getHistory(isLoader: false)
         }
     }
@@ -277,10 +272,6 @@ class HistoryVC: UIViewController {
             if isLoader{
                 showIndicator(view: self.view)
             }
-            let userToken = UserDefaults.standard.string(forKey: kTempToken)
-            let encodeString = FBEncryptorAES.encryptBase64String(UserDefaults.standard.string(forKey: kUserGUID), keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-            print("encode string : \(encodeString!)")
-
             let param:NSMutableDictionary = [
                 WS_KTo_index:noOfRecords,
                 WS_KFrom_index:offSet,
@@ -304,11 +295,9 @@ class HistoryVC: UIViewController {
                         }else{
                             self.arrayFavFood.append(contentsOf: tempArray)
                         }
-                        
                     }
                     else
                     {
-                        
                         if self.offSet == 0 {
                           self.arrayFavFood.removeAll()
                           self.arrayFavFood = tempArray
@@ -326,7 +315,6 @@ class HistoryVC: UIViewController {
                         if isLoader {
                         }
                     }
-
                     if self.isLoadMore{
                         self.isLoadMore = false
                     }
@@ -361,7 +349,6 @@ class HistoryVC: UIViewController {
                 param.addEntries(from: data1)
             }
             print("===== Hisroty Param =======",param)
-
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetUserHistory, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 if(isLoader){
                     self.hideIndicator(view: self.view)}
@@ -397,7 +384,6 @@ class HistoryVC: UIViewController {
                     if self.isLoadMore{
                         self.isLoadMore = false
                     }
-
                 }else {
                     if(self.arrayHistoryFood.count == 0){
                         self.ShowNoDataMessage()
@@ -422,8 +408,6 @@ class HistoryVC: UIViewController {
     func removeHistory(historyId : String, rowId :Int){
         if Connectivity.isConnectedToInternet
         {
-            let userToken = UserDefaults.standard.string(forKey: kTempToken)
-            let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
             let param:NSMutableDictionary = [
                 WS_KHistory_id:historyId]
             includeSecurityCredentials {(data) in
@@ -452,72 +436,10 @@ class HistoryVC: UIViewController {
             SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
         }
     }
-
-    //    func addRemoveFav(productId : String, rowId :Int, favStatus : Int){
-    //        let userToken = UserDefaults.standard.string(forKey: kTempToken)
-    //        let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
-    //        let param:NSMutableDictionary = [
-    //            WS_KUser_id:objUser?.userId,
-    //            WS_KProduct_id:productId,
-    //            WS_KIs_favourite:favStatus,
-    //            WS_KAccess_key:DEFAULT_ACCESS_KEY,
-    //            WS_KSecret_key:userToken ?? ""]
-    //        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIAddToFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-    //            if response != nil
-    //            {
-    //                if !self.isFav{
-    //                    if favStatus == 1{
-    //                        showBanner(title: "", subTitle:"Product is successfully added to favourite" , bannerStyle: .success)
-    //                    }
-    //                    else
-    //                    {
-    //                        showBanner(title: "", subTitle:"Product is successfully removed from favourite" , bannerStyle: .success)
-    //                    }
-    //                     self.arrayHistoryFood[rowId].isFavourite = favStatus
-    //                     self.tableHistory.reloadData()
-    //                }else {
-    //                    self.arrayFavFood.remove(at: rowId)
-    //                    self.tableFav.reloadData()
-    //                    showBanner(title: "", subTitle:"Product is successfully removed from favourite" , bannerStyle: .success)
-    //
-    //                    if(self.arrayFavFood.count == 0){
-    //                        self.ShowNoDataMessage()
-    //                    }else {
-    //                        self.HideNoDataMessage()
-    //                    }
-    //                }
-    //            }else {
-    //                showBanner(title: "", subTitle: message!, bannerStyle: .danger)
-    //            }
-    //        })
-    //    }
-
-
 }
-
-//class TableViewRowAction: UITableViewRowAction
-//{
-//    var image: UIImage?
-//
-//    func _setButton(button: UIButton)
-//    {
-//        if let image = image, let titleLabel = button.titleLabel
-//        {
-//            let labelString = NSString(string: titleLabel.text!)
-//            let titleSize = labelString.size(withAttributes: [NSAttributedString.Key.font: titleLabel.font])
-//
-////            button.tintColor = UIColor.white
-//            button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
-//            button.imageEdgeInsets.right = -titleSize.width
-//        }
-//    }
-//}
-
-
 //MARK:- Table - Delegate - DataSource
 extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
 
-    //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFav
         {
@@ -525,8 +447,6 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         }else {
             return arrayHistoryFood.count;
         }
-
-
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -554,13 +474,11 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
               cell.viewRatting.rating = 0.0
           }
         }
-       
         if createdDate != "" && createdDate.count > 0{
-            //Chnaged on 13/5/2019
             let StrAfterConvert = ConvertDate(format: "yyyy-MM-dd HH:mm:ss", str: createdDate)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yyyy"
-            cell.labelDate.text = dateFormatter.string(from: stringToDate(createdDate))//StrAfterConvert
+            cell.labelDate.text = dateFormatter.string(from: stringToDate(createdDate))
         }
         let imageURL = URL(string: objProduct.productImage.asStringOrEmpty())
         if imageURL != nil{
@@ -595,8 +513,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
         dateFormatter.timeZone = TimeZone.current
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let strAfterConvert = dateFormatter.string(from: dt!)
-
-        return strAfterConvert//dateFormatter.string(from: dt!)
+        return strAfterConvert
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
@@ -651,11 +568,9 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
 }
 extension HistoryVC : UIScrollViewDelegate
 {
-    //update loadControl when user scrolls de tableView
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollView.loadControl?.update()
     }
-    //load more tableView data
     @objc func loadMore(sender: AnyObject?) {
         loadMoreRequest()
     }

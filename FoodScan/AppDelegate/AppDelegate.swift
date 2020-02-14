@@ -26,18 +26,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FirebaseApp.configure()
         Fabric.with([Crashlytics.self])
-
         let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC) as! HomeTabVC
         vc.selectedIndex = 1
         mainNavigationController = UINavigationController.init(rootViewController: vc)
         mainNavigationController?.isNavigationBarHidden = true
         window?.rootViewController = mainNavigationController
-
         setupIQKeyboard()
         checkSecurity()
-
-
         return true
     }
 
