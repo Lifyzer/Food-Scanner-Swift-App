@@ -24,26 +24,19 @@ class EditProfileVC: UIViewController {
         txtEmailId.text = objUser.email
     }
 
-
     @IBAction func buttonBackClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
 
-
     @IBAction func buttonSaveClicked(_ sender: Any) {
         if ValidateField(){
-
             if Connectivity.isConnectedToInternet
             {
                 showIndicator(view: view)
-//                let userToken = UserDefaults.standard.string(forKey: kTempToken)
-//                let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
                 let param:NSMutableDictionary = [
                     WS_KFirst_name:self.txtFullName.text!,
                     WS_KEmail_id:self.txtEmailId.text!,
                     WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-//                    WS_KAccess_key:DEFAULT_ACCESS_KEY,
-//                    WS_KSecret_key:userToken ?? ""]
 
                 includeSecurityCredentials {(data) in
                     let data1 = data as! [AnyHashable : Any]

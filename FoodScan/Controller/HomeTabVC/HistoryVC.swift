@@ -475,7 +475,6 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
           }
         }
         if createdDate != "" && createdDate.count > 0{
-            let StrAfterConvert = ConvertDate(format: "yyyy-MM-dd HH:mm:ss", str: createdDate)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yyyy"
             cell.labelDate.text = dateFormatter.string(from: stringToDate(createdDate))
@@ -487,7 +486,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             cell.imgFavouriteFood.image = UIImage(named: "food_place_holder")
         }
         cell.productName.text = objProduct.productName.asStringOrEmpty()
-        var isHealthy : String = objProduct.isHealthy.asStringOrEmpty()
+        let isHealthy : String = objProduct.isHealthy.asStringOrEmpty()
         if isHealthy != "" && isHealthy.count > 0{
             if isHealthy == "0" {
                 cell.productType.setTitle("\(Poor)", for: .normal)
@@ -555,8 +554,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
                 self.EditIndex = indexPath.row
                 if objProduct.isFavourite.aIntOrEmpty() == 1 {
                     self.AddRemoveFromFavouriteAPI(isFavourite: "0", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
-
-                }else{
+                } else{
                     self.AddRemoveFromFavouriteAPI(isFavourite: "1", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
                 }
             }

@@ -12,7 +12,6 @@ import SwiftyJSON
 enum AddReviewItems: Int {
     case productImage = 0
     case productDetails
-//    case reviewTitle
     case reviewDesc
     static var count: Int { return AddReviewItems.reviewDesc.rawValue + 1}
 }
@@ -32,7 +31,6 @@ class AddReviewVC: UIViewController {
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var tableAddReview: UITableView!
     @IBOutlet weak var btnSubmit: UIButton!
-    
     var addReviewData = AddReviewData()
     var objProduct : WSProduct!
     var isEditReview = false
@@ -42,7 +40,6 @@ class AddReviewVC: UIViewController {
     var lblSubmitText = "Add Review"
     var lblUpdateText = "Edit Review"
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -60,7 +57,6 @@ class AddReviewVC: UIViewController {
             }else{
                 addReviewAPI()
             }
-            
         }
     }
     
@@ -96,17 +92,7 @@ extension AddReviewVC
         }
         tableAddReview.reloadData()
     }
-
-//    @objc func textfieldEditingChanged(textfield : UITextField)
-//    {
-//        switch AddReviewItems.init(rawValue:textfield.tag)! {
-//
-//        case .productImage,.ProductDetails,.reviewDesc:
-//            break
-//        case .reviewTitle:
-//            addReviewData.title = textfield.text!
-//        }
-//    }
+    
     func ValidateField() -> Bool {
         if self.addReviewData.ratting == 0.0{
             showBanner(title: "", subTitle: please_select_ratting, bannerStyle: .danger)
@@ -146,13 +132,6 @@ extension AddReviewVC : UITableViewDelegate,UITableViewDataSource
                 cell.viewRatting.rating = self.addReviewData.ratting
             }
             return cell
-//        case .reviewTitle:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewTitleCell.reuseIdentifier, for: indexPath) as! tableAddReviewTitleCell
-//            cell.txtTitle.text = addReviewData.title
-//            cell.txtTitle.tag = row
-//            cell.txtTitle.attributedPlaceholder = NSAttributedString(string: add_review_title_placeholder,attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-//            cell.txtTitle.addTarget(self, action: #selector(textfieldEditingChanged(textfield:)), for: .editingChanged)
-//            return cell
         case .reviewDesc:
             let cell = tableView.dequeueReusableCell(withIdentifier: tableAddReviewDescCell.reuseIdentifier, for: indexPath) as! tableAddReviewDescCell
             cell.txtDescription.delegate = self
@@ -188,7 +167,6 @@ extension AddReviewVC: UITextViewDelegate
             textView.textColor = UIColor.darkGray
         }
     }
-    
     func textViewDidChange(_ textView: UITextView)
     {
         if textView.text != ""{
@@ -200,7 +178,6 @@ extension AddReviewVC: UITextViewDelegate
             }
         }
     }
-    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
@@ -208,7 +185,6 @@ extension AddReviewVC: UITextViewDelegate
         }
         return true
     }
-    
     func textViewDidEndEditing(_ textView: UITextView) {
         print("DESC",textView.text)
         if textView.text == ""
@@ -288,7 +264,6 @@ extension AddReviewVC
             
             var param:[String:Any] = [WS_REVIEWID : objUserReview?.id.asStringOrEmpty() ?? "",
                                              WS_RATTING: addReviewData.ratting,
-//                                             WS_TITLE:addReviewData.title,
                                              WS_DESC:addReviewData.desc,
                                              WS_IS_TEST: IS_TESTDATA]
             

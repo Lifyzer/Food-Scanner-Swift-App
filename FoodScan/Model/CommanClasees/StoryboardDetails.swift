@@ -8,7 +8,7 @@
 
 import Foundation
 
-//====================================================  Storyboards - Main  ====================================================
+//==========  Storyboards - Main  =================
 let StoryBoardMain = "Main"
 //Controllers
 let idHomeTabVC = "idHomeTabVC"
@@ -18,25 +18,25 @@ let idProfileVC = "idProfileVC"
 let idFoodDetailVC = "idFoodDetailVC"
 let idViewProductPopUpVC = "idViewProductPopUpVC"
 let idAddReviewVC = "idAddReviewVC"
-//==============================================================================================================================
+//===================================================//
 
-//====================================================  Storyboards - Login  ===================================================
+//==========  Storyboards - Login  ==============
 let StoryBoardLogin = "Login"
 //Controllers
 let idWelComeVC = "idWelComeVC"
 let idLoginVC = "idLoginVC"
 let idRegistrationVC = "idRegistrationVC"
 let idForgotPasswordVC = "idForgotPasswordVC"
-//================================================================================================================================
+//===================================================//
 
 
-//====================================================  Storyboards - Settings  ==================================================
+//==========  Storyboards - Settings  ==============
 let StoryBoardSettings = "Settings"
 //Controllers
 let idSettingsVC = "idSettingsVC"
 let idEditProfileVC = "idEditProfileVC"
 let idChangePasswordVC = "idChangePasswordVC"
 let idPrivacyPolicyVC = "idPrivacyPolicyVC"
-//=================================================================================================================================
+//===================================================//
 
 

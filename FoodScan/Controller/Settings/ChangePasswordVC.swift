@@ -40,6 +40,7 @@ class ChangePasswordVC: UIViewController {
                     WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
                     WS_KAccess_key:DEFAULT_ACCESS_KEY,
                     WS_KSecret_key:userToken ?? ""]
+                
                 HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIChangePassword, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                     self.hideIndicator(view: self.view)
                     if response != nil
@@ -48,25 +49,20 @@ class ChangePasswordVC: UIViewController {
                         alert.addAction(UIAlertAction(title: "OK",
                                                       style: .default,
                                                       handler: {(_: UIAlertAction!) in
-                                                        self.navigationController?.popViewController(animated: true)
+                            self.navigationController?.popViewController(animated: true)
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }else {
                         self.generateAlertWithOkButton(text: message!)
-//                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
                 })
-            }
-            else
-            {
+            }else{
                 self.generateAlertWithOkButton(text: no_internet_connection)
-//                showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
             }
         }
     }
 
     func ValidateField() -> Bool {
-
         if !txtCurrentPwd.text!.isValid() {
             self.generateAlertWithOkButton(text: please_enter_current_password)
         } else if !txtNewPwd.text!.isValid() {

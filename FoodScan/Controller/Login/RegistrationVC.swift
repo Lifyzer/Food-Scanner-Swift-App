@@ -9,10 +9,8 @@
 import UIKit
 import SwiftyJSON
 
-
 var deselected = UIImage(named: "Deselected")
 var selected = UIImage(named: "Selected")
-
 
 class RegistrationVC: UIViewController {
     @IBOutlet var txtFullName: UITextField!
@@ -30,7 +28,6 @@ class RegistrationVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         btnAcceptTOS.setImage(selected, for: .selected)
         btnAcceptTOS.setImage(deselected, for: .normal)
         txtFullName.setLeftPaddingPoints(10)
@@ -39,19 +36,15 @@ class RegistrationVC: UIViewController {
         txtCmfPassword.setLeftPaddingPoints(10)
         btnRegister.isEnabled = false
         btnRegister.backgroundColor = UIColor(red: 85/255, green: 165/255, blue: 70/255, alpha: 1.0).withAlphaComponent(0.5)
-        // Do any additional setup after loading the view.
     }
 
     @IBAction func btnAcceptTC(_ sender: Any) {
         btnAcceptTOS.isSelected = !btnAcceptTOS.isSelected
-        if btnAcceptTOS.isSelected
-        {
+        if btnAcceptTOS.isSelected{
             isAcceptTOS = true
             btnRegister.isEnabled = true
             btnRegister.backgroundColor = UIColor(red: 85/255, green: 165/255, blue: 70/255, alpha: 1.0)
-        }
-        else
-        {
+        }else{
             isAcceptTOS = false
             btnRegister.isEnabled = false
             btnRegister.backgroundColor = UIColor(red: 85/255, green: 165/255, blue: 70/255, alpha: 1.0).withAlphaComponent(0.5)
@@ -70,39 +63,34 @@ class RegistrationVC: UIViewController {
     @IBAction func buttonSignUpClicked(_ sender: Any) {
 
         if ValidateField(){
-
             if Connectivity.isConnectedToInternet
             {
-              showIndicator(view: view)
-            let param:NSMutableDictionary = [
-                WS_KEmail_id:self.txtEmail.text!,
-                WS_KFirst_name:self.txtFullName.text!,
-                WS_KLast_name:"",
-                WS_KDevice_type:DEVICE_TYPE,
-                WS_KPassword:self.txtPassword.text!,
-                WS_KAccess_key:DEFAULT_ACCESS_KEY,
-                WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
-            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRegistration, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-                self.hideIndicator(view: self.view)
-                if response != nil
-                {
-                    UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
-                    //                    UserDefaults.standard.set(true, forKey: kLogIn)
-
-                    if JSON(response!)[WSKUser].array? .count != 0 {
-                        APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
-                        UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
-                        UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
-
-                        self.getGUID ()
+                showIndicator(view: view)
+                let param:NSMutableDictionary = [
+                        WS_KEmail_id:self.txtEmail.text!,
+                        WS_KFirst_name:self.txtFullName.text!,
+                        WS_KLast_name:"",
+                        WS_KDevice_type:DEVICE_TYPE,
+                        WS_KPassword:self.txtPassword.text!,
+                        WS_KAccess_key:DEFAULT_ACCESS_KEY,
+                        WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
+                
+                HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRegistration, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                    self.hideIndicator(view: self.view)
+                    if response != nil
+                    {
+                        UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
+                        if JSON(response!)[WSKUser].array? .count != 0 {
+                            APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
+                            UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
+                            UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
+                            UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
+                            self.getGUID ()
+                        }
+                    }else {
+                        self.generateAlertWithOkButton(text: message!)
                     }
-
-                }else {
-                    self.generateAlertWithOkButton(text: message!)
-                }
-
-            })
+                })
             }
         }
         else
@@ -111,8 +99,8 @@ class RegistrationVC: UIViewController {
         }
     }
 
-    func getGUID(){
-
+    func getGUID()
+    {
         let GUID = UserDefaults.standard.value(forKey: kUserGUID)
         let param : NSDictionary = ["guid": GUID.asStringOrEmpty()]
         if Connectivity.isConnectedToInternet
@@ -126,20 +114,15 @@ class RegistrationVC: UIViewController {
                         UserDefaults.standard.set(dicResp.value(forKey: kEncrypted), forKey: kEncrypted)
                         self.hideIndicator(view: self.view)
                         UserDefaults.standard.set(true, forKey: kLogIn)
-
                         self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
                         HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
-
                     }
                 }
                 self.hideIndicator(view: self.view)
             }
-        }
-        else
-        {
+        }else{
             self.generateAlertWithOkButton(text: no_internet_connection)
         }
-
     }
 
     func ValidateField() -> Bool {
@@ -160,7 +143,6 @@ class RegistrationVC: UIViewController {
         } else {
             return true
         }
-
         return false
     }
 

@@ -15,7 +15,6 @@ extension UIView
     {
         self.backgroundColor = UIColor.clear
         let width = 1.0
-
         let borderLine = UIView()
         borderLine.removeFromSuperview()
         borderLine.frame = CGRect(x: 0, y: Double(self.frame.height) - width, width: Double(self.frame.width), height: width)

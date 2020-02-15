@@ -39,7 +39,6 @@
 		0069BA622213E651008DD907 /* WebService-Prefix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0069BA552213E650008DD907 /* WebService-Prefix.swift */; };
 		0069BA632213E651008DD907 /* WebServicesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0069BA562213E650008DD907 /* WebServicesCollection.swift */; };
 		0069BA7A2213F11B008DD907 /* WSUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0069BA792213F11B008DD907 /* WSUser.swift */; };
-		0069BA8122141172008DD907 /* LaunchScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0069BA8022141172008DD907 /* LaunchScreenVC.swift */; };
 		0069BA852214184A008DD907 /* SecurityHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0069BA842214184A008DD907 /* SecurityHandler.swift */; };
 		0069BA8C22141899008DD907 /* FBEncryptorAES.m in Sources */ = {isa = PBXBuildFile; fileRef = 0069BA8822141899008DD907 /* FBEncryptorAES.m */; };
 		0069BA8D22141899008DD907 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 0069BA8A22141899008DD907 /* NSData+Base64.m */; };
@@ -174,7 +173,6 @@
 		0069BA552213E650008DD907 /* WebService-Prefix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WebService-Prefix.swift"; sourceTree = "<group>"; };
 		0069BA562213E650008DD907 /* WebServicesCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServicesCollection.swift; sourceTree = "<group>"; };
 		0069BA792213F11B008DD907 /* WSUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSUser.swift; sourceTree = "<group>"; };
-		0069BA8022141172008DD907 /* LaunchScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenVC.swift; sourceTree = "<group>"; };
 		0069BA842214184A008DD907 /* SecurityHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityHandler.swift; sourceTree = "<group>"; };
 		0069BA8722141899008DD907 /* FBEncryptorAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBEncryptorAES.h; sourceTree = "<group>"; };
 		0069BA8822141899008DD907 /* FBEncryptorAES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBEncryptorAES.m; sourceTree = "<group>"; };
@@ -496,7 +494,6 @@
 				00F49E83220C29280053829D /* RegistrationVC.swift */,
 				00F49E85220C293C0053829D /* ForgotPasswordVC.swift */,
 				00F49E87220C295A0053829D /* WelComeVC.swift */,
-				0069BA8022141172008DD907 /* LaunchScreenVC.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -571,7 +568,6 @@
 		5B033A1E22674BB600BB3BB4 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				F580AD402372A209003D3EE2 /* Popover */,
 				F580AD3F2372A202003D3EE2 /* Scan */,
 			);
 			path = Library;
@@ -671,13 +667,6 @@
 				5B191D162268464100E1DF1F /* VideoCapture.swift */,
 			);
 			path = Scan;
-			sourceTree = "<group>";
-		};
-		F580AD402372A209003D3EE2 /* Popover */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Popover;
 			sourceTree = "<group>";
 		};
 		F5BC6EB8236C123D00817310 /* tableAddReviewProductImageCell */ = {
@@ -1037,7 +1026,6 @@
 				5B31570C2236395600EC0674 /* ScanProductVC.swift in Sources */,
 				003777862217EAA1003D233A /* FoodDetailVC.swift in Sources */,
 				F5BC6EC5236C134A00817310 /* tableAddReviewTitleCell.swift in Sources */,
-				0069BA8122141172008DD907 /* LaunchScreenVC.swift in Sources */,
 				0069BA622213E651008DD907 /* WebService-Prefix.swift in Sources */,
 				002E09BE221686D900252764 /* tableFoodCell.swift in Sources */,
 				004473D922129139004C98C9 /* DesignableView.swift in Sources */,

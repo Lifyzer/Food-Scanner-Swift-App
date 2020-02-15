@@ -8,12 +8,6 @@
 import Foundation
 import UIKit
 
-extension UIAlertController
-{
-
-}
-
-
 public func showAlert(Title:String,Message:String,delegate:UIViewController)
 {
     let alert = UIAlertController(title: Title, message: Message, preferredStyle: UIAlertController.Style.alert)

@@ -28,7 +28,6 @@ class WebServicesCollection
             if response != nil {
                 if(error == nil) {
                     _ = JSON(response!)[WSKUser].array
-//                    let userObj = objData![0].to(type: WSUser.self) as? WSUser
                     responseData(nil, error, message)
                 }
             } else {
@@ -43,7 +42,6 @@ class WebServicesCollection
             if response != nil {
                 if(error == nil) {
                     _ = JSON(response!)[WSKUser].array
-//                    let userObj = objData![0].to(type: WSUser.self) as? WSUser
                     responseData(nil, error, message)
                 }
             } else {
@@ -63,74 +61,6 @@ class WebServicesCollection
             }
         }
     }
-//
-//    func getUserDetails(responseData:@escaping (_ userObj:UserModel?,_ error:Error?,_ message:String?) -> Void) {
-//
-//        let ParametersDict: NSDictionary = [
-//            "user_id" : "\(APP_DELEGATE.APPUSER.userId!)"]
-//
-//        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl:APIGetUserDetails, parameters: ParametersDict) { (response, error, message) in
-//            if response != nil {
-//                let objData = JSON(response!)[WSDATA].array
-//                if(objData != nil) {
-//                    let userObj = objData![0].to(type: UserModel.self) as? UserModel
-//                    responseData(userObj, error, message)
-//                } else {
-//                    responseData(nil, error, message)
-//                }
-//            } else {
-//                responseData(nil, error, message)
-//            }
-//        }
-//    }
-//
-//
-//
-//    func checkIfDeviceTokenExists(responseData:@escaping (_ error:Error?,_ message:String?) -> Void)
-//    {
-//        let ParametersDict: NSDictionary =  [
-//            "device_token" : UserDefaults.standard.getDeviceToken(),
-//            "user_id" : "\(APP_DELEGATE.APPUSER.userId!)"
-//        ]
-//
-//        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl:APIUpdateDeviceToken, parameters: ParametersDict) { (response, error, message) in
-//            responseData(error, message)
-//        }
-//    }
-//
-//    func registerUser(userId:Int,name:String,nickName:String, profilePhoto:UIImage?,city:String,email:String, responseData:@escaping (_ userObj:UserModel?,_ error:Error?,_ message:String?) -> Void) {
-//
-//        let ParametersDict: NSMutableDictionary = [
-//            "user_id" : "\(userId)",
-//            "first_name": name,
-//            "last_name": "",
-//            "device_token":UserDefaults.standard.getDeviceToken(),
-//            "nick_name": nickName,
-//            "email": email,
-//            "city":city]
-//
-//        if(profilePhoto != nil) {
-//            ParametersDict.setValue(profilePhoto, forKey: "media_file")
-//        }
-//
-//        print("Param : \(ParametersDict)")
-//
-//        HttpRequestManager.sharedInstance.postMultipartJSONRequest(endpointurl: APIRegister, parameters: ParametersDict) { (response, error, message) in
-//            if response != nil {
-//                let objData = JSON(response!)[WSDATA].array
-//                if(objData != nil) {
-//                    let userObj = objData![0].to(type: UserModel.self) as? UserModel
-//                    responseData(userObj, error, message)
-//                } else {
-//                    responseData(nil, error, message)
-//                }
-//            } else {
-//                responseData(nil, error, message)
-//            }
-//        }
-//    }
-
-
 }
 
 

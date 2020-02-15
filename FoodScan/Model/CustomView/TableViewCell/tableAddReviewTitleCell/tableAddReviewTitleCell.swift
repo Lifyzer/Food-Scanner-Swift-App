@@ -16,7 +16,6 @@ class tableAddReviewTitleCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         viewTitle.layer.cornerRadius = 5.0
         viewTitle.layer.borderWidth = 0.5
         viewTitle.layer.borderColor = UIColor.darkGray.cgColor
@@ -24,8 +23,6 @@ class tableAddReviewTitleCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
 }

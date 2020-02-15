@@ -97,20 +97,14 @@ extension UIViewController
                             fn()
                         }
                         SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
-//                        self.generateAlertWithOkButton(text: message!)
-//                        showBanner(title: "", subTitle: message!, bannerStyle:.success)
                     }else {
                         SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
-//                        self.generateAlertWithOkButton(text: message!)
-//                        showBanner(title: "", subTitle: message!, bannerStyle:.danger)
                     }
                 })
         }
         else
         {
             SHOW_ALERT_VIEW(TITLE: "", DESC: no_internet_connection, STATUS: .error, TARGET: self)
-//            self.generateAlertWithOkButton(text: no_internet_connection)
-//            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
 }

@@ -32,8 +32,6 @@ public enum RESPONSE_STATUS : String
     case FAILED = "failed"
 }
 
-
-
 protocol UploadProgressDelegate
 {
     func didReceivedProgress(progress:Float)
@@ -57,7 +55,6 @@ class HttpRequestManager
     var delegate : UploadProgressDelegate?
     var downloadDelegate : DownloadProgressDelegate?
 
-
     // METHODS
     init()
     {
@@ -75,7 +72,6 @@ class HttpRequestManager
             .responseString(completionHandler: { (response) in
                 print(response)
             })
-
             .responseJSON { (response:DataResponse<Any>) in
 
             ShowNetworkIndicator(xx: false)
@@ -92,12 +88,9 @@ class HttpRequestManager
                         responseData(nil, response.result.error as NSError?,MESSAGE)
                         break
                     default:
-                   //  responseData(nil, response.result.error as NSError?,response.result.error?.localizedDescription)//MESSAGE)
                      responseData(nil, response.result.error as NSError?,MESSAGE)
-
                         break
                 }
-//                responseData(nil, response.result.error as NSError?,response.result.error?.localizedDescription/*MESSAGE*/)
             }
             else
             {
@@ -127,14 +120,9 @@ class HttpRequestManager
                 case .failure(_):
                     responseData(nil, response.result.error as NSError?,MESSAGE)
                     break
-
                 }
             }
         }
-
-//            .responseString { (response) in
-//                print("Response String",response)
-//        }
     }
     func postJSONRequestSecurity(endpointurl:String, parameters:NSDictionary, encodingType:ParameterEncoding = JSONEncoding.default, responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
     {
@@ -142,7 +130,6 @@ class HttpRequestManager
         alamoFireManager.request(endpointurl, method: .post, parameters: parameters as? Parameters, encoding: encodingType, headers: additionalHeader)
 
             .responseJSON { (response:DataResponse<Any>) in
-
                 ShowNetworkIndicator(xx: false)
 
                 if let _ = response.result.error
@@ -157,21 +144,6 @@ class HttpRequestManager
                         if let data = response.result.value
                         {
                             self.Message = (data as! NSDictionary)[WSMESSAGE].asStringOrEmpty()
-//                            let responseStatus = Int((data as! NSDictionary)[WSSTATUS].asStringOrEmpty())
-//                            switch (responseStatus) {
-//
-//                            case RESPONSE_STATUS.VALID.rawValue :
-//                                self.resObjects = (data as! NSDictionary) as AnyObject
-//                                break
-//
-//                            case RESPONSE_STATUS.INVALID.rawValue :
-//                                self.resObjects = nil
-//                                break
-//
-//                            default :
-//                                self.resObjects = (data as! NSDictionary) as AnyObject
-//                                break
-//                            }
                             responseData((data as! NSDictionary) as AnyObject, nil, self.Message)
                         }
                         break
@@ -334,95 +306,6 @@ class HttpRequestManager
                 responseData(true)
         }
     }
-
-//    func postMultipartJSONRequest(endpointurl:String, parameters:NSDictionary, encodingType:ParameterEncoding = JSONEncoding.default, responseData:@escaping (_ data: AnyObject?, _ error: NSError?, _ message: String?) -> Void)
-//    {
-//        ShowNetworkIndicator(xx: true)
-//
-//        alamoFireManager.upload(multipartFormData: { (multipartFormData) in
-//
-//            for (key, value) in parameters
-//            {
-//                if value is UIImage {
-//                    let imageData:Data = UIImageJPEGRepresentation(value as! UIImage, 0.3)!
-//                    multipartFormData.append(imageData, withName: key as! String, fileName: "swift_file.jpg", mimeType: "image/*")
-//                }else if value is NSURL || value is URL {
-//                    let videoData:Data
-//                    do {
-//                        videoData = try Data (contentsOf: (value as! URL), options: .mappedIfSafe)
-//                        multipartFormData.append(videoData, withName: key as! String, fileName: "swift_file.mp4", mimeType: "video/*")
-//                    } catch {
-//                        print(error)
-//                        return
-//                    }
-//                }else if value is NSArray || value is NSMutableArray {
-//                    for childValue in value as! NSArray
-//                    {
-//                        if childValue is UIImage {
-//                            let imageData:Data = UIImageJPEGRepresentation(childValue as! UIImage, 0.3)!
-//                            multipartFormData.append(imageData, withName: key as! String, fileName: "swift_file.jpg", mimeType: "image/*")
-//                        }
-//                    }
-//                }
-//                else {
-//                    let valueData:Data = (value as! NSString).data(using: String.Encoding.utf8.rawValue)!
-//                    multipartFormData.append(valueData, withName: key as! String)
-//                }
-//            }
-//
-//        }, to: endpointurl) { encodingResult in
-//
-//            ShowNetworkIndicator(xx: false)
-//
-//            switch encodingResult {
-//            case .success(let upload, _, _):
-//
-//                upload.uploadProgress(closure: { (progress) in
-//                    //if isUploading && isForeground {
-//                    //self.delegate?.didReceivedProgress(progress: Float(progress.fractionCompleted))
-//                    //}
-//                })
-//
-//                upload.responseString(completionHandler: { (resp) in
-//                    //print("RESP : \(resp)")
-//                })
-//
-//                upload.responseJSON { response in
-//                    ////print(response)
-//                    switch(response.result) {
-//                    case .success(_):
-//                        if let data = response.result.value
-//                        {
-//                            self.Message = (data as! NSDictionary)[WSMESSAGE].asStringOrEmpty()
-//                            let responseStatus = (data as! NSDictionary)[WSSUCCESS].asStringOrEmpty()
-//                            switch (responseStatus) {
-//
-//                            case RESPONSE_STATUS.VALID.rawValue :
-//                                self.resObjects = (data as! NSDictionary) as AnyObject
-//                                break
-//
-//                            case RESPONSE_STATUS.INVALID.rawValue :
-//                                self.resObjects = nil
-//                                break
-//
-//                            default :
-//                                break
-//                            }
-//                            responseData(self.resObjects, nil, self.Message)
-//                        }
-//                        break
-//
-//                    case .failure(_):
-//                        responseData(nil, response.result.error as NSError?,MESSAGE)
-//                        break
-//
-//                    }
-//                }
-//            case .failure( _):
-//                responseData(nil, nil, MESSAGE)
-//            }
-//        }
-//    }
 }
 
 public func ShowNetworkIndicator(xx :Bool)

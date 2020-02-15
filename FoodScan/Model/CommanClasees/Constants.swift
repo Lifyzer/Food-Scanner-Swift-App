@@ -10,17 +10,11 @@ import Foundation
 import UIKit
 
 let APPNAME = "Lifyzer"
-
 let SERVER_URL = "https://lifyzer.com"
-
 let PRIVACY_POLICY_URL = "https://lifyzer.com/tos.txt"
-
 let APP_DELEGATE = UIApplication.shared.delegate as! AppDelegate
-
 let APP_FONT_BOLD = "Roboto-Bold"
-
 let APP_FONT_LIGHT = "Roboto-Light"
-
 
 //String Constant
 var DEFAULT_ACCESS_KEY = "nousername"
@@ -75,9 +69,7 @@ let Accept_Terms_conditions = "Please accept terms and conditions"
 let please_enter_product_name = "Please enter product name"
 let add_review_title_placeholder = "Headline for your review"
 let add_review_desc_placeholder = "We want to hear your thoughts and feedback!😋"
-
 let please_select_ratting = "Please give a ratting"
-
 
 //let kLogIn = "Login"
 let kUserId = "UserId"

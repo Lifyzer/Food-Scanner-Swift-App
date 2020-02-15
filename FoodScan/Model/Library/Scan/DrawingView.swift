@@ -23,7 +23,6 @@ class DrawingView: UIView {
         {
             i.removeFromSuperview()
         }
-
         guard let ctx = UIGraphicsGetCurrentContext() else { return }
         ctx.clear(rect);
         guard let visionText = visionText else { return }
@@ -35,20 +34,17 @@ class DrawingView: UIView {
         let font = UIFont.systemFont(ofSize: 10)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
+        
         let attributes = [
             NSAttributedString.Key.paragraphStyle: paragraphStyle,
             NSAttributedString.Key.font: font,
             NSAttributedString.Key.foregroundColor: UIColor.green
         ]
-
-
         for block in blocks {
             let lines: [VisionTextLine] = block.lines
             for line in lines {
-
                 let elements: [VisionTextElement] = line.elements
                 for element in elements {
-
                     let text = element.text
                     let labl = UILabel()
                     let frame = element.frame * (frameSize / imageSize)
@@ -61,7 +57,6 @@ class DrawingView: UIView {
                     labl.backgroundColor = UIColor.clear
                     labl.font = UIFont(name: "aribl_bold", size: 15.0)
                     self.addSubview(labl)
-
                     let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandle(_:)))
                     tap.numberOfTapsRequired = 1
                     labl.addGestureRecognizer(tap)
@@ -83,7 +78,6 @@ class DrawingView: UIView {
                 vc.productName = txt
                 txt = ""
                 vc.modalPresentationStyle = .overCurrentContext
-//                vc.delegate = self
                 self.topMostController()?.present(vc, animated: false, completion: nil)
             }
         }
@@ -116,8 +110,6 @@ class DrawingView: UIView {
             ctx.setStrokeColor(color)
             ctx.setLineWidth(1.0)
         }
-
-
         for i in 0..<points.count {
             if i == 0 {
                 ctx.move(to: points[i])
@@ -128,7 +120,6 @@ class DrawingView: UIView {
         if let firstPoint = points.first {
             ctx.addLine(to: firstPoint)
         }
-
         if fill {
             ctx.fillPath()
         } else {

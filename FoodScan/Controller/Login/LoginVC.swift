@@ -10,6 +10,7 @@ import UIKit
 import SwiftyJSON
 
 class LoginVC: UIViewController {
+    
     @IBOutlet var txtEmail: UITextField!
     @IBOutlet var txtPassword: UITextField!
 
@@ -17,9 +18,7 @@ class LoginVC: UIViewController {
         super.viewDidLoad()
         txtEmail.setLeftPaddingPoints(10)
         txtPassword.setLeftPaddingPoints(10)
-        // Do any additional setup after loading the view.
     }
-
 
     //MARK: - Buttons
     @IBAction func buttonBackClicked(_ sender: Any) {
@@ -48,22 +47,17 @@ class LoginVC: UIViewController {
                     if response != nil
                     {
                         UserDefaults.standard.set(JSON(response!)[WSKUserToken].string, forKey: kUserToken)
-                        //                    UserDefaults.standard.set(true, forKey: kLogIn)
-
                         if JSON(response!)[WSKUser].array? .count != 0 {
                             APP_DELEGATE.objUser = JSON(response!)[WSKUser].array?.first?.to(type: WSUser.self) as? WSUser
                             UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: APP_DELEGATE.objUser!, forKey: KUser)
                             UserDefaults.standard.set(APP_DELEGATE.objUser?.guid.asStringOrEmpty(), forKey: kUserGUID)
                             UserDefaults.standard.set(APP_DELEGATE.objUser?.userId.asStringOrEmpty(), forKey: kUserId)
-
                             self.getGUID ()
                         }
                     }else {
                         self.hideIndicator(view: self.view)
                         self.generateAlertWithOkButton(text: message!)
-//                        showBanner(title: "", subTitle: message!, bannerStyle: .danger)
                     }
-
                 })
             }
             else
@@ -81,37 +75,24 @@ class LoginVC: UIViewController {
         if Connectivity.isConnectedToInternet
         {
             HttpRequestManager.sharedInstance.postJSONRequestSecurity(endpointurl: APItestEncryption, parameters: param as NSDictionary) { (response, error, message) in
-            if (error == nil)
-            {
-                if (response != nil && response is NSDictionary)
+                if (error == nil)
                 {
-                    let dicResp = response as! NSDictionary
-                    UserDefaults.standard.set(dicResp.value(forKey: kEncrypted), forKey: kEncrypted)
-                    self.hideIndicator(view: self.view)
-                    UserDefaults.standard.set(true, forKey: kLogIn)
-
-//                    let storyBoard = UIStoryboard(name: StoryBoardMain, bundle: nil)
-//                    let vc = storyBoard.instantiateViewController(withIdentifier: idHomeTabVC) as! HomeTabVC
-//                    vc.selectedIndex = 1
-//                    self.navigationController?.pushViewController(vc, animated: true)
-
-//                    HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
-                     HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
-                    self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
-
-
+                    if (response != nil && response is NSDictionary)
+                    {
+                        let dicResp = response as! NSDictionary
+                        UserDefaults.standard.set(dicResp.value(forKey: kEncrypted), forKey: kEncrypted)
+                        self.hideIndicator(view: self.view)
+                        UserDefaults.standard.set(true, forKey: kLogIn)
+                        HomeTabVC.sharedHomeTabVC?.selectedIndex = 1
+                        self.pushViewController(Storyboard: StoryBoardMain, ViewController: idHomeTabVC, animation: false)
+                    }
                 }
-            }
                 self.hideIndicator(view: self.view)
-        }
-        }
-        else
-        {
+            }
+        }else{
             self.generateAlertWithOkButton(text: no_internet_connection)
         }
-
     }
-
     func ValidateField() -> Bool {
         if !txtEmail.text!.isValid() {
             showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)

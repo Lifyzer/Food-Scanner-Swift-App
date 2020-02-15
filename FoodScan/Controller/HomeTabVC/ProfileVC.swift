@@ -9,15 +9,14 @@
 import UIKit
 import SwiftyJSON
 import SDWebImage
-//import Crashlytics
 
+enum ProfileItems: Int {
+  case UserEmail=0 , FavouriteFood
+  case totalCount = 2
+}
 
 class ProfileVC: UIViewController {
 
-      enum ProfileItems: Int {
-        case UserEmail=0 , FavouriteFood
-        case totalCount = 2
-      }
       @IBOutlet var buttonLogin: UIButton!
       @IBOutlet var tableProfile: UITableView!
       @IBOutlet var vwNoData: UIView!
@@ -32,18 +31,14 @@ class ProfileVC: UIViewController {
       var offSet : Int = 0
       var noOfRecords  = REQ_NO_OF_RECORD
       private let refresher = UIRefreshControl()
-    var RemoveIndex = -1
+      var RemoveIndex = -1
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableProfile.tableFooterView = UIView()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
-
-           // Crashlytics.sharedInstance().crash()
-
         if checkLoginAlert(){
             objUser = UserDefaults.standard.getCustomObjFromUserDefaults(forKey: KUser) as? WSUser
             userEmail.text = objUser?.email
@@ -51,9 +46,7 @@ class ProfileVC: UIViewController {
             refresher.addTarget(self, action: #selector(initialRequest(_:)), for: .valueChanged)
             tableProfile.refreshControl = refresher
             getFavFood(isLoader: true)
-        }
-        else
-        {
+        }else {
             userEmail.text = "User Email"
             userName.text = "User Name"
             self.vwNoData.isHidden = false
@@ -66,8 +59,8 @@ class ProfileVC: UIViewController {
         self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idEditProfileVC, animation: true)
         }
     }
+    
     @IBAction func buttonSettingsClicked(_ sender: Any) {
-
         if checkLoginAlert(){
             self.pushViewController(Storyboard: StoryBoardSettings, ViewController: idSettingsVC, animation: true)
         }
@@ -83,7 +76,6 @@ class ProfileVC: UIViewController {
                                             self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
             }))
             alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
-
             }))
             self.present(alert, animated: true, completion: nil)
         }else {
@@ -116,14 +108,10 @@ class ProfileVC: UIViewController {
 
         if Connectivity.isConnectedToInternet
         {
-            let userToken = UserDefaults.standard.string(forKey: kTempToken)
-            let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
             let param:NSMutableDictionary = [
                 WS_KTo_index:noOfRecords,
                 WS_KFrom_index:offSet,
                 WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? ""]
-//                WS_KAccess_key:DEFAULT_ACCESS_KEY,
-//                WS_KSecret_key:userToken ?? ""]
                 includeSecurityCredentials {(data) in
                     let data1 = data as! [AnyHashable : Any]
                     param.addEntries(from: data1)
@@ -132,32 +120,30 @@ class ProfileVC: UIViewController {
             if(isLoader){
                 showIndicator(view: self.view)
             }
-
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetAllUserFavourite, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 if(isLoader){
                     self.hideIndicator(view: self.view)}
-                if response != nil
-                {
-                    let objData = JSON(response!)[WS_KProduct]
-                    self.arrayFavFood = objData.to(type: WSProduct.self) as! [WSProduct]
-                    if self.arrayFavFood.count > 0{
-                        self.tableProfile.isHidden = false
-                        self.vwNoData.isHidden = true
-                        self.tableProfile.reloadData()
+                    if response != nil
+                    {
+                        let objData = JSON(response!)[WS_KProduct]
+                        self.arrayFavFood = objData.to(type: WSProduct.self) as! [WSProduct]
+                        if self.arrayFavFood.count > 0{
+                            self.tableProfile.isHidden = false
+                            self.vwNoData.isHidden = true
+                            self.tableProfile.reloadData()
+                        }else {
+                            self.vwNoData.isHidden = false
+                            self.tableProfile.isHidden = true
+                        }
+                        if self.isLoadMore{
+                            self.isLoadMore = false
+                            self.indicatorView.isHidden = true
+                            self.activityIndicator.stopAnimating()
+                        }
+                        self.refresher.endRefreshing()
                     }else {
-                        self.vwNoData.isHidden = false
-                        self.tableProfile.isHidden = true
+                       showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
                     }
-
-                    if self.isLoadMore{
-                        self.isLoadMore = false
-                        self.indicatorView.isHidden = true
-                        self.activityIndicator.stopAnimating()
-                    }
-                    self.refresher.endRefreshing()
-                }else {
-                   showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
-                }
                 })
             }
             else
@@ -170,14 +156,12 @@ class ProfileVC: UIViewController {
 //MARK:- Table - Delegate - DataSource
 extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
 
-    //Row
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-            return arrayFavFood.count;
+        return arrayFavFood.count;
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 130//UITableView.automaticDimension//120;
+        return 130
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -194,15 +178,11 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
         cell.btnFav.addTarget(self, action: #selector(btnFavourite(_:)), for:.touchUpInside)
         let imageURL = URL(string: objProduct.productImage ?? "")
         cell.imgFavouriteFood.contentMode = .scaleAspectFill
-        if imageURL != nil
-        {
+        if imageURL != nil{
             cell.imgFavouriteFood!.sd_setImage(with: imageURL, placeholderImage: UIImage(named: "food_place_holder"))
-        }
-        else
-        {
+        }else{
             cell.imgFavouriteFood.image = UIImage(named: "food_place_holder")
         }
-
         let isHealthy : String = objProduct.isHealthy ?? ""
         if isHealthy != "" && isHealthy.count > 0{
             if isHealthy == "0" {
@@ -217,32 +197,13 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
         }
         cell.selectionStyle = .none
         return cell
-
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
         vc.objProduct = arrayFavFood[indexPath.row]
         vc.objProduct.isFavourite = 1
-
         self.navigationController?.pushViewController(vc, animated: true)
-
-    }
-
-    func scrollViewDidEndDecelerating(_ scrollView : UIScrollView) {
-        let currentOffset = scrollView.contentOffset.y
-        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-
-        // Change 10.0 to adjust the distance from bottom
-//        if maximumOffset - currentOffset <= 10.0{
-//            if !isLoadMore{
-//                indicatorView.isHidden = false
-//                activityIndicator.startAnimating()
-//                loadMoreRequest()
-//                isLoadMore = true
-//            }
-//        }
     }
 }
 

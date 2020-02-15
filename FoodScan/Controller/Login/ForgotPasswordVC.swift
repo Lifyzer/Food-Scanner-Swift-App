@@ -9,17 +9,13 @@
 import UIKit
 import SwiftyJSON
 
-
-class ForgotPasswordVC: UIViewController {
+class ForgotPasswordVC: UIViewController
+{
     @IBOutlet var txtEmail: UITextField!
-
     override func viewDidLoad() {
         super.viewDidLoad()
         txtEmail.setLeftPaddingPoints(10)
-
-        // Do any additional setup after loading the view.
     }
-
 
     //MARK: - Buttons
     @IBAction func buttonBackClicked(_ sender: Any) {
@@ -27,41 +23,34 @@ class ForgotPasswordVC: UIViewController {
     }
 
     @IBAction func buttonSendClicked(_ sender: Any) {
-
         if ValidateField() {
             if Connectivity.isConnectedToInternet
             {
-            showIndicator(view: view)
-            let param:NSMutableDictionary = [
-                WS_KEmail_id:self.txtEmail.text!]
-//                WS_KDevice_type:DEVICE_TYPE,
-//                WS_KAccess_key:DEFAULT_ACCESS_KEY,
-//                WS_KSecret_key:UserDefaults.standard.string(forKey: kTempToken) ?? ""]
-//
+                showIndicator(view: view)
+                let param:NSMutableDictionary = [
+                        WS_KEmail_id:self.txtEmail.text!]
                 includeSecurityCredentials {(data) in
                     let data1 = data as! [AnyHashable : Any]
                     param.addEntries(from: data1)
                 }
 
-            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIForgotPassword, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-               self.hideIndicator(view: self.view)
-                if response != nil
-                {
-                    let alert = UIAlertController(title: APPNAME, message: forget_password_success,preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK",
-                                                  style: .default,
-                                                  handler: {(_: UIAlertAction!) in
-                                                    self.navigationController?.popViewController(animated: true)
-                    }))
-                    self.present(alert, animated: true, completion: nil)
-                } else {
-                    self.generateAlertWithOkButton(text: message!)
-                }
-            })
+                HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIForgotPassword, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                   self.hideIndicator(view: self.view)
+                    if response != nil
+                    {
+                        let alert = UIAlertController(title: APPNAME, message: forget_password_success,preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK",
+                                                      style: .default,
+                                                      handler: {(_: UIAlertAction!) in
+                            self.navigationController?.popViewController(animated: true)
+                        }))
+                        self.present(alert, animated: true, completion: nil)
+                    } else {
+                        self.generateAlertWithOkButton(text: message!)
+                    }
+                })
             }
-        }
-        else
-        {
+        }else{
             self.generateAlertWithOkButton(text: no_internet_connection)
         }
     }
@@ -74,7 +63,6 @@ class ForgotPasswordVC: UIViewController {
         } else {
             return true
         }
-
         return false
     }
 

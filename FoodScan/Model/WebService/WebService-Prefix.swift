@@ -20,9 +20,7 @@ let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
 
 //let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
 
-
 //Images Path
-
 //let PATHCATEGORY = "\(SERVER_URL)pg/Bazinga/uploads/sub_categories/"
 //let PATHPRODUCTMEDIA = "\(SERVER_URL)pg/Bazinga/uploads/products/media/images/"
 
@@ -44,7 +42,6 @@ let APIAddReview = "\(SERVER_URL)\(WEBSERVICE_PATH)addReview"
 let APIEditReview = "\(SERVER_URL)\(WEBSERVICE_PATH)updateReview"
 let APIDeleteReview = "\(SERVER_URL)\(WEBSERVICE_PATH)deleteReview"
 let APIReviewList = "\(SERVER_URL)\(WEBSERVICE_PATH)getReviewList"
-
 
 //Model
 let WSUSER = "User"

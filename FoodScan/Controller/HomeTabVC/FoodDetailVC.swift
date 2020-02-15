@@ -74,7 +74,7 @@ class FoodDetailVC: UIViewController {
         setupUI()
 
     }
-    
+                           
     override func viewWillAppear(_ animated: Bool) {
         self.tableReview.isHidden = true
         self.scrollView.scrollToTop(animated: false)
@@ -258,6 +258,7 @@ class FoodDetailVC: UIViewController {
             self.scrollView.scrollToView(view: self.tableReview, animated: false)
         })
     }
+    
     func CheckDetails(string:String?,key:String,img:String){
         if (string.asStringOrEmpty() != "" && (string.asStringOrEmpty()) != "0")
         {
@@ -277,7 +278,6 @@ class FoodDetailVC: UIViewController {
             objProduct.isFavourite = 1
         }
     }
- 
 
     func checkLoginAlert() -> Bool{
          if UserDefaults.standard.bool(forKey: kLogIn){
@@ -290,12 +290,10 @@ class FoodDetailVC: UIViewController {
     {
         let text = "Hey 🤗\n I just scanned \(objProduct.productName.asStringOrEmpty()) thanks “Lifyzer app”.\nSee what unbelievable things I found about it. It literally blows my mind! 😮\n\nP.S. I like you. You are my friend after all! Wouldn’t it be silly to get cancer just because of garbage food?\n\nScan your foods right now and see what you REALLY eat! 🥘\n —- \n🎯"
         let link = URL(string: "https://get.lifyzer.com")!
-
         let shareAll = [text ,link] as [Any]
         let activityViewController = UIActivityViewController(activityItems: shareAll, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: nil)
-        print("Share product details")
     }
     @objc func redirectToaddReview()
     {
@@ -326,7 +324,6 @@ class FoodDetailVC: UIViewController {
         }else{
           LoginAlert()
         }
-        
     }
     
   @objc func btnMoreActionOnReview(sender:UIButton)
@@ -336,13 +333,12 @@ class FoodDetailVC: UIViewController {
         let appView = arr?.first as! tableEditReviewCell
         appView.btnEdit.addTarget(self, action: #selector(btnEditReviewAction(sender:)), for: .touchUpInside)
         appView.btnDelete.addTarget(self, action: #selector(btnDeleteReviewAction(sender:)), for: .touchUpInside)
-    let options = [.type(.auto),
+        let options = [.type(.auto),
                    .cornerRadius(5.0),
                    .animationIn(0.3),
                    .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
         popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
         popover.show(appView.contentView, fromView: sender)
-        
     }
     @objc func btnEditReviewAction(sender:UIButton)
     {
@@ -378,13 +374,11 @@ class FoodDetailVC: UIViewController {
         }
     }
     
-    
     @IBAction func btnShare(_ sender: Any) {
         shareFoodDetails()
     }
 
     @IBAction func btnFavourite(_ sender: UIButton) {
-
         if checkLoginAlert()
         {
             sender.isSelected = !sender.isSelected
@@ -433,19 +427,14 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == tableReview
         {
-            if section == 0
-            {
+            if section == 0{
                 return arrUserReview.count
-            }
-            else if section == 1
-            {
+            }else if section == 1{
                 if arrCustReview.count > 0{
                     return 1
                 }
                 return 0
-            }
-            else
-            {
+            }else{
                 return arrCustReview.count
             }
         }
@@ -453,13 +442,11 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView == tableReview
-        {
+        if tableView == tableReview{
             return UITableView.automaticDimension
         }
         let objTitle = arrTitle[indexPath.row]
-        if "\(objTitle)" == "Ingredients"
-        {
+        if "\(objTitle)" == "Ingredients"{
             return UITableView.automaticDimension
         }
         return 60.0
@@ -469,8 +456,7 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
         let row = indexPath.row
         if tableView == tableReview
         {
-            
-            if indexPath.section == 0//isUserReview && row == 0
+            if indexPath.section == 0
             {
                 let objUserReview = arrUserReview[0]
                 let cell = tableView.dequeueReusableCell(withIdentifier: tableUserReviewCell.reuseIdentifier, for: indexPath) as! tableUserReviewCell
@@ -568,7 +554,6 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
 //MARK: Scrollview delegate
 extension FoodDetailVC : UIScrollViewDelegate
 {
-
     //update loadControl when user scrolls de tableView
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.scrollView.loadControl?.update()
@@ -579,7 +564,6 @@ extension FoodDetailVC : UIScrollViewDelegate
         loadMoreRequest()
     }
 }
-
 
 //MARK: API related stuff
 extension FoodDetailVC
@@ -633,7 +617,6 @@ extension FoodDetailVC
     }
     func getReviewListAPI(isLoader : Bool)
     {
-        
         if Connectivity.isConnectedToInternet
         {
            if isLoader{
@@ -669,14 +652,11 @@ extension FoodDetailVC
            print("===== Review list Param =======",param)
            
            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIReviewList, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-              
-             if(isLoader){
+            if(isLoader){
                 self.hideIndicator(view: self.view)}
-            
-            self.scrollView.loadControl?.endLoading()
-
-               if response != nil
-               {
+                self.scrollView.loadControl?.endLoading()
+                if response != nil
+                {
                     self.tableReview.isHidden = false
                     let objData = JSON(response!)[WS_DATA]
                     let objUserReview = JSON(objData[WS_USER_REVIEW])
@@ -689,8 +669,7 @@ extension FoodDetailVC
                     self.objProduct.avgReview = self.objReview?.avgReview.asStringOrEmpty()
                     self.objProduct.totalReview = self.objReview?.totalReview.asStringOrEmpty()
                     self.setupRattingDetails()
-                    
-                     if arrayUserReview.count > 0{
+                    if arrayUserReview.count > 0{
                         self.arrUserReview.removeAll()
                         self.arrUserReview = arrayUserReview
                         self.isUserReview = true
@@ -705,7 +684,6 @@ extension FoodDetailVC
                             self.arrCustReview.append(contentsOf: arrayCustReview)
                         }
                     }
-                 
                     if self.arrUserReview.count == 0 && self.arrCustReview.count == 0{
                         self.viewGiveReview.isHidden = false
                         self.viewGiveReviewHeight.constant = 100.0//54.0
