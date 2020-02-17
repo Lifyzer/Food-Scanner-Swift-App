@@ -8,9 +8,33 @@
 
 import UIKit
 var isCallAPI = false
+import StoreKit
+import SwiftyJSON
+
 
 extension UIViewController
 {
+    //MARK: Rate to app on app store
+    func rateApp() {
+        if #available(iOS 10.3, *) {
+            SKStoreReviewController.requestReview()
+        } else if let url = URL(string: "itms-apps://itunes.apple.com/app/" + APPID) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+    func generateRatingAlert(){
+        let alert = UIAlertController(title: APPNAME, message: "Thanks for using app.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { (action) in
+            UserDefaults.standard.set(true, forKey: IS_RATE_REMIND_LATER)
+        }))
+        alert.addAction(UIAlertAction(title: "Rate now", style: .default, handler: { (action) in
+            UserDefaults.standard.set(false, forKey: IS_RATE_REMIND_LATER)
+            self.rateApp()
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func pushViewController(Storyboard:String,ViewController:String, animation:Bool)
     {
         let storyBoard = UIStoryboard(name: Storyboard, bundle: nil)
@@ -21,6 +45,7 @@ extension UIViewController
     func topViewController(base: UIViewController? = (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topViewController(base: nav.visibleViewController)
+            
         }
         if let tab = base as? UITabBarController {
             if let selected = tab.selectedViewController {
@@ -92,10 +117,11 @@ extension UIViewController
                     self.hideIndicator(view: self.view)
                     if response != nil
                     {
-                        if fn != nil
-                        {
-                            fn()
+                        let is_rate = JSON(response!)["is_rate"]
+                        if is_rate == true {
+                            self.generateRatingAlert()
                         }
+                        fn()
                         SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
                     }else {
                         SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)

@@ -16,9 +16,9 @@ let MEDIA = "MEDIA"
 let MESSAGE = "Please try again later."
 
 //Web Service Path
-let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
+//let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
 
-//let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
+let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
 
 //Images Path
 //let PATHCATEGORY = "\(SERVER_URL)pg/Bazinga/uploads/sub_categories/"
