@@ -31,7 +31,6 @@ enum SubDetailsItems: Int {
 
 class FoodDetailVC: UIViewController {
     @IBOutlet var tableDetails: UITableView!
-
     @IBOutlet weak var imgProduct: UIImageView!
     @IBOutlet var lblProduct: UILabel!
     @IBOutlet var btnFav: UIButton!
@@ -92,10 +91,8 @@ class FoodDetailVC: UIViewController {
     func LoginAlert()
     {
         let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
-                                       alert.addAction(UIAlertAction(title: "LOGIN",
-                                                                     style: .default,
-                                                                     handler: {(_: UIAlertAction!) in
-                                                                       self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+            alert.addAction(UIAlertAction(title: "LOGIN",style: .default,handler: {(_: UIAlertAction!) in
+                self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
        }))
        alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
        }))
@@ -215,6 +212,7 @@ class FoodDetailVC: UIViewController {
                          let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
                           vc.objProduct = self.objProduct
                           vc.addReviewData.ratting = self.viewRatting.rating
+                          vc.delegate = self
                           self.viewRatting.rating = 0.0
                           self.navigationController?.pushViewController(vc, animated: true)
                }else{
@@ -243,15 +241,6 @@ class FoodDetailVC: UIViewController {
         let reviewTime = dateFormatter.string(from: stringToDate(dateString))
         return (reviewDate,reviewTime)
     }
-    @objc func tapReviewAction()
-    {
-        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-        vc.objProduct = self.objProduct
-        vc.addReviewData.ratting = self.viewRatting.rating
-        self.viewRatting.rating = 0.0
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
     @objc func tapAction()
     {
         UIView.animate(withDuration: 1.0, animations: {
@@ -295,10 +284,11 @@ class FoodDetailVC: UIViewController {
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: nil)
     }
-    @objc func redirectToaddReview()
+    @objc func redirectToaddReviewScreen()
     {
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
         vc.objProduct = self.objProduct
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func loadMoreRequest()
@@ -307,20 +297,12 @@ class FoodDetailVC: UIViewController {
         self.getReviewListAPI(isLoader: false)
     }
     
-    func RedirectToAddReviewScreen()
-    {
-        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-        vc.objProduct = self.objProduct
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
   
     //MARK: Button actions
     @IBAction func btnGiveReviewAction(_ sender: Any) {
         //Redirect to add review screen
         if checkLoginAlert(){
-           let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-           vc.objProduct = self.objProduct
-           self.navigationController?.pushViewController(vc, animated: true)
+            redirectToaddReviewScreen()
         }else{
           LoginAlert()
         }
@@ -349,6 +331,7 @@ class FoodDetailVC: UIViewController {
             vc.objProduct = self.objProduct
             vc.isEditReview = true
             vc.objUserReview = self.arrUserReview.first
+            vc.delegate = self
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -368,7 +351,7 @@ class FoodDetailVC: UIViewController {
     @IBAction func btnAddReviewAction(_ sender: Any) {
         //Redirect to add review screen
         if checkLoginAlert(){
-            RedirectToAddReviewScreen()
+            redirectToaddReviewScreen()
         }else{
            LoginAlert()
         }
@@ -407,6 +390,13 @@ class FoodDetailVC: UIViewController {
 
             }))
             self.present(alert, animated: true, completion: nil)
+        }
+    }
+}
+extension FoodDetailVC: AddReviewDelegate{
+    func willShowRatePopup(flag: Bool) {
+        if flag{
+            generateRatingAlert()
         }
     }
 }
@@ -502,7 +492,7 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
                     cell.btnWriteReview.isHidden = true
                 }else{
                     cell.btnWriteReview.isHidden = false
-                    cell.btnWriteReview.addTarget(self, action: #selector(redirectToaddReview), for: .touchUpInside)
+                    cell.btnWriteReview.addTarget(self, action: #selector(redirectToaddReviewScreen), for: .touchUpInside)
                 }
                 return cell
             }

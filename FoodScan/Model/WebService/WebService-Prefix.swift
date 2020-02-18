@@ -16,13 +16,8 @@ let MEDIA = "MEDIA"
 let MESSAGE = "Please try again later."
 
 //Web Service Path
-//let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
-
-let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
-
-//Images Path
-//let PATHCATEGORY = "\(SERVER_URL)pg/Bazinga/uploads/sub_categories/"
-//let PATHPRODUCTMEDIA = "\(SERVER_URL)pg/Bazinga/uploads/products/media/images/"
+let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
+//let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
 
 //Service Name
 let APIRefreshToken = "\(SERVER_URL)\(WEBSERVICE_PATH)refreshToken"
@@ -42,6 +37,8 @@ let APIAddReview = "\(SERVER_URL)\(WEBSERVICE_PATH)addReview"
 let APIEditReview = "\(SERVER_URL)\(WEBSERVICE_PATH)updateReview"
 let APIDeleteReview = "\(SERVER_URL)\(WEBSERVICE_PATH)deleteReview"
 let APIReviewList = "\(SERVER_URL)\(WEBSERVICE_PATH)getReviewList"
+let APIRateOnAppStore = "\(SERVER_URL)\(WEBSERVICE_PATH)updateRatingStatus"
+
 
 //Model
 let WSUSER = "User"

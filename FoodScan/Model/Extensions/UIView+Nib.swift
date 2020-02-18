@@ -8,6 +8,8 @@
 import UIKit
 
 extension UIView {
+
+  /// Return an UINib object from the nib file with the same name.
   class var nib: UINib? {
     return UINib(nibName: String(describing: self), bundle: nil)
   }

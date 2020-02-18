@@ -25,6 +25,9 @@ struct AddReviewData {
     var desc = String()
     var is_testdata = ""
 }
+@objc protocol AddReviewDelegate {
+    func willShowRatePopup(flag:Bool)
+}
 
 class AddReviewVC: UIViewController {
 
@@ -39,6 +42,7 @@ class AddReviewVC: UIViewController {
     var btnUpdateText = "Update"
     var lblSubmitText = "Add Review"
     var lblUpdateText = "Edit Review"
+    var delegate:AddReviewDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -245,6 +249,10 @@ extension AddReviewVC
                 self.hideIndicator(view: self.view)
                 if response != nil {
                     self.navigationController?.popViewController(animated: true)
+                    let is_rate = JSON(response!)["is_rate"]
+                    if is_rate == true {
+                        self.delegate?.willShowRatePopup(flag: true)
+                    }
                 }else {
                     SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
                 }
@@ -262,7 +270,8 @@ extension AddReviewVC
         {
             self.showIndicator(view: self.view)
             
-            var param:[String:Any] = [WS_REVIEWID : objUserReview?.id.asStringOrEmpty() ?? "",
+            var param:[String:Any] = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+                                      WS_REVIEWID : objUserReview?.id.asStringOrEmpty() ?? "",
                                              WS_RATTING: addReviewData.ratting,
                                              WS_DESC:addReviewData.desc,
                                              WS_IS_TEST: IS_TESTDATA]
@@ -281,6 +290,10 @@ extension AddReviewVC
                 if response != nil {
                     self.isEditReview = false
                     self.navigationController?.popViewController(animated: true)
+                    let is_rate = JSON(response!)["is_rate"]
+                    if is_rate == true {
+                        self.delegate?.willShowRatePopup(flag: true)
+                    }
                 }else {
                     SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .error, TARGET: self)
                 }

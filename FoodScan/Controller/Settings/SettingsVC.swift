@@ -25,6 +25,8 @@ class SettingsVC: UIViewController {
         UserDefaults.standard.removeObject(forKey: kUserName)
         UserDefaults.standard.removeObject(forKey: kUserId)
         UserDefaults.standard.removeObject(forKey: KScanOption)
+        UserDefaults.standard.removeObject(forKey: IS_RATE_REMIND_LATER)
+        UserDefaults.standard.removeObject(forKey: RATE_REMIND_AFTER)
         self.navigationController?.popViewController(animated: true)
     }
 

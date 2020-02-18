@@ -16,23 +16,61 @@ extension UIViewController
 {
     //MARK: Rate to app on app store
     func rateApp() {
-        if #available(iOS 10.3, *) {
-            SKStoreReviewController.requestReview()
-        } else if let url = URL(string: "itms-apps://itunes.apple.com/app/" + APPID) {
+        DispatchQueue.main.async {
+            if #available(iOS 10.3, *) {
+                SKStoreReviewController.requestReview()
+           } else if let url = URL(string: "itms-apps://itunes.apple.com/app/" + APPID) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
+           }
+            self.updateRatingStatus()
         }
+        
     }
     
     func generateRatingAlert(){
-        let alert = UIAlertController(title: APPNAME, message: "Thanks for using app.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { (action) in
-            UserDefaults.standard.set(true, forKey: IS_RATE_REMIND_LATER)
-        }))
-        alert.addAction(UIAlertAction(title: "Rate now", style: .default, handler: { (action) in
-            UserDefaults.standard.set(false, forKey: IS_RATE_REMIND_LATER)
-            self.rateApp()
-        }))
-        self.present(alert, animated: true, completion: nil)
+        let isRemindLater = UserDefaults.standard.bool(forKey: IS_RATE_REMIND_LATER)
+        if isRemindLater == false || (isRemindLater == true && isReminderExpiredTime() == true) {
+            let alert = UIAlertController(title: APPNAME, message: "Thanks for using app.", preferredStyle: .alert)
+                   alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { (action) in
+                       UserDefaults.standard.set(true, forKey: IS_RATE_REMIND_LATER)
+                       UserDefaults.standard.set(Date(), forKey: RATE_REMIND_AFTER)
+                   }))
+                   alert.addAction(UIAlertAction(title: "Rate now", style: .default, handler: { (action) in
+                       UserDefaults.standard.removeObject(forKey: IS_RATE_REMIND_LATER)
+                       UserDefaults.standard.removeObject(forKey: RATE_REMIND_AFTER)
+                        self.rateApp()
+                   }))
+                   self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func isReminderExpiredTime()->Bool{
+        let currentDate = Date()
+        let reminderStartDate = (UserDefaults.standard.value(forKey: RATE_REMIND_AFTER)) as? Date
+        let reminderDiff = currentDate.days(from: reminderStartDate ?? Date())
+        
+        print("Reminder",reminderDiff)
+        if reminderDiff >= 1{
+            return true
+        }else{
+            return false
+        }
+    }
+    
+    func updateRatingStatus(){
+        let param:NSMutableDictionary = [WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+                                         WS_KDevice_type:DEVICE_TYPE,
+                                         WS_IS_TEST: IS_TESTDATA]
+        includeSecurityCredentials {(data) in
+            let data1 = data as! [AnyHashable : Any]
+            param.addEntries(from: data1)
+        }
+        HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIRateOnAppStore, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+            self.hideIndicator(view: self.view)
+            if response == nil {
+                self.updateRatingStatus()
+            }
+        })
     }
     
     func pushViewController(Storyboard:String,ViewController:String, animation:Bool)
@@ -99,8 +137,6 @@ extension UIViewController
     {
         if Connectivity.isConnectedToInternet
         {
-                let userToken = UserDefaults.standard.string(forKey: kTempToken)
-                let encodeString = FBEncryptorAES.encryptBase64String(APP_DELEGATE.objUser?.guid, keyString:  UserDefaults.standard.string(forKey: kGlobalPassword) ?? "", keyIv: UserDefaults.standard.string(forKey: KKey_iv) ?? "", separateLines: false)
                 let param:NSMutableDictionary = [
                     WS_KProduct_id:product_id,
                     WS_KIs_favourite:isFavourite,
@@ -117,10 +153,13 @@ extension UIViewController
                     self.hideIndicator(view: self.view)
                     if response != nil
                     {
+                        if isFavourite == "1"{
                         let is_rate = JSON(response!)["is_rate"]
-                        if is_rate == true {
-                            self.generateRatingAlert()
+                           if is_rate == true {
+                               self.generateRatingAlert()
+                           }
                         }
+                       
                         fn()
                         SHOW_ALERT_VIEW(TITLE: "", DESC: message!, STATUS: .info, TARGET: self)
                     }else {

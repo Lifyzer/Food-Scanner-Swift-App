@@ -24,6 +24,10 @@ public extension Date {
         }
         return true
     }
+    // Returns the amount of days from another date
+    func days(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.day], from: date, to: self).day ?? 0
+    }
 
     func toString(format: String) -> String {
         let dateFormatter = DateFormatter()
@@ -37,7 +41,6 @@ public extension Date {
         let dt = dateFormatter.date(from: self.toString(format: format))
         dateFormatter.dateFormat = format
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-
         return dateFormatter.string(from: dt!)
     }
 
@@ -45,24 +48,14 @@ public extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-
         let dt = dateFormatter.date(from: self.toString(format: format))
         dateFormatter.timeZone = TimeZone.current
         dateFormatter.dateFormat = format
-
         return dateFormatter.string(from: dt!)
     }
 }
 
 public func stringToDate(_ str: String)->Date{
-
-//    let formatter = DateFormatter()
-//    formatter.timeZone = TimeZone.current
-//    formatter.dateFormat="yyyy-MM-dd HH:mm:ss"
-//    print(str)
-//    return formatter.date(from: str)!
-
-    ///====Changed by Map : on 13/5/2019
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     dateFormatter.locale = Locale(identifier: "en_us")
@@ -74,16 +67,9 @@ public func stringToDate(_ str: String)->Date{
 
 func convertDateFormater(_ date: String, currentFormate: String, newFormate: String) -> String
 {
-//    let dateFormatter = DateFormatter()
-//    dateFormatter.dateFormat = currentFormate
-//    let date = dateFormatter.date(from: date)
-//    dateFormatter.dateFormat = newFormate
-//    return  dateFormatter.string(from: date!)
-
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss z"
     let date = dateFormatter.date(from: date)
     dateFormatter.dateFormat = "yyyy-MM-dd"
     return  dateFormatter.string(from: date!)
-
 }
