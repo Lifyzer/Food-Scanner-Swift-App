@@ -16,8 +16,8 @@ let MEDIA = "MEDIA"
 let MESSAGE = "Please try again later."
 
 //Web Service Path
-let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
-//let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
+//let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
+let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
 
 //Service Name
 let APIRefreshToken = "\(SERVER_URL)\(WEBSERVICE_PATH)refreshToken"

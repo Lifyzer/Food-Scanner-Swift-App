@@ -156,7 +156,8 @@ extension UIViewController
                         if isFavourite == "1"{
                         let is_rate = JSON(response!)["is_rate"]
                            if is_rate == true {
-                               self.generateRatingAlert()
+                            self.rateApp()
+//                               self.generateRatingAlert()
                            }
                         }
                        

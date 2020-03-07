@@ -396,7 +396,8 @@ class FoodDetailVC: UIViewController {
 extension FoodDetailVC: AddReviewDelegate{
     func willShowRatePopup(flag: Bool) {
         if flag{
-            generateRatingAlert()
+            self.rateApp()
+//            generateRatingAlert()
         }
     }
 }
