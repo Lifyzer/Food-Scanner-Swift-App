@@ -1,9 +1,6 @@
 //
 //  RegistrationVC.swift
-//  FoodScan
-//
-//  Created by C110 on 07/02/19.
-//  Copyright © 2019 C110. All rights reserved.
+//  Lifyzer, Healthy Food.
 //
 
 import UIKit
@@ -95,7 +92,7 @@ class RegistrationVC: UIViewController {
         }
         else
         {
-            self.generateAlertWithOkButton(text: no_internet_connection)
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
 
@@ -120,29 +117,30 @@ class RegistrationVC: UIViewController {
                 }
                 self.hideIndicator(view: self.view)
             }
-        }else{
-            self.generateAlertWithOkButton(text: no_internet_connection)
+        } else {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
 
     func ValidateField() -> Bool {
         if !txtFullName.text!.isValid() {
-             self.generateAlertWithOkButton(text: please_enter_full_name)
+            showBanner(title: "", subTitle: text: please_enter_full_name, bannerStyle: .danger)
         } else if !txtEmail.text!.isValid() {
-             self.generateAlertWithOkButton(text: please_enter_email)
+            showBanner(title: "", subTitle: text: please_enter_email, bannerStyle: .danger)
         } else if !txtEmail.text!.isValidEmail() {
-             self.generateAlertWithOkButton(text: please_enter_valid_email)
+            showBanner(title: "", subTitle: text: please_enter_valid_email, bannerStyle: .danger)
         } else if !txtPassword.text!.isValid() {
-             self.generateAlertWithOkButton(text: please_enter_password)
+            showBanner(title: "", subTitle: text: please_enter_password, bannerStyle: .danger)
         } else if !txtCmfPassword.text!.isValid() {
-             self.generateAlertWithOkButton(text: please_enter_confirm_password)
+            showBanner(title: "", subTitle: text: please_enter_confirm_password, bannerStyle: .danger)
         } else if txtPassword.text != txtCmfPassword.text {
-             self.generateAlertWithOkButton(text: password_and_confirmpass_is_different)
+            showBanner(title: "", subTitle: text: password_and_confirmpass_is_different, bannerStyle: .danger)
         } else if isAcceptTOS == false {
-             self.generateAlertWithOkButton(text: Accept_Terms_conditions)
+            showBanner(title: "", subTitle: text: Accept_Terms_conditions, bannerStyle: .danger)
         } else {
             return true
         }
+
         return false
     }
 
