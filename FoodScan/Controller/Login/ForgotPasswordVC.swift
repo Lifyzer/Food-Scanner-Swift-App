@@ -50,16 +50,16 @@ class ForgotPasswordVC: UIViewController
                     }
                 })
             }
-        }else{
-            self.generateAlertWithOkButton(text: no_internet_connection)
+        } else {
+            showBanner(title: "", subTitle: no_internet_connection, bannerStyle: .danger)
         }
     }
 
     func ValidateField() -> Bool {
         if !txtEmail.text!.isValid() {
-            self.generateAlertWithOkButton(text: please_enter_email)
+            showBanner(title: "", subTitle: please_enter_email, bannerStyle: .danger)
         } else if !txtEmail.text!.isValidEmail() {
-            self.generateAlertWithOkButton(text: please_enter_valid_email)
+            showBanner(title: "", subTitle: please_enter_valid_email, bannerStyle: .danger)
         } else {
             return true
         }
