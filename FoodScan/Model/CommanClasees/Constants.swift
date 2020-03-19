@@ -68,7 +68,7 @@ let Processing_msg = "Processing..."
 let OK = "OK"
 let Thank_You = "Thank You!"
 let You_have_successfully_login = "You have successfully registered"
-let Accept_Terms_conditions = "Please accept terms and conditions"
+let accept_terms_conditions = "Please accept terms and conditions"
 
 let please_enter_product_name = "Please enter product name"
 let add_review_title_placeholder = "Headline for your review"

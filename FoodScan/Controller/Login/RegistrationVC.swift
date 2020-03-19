@@ -136,7 +136,7 @@ class RegistrationVC: UIViewController {
         } else if txtPassword.text != txtCmfPassword.text {
             showBanner(title: "", subTitle: text: password_and_confirmpass_is_different, bannerStyle: .danger)
         } else if isAcceptTOS == false {
-            showBanner(title: "", subTitle: text: Accept_Terms_conditions, bannerStyle: .danger)
+            showBanner(title: "", subTitle: text: accept_terms_conditions, bannerStyle: .danger)
         } else {
             return true
         }
