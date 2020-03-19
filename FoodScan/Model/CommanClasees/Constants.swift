@@ -63,11 +63,7 @@ let password_and_confirmpass_is_different = "Password and Confirm password do no
 let something_went_wrong = "Something went wrong. Please try again later"
 let no_internet_connection = "No Network Connection"
 let password_length_error = "Password length should be at least 5 characters"
-let Loading_msg = "Loading..."
-let Processing_msg = "Processing..."
 let OK = "OK"
-let Thank_You = "Thank You!"
-let You_have_successfully_login = "You have successfully registered"
 let accept_terms_conditions = "Please accept terms and conditions"
 
 let please_enter_product_name = "Please enter product name"
