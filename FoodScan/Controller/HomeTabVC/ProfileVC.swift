@@ -202,7 +202,7 @@ extension ProfileVC: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
         vc.objProduct = arrayFavFood[indexPath.row]
-        vc.objProduct.isFavourite = 1
+//        vc.objProduct.isFavourite = "1"
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

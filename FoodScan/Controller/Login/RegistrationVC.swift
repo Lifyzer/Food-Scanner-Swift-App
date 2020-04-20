@@ -124,19 +124,19 @@ class RegistrationVC: UIViewController {
 
     func ValidateField() -> Bool {
         if !txtFullName.text!.isValid() {
-            showBanner(title: "", subTitle: text: please_enter_full_name, bannerStyle: .danger)
+            showBanner(title: "", subTitle:please_enter_full_name, bannerStyle: .danger)
         } else if !txtEmail.text!.isValid() {
-            showBanner(title: "", subTitle: text: please_enter_email, bannerStyle: .danger)
+            showBanner(title: "", subTitle:please_enter_email, bannerStyle: .danger)
         } else if !txtEmail.text!.isValidEmail() {
-            showBanner(title: "", subTitle: text: please_enter_valid_email, bannerStyle: .danger)
+            showBanner(title: "", subTitle:please_enter_valid_email, bannerStyle: .danger)
         } else if !txtPassword.text!.isValid() {
-            showBanner(title: "", subTitle: text: please_enter_password, bannerStyle: .danger)
+            showBanner(title: "", subTitle:please_enter_password, bannerStyle: .danger)
         } else if !txtCmfPassword.text!.isValid() {
-            showBanner(title: "", subTitle: text: please_enter_confirm_password, bannerStyle: .danger)
+            showBanner(title: "", subTitle:please_enter_confirm_password, bannerStyle: .danger)
         } else if txtPassword.text != txtCmfPassword.text {
-            showBanner(title: "", subTitle: text: password_and_confirmpass_is_different, bannerStyle: .danger)
+            showBanner(title: "", subTitle:password_and_confirmpass_is_different, bannerStyle: .danger)
         } else if isAcceptTOS == false {
-            showBanner(title: "", subTitle: text: accept_terms_conditions, bannerStyle: .danger)
+            showBanner(title: "", subTitle:accept_terms_conditions, bannerStyle: .danger)
         } else {
             return true
         }

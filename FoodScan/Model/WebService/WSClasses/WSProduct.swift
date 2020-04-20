@@ -65,7 +65,7 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
   public var id: String?
   public var proteinAmount: String?
   public var companyName: String?
-  public var isFavourite: Int?
+  public var isFavourite: String?
   public var saturatedFats: String?
   public var protein: String?
   public var salt: String?
@@ -113,7 +113,7 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
     id = json[SerializationKeys.id].string
     proteinAmount = json[SerializationKeys.proteinAmount].string
     companyName = json[SerializationKeys.companyName].string
-    isFavourite = json[SerializationKeys.isFavourite].int
+    isFavourite = json[SerializationKeys.isFavourite].string
     saturatedFats = json[SerializationKeys.saturatedFats].string
     protein = json[SerializationKeys.protein].string
     salt = json[SerializationKeys.salt].string
@@ -195,7 +195,7 @@ public final class WSProduct: NSObject, NSCoding, JSONable {
     self.id = aDecoder.decodeObject(forKey: SerializationKeys.id) as? String
     self.proteinAmount = aDecoder.decodeObject(forKey: SerializationKeys.proteinAmount) as? String
     self.companyName = aDecoder.decodeObject(forKey: SerializationKeys.companyName) as? String
-    self.isFavourite = aDecoder.decodeObject(forKey: SerializationKeys.isFavourite) as? Int
+    self.isFavourite = aDecoder.decodeObject(forKey: SerializationKeys.isFavourite) as? String
     self.saturatedFats = aDecoder.decodeObject(forKey: SerializationKeys.saturatedFats) as? String
     self.protein = aDecoder.decodeObject(forKey: SerializationKeys.protein) as? String
     self.salt = aDecoder.decodeObject(forKey: SerializationKeys.salt) as? String

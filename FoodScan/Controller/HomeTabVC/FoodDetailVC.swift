@@ -15,7 +15,7 @@ import UILoadControl
 let iDtableFoodCell = "tableFoodCell"
 let IMG_FAV = UIImage(named: "unfav_white_icon")
 let IMG_UNFAV = UIImage(named: "fav_white_icon")
-
+var CountryHeight = 55
 
 enum ReviewItems: Int {
     case userReview = 0
@@ -39,16 +39,13 @@ class FoodDetailVC: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableProductDetails: UITableView!
     @IBOutlet weak var btnShare: UIButton!
-    @IBOutlet weak var btnAddReview: UIButton!
     @IBOutlet weak var tableReview: UITableView!
     @IBOutlet weak var lblTotalReviews: UILabel!
     @IBOutlet weak var viewRatting: CosmosView!
     @IBOutlet weak var viewGiveReview: UIView!
-    
     @IBOutlet weak var btnGiveReview: UIButton!
     @IBOutlet weak var scrollWidth: NSLayoutConstraint!
     @IBOutlet weak var contentHeight: NSLayoutConstraint!
-    @IBOutlet weak var tableContentViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tableProductdetailsHeight: NSLayoutConstraint!
     @IBOutlet weak var tableReviewHeight: NSLayoutConstraint!
     @IBOutlet weak var viewGiveReviewHeight: NSLayoutConstraint!
@@ -78,7 +75,7 @@ class FoodDetailVC: UIViewController {
         self.tableReview.isHidden = true
         self.scrollView.scrollToTop(animated: false)
         self.offSet = 0
-        self.getReviewListAPI(isLoader:true)
+        self.getReviewListAPI(isLoader:false)
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,7 +84,101 @@ class FoodDetailVC: UIViewController {
         setupScrollview()
     }
     
-    //MARK: Functions
+  
+    //MARK: Button actions
+    @IBAction func btnGiveReviewAction(_ sender: Any) {
+        //Redirect to add review screen
+        if checkLoginAlert(){
+            redirectToaddReviewScreen()
+        }else{
+          LoginAlert()
+        }
+    }
+    
+    @objc func btnMoreActionOnReview(sender:UIButton)
+    {
+        //Show popup for edit and delete review => NOTE : used popover library for this
+        let arr = Bundle.main.loadNibNamed(tableEditReviewCell.reuseIdentifier, owner: nil, options: nil)
+        let appView = arr?.first as! tableEditReviewCell
+        appView.btnEdit.addTarget(self, action: #selector(btnEditReviewAction(sender:)), for: .touchUpInside)
+        appView.btnDelete.addTarget(self, action: #selector(btnDeleteReviewAction(sender:)), for: .touchUpInside)
+        let options = [.type(.auto),
+                   .cornerRadius(5.0),
+                   .animationIn(0.3),
+                   .blackOverlayColor(UIColor.black.withAlphaComponent(0.4)),
+                   .sideEdge(5.0)] as [PopoverOption]
+        popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
+        popover.show(appView.contentView, fromView: sender)
+    }
+    
+    @objc func btnEditReviewAction(sender:UIButton)
+    {
+        print("===Edit Review===")
+        popover.dismiss()
+        popover.didDismissHandler = {
+            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
+            vc.objProduct = self.objProduct
+            vc.isEditReview = true
+            vc.objUserReview = self.arrUserReview.first
+            vc.delegate = self
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    @objc func btnDeleteReviewAction(sender:UIButton)
+    {
+        print("===Delete Review===")
+        popover.dismiss()
+        popover.didDismissHandler = {
+            self.deleteReviewAPI()
+        }
+    }
+    
+    @IBAction func buttonBackClicked(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func btnAddReviewAction(_ sender: Any) {
+        //Redirect to add review screen
+        if checkLoginAlert(){
+            redirectToaddReviewScreen()
+        }else{
+           LoginAlert()
+        }
+    }
+    
+    @IBAction func btnShare(_ sender: Any) {
+        shareFoodDetails()
+    }
+    
+    @IBAction func btnFavourite(_ sender: UIButton) {
+        if checkLoginAlert()
+        {
+            if objProduct.isFavourite.asStringOrEmpty() == "0"{
+                AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
+            }else if objProduct.isFavourite.asStringOrEmpty() == "1"{
+                AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
+            }else{
+                AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
+            }
+        }
+        else
+        {
+            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "LOGIN",
+                                          style: .default,
+                                          handler: {(_: UIAlertAction!) in
+                self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
+            }))
+            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+}
+//MARK: Functions
+extension FoodDetailVC
+{
     func LoginAlert()
     {
         let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
@@ -127,13 +218,11 @@ class FoodDetailVC: UIViewController {
                 btnCategory.setImage(UIImage(named: "dot_green_small"), for: .normal)
             }
         }
-        let isFav = objProduct?.isFavourite.aIntOrEmpty()
-        if isFav == 0{
-            btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
-        }else if isFav == 1{
-            btnFav.setImage(UIImage(named: "fav_white_icon"), for: .normal)
+        let isFav = objProduct?.isFavourite.asStringOrEmpty()
+        if isFav == "1"{
+            btnFav.isSelected = true
         }else{
-            btnFav.setImage(UIImage(named: "unfav_white_icon"), for: .normal)
+            btnFav.isSelected = false
         }
     }
 
@@ -258,14 +347,14 @@ class FoodDetailVC: UIViewController {
     }
     
     func apicall(){
-        if objProduct.isFavourite.aIntOrEmpty() == 0{
-            objProduct.isFavourite = 1
-        }else if objProduct.isFavourite.aIntOrEmpty() == 1{
-            objProduct.isFavourite = 0
+        if objProduct.isFavourite.asStringOrEmpty() == "0"{
+            objProduct.isFavourite = "1"
+        }else if objProduct.isFavourite.asStringOrEmpty() == "1"{
+            objProduct.isFavourite = "0"
         }else{
-            
-            objProduct.isFavourite = 1
+            objProduct.isFavourite = "1"
         }
+        btnFav.isSelected = !btnFav.isSelected
     }
 
     func checkLoginAlert() -> Bool{
@@ -297,116 +386,22 @@ class FoodDetailVC: UIViewController {
         self.getReviewListAPI(isLoader: false)
     }
     
-  
-    //MARK: Button actions
-    @IBAction func btnGiveReviewAction(_ sender: Any) {
-        //Redirect to add review screen
-        if checkLoginAlert(){
-            redirectToaddReviewScreen()
-        }else{
-          LoginAlert()
-        }
-    }
-    
-  @objc func btnMoreActionOnReview(sender:UIButton)
-  {
-        //Show popup for edit and delete review => NOTE : used popover library for this
-        let arr = Bundle.main.loadNibNamed(tableEditReviewCell.reuseIdentifier, owner: nil, options: nil)
-        let appView = arr?.first as! tableEditReviewCell
-        appView.btnEdit.addTarget(self, action: #selector(btnEditReviewAction(sender:)), for: .touchUpInside)
-        appView.btnDelete.addTarget(self, action: #selector(btnDeleteReviewAction(sender:)), for: .touchUpInside)
-        let options = [.type(.auto),
-                   .cornerRadius(5.0),
-                   .animationIn(0.3),
-                   .blackOverlayColor(UIColor.black.withAlphaComponent(0.4))] as [PopoverOption]
-        popover = Popover(options: options, showHandler: nil, dismissHandler: nil)
-        popover.show(appView.contentView, fromView: sender)
-    }
-    @objc func btnEditReviewAction(sender:UIButton)
-    {
-        print("===Edit Review===")
-        popover.dismiss()
-        popover.didDismissHandler = {
-            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idAddReviewVC) as! AddReviewVC
-            vc.objProduct = self.objProduct
-            vc.isEditReview = true
-            vc.objUserReview = self.arrUserReview.first
-            vc.delegate = self
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    @objc func btnDeleteReviewAction(sender:UIButton)
-    {
-        print("===Delete Review===")
-        popover.dismiss()
-        popover.didDismissHandler = {
-            self.deleteReviewAPI()
-        }
-    }
-    
-    @IBAction func buttonBackClicked(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func btnAddReviewAction(_ sender: Any) {
-        //Redirect to add review screen
-        if checkLoginAlert(){
-            redirectToaddReviewScreen()
-        }else{
-           LoginAlert()
-        }
-    }
-    
-    @IBAction func btnShare(_ sender: Any) {
-        shareFoodDetails()
-    }
-
-    @IBAction func btnFavourite(_ sender: UIButton) {
-        if checkLoginAlert()
-        {
-            sender.isSelected = !sender.isSelected
-            if sender.isSelected{
-                btnFav.setImage(IMG_FAV, for: .normal)
-            } else{
-                btnFav.setImage(IMG_UNFAV, for: .normal)
-            }
-            if objProduct.isFavourite.asStringOrEmpty() == "0"{
-                AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
-            }else if objProduct.isFavourite.asStringOrEmpty() == "1"{
-                AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
-            }else{
-                AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:apicall)
-            }
-        }
-        else
-        {
-            let alert = UIAlertController(title: APPNAME, message: please_login,preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "LOGIN",
-                                          style: .default,
-                                          handler: {(_: UIAlertAction!) in
-                self.pushViewController(Storyboard: StoryBoardLogin, ViewController: idWelComeVC, animation: true)
-            }))
-            alert.addAction(UIAlertAction(title: "CANCEL", style: .default, handler: { (UIAlertAction) in
-
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
 }
+
+
+//MARK: Add review Delegate
 extension FoodDetailVC: AddReviewDelegate{
     func willShowRatePopup(flag: Bool) {
         if flag{
             self.rateApp()
-//            generateRatingAlert()
         }
     }
 }
 
+
 //MARK:- Table - Delegate - DataSource
 extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
 
-    //Row
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == tableReview
         {
@@ -467,7 +462,7 @@ extension FoodDetailVC: UITableViewDelegate,UITableViewDataSource {
                 cell.btnMore.addTarget(self, action: #selector(btnMoreActionOnReview), for: .touchUpInside)
                 return cell
             }
-            else if indexPath.section == 1 //if (!isUserReview && row == 0) || (isUserReview && row == 1)
+            else if indexPath.section == 1
             {
                 let cell = tableView.dequeueReusableCell(withIdentifier: tableCustomerReviewCell.reuseIdentifier, for: indexPath) as! tableCustomerReviewCell
                 if let ratting = self.objReview?.avgCustomerReview{
@@ -611,7 +606,8 @@ extension FoodDetailVC
         if Connectivity.isConnectedToInternet
         {
            if isLoader{
-           showIndicator(view: self.view)}
+            showIndicator(view: self.view)
+            }
             var product_id = ""
             if let pid = objProduct.productId{
                 if pid != ""{

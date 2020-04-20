@@ -134,10 +134,10 @@ class HistoryVC: UIViewController {
             }
         }else{
             let objProduct = arrayHistoryFood[EditIndex]
-            if objProduct.isFavourite.aIntOrEmpty() == 1 {
-                objProduct.isFavourite = 0
+            if objProduct.isFavourite.asStringOrEmpty() == "1" {
+                objProduct.isFavourite = "0"
             }else{
-                objProduct.isFavourite = 1
+                objProduct.isFavourite = "1"
             }
             tableHistory.reloadData()
         }
@@ -161,9 +161,9 @@ class HistoryVC: UIViewController {
     @objc func btnFavourite(_ sender: UIButton) {
         let objProduct  = arrayFavFood[sender.tag]
         RemoveIndex = sender.tag
-        if objProduct.isFavourite.aIntOrEmpty() == 0 {
+        if objProduct.isFavourite.asStringOrEmpty() == "0" {
             AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
-        }else if objProduct.isFavourite.aIntOrEmpty() == 1{
+        }else if objProduct.isFavourite.asStringOrEmpty() == "1"{
             AddRemoveFromFavouriteAPI(isFavourite : "0", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
         }else{
             AddRemoveFromFavouriteAPI(isFavourite : "1", product_id:objProduct.id.asStringOrEmpty(),fn:AfterAPICall)
@@ -552,7 +552,7 @@ extension HistoryVC: UITableViewDelegate,UITableViewDataSource {
             }
             let fav = UITableViewRowAction(style: UITableViewRowAction.Style.default, title: "") { action, indexPath in
                 self.EditIndex = indexPath.row
-                if objProduct.isFavourite.aIntOrEmpty() == 1 {
+                if objProduct.isFavourite.asStringOrEmpty() == "1" {
                     self.AddRemoveFromFavouriteAPI(isFavourite: "0", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)
                 } else{
                     self.AddRemoveFromFavouriteAPI(isFavourite: "1", product_id: objProduct.id.asStringOrEmpty(), fn: self.AfterAddRemoveFavAPI)

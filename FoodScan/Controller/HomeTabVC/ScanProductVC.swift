@@ -29,12 +29,15 @@ class ScanProductVC: UIViewController{
     @IBOutlet weak var btnFlash: UIButton!
     @IBOutlet weak var videoPreview: UIView!
     @IBOutlet weak var drawingView: DrawingView!
+    @IBOutlet weak var btnSelectCountry: UIButton!
 
+    
     var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
     var session = AVCaptureSession()
     let videoDataOutput = AVCaptureVideoDataOutput()
     let metadataOutput = AVCaptureMetadataOutput()
     var flag = 0
+    var foodType = 0
     var scanOptions = -1
     var productCode = ""
     var param : NSMutableDictionary?
@@ -91,6 +94,7 @@ class ScanProductVC: UIViewController{
             }
         }
         RefreshScan()
+        setFoodType(foodType: self.foodType)
     }
     override func viewWillDisappear(_ animated: Bool) {
         if scanOptions == 1{
@@ -103,6 +107,22 @@ class ScanProductVC: UIViewController{
     }
 
     //MARK: Button Actions
+    @IBAction func btnSelectCountry(_ sender: Any) {
+        //Show popup for edit and delete review => NOTE : used popover library for this
+        let countryVC = loadViewController(Storyboard: StoryBoardMain, ViewController: idSelectCountryVC) as! SelectCountryVC
+        countryVC.modalPresentationStyle = .popover
+        let heightPopUp = CGFloat(countryVC.arrCountry.count * CountryHeight)
+        let widthPopUp = self.view.frame.size.width
+        countryVC.preferredContentSize = CGSize(width: widthPopUp, height: heightPopUp)
+        countryVC.delegate = self
+        countryVC.selectedCountry = self.foodType
+        let popOverVC = countryVC.popoverPresentationController
+        popOverVC?.permittedArrowDirections = .up
+        popOverVC?.delegate = self
+        popOverVC?.sourceView = btnSelectCountry
+        popOverVC?.sourceRect = CGRect(x: btnSelectCountry.bounds.minX, y: btnSelectCountry.bounds.minY + 35, width: 0, height: 0)
+        self.present(countryVC, animated: true, completion: nil)
+    }
     @IBAction func btnScanOptionActions(_ sender: UIButton) {
         if sender == btnBarcode
         {
@@ -132,6 +152,16 @@ class ScanProductVC: UIViewController{
 //MARK: Fucntions
 extension ScanProductVC
 {
+    func setFoodType(foodType : Int){
+        if let selectedFoodType = UserDefaults.standard.value(forKey: KFoodType){
+            if self.foodType == 0{
+                self.foodType = selectedFoodType as! Int
+            }else{
+                self.foodType = foodType
+            }
+        }
+        btnSelectCountry.setImage(arrCountryImages[self.foodType], for: .normal)
+    }
     func SetScanOption(value:Int) {
         UserDefaults.standard.set( value, forKey: KScanOption)
     }
@@ -303,6 +333,21 @@ extension ScanProductVC
     }
 }
 
+//MARK: Popover presenation Delegate
+extension ScanProductVC: UIPopoverPresentationControllerDelegate{
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        
+    }
+}
+//MARK: Country Popup delegate
+extension ScanProductVC: CountryPopupDelegate{
+    func selectedCountry(index: Int) {
+        setFoodType(foodType: index)
+    }
+}
 //MARK: Scan Flag delegate
 extension ScanProductVC: SelectTextDelegate
 {

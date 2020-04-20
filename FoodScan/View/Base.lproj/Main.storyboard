@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tdm-tG-duy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tdm-tG-duy">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -110,15 +110,29 @@
                                             <action selector="btnFlashClicked:" destination="hOt-Mv-tAY" eventType="touchUpInside" id="aq7-2n-Epg"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdZ-TW-mh1">
+                                        <rect key="frame" x="8" y="0.0" width="44" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="RMT-De-hb7"/>
+                                        </constraints>
+                                        <state key="normal" image="country_eu"/>
+                                        <connections>
+                                            <action selector="btnSelectCountry:" destination="Nxa-II-jD3" eventType="touchUpInside" id="DRv-Ix-WxN"/>
+                                            <action selector="btnSelectCountry:" destination="hOt-Mv-tAY" eventType="touchUpInside" id="w6C-wN-cL3"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.2666666667" green="0.69019607839999997" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="vdZ-TW-mh1" firstAttribute="leading" secondItem="6gW-Na-DRA" secondAttribute="leading" constant="8" id="42X-sN-7Ox"/>
+                                    <constraint firstAttribute="bottom" secondItem="vdZ-TW-mh1" secondAttribute="bottom" id="7aY-sc-PRQ"/>
                                     <constraint firstItem="l5D-k3-HUn" firstAttribute="top" secondItem="6gW-Na-DRA" secondAttribute="top" id="Fej-V7-iiz"/>
                                     <constraint firstItem="hzx-0B-Mhu" firstAttribute="centerY" secondItem="6gW-Na-DRA" secondAttribute="centerY" id="HzM-yN-zan"/>
                                     <constraint firstItem="hzx-0B-Mhu" firstAttribute="centerX" secondItem="6gW-Na-DRA" secondAttribute="centerX" id="KLq-Gc-Trw"/>
                                     <constraint firstAttribute="height" constant="50" id="bIe-3S-BGZ"/>
                                     <constraint firstAttribute="trailing" secondItem="l5D-k3-HUn" secondAttribute="trailing" constant="8" id="exf-QA-mPI"/>
                                     <constraint firstAttribute="bottom" secondItem="l5D-k3-HUn" secondAttribute="bottom" id="r3R-2g-jPb"/>
+                                    <constraint firstItem="vdZ-TW-mh1" firstAttribute="top" secondItem="6gW-Na-DRA" secondAttribute="top" id="ut9-u3-tYY"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EEz-hc-m0m" userLabel="TopView">
@@ -157,6 +171,7 @@
                         <outlet property="btnBarcode" destination="Ohg-YI-qOB" id="ZCw-iD-qcy"/>
                         <outlet property="btnFlash" destination="l5D-k3-HUn" id="y3I-KF-x3U"/>
                         <outlet property="btnProduct" destination="jtW-WA-4zQ" id="mZN-lh-g5x"/>
+                        <outlet property="btnSelectCountry" destination="vdZ-TW-mh1" id="yUc-WQ-nmz"/>
                         <outlet property="cameraView" destination="nJ5-AI-mYW" id="Vo6-GD-gdc"/>
                         <outlet property="drawingView" destination="2CT-Td-Vjt" id="vD0-aY-7xW"/>
                         <outlet property="videoPreview" destination="0oL-IP-nhY" id="uh5-Ue-Y9Y"/>
@@ -1719,6 +1734,41 @@
             </objects>
             <point key="canvasLocation" x="822" y="670"/>
         </scene>
+        <!--Select CountryVC-->
+        <scene sceneID="HCo-cY-edi">
+            <objects>
+                <viewController storyboardIdentifier="SelectCountryVC" modalPresentationStyle="overCurrentContext" id="rE0-Hl-Y5T" customClass="SelectCountryVC" customModule="FoodScan" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QDr-Fw-rHC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hUk-cx-z1l">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="rE0-Hl-Y5T" id="1yH-fW-gC9"/>
+                                    <outlet property="delegate" destination="rE0-Hl-Y5T" id="YgI-A2-xpG"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="hUk-cx-z1l" firstAttribute="leading" secondItem="BDs-eO-5Wm" secondAttribute="leading" id="FGm-Ry-qXc"/>
+                            <constraint firstItem="hUk-cx-z1l" firstAttribute="top" secondItem="BDs-eO-5Wm" secondAttribute="top" id="OHI-ac-sxJ"/>
+                            <constraint firstItem="hUk-cx-z1l" firstAttribute="bottom" secondItem="BDs-eO-5Wm" secondAttribute="bottom" id="XeS-Ss-c1Y"/>
+                            <constraint firstItem="BDs-eO-5Wm" firstAttribute="trailing" secondItem="hUk-cx-z1l" secondAttribute="trailing" id="ec6-6Q-6am"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="BDs-eO-5Wm"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableCountry" destination="hUk-cx-z1l" id="w1p-01-aRX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xTY-H1-NYv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1482.608695652174" y="669.64285714285711"/>
+        </scene>
         <!--Scan Food-->
         <scene sceneID="4rr-r1-t6S">
             <objects>
@@ -1913,6 +1963,7 @@
     </scenes>
     <resources>
         <image name="back_icon_white" width="10" height="19"/>
+        <image name="country_eu" width="26.333333969116211" height="26.333333969116211"/>
         <image name="dot_green_small" width="8.3333330154418945" height="8.3333330154418945"/>
         <image name="edit" width="15" height="14.666666984558105"/>
         <image name="fav_green_small" width="14" height="12"/>
