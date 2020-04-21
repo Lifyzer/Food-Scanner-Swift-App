@@ -69,6 +69,7 @@ class ScanProductVC: UIViewController{
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        
         if IsScanWithLogin{
             IsScanWithLogin = false
             let scanValue = GetScanOption()
@@ -160,6 +161,7 @@ extension ScanProductVC
                 self.foodType = foodType
             }
         }
+        print("Selected Food_Type", self.foodType)
         btnSelectCountry.setImage(arrCountryImages[self.foodType], for: .normal)
     }
     func SetScanOption(value:Int) {
@@ -293,7 +295,8 @@ extension ScanProductVC
         if !UserDefaults.standard.bool(forKey: kLogIn){
             self.param = [
                 WS_KProduct_name:productCode,
-                WS_FLAG : 1]
+                WS_FLAG : 1,
+                WS_FOOD_TYPE : self.foodType]
             UserDefaults.standard.set(1, forKey: KScanOption)
             UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: param!, forKey: SCANNED_DETAILS)
             IsScanWithLogin = true
@@ -301,7 +304,8 @@ extension ScanProductVC
             self.param = [
                 WS_KProduct_name:productCode,
                 WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-                WS_FLAG : 1]
+                WS_FLAG : 1,
+                WS_FOOD_TYPE : self.foodType]
             includeSecurityCredentials {(data) in
                 let data1 = data as! [AnyHashable : Any]
                 self.param!.addEntries(from: data1)
@@ -414,6 +418,38 @@ extension ScanProductVC
             self.generateAlertWithOkButton(text: no_internet_connection)
         }
     }
+    //OLD: only open food API
+    /*
+    func GetProductDetailsAPI()
+    {
+        if Connectivity.isConnectedToInternet
+        {
+            showIndicator(view: self.view)
+            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param!, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                self.hideIndicator(view: self.view)
+                if response != nil{
+                    let objData = JSON(response!)[WS_KProduct]
+                    let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
+                    self.flag = 0
+                    let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
+                    vc.objProduct = objProduct[0]
+                    HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
+                }
+                else{
+                    self.generateAlertWithOkButton(text: message!)
+                    if self.scanOptions == 1{
+                        self.session.startRunning()
+                    }else{
+                        self.videoCapture.start()
+                    }
+                }
+
+            })
+        }
+        else{
+            self.generateAlertWithOkButton(text: no_internet_connection)
+        }
+    }*/
 }
 
 // MARK: - VideoCaptureDelegate
@@ -434,7 +470,6 @@ extension ScanProductVC: VideoCaptureDelegate {
 extension ScanProductVC
 {
     func setUpCamera() {
-
         videoCapture = VideoCapture()
         videoCapture.delegate = self
         videoCapture.fps = 30

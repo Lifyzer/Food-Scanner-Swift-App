@@ -28,24 +28,24 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gg-5X-G3s">
-                                <rect key="frame" x="43" y="8" width="474" height="17"/>
+                                <rect key="frame" x="43" y="8" width="466" height="17"/>
                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8BK-ob-GH4">
-                                <rect key="frame" x="525" y="8" width="17" height="17"/>
+                                <rect key="frame" x="517" y="4" width="25" height="25"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="8BK-ob-GH4" secondAttribute="height" multiplier="1:1" id="THZ-k5-CTE"/>
+                                    <constraint firstAttribute="width" secondItem="8BK-ob-GH4" secondAttribute="height" multiplier="1:1" id="1j6-lm-ftM"/>
+                                    <constraint firstAttribute="height" constant="25" id="dog-DQ-xwR"/>
                                 </constraints>
-                                <state key="normal" image="country_selected"/>
+                                <state key="normal" backgroundImage="country_selected"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="ya6-xX-0BC" firstAttribute="leading" secondItem="unD-fx-Xmm" secondAttribute="leading" constant="5" id="84y-ly-1TV"/>
-                            <constraint firstAttribute="bottom" secondItem="8BK-ob-GH4" secondAttribute="bottom" constant="8" id="K4V-EF-Fwe"/>
-                            <constraint firstItem="8BK-ob-GH4" firstAttribute="top" secondItem="unD-fx-Xmm" secondAttribute="top" constant="8" id="L0l-10-ny4"/>
+                            <constraint firstItem="8BK-ob-GH4" firstAttribute="centerY" secondItem="unD-fx-Xmm" secondAttribute="centerY" id="IkL-hT-244"/>
                             <constraint firstItem="7Gg-5X-G3s" firstAttribute="leading" secondItem="ya6-xX-0BC" secondAttribute="trailing" constant="8" id="c0S-hE-0sm"/>
                             <constraint firstAttribute="trailing" secondItem="8BK-ob-GH4" secondAttribute="trailing" constant="5" id="iqu-S5-1n7"/>
                             <constraint firstItem="ya6-xX-0BC" firstAttribute="centerY" secondItem="unD-fx-Xmm" secondAttribute="centerY" id="qZg-Wq-bty"/>

@@ -16,7 +16,6 @@ var arrCountryImages = [#imageLiteral(resourceName: "country_eu"),#imageLiteral(
 class SelectCountryVC: UIViewController{
 
     @IBOutlet weak var tableCountry: UITableView!
-    
     var arrCountry = ["EU market","US market","Swiss market"]
     var delegate : CountryPopupDelegate?
     var selectedCountry = 0
@@ -28,10 +27,10 @@ class SelectCountryVC: UIViewController{
     
     //MARK: Functions
     func setupUI(){
-            tableCountry.register(tableCountryCell.nib, forCellReuseIdentifier: tableCountryCell.reuseIdentifier)
+        tableCountry.register(tableCountryCell.nib, forCellReuseIdentifier: tableCountryCell.reuseIdentifier)
     }
-
 }
+ //MARK: Table Methods
 extension SelectCountryVC : UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -25,10 +25,12 @@ class ViewProductPopUpVC: UIViewController {
     var delegate:SelectTextDelegate?
     var objUser: WSUser?
     var param : NSMutableDictionary?
+    var food_type = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         txtProductName.text = productName
+        food_type = UserDefaults.standard.value(forKey: KFoodType) as! Int
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if touches.first != nil{
@@ -41,7 +43,8 @@ class ViewProductPopUpVC: UIViewController {
         if !UserDefaults.standard.bool(forKey: kLogIn){
             param = [
                 WS_KProduct_name:productName,
-                WS_FLAG : 0]
+                WS_FLAG : 0,
+                WS_FOOD_TYPE : self.food_type]
             UserDefaults.standard.set(0, forKey: KScanOption)
             UserDefaults.standard.setCustomObjToUserDefaults(CustomeObj: param!, forKey: SCANNED_DETAILS)
                 self.delegate?.scanFlag(flag: 0)
@@ -80,7 +83,9 @@ extension ViewProductPopUpVC
             let param:NSMutableDictionary = [
                 WS_KProduct_name:productName,
                 WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-                WS_FLAG : 0]
+                WS_FLAG : 0,
+                WS_FOOD_TYPE : self.food_type
+            ]
             includeSecurityCredentials {(data) in
                 let data1 = data as! [AnyHashable : Any]
                 param.addEntries(from: data1)

@@ -17,9 +17,8 @@ class tableCountryCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        btnSelection.setImage(#imageLiteral(resourceName: "country_selected"), for: .selected)
-        btnSelection.setImage(UIImage(), for: .normal)
-        
+        btnSelection.setBackgroundImage(UIImage(named :"country_selected"), for: .selected)
+        btnSelection.setBackgroundImage(UIImage(named :"country_deselected"), for: .normal)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
