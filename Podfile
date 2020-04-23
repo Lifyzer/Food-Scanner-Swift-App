@@ -14,8 +14,8 @@ target 'FoodScan' do
     pod 'IQKeyboardManagerSwift'
     pod 'SDWebImage', '~> 4.2'
     pod 'UILoadControl'
-    pod 'Fabric'
-    pod 'Crashlytics'
+#    pod 'Fabric'
+#    pod 'Crashlytics'
     pod 'Popover'
     pod 'Cosmos', '~> 20.0'
     
@@ -23,6 +23,7 @@ target 'FoodScan' do
 #    pod 'Firebase/Core'
     pod 'Firebase/MLVision'
     pod 'Firebase/MLVisionTextModel'
+    pod 'Firebase/Crashlytics'
     
 
 #pod 'TesseractOCRSDKiOS', '4.0.1'

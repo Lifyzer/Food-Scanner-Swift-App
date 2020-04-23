@@ -15,8 +15,9 @@
  */
 
 #import "GDTCORLibrary/Public/GDTCORRegistrar.h"
-
 #import "GDTCORLibrary/Private/GDTCORRegistrar_Private.h"
+
+#import <GoogleDataTransport/GDTCORConsoleLogger.h>
 
 @implementation GDTCORRegistrar {
   /** Backing ivar for targetToUploader property. */
@@ -38,8 +39,7 @@
 - (instancetype)init {
   self = [super init];
   if (self) {
-    _registrarQueue =
-        dispatch_queue_create("com.google.GDTCORRegistrar", DISPATCH_QUEUE_CONCURRENT);
+    _registrarQueue = dispatch_queue_create("com.google.GDTCORRegistrar", DISPATCH_QUEUE_SERIAL);
     _targetToPrioritizer = [[NSMutableDictionary alloc] init];
     _targetToUploader = [[NSMutableDictionary alloc] init];
   }
@@ -48,9 +48,10 @@
 
 - (void)registerUploader:(id<GDTCORUploader>)backend target:(GDTCORTarget)target {
   __weak GDTCORRegistrar *weakSelf = self;
-  dispatch_barrier_async(_registrarQueue, ^{
+  dispatch_async(_registrarQueue, ^{
     GDTCORRegistrar *strongSelf = weakSelf;
     if (strongSelf) {
+      GDTCORLogDebug("Registered an uploader: %@ for target:%ld", backend, (long)target);
       strongSelf->_targetToUploader[@(target)] = backend;
     }
   });
@@ -58,9 +59,10 @@
 
 - (void)registerPrioritizer:(id<GDTCORPrioritizer>)prioritizer target:(GDTCORTarget)target {
   __weak GDTCORRegistrar *weakSelf = self;
-  dispatch_barrier_async(_registrarQueue, ^{
+  dispatch_async(_registrarQueue, ^{
     GDTCORRegistrar *strongSelf = weakSelf;
     if (strongSelf) {
+      GDTCORLogDebug("Registered a prioritizer: %@ for target:%ld", prioritizer, (long)target);
       strongSelf->_targetToPrioritizer[@(target)] = prioritizer;
     }
   });

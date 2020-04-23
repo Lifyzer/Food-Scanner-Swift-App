@@ -14,7 +14,6 @@ import CoreMedia
 import CoreImage
 import Firebase
 
-
 var selectedScanColor = UIColor(red: 68/255, green: 176/255, blue: 91/255, alpha: 1.0)
 var IsScanWithLogin = false
 var ScanParam = NSMutableDictionary()
