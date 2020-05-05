@@ -56,6 +56,9 @@ extension SelectCountryVC : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedCountry = indexPath.row
         tableCountry.reloadData()
+        DispatchQueue.main.async {
+            self.dismiss(animated: false, completion: nil)
+        }
         UserDefaults.standard.set(selectedCountry, forKey: KFoodType)
         delegate?.selectedCountry(index: indexPath.row)
     }

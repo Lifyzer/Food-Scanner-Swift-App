@@ -108,7 +108,6 @@ class ScanProductVC: UIViewController{
 
     //MARK: Button Actions
     @IBAction func btnSelectCountry(_ sender: Any) {
-        //Show popup for edit and delete review => NOTE : used popover library for this
         let countryVC = loadViewController(Storyboard: StoryBoardMain, ViewController: idSelectCountryVC) as! SelectCountryVC
         countryVC.modalPresentationStyle = .popover
         let heightPopUp = CGFloat(countryVC.arrCountry.count * CountryHeight)

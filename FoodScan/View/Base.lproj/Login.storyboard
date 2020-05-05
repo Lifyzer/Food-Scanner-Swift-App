@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -191,7 +189,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EA9-us-Igo" userLabel="ContentView">
                                 <rect key="frame" x="0.0" y="104" width="375" height="674"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🥝 Welcome Back to Lifyzer, Healthy Food! 🤗" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="om9-Zq-Jvu">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🥝 Welcome Back to Lifyzer, Healthy Food! 🤗" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="om9-Zq-Jvu">
                                         <rect key="frame" x="40" y="60" width="295" height="36"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="16"/>
                                         <color key="textColor" red="0.3411764706" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -206,7 +204,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="6rm-Nt-zEl"/>
                                                     <constraint firstAttribute="width" constant="300" id="fWQ-Jk-kPg"/>
                                                 </constraints>
-                                                <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                                 <userDefinedRuntimeAttributes>
@@ -227,7 +224,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="8JV-R1-dPw"/>
                                                     <constraint firstAttribute="width" constant="300" id="e13-g6-bIy"/>
                                                 </constraints>
-                                                <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                 <userDefinedRuntimeAttributes>
@@ -419,7 +415,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="4wG-hD-bl5"/>
                                                     <constraint firstAttribute="width" constant="300" id="mAo-nn-odq"/>
                                                 </constraints>
-                                                <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <userDefinedRuntimeAttributes>
@@ -440,7 +435,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="RIt-tE-PYp"/>
                                                     <constraint firstAttribute="width" constant="300" id="uTA-tH-qzs"/>
                                                 </constraints>
-                                                <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                                 <userDefinedRuntimeAttributes>
@@ -461,7 +455,6 @@
                                                     <constraint firstAttribute="width" constant="300" id="Jbx-eK-xnZ"/>
                                                     <constraint firstAttribute="height" constant="50" id="haX-Gi-hDD"/>
                                                 </constraints>
-                                                <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                 <userDefinedRuntimeAttributes>
@@ -482,7 +475,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="rAE-ge-YUw"/>
                                                     <constraint firstAttribute="width" constant="300" id="sSE-oB-bsB"/>
                                                 </constraints>
-                                                <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                 <userDefinedRuntimeAttributes>
@@ -703,7 +695,6 @@
                                             <constraint firstAttribute="height" constant="50" id="Rjf-Ur-huJ"/>
                                             <constraint firstAttribute="width" constant="300" id="TU5-Ty-u2p"/>
                                         </constraints>
-                                        <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                         <userDefinedRuntimeAttributes>
@@ -868,9 +859,9 @@
     </scenes>
     <resources>
         <image name="Selected" width="16" height="16"/>
-        <image name="back_icon_black" width="9" height="17"/>
+        <image name="back_icon_black" width="9.3333330154418945" height="17"/>
         <image name="back_icon_white" width="10" height="19"/>
-        <image name="scan_food_logo" width="110" height="154"/>
+        <image name="scan_food_logo" width="110.66666412353516" height="154.66667175292969"/>
         <image name="screen_bg" width="414" height="736"/>
     </resources>
 </document>
