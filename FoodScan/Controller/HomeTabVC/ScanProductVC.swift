@@ -30,7 +30,6 @@ class ScanProductVC: UIViewController{
     @IBOutlet weak var drawingView: DrawingView!
     @IBOutlet weak var btnSelectCountry: UIButton!
 
-    
     var recognizedTextPositionTuples = [(rect: CGRect, text: String)]()
     var session = AVCaptureSession()
     let videoDataOutput = AVCaptureVideoDataOutput()
@@ -158,6 +157,8 @@ extension ScanProductVC
             }else{
                 self.foodType = foodType
             }
+        }else{
+            UserDefaults.standard.set(foodType, forKey: KFoodType)
         }
         print("Selected Food_Type", self.foodType)
         btnSelectCountry.setImage(arrCountryImages[self.foodType], for: .normal)
@@ -173,13 +174,12 @@ extension ScanProductVC
         let authorizationStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         switch authorizationStatus {
         case .notDetermined:
-            AVCaptureDevice.requestAccess(for: AVMediaType.video,
-                                          completionHandler: { (granted:Bool) -> Void in
-                                            if granted {
-                                                DispatchQueue.main.async {
-                                                    self.configureCamera()
-                                                }
-                                            }
+            AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted:Bool) -> Void in
+                if granted {
+                    DispatchQueue.main.async {
+                        self.configureCamera()
+                    }
+                }
             })
             return true
         case .authorized:
@@ -253,7 +253,7 @@ extension ScanProductVC
     }
     private func configureCamera()
     {
-        guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
+        guard AVCaptureDevice.default(for: AVMediaType.video) != nil else {
             print("Error: no video devices available")
             return
         }
@@ -315,12 +315,13 @@ extension ScanProductVC
     
     func toggleFlash()
     {
-        guard let device = AVCaptureDevice.default(for: AVMediaType.video) else { return }
+        guard let device = AVCaptureDevice.default(for: AVMediaType.video)
+        else { return }
         guard device.hasTorch else { return }
         do {
             try device.lockForConfiguration()
-            if (device.torchMode == AVCaptureDevice.TorchMode.on) {
-                device.torchMode = AVCaptureDevice.TorchMode.off
+            if (device.torchMode == .on) {
+                device.torchMode = .off
             } else {
                 do {
                     try device.setTorchModeOn(level: 1.0)
@@ -369,13 +370,12 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
                 return
             }
             // Get the metadata object.
-            let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             self.session.stopRunning()
             if let metadataObject = metadataObjects.first {
-                guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+                guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject
+                else { return }
                 guard let stringValue = readableObject.stringValue else { return }
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-                print(stringValue)
                 self.productCode = stringValue
                 checkLoginAlert()
             }
@@ -416,38 +416,6 @@ extension ScanProductVC
             self.generateAlertWithOkButton(text: no_internet_connection)
         }
     }
-    //OLD: only open food API
-    /*
-    func GetProductDetailsAPI()
-    {
-        if Connectivity.isConnectedToInternet
-        {
-            showIndicator(view: self.view)
-            HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param!, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
-                self.hideIndicator(view: self.view)
-                if response != nil{
-                    let objData = JSON(response!)[WS_KProduct]
-                    let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
-                    self.flag = 0
-                    let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
-                    vc.objProduct = objProduct[0]
-                    HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
-                }
-                else{
-                    self.generateAlertWithOkButton(text: message!)
-                    if self.scanOptions == 1{
-                        self.session.startRunning()
-                    }else{
-                        self.videoCapture.start()
-                    }
-                }
-
-            })
-        }
-        else{
-            self.generateAlertWithOkButton(text: no_internet_connection)
-        }
-    }*/
 }
 
 // MARK: - VideoCaptureDelegate
