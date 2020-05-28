@@ -1,11 +1,3 @@
-//
-//  DrawingView.swift
-//  TextDetection-CoreML
-//
-//  Created by GwakDoyoung on 21/02/2019.
-//  Copyright © 2019 tucan9389. All rights reserved.
-//
-
 import UIKit
 import Firebase
 
@@ -34,7 +26,7 @@ class DrawingView: UIView {
         let font = UIFont.systemFont(ofSize: 10)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        
+
         let attributes = [
             NSAttributedString.Key.paragraphStyle: paragraphStyle,
             NSAttributedString.Key.font: font,
@@ -71,15 +63,12 @@ class DrawingView: UIView {
         {
             var txt = (gesture.view as! UILabel).text!
             txt = txt.trimmingCharacters(in: .whitespaces)
-            if txt != ""
-            {
-               print("Clicked Text",txt)
-                let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idViewProductPopUpVC) as! ViewProductPopUpVC
+
+            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idViewProductPopUpVC) as! ViewProductPopUpVC
                 vc.productName = txt
                 txt = ""
                 vc.modalPresentationStyle = .overCurrentContext
-                self.topMostController()?.present(vc, animated: false, completion: nil)
-            }
+            self.topMostController()?.present(vc, animated: false, completion: nil)
         }
     }
 
@@ -154,5 +143,3 @@ func * (left: CGRect, right: CGSize) -> CGRect {
 func + (left: CGPoint, right: CGSize) -> CGPoint {
     return CGPoint(x: left.x + right.width, y: left.y + right.height)
 }
-
-
