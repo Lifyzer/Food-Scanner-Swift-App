@@ -1848,7 +1848,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zOK-O7-Pg7">
                                 <rect key="frame" x="20" y="348" width="374" height="200"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lifyzer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoI-GK-d1y">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Lookup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eoI-GK-d1y">
                                         <rect key="frame" x="156.33333333333334" y="20" width="61.333333333333343" height="26"/>
                                         <fontDescription key="fontDescription" name="Arial-BoldMT" family="Arial" pointSize="19"/>
                                         <color key="textColor" red="0.32549019607843138" green="0.70196078431372544" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
@@ -1902,7 +1902,7 @@
                                             <constraint firstAttribute="height" constant="50" id="rRE-Gg-Otl"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="20"/>
-                                        <state key="normal" title="View Product">
+                                        <state key="normal" title="Find a Product 😋">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
