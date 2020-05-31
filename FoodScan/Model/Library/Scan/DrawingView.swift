@@ -61,13 +61,15 @@ class DrawingView: UIView {
     {
         if gesture.view!.isKind(of: UILabel.classForCoder())
         {
+            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idViewProductPopUpVC) as! ViewProductPopUpVC
+            vc.modalPresentationStyle = .overCurrentContext
+
             var txt = (gesture.view as! UILabel).text!
             txt = txt.trimmingCharacters(in: .whitespaces)
-
-            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idViewProductPopUpVC) as! ViewProductPopUpVC
+            if txt != "" {
                 vc.productName = txt
-                txt = ""
-                vc.modalPresentationStyle = .overCurrentContext
+            }
+
             self.topMostController()?.present(vc, animated: false, completion: nil)
         }
     }
