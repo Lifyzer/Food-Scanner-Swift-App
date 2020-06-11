@@ -13,3 +13,8 @@
 
 
 Made with ❤️ by [Pierre-Henry Soria](https://pierrehenry.be). *A healthy &amp; passionate software engineer. Love eating healthy! Eager to learn 🍏 Eager to share 🍅*
+
+
+## Installation 🛠
+
+Run `pod install` to install the dependencies (make sure your have [Cocoapods](https://guides.cocoapods.org/using/getting-started.html#installation) installed).
