@@ -94,23 +94,36 @@ extension ViewProductPopUpVC
             print("===== Scan Param ========",param)
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 self.hideIndicator(view: self.view)
+                
+                let parm = [
+                     WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+                     "api" : APIGetProductDetails + "Scan text",
+                     "response" : "Response : \(response)"
+                ]
+                HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APILogs, parameters: parm as NSDictionary, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                    print("Response for logs")
+                })
                 if response != nil
                 {
                     let objData = JSON(response!)[WS_KProduct]
                     let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
-                    self.dismiss(animated: false) {
-                        self.delegate?.scanFlag(flag: 0)
-                        let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
-                        vc.objProduct = objProduct[0]
-                        HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: false) {
+                            self.delegate?.scanFlag(flag: 0)
+                            let vc = loadViewController(Storyboard: StoryBoardMain, ViewController: idFoodDetailVC) as! FoodDetailVC
+                            vc.objProduct = objProduct[0]
+                            HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
+                        }
                     }
                 }
                 else
                 {
-                    self.dismiss(animated: false) {
-                        self.delegate?.scanFlag(flag: 0)
-                        HomeTabVC.sharedHomeTabVC?.navigationController?.generateAlertWithOkButton(text: message!)
-                    } 
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: false) {
+                            self.delegate?.scanFlag(flag: 0)
+                            HomeTabVC.sharedHomeTabVC?.navigationController?.generateAlertWithOkButton(text: message!)
+                        }
+                    }
                 }
             })
         }

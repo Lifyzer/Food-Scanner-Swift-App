@@ -20,6 +20,7 @@ let WEBSERVICE_PATH = "/api/WS/FoodScanAppService.php?Service="
 //let WEBSERVICE_PATH = "/api/WS_Dev/FoodScanAppService.php?Service="
 
 //Service Name
+let APILogs = "\(SERVER_URL)\(WEBSERVICE_PATH)AddLogs"
 let APIRefreshToken = "\(SERVER_URL)\(WEBSERVICE_PATH)refreshToken"
 let APIUpdateToken = "\(SERVER_URL)\(WEBSERVICE_PATH)updateTokenForUser"
 let APILogin = "\(SERVER_URL)\(WEBSERVICE_PATH)Login"

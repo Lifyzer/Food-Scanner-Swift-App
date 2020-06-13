@@ -285,6 +285,7 @@ extension ScanProductVC
             }
         }
         cameraView1.videoPreviewLayer.videoGravity = .resizeAspectFill
+        session.commitConfiguration()
         session.startRunning()
     }
 
@@ -366,7 +367,7 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
         if self.flag == 0 && self.scanOptions == 1
         {
             if metadataObjects.count == 0 {
-                print("No Code deteected")
+                print("No Code detected")
                 return
             }
             // Get the metadata object.
@@ -393,6 +394,16 @@ extension ScanProductVC
             showIndicator(view: self.view)
             HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APIGetProductDetails, parameters: param!, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                 self.hideIndicator(view: self.view)
+                
+                let parm = [
+                     WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
+                     "api" : APIGetProductDetails + "Scan barcode",
+                     "response" : "Response : \(response)"
+                ]
+                HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APILogs, parameters: parm as NSDictionary, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
+                    print("Response for logs")
+                })
+                
                 if response != nil{
                     let objData = JSON(response!)[WS_KProduct]
                     let objProduct = objData.to(type: WSProduct.self) as! [WSProduct]
