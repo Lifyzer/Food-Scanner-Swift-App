@@ -128,6 +128,7 @@ extension UIViewController
     {
         let alert = UIAlertController(title: APPNAME, message: text, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alert.modalPresentationStyle = .fullScreen
         self.present(alert, animated: true, completion: nil)
     }
 

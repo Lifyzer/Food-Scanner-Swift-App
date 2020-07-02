@@ -97,8 +97,8 @@ extension ViewProductPopUpVC
                 
                 let parm = [
                      WS_KUser_id:UserDefaults.standard.string(forKey: kUserId) ?? "",
-                     "api" : APIGetProductDetails + "Scan text",
-                     "response" : "Response : \(response)"
+                     "api" : APIGetProductDetails + " Scan text ",
+                     "response" : "Response : \(response) param : \(self.param?.description ?? "")"
                 ]
                 HttpRequestManager.sharedInstance.postJSONRequest(endpointurl: APILogs, parameters: parm as NSDictionary, encodingType:JSON_ENCODING, responseData: { (response, error, message) in
                     print("Response for logs")
