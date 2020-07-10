@@ -20,7 +20,7 @@ target 'FoodScan' do
     pod 'Cosmos', '~> 20.0'
     
 #    Text Recognization
-#    pod 'Firebase/Core'
+    pod 'Firebase/Core'
     pod 'Firebase/MLVision'
     pod 'Firebase/MLVisionTextModel'
     pod 'Firebase/Crashlytics'

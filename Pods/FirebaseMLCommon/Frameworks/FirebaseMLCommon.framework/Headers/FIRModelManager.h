@@ -46,9 +46,12 @@ NS_SWIFT_NAME(ModelManager)
  * the model has already been downloaded, a request is made to check if a newer version of the model
  * is available for download. If available, the new version of the model is downloaded.
  *
- * @discussion To be notified when a model download request completes, observe the
- *     '.firebaseMLModelDownloadDidSucceed` and `.firebaseMLModelDownloadDidFail` notifications
- *     defined in `FIRModelDownloadNotifications.h`.
+ * To be notified when a model download request completes, observe the
+ *     `.firebaseMLModelDownloadDidSucceed` (indicating model is ready to use) and
+ *     `.firebaseMLModelDownloadDidFail` notifications defined in
+ *     `FIRModelDownloadNotifications.h`. If the latest model is already downloaded, completes
+ *     without additional work and posts a `.firebaseMLModelDownloadDidSucceed` notification,
+ *     indicating that the model is ready to use.
  *
  * @param remoteModel The model to download.
  * @param conditions The conditions for downloading the model.
@@ -67,6 +70,19 @@ NS_SWIFT_NAME(ModelManager)
  */
 - (void)deleteDownloadedModel:(FIRRemoteModel *)remoteModel
                    completion:(void (^)(NSError *_Nullable error))completion;
+
+/**
+ * Gets the absolute file path on the device for the last downloaded model. Please do not use this
+ * API if you intend to use this model through `ModelInterpreter`.
+ *
+ * @param remoteModel The downloaded model.
+ * @param completion Handler to call back returning the absolute file path of the downloaded model.
+ * This will return `nil` and will fail with the given `error` if the model is not yet downloaded on
+ *     the device or valid custom remote model is not provided.
+ */
+- (void)getLatestModelFilePath:(FIRRemoteModel *)remoteModel
+                    completion:(void (^)(NSString *_Nullable filePath,
+                                         NSError *_Nullable error))completion;
 
 @end
 

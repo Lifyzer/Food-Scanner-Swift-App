@@ -64,6 +64,7 @@ class ScanProductVC: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpCamera()
+       
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -371,13 +372,14 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
                 return
             }
             // Get the metadata object.
-            self.session.stopRunning()
+//            self.session.stopRunning()
             if let metadataObject = metadataObjects.first {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject
                 else { return }
                 guard let stringValue = readableObject.stringValue else { return }
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
                 self.productCode = stringValue
+                self.session.stopRunning()
                 checkLoginAlert()
             }
         }
@@ -420,11 +422,15 @@ extension ScanProductVC
                         self.videoCapture.start()
                     }
                 }
-
             })
         }
         else{
             self.generateAlertWithOkButton(text: no_internet_connection)
+            if self.scanOptions == 1{
+               self.session.startRunning()
+           }else{
+               self.videoCapture.start()
+           }
         }
     }
 }

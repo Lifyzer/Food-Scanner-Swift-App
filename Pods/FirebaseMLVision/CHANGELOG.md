@@ -1,3 +1,11 @@
+# 2020-05-19 -- v0.20.0
+- Bug fixes.
+
+# 2019-10-08 -- v0.19.0
+- **Breaking change:** On-device text recognition API for iOS no longer supports
+  i386 architecture, but continues to support x86_64, arm64, and armv7
+  architectures.
+
 # 2019-09-03 -- v0.18.0
 - Bug fixes.
 - [INTERNAL] Removed the dependency on `GoogleMobileVision` pod.

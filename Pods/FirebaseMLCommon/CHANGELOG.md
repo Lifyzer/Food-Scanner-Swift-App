@@ -1,10 +1,23 @@
-# 2019-##-## -- v0.19.0
+# 2020-05-19 -- v0.20.0
+- Adds `getLatestModelFilePath(_:completion:)` API to `ModelManager` class for
+  getting the absolute file path on the device for a downloaded custom remote
+  model.
+
+# 2019-10-08 -- v0.19.0
 - **Breaking change:** Updates `ModelManager` with the following API changes:
-  - Updates `download(_:)` to `download(_:conditions:)`.
-  - Updates `isRemoteModelDownloaded(_:)` to `isModelDownloaded(_:)`.
-  - Adds `deleteDownloadedModel(_:completion:)`.
-  - Removes the `RemoteModel` and `LocalModel` registration APIs; you no longer
-    need to register remote and local models with the `ModelManager`.
+  - Added `modelManager(app:)` for a custom Firebase app. Note that download
+    management for custom Firebase apps is currently only supported for the
+    Translate SDK.
+  - Removed the `RemoteModel` and `LocalModel` registration APIs. You no
+    longer need to register models before using them.
+  - Added a model download conditions parameter in the
+    `download(_:conditions)` API to make it easier to tie the conditions to
+    specific download requests. You can fully control when to download a model
+    for the first time and when to check for model updates via this API.
+  - Updated `isRemoteModelDownloaded(_:)` to `isModelDownloaded(_:)`.
+  - Added `deleteDownloadedModel(_:completion:)` to delete downloaded models to
+    provide you with more flexibility for managing disk space on your user's
+    devices.
 - **Breaking change:** `RemoteModel` and `LocalModel` initializers have been
   disabled. New subclasses have been added for AutoML, Custom, and Translate
   SDKs. Use the intializers for those subclasses to create instances of remote

@@ -709,7 +709,7 @@
 				000A852322115C640097B022 /* Embed Frameworks */,
 				CA4BE67B6D1DCA73F2776419 /* [CP] Embed Pods Frameworks */,
 				5B318DBA2286887F008CB362 /* ShellScript */,
-				A165839650F6B60AC7621F83 /* [CP] Copy Pods Resources */,
+				8FB03674B2FEDA926FD4AA61 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -893,7 +893,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
-		A165839650F6B60AC7621F83 /* [CP] Copy Pods Resources */ = {
+		8FB03674B2FEDA926FD4AA61 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1227,7 +1227,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = S2A23S7R4S;
 				ENABLE_BITCODE = NO;
@@ -1282,7 +1282,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = S2A23S7R4S;
 				ENABLE_BITCODE = NO;
