@@ -27,6 +27,8 @@ Run `pod install` to install the dependencies (make sure your have [Cocoapods](h
 ## Yummy Screenshots 😍
 
 <div align="center" markdown="1">
+### Everything our body needs to know 🥝
+
 ![Open source nutrition scanning mobile iOS app](extras/assets/lifyzer-iphone-food-nutrition-app.jpg)
 
 The Open source nutrition Scanning mobile iOS app 🍍
