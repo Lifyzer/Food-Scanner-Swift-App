@@ -1,7 +1,6 @@
 # iOS Swift Food Scanner App 🍍
 
 <div align="center" markdown="1">
-
 The native iPhone nutrition food app that detects the healthy and unhealthy food for you 🪄
 
 ![Healthy Food, Healthy Pineapple](extras/assets/pineapple-healthy-food.svg)
@@ -27,6 +26,9 @@ Run `pod install` to install the dependencies (make sure your have [Cocoapods](h
 
 ## Yummy Screenshots 😍
 
-[<img src="extras/assets/lifyzer-iphone-food-nutrition-app.jpg"alt="Open source nutrition scanning mobile iOS app">](extras/assets/lifyzer-iphone-food-nutrition-app.jpg 'Open source nutrition scanning mobile iOS app')
+<div align="center" markdown="1">
+![Open source nutrition scanning mobile iOS app](extras/assets/lifyzer-iphone-food-nutrition-app.jpg)
 
 The Open source nutrition Scanning mobile iOS app 🍍
+
+</div>
