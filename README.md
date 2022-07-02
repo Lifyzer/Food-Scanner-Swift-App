@@ -9,6 +9,7 @@ _🍎 The native [iOS Food Scanner App](https://apps.apple.com/app/longer-life-l
 
 </div>
 
+
 ### About Lifyzer, Healthy Food Scanner 🍳
 
 <div align="center" markdown="1">
@@ -20,13 +21,17 @@ Made with ❤️ by [Pierre-Henry Soria](https://pierrehenry.be). _A healthy &am
 
 </div>
 
+
 ## Installation 🛠
 
-Run `pod install` to install the dependencies (make sure your have [Cocoapods](https://guides.cocoapods.org/using/getting-started.html#installation) installed).
+- Run `pod install` to install the dependencies (make sure your have [Cocoapods](https://guides.cocoapods.org/using/getting-started.html#installation) installed).
+- Open it in Xcode to edit, run and build the project.
+
 
 ## Yummy Screenshots 😍
 
 <div align="center" markdown="1">
+
 
 ### Everything our body needs to know 🥝
 
