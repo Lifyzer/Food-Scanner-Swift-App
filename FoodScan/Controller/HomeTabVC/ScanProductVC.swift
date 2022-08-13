@@ -44,9 +44,11 @@ class ScanProductVC: UIViewController{
     lazy var textRecognizer = vision.onDeviceTextRecognizer()
     var videoCapture: VideoCapture!
     var isInference = false
+
     private var cameraView1: CameraView {
         return cameraView as! CameraView
     }
+
     private let supportedCodeTypes = [AVMetadataObject.ObjectType.upce,
                                       AVMetadataObject.ObjectType.code39,
                                       AVMetadataObject.ObjectType.code39Mod43,
@@ -69,7 +71,7 @@ class ScanProductVC: UIViewController{
 
     override func viewWillAppear(_ animated: Bool) {
         
-        if IsScanWithLogin{
+        if IsScanWithLogin {
             IsScanWithLogin = false
             let scanValue = GetScanOption()
             scanOptions = scanValue!
@@ -84,11 +86,11 @@ class ScanProductVC: UIViewController{
                 self.param!.setValue(user_id, forKey: WS_KUser_id)
                 GetProductDetailsAPI()
             }
-        }else{
+        } else {
             let scanValue = GetScanOption()
-            if scanValue != nil{
+            if scanValue != nil {
                 scanOptions = scanValue!
-            }else{
+            } else {
                 scanOptions = 0
                 SetScanOption(value: scanOptions)
             }
@@ -97,11 +99,11 @@ class ScanProductVC: UIViewController{
         setFoodType(foodType: self.foodType)
     }
     override func viewWillDisappear(_ animated: Bool) {
-        if scanOptions == 1{
+        if scanOptions == 1 {
             if (session.isRunning == true) {
                 session.stopRunning()
             }
-        }else{
+        } else {
             videoCapture.stop()
         }
     }
@@ -371,8 +373,7 @@ extension ScanProductVC: AVCaptureMetadataOutputObjectsDelegate{
                 print("No Code detected")
                 return
             }
-            // Get the metadata object.
-//            self.session.stopRunning()
+            // Get the metadata object
             if let metadataObject = metadataObjects.first {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject
                 else { return }
@@ -414,21 +415,21 @@ extension ScanProductVC
                     vc.objProduct = objProduct[0]
                     HomeTabVC.sharedHomeTabVC?.navigationController?.pushViewController(vc, animated: true)
                 }
-                else{
+                else {
                     self.generateAlertWithOkButton(text: message!)
-                    if self.scanOptions == 1{
+                    if self.scanOptions == 1 {
                         self.session.startRunning()
-                    }else{
+                    } else {
                         self.videoCapture.start()
                     }
                 }
             })
         }
-        else{
+        else {
             self.generateAlertWithOkButton(text: no_internet_connection)
-            if self.scanOptions == 1{
+            if self.scanOptions == 1 {
                self.session.startRunning()
-           }else{
+           } else {
                self.videoCapture.start()
            }
         }
