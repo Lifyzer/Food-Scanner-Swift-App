@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 let APPNAME = "Lifyzer"
-let APPID = "1466196809"
+let APPID = "1466196809" // app ID on app store. Used to open the app when asking reviews
 let SERVER_URL = "https://lifyzer.com"
 let PRIVACY_POLICY_URL = "https://lifyzer.com/tos.txt"
 let APP_DELEGATE = UIApplication.shared.delegate as! AppDelegate
